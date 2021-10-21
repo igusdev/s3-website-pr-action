@@ -23,4 +23,10 @@ export const websiteEndpoint = {
   'sa-east-1': 's3-website-sa-east-1.amazonaws.com',
 };
 
-export const region = process.env.AWS_REGION || 'us-east-1';
+export const getAwsRegion = () => process.env.AWS_REGION as string;
+
+export const setupAwsRegion = () => {
+  if (!process.env.AWS_REGION) {
+    process.env.AWS_REGION = 'us-east-1';
+  }
+};

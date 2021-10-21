@@ -2,8 +2,11 @@ import { getInput, setFailed } from '@actions/core';
 import { context } from '@actions/github';
 import { prClosed } from './actions/pr-closed';
 import { prUpdated } from './actions/pr-updated';
+import { setupAwsRegion } from './utils/aws';
 
 const main = async () => {
+  setupAwsRegion();
+
   try {
     const bucketPrefix = getInput('bucket-prefix').toLowerCase();
     const folderToCopy = getInput('folder-to-copy');
