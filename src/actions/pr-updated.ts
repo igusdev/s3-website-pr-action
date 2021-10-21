@@ -6,7 +6,7 @@ import {
 import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods';
 import { githubClient } from '../clients/github';
 import { s3Client } from '../clients/s3';
-import { websiteEndpoint } from '../utils/aws';
+import { region, websiteEndpoint } from '../utils/aws';
 import { validateEnvVars } from '../utils/env';
 import { deactivateDeployments } from '../utils/github';
 import { checkBucketExists, uploadDirectory } from '../utils/s3';
@@ -22,7 +22,6 @@ export const prUpdated = async (
   uploadDir: string,
   environmentPrefix: string
 ) => {
-  const region = process.env.AWS_REGION || 'us-east-1';
   const websiteUrl = `http://${bucketName}.${
     websiteEndpoint[region as keyof typeof websiteEndpoint]
   }`;
