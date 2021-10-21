@@ -3,8 +3,8 @@ import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
 import { normalize } from 'path';
-import readdir from 'recursive-readdir';
 import { s3Client } from '../clients/s3';
+import { readRecursively } from './fs';
 
 export const filePathToS3Key = (filePath: string) => {
   return filePath.replace(/^(\\|\/)+/g, '').replace(/\\/g, '/');
@@ -25,7 +25,7 @@ export const uploadDirectory = async (
 ) => {
   const normalizedPath = normalize(directory);
 
-  const files = await readdir(normalizedPath);
+  const files = await readRecursively(normalizedPath);
 
   await Promise.all(
     files.map(async (filePath) => {
