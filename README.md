@@ -106,6 +106,12 @@ Execute the `s3-website-pr-action` action on pull request `closed` events. This 
 | AWS_SECRET_ACCESS_KEY | AWS Secret Access Key of an IAM user           |
 | GITHUB_TOKEN          | GitHub automatically provides the secret value |
 
+### Optional Environment Variables
+
+| Environment Variable | Description                                                       |
+| -------------------- | ----------------------------------------------------------------- |
+| AWS_REGION           | AWS region for s3 bucket (needs to be set if used in PR creation) |
+
 ### Required Parameters
 
 | Parameter     | Description                                                                    |
