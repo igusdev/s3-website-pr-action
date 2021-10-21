@@ -1,4 +1,4 @@
 yarn.lock linguist-generated=true
+dist/** linguist-generated=true
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
-/dist/** binary
