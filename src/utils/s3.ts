@@ -1,10 +1,10 @@
 import { HeadBucketCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
-import mimeTypes from 'mime-types';
+import { lookup } from 'mime-types';
 import { normalize } from 'path';
-import readdir from 'recursive-readdir';
 import { s3Client } from '../clients/s3';
+import { readRecursively } from './fs';
 
 export const filePathToS3Key = (filePath: string) => {
   return filePath.replace(/^(\\|\/)+/g, '').replace(/\\/g, '/');
@@ -25,7 +25,7 @@ export const uploadDirectory = async (
 ) => {
   const normalizedPath = normalize(directory);
 
-  const files = await readdir(normalizedPath);
+  const files = await readRecursively(normalizedPath);
 
   await Promise.all(
     files.map(async (filePath) => {
@@ -35,8 +35,7 @@ export const uploadDirectory = async (
 
       try {
         const fileBuffer = await fs.readFile(filePath);
-        const mimeType =
-          mimeTypes.lookup(filePath) || 'application/octet-stream';
+        const mimeType = lookup(filePath) || 'application/octet-stream';
 
         await s3Client.send(
           new PutObjectCommand({
@@ -46,6 +45,7 @@ export const uploadDirectory = async (
             ACL: 'public-read',
             ServerSideEncryption: 'AES256',
             ContentType: mimeType,
+            CacheControl: getCacheControl(s3Key),
           })
         );
       } catch (error) {
@@ -56,4 +56,16 @@ export const uploadDirectory = async (
       }
     })
   );
+};
+
+/**
+ * Cache everything but index.html
+ *
+ * @param fileName
+ */
+const getCacheControl = (fileName: string) => {
+  if (fileName === 'index.html') {
+    return 'public, must-revalidate, proxy-revalidate, max-age=0';
+  }
+  return 'max-age=31536000';
 };
