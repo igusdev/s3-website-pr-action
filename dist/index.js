@@ -50566,28 +50566,34 @@ const client_s3_1 = __nccwpck_require__(19250);
 const s3_1 = __nccwpck_require__(21621);
 const env_1 = __nccwpck_require__(53251);
 const github_2 = __nccwpck_require__(1225);
+const s3_2 = __nccwpck_require__(32090);
 exports.requiredEnvVars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
 const prClosed = (bucketName, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
     const { repo } = github_1.context;
     (0, env_1.validateEnvVars)(exports.requiredEnvVars);
-    console.log('Emptying S3 bucket...');
-    console.log('Fetching objects...');
-    const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
-    if (objects.Contents && objects.Contents.length >= 1) {
-        console.log('Deleting objects...');
-        yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
-            Bucket: bucketName,
-            Delete: {
-                Objects: objects.Contents.map((object) => ({
-                    Key: object.Key,
-                })),
-            },
-        }));
+    if (yield (0, s3_2.checkBucketExists)(bucketName)) {
+        console.log('Emptying S3 bucket...');
+        console.log('Fetching objects...');
+        const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
+        if (objects.Contents && objects.Contents.length >= 1) {
+            console.log('Deleting objects...');
+            yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
+                Bucket: bucketName,
+                Delete: {
+                    Objects: objects.Contents.map((object) => ({
+                        Key: object.Key,
+                    })),
+                },
+            }));
+        }
+        else {
+            console.log('S3 bucket already empty.');
+        }
+        yield s3_1.s3Client.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
     }
     else {
-        console.log('S3 bucket already empty.');
+        console.log('S3 bucket does not exist.');
     }
-    yield s3_1.s3Client.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
     yield (0, github_2.deactivateDeployments)(repo, environmentPrefix);
     yield (0, github_2.deleteDeployments)(repo, environmentPrefix);
     console.log('S3 bucket removed');
