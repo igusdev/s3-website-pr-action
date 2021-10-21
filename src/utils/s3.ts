@@ -1,14 +1,29 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { HeadBucketCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
 import mimeTypes from 'mime-types';
-import path from 'path';
+import { normalize } from 'path';
 import readdir from 'recursive-readdir';
-import S3 from '../s3Client';
-import filePathToS3Key from './filePathToS3Key';
+import { s3Client } from '../clients/s3';
 
-export default async (bucketName: string, directory: string) => {
-  const normalizedPath = path.normalize(directory);
+export const filePathToS3Key = (filePath: string) => {
+  return filePath.replace(/^(\\|\/)+/g, '').replace(/\\/g, '/');
+};
+
+export const checkBucketExists = async (bucketName: string) => {
+  try {
+    await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const uploadDirectory = async (
+  bucketName: string,
+  directory: string
+) => {
+  const normalizedPath = normalize(directory);
 
   const files = await readdir(normalizedPath);
 
@@ -23,7 +38,7 @@ export default async (bucketName: string, directory: string) => {
         const mimeType =
           mimeTypes.lookup(filePath) || 'application/octet-stream';
 
-        await S3.send(
+        await s3Client.send(
           new PutObjectCommand({
             Bucket: bucketName,
             Key: s3Key,

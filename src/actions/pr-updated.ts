@@ -1,15 +1,14 @@
-import * as github from '@actions/github';
+import { context } from '@actions/github';
 import {
   CreateBucketCommand,
   PutBucketWebsiteCommand,
 } from '@aws-sdk/client-s3';
 import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods';
-import githubClient from '../githubClient';
-import S3 from '../s3Client';
-import checkBucketExists from '../utils/checkBucketExists';
-import deactivateDeployments from '../utils/deactivateDeployments';
-import s3UploadDirectory from '../utils/s3UploadDirectory';
-import validateEnvVars from '../utils/validateEnvVars';
+import { githubClient } from '../clients/github';
+import { s3Client } from '../clients/s3';
+import { validateEnvVars } from '../utils/env';
+import { deactivateDeployments } from '../utils/github';
+import { checkBucketExists, uploadDirectory } from '../utils/s3';
 
 export const requiredEnvVars = [
   'AWS_ACCESS_KEY_ID',
@@ -17,15 +16,15 @@ export const requiredEnvVars = [
   'GITHUB_TOKEN',
 ];
 
-export default async (
+export const prUpdated = async (
   bucketName: string,
-  uploadDirectory: string,
+  uploadDir: string,
   environmentPrefix: string
 ) => {
   const region = process.env.AWS_REGION || 'us-east-1';
-  const websiteUrl = `http://${bucketName}.s3-website.${region}.amazonaws.com`;
-  const { repo } = github.context;
-  const branchName = github.context.payload.pull_request!.head.ref;
+  const websiteUrl = `http://${bucketName}.s3Client-website.${region}.amazonaws.com`;
+  const { repo, payload } = context;
+  const branchName = payload.pull_request?.head.ref;
 
   console.log('PR Updated');
 
@@ -35,7 +34,7 @@ export default async (
 
   if (!bucketExists) {
     console.log('S3 bucket does not exist. Creating...');
-    await S3.send(
+    await s3Client.send(
       new CreateBucketCommand({
         Bucket: bucketName,
         CreateBucketConfiguration: { LocationConstraint: region },
@@ -43,7 +42,7 @@ export default async (
     );
 
     console.log('Configuring bucket website...');
-    await S3.send(
+    await s3Client.send(
       new PutBucketWebsiteCommand({
         Bucket: bucketName,
         WebsiteConfiguration: {
@@ -61,9 +60,7 @@ export default async (
   const deployment = (await githubClient.rest.repos.createDeployment({
     ...repo,
     ref: `refs/heads/${branchName}`,
-    environment: `${environmentPrefix || 'pr-'}${
-      github.context.payload.pull_request!.number
-    }`,
+    environment: `${environmentPrefix || 'pr-'}${payload.pull_request?.number}`,
     auto_merge: false,
     transient_environment: true,
     required_contexts: [],
@@ -77,7 +74,7 @@ export default async (
     });
 
     console.log('Uploading files...');
-    await s3UploadDirectory(bucketName, uploadDirectory);
+    await uploadDirectory(bucketName, uploadDir);
 
     await githubClient.rest.repos.createDeploymentStatus({
       ...repo,

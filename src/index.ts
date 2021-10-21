@@ -1,31 +1,31 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
-import prClosedAction from './actions/prClosedAction';
-import prUpdatedAction from './actions/prUpdatedAction';
+import { getInput, setFailed } from '@actions/core';
+import { context } from '@actions/github';
+import { prClosed } from './actions/pr-closed';
+import { prUpdated } from './actions/pr-updated';
 
 const main = async () => {
   try {
-    const bucketPrefix = core.getInput('bucket-prefix').toLowerCase();
-    const folderToCopy = core.getInput('folder-to-copy');
-    const environmentPrefix = core.getInput('environment-prefix').toLowerCase();
+    const bucketPrefix = getInput('bucket-prefix').toLowerCase();
+    const folderToCopy = getInput('folder-to-copy');
+    const environmentPrefix = getInput('environment-prefix').toLowerCase();
 
-    const prNumber = github.context.payload.pull_request!.number;
+    const prNumber = context.payload.pull_request?.number;
     const bucketName = `${bucketPrefix}-pr${prNumber}`;
 
     console.log(`Bucket Name: ${bucketName}`);
 
-    const githubActionType = github.context.payload.action;
+    const githubActionType = context.payload.action;
 
-    if (github.context.eventName === 'pull_request') {
+    if (context.eventName === 'pull_request') {
       switch (githubActionType) {
         case 'opened':
         case 'reopened':
         case 'synchronize':
-          await prUpdatedAction(bucketName, folderToCopy, environmentPrefix);
+          await prUpdated(bucketName, folderToCopy, environmentPrefix);
           break;
 
         case 'closed':
-          await prClosedAction(bucketName, environmentPrefix);
+          await prClosed(bucketName, environmentPrefix);
           break;
 
         default:
@@ -37,7 +37,7 @@ const main = async () => {
     }
   } catch (error) {
     console.log(error);
-    core.setFailed(error as Error);
+    setFailed(error as Error);
   }
 };
 

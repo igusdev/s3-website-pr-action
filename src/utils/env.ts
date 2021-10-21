@@ -1,4 +1,4 @@
-export default (requiredEnvVars: string[]) => {
+export const validateEnvVars = (requiredEnvVars: string[]) => {
   console.log('Checking environment variables...');
 
   const missingList: string[] = [];
