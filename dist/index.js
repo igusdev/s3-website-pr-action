@@ -1103,65 +1103,7 @@ exports.build = build;
 
 /***/ }),
 /* 13 */,
-/* 14 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const github = __importStar(__webpack_require__(469));
-const githubClient_1 = __importDefault(__webpack_require__(291));
-exports.default = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
-    const environment = `${environmentPrefix || 'pr-'}${github.context.payload.pull_request.number}`;
-    const deployments = yield githubClient_1.default.rest.repos.listDeployments({
-        repo: repo.repo,
-        owner: repo.owner,
-        environment,
-    });
-    const existing = deployments.data.length;
-    if (existing < 1) {
-        console.log('No exiting deployments found for pull request');
-        return;
-    }
-    for (const deployment of deployments.data) {
-        console.log(`Deactivating existing deployment - ${deployment.id}`);
-        yield githubClient_1.default.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.id, state: 'inactive' }));
-    }
-});
-
-
-/***/ }),
+/* 14 */,
 /* 15 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -2422,7 +2364,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StandardRetryStrategy = void 0;
 const protocol_http_1 = __webpack_require__(504);
 const service_error_classification_1 = __webpack_require__(927);
-const uuid_1 = __webpack_require__(62);
+const uuid_1 = __webpack_require__(281);
 const config_1 = __webpack_require__(977);
 const constants_1 = __webpack_require__(373);
 const defaultRetryQuota_1 = __webpack_require__(814);
@@ -2726,84 +2668,50 @@ exports.CompleteMultipartUploadCommand = CompleteMultipartUploadCommand;
 
 "use strict";
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.prClosed = exports.requiredEnvVars = void 0;
+const github_1 = __webpack_require__(469);
+const client_s3_1 = __webpack_require__(246);
+const s3_1 = __webpack_require__(646);
+const env_1 = __webpack_require__(923);
+const github_2 = __webpack_require__(926);
+exports.requiredEnvVars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
+const prClosed = (bucketName, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+    const { repo } = github_1.context;
+    (0, env_1.validateEnvVars)(exports.requiredEnvVars);
+    console.log('Emptying S3 bucket...');
+    console.log('Fetching objects...');
+    const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
+    if (objects.Contents && objects.Contents.length >= 1) {
+        console.log('Deleting objects...');
+        yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
+            Bucket: bucketName,
+            Delete: {
+                Objects: objects.Contents.map((object) => ({
+                    Key: object.Key,
+                })),
+            },
+        }));
+    }
+    else {
+        console.log('S3 bucket already empty.');
+    }
+    yield s3_1.s3Client.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
+    yield (0, github_2.deactivateDeployments)(repo, environmentPrefix);
+    yield (0, github_2.deleteDeployments)(repo, environmentPrefix);
+    console.log('S3 bucket removed');
 });
-Object.defineProperty(exports, "v1", {
-  enumerable: true,
-  get: function () {
-    return _v.default;
-  }
-});
-Object.defineProperty(exports, "v3", {
-  enumerable: true,
-  get: function () {
-    return _v2.default;
-  }
-});
-Object.defineProperty(exports, "v4", {
-  enumerable: true,
-  get: function () {
-    return _v3.default;
-  }
-});
-Object.defineProperty(exports, "v5", {
-  enumerable: true,
-  get: function () {
-    return _v4.default;
-  }
-});
-Object.defineProperty(exports, "NIL", {
-  enumerable: true,
-  get: function () {
-    return _nil.default;
-  }
-});
-Object.defineProperty(exports, "version", {
-  enumerable: true,
-  get: function () {
-    return _version.default;
-  }
-});
-Object.defineProperty(exports, "validate", {
-  enumerable: true,
-  get: function () {
-    return _validate.default;
-  }
-});
-Object.defineProperty(exports, "stringify", {
-  enumerable: true,
-  get: function () {
-    return _stringify.default;
-  }
-});
-Object.defineProperty(exports, "parse", {
-  enumerable: true,
-  get: function () {
-    return _parse.default;
-  }
-});
+exports.prClosed = prClosed;
 
-var _v = _interopRequireDefault(__webpack_require__(893));
-
-var _v2 = _interopRequireDefault(__webpack_require__(209));
-
-var _v3 = _interopRequireDefault(__webpack_require__(733));
-
-var _v4 = _interopRequireDefault(__webpack_require__(384));
-
-var _nil = _interopRequireDefault(__webpack_require__(327));
-
-var _version = _interopRequireDefault(__webpack_require__(695));
-
-var _validate = _interopRequireDefault(__webpack_require__(78));
-
-var _stringify = _interopRequireDefault(__webpack_require__(411));
-
-var _parse = _interopRequireDefault(__webpack_require__(22));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 63 */,
@@ -5372,7 +5280,75 @@ exports.ENDPOINT_MODE_CONFIG_OPTIONS = {
 
 /***/ }),
 /* 120 */,
-/* 121 */,
+/* 121 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.prUpdated = exports.requiredEnvVars = void 0;
+const github_1 = __webpack_require__(469);
+const client_s3_1 = __webpack_require__(246);
+const github_2 = __webpack_require__(545);
+const s3_1 = __webpack_require__(646);
+const env_1 = __webpack_require__(923);
+const github_3 = __webpack_require__(926);
+const s3_2 = __webpack_require__(946);
+exports.requiredEnvVars = [
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'GITHUB_TOKEN',
+];
+const prUpdated = (bucketName, uploadDir, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const region = process.env.AWS_REGION || 'us-east-1';
+    const websiteUrl = `http://${bucketName}.s3Client-website.${region}.amazonaws.com`;
+    const { repo, payload } = github_1.context;
+    const branchName = (_a = payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.ref;
+    console.log('PR Updated');
+    (0, env_1.validateEnvVars)(exports.requiredEnvVars);
+    const bucketExists = yield (0, s3_2.checkBucketExists)(bucketName);
+    if (!bucketExists) {
+        console.log('S3 bucket does not exist. Creating...');
+        yield s3_1.s3Client.send(new client_s3_1.CreateBucketCommand({
+            Bucket: bucketName,
+            CreateBucketConfiguration: { LocationConstraint: region },
+        }));
+        console.log('Configuring bucket website...');
+        yield s3_1.s3Client.send(new client_s3_1.PutBucketWebsiteCommand({
+            Bucket: bucketName,
+            WebsiteConfiguration: {
+                IndexDocument: { Suffix: 'index.html' },
+                ErrorDocument: { Key: 'index.html' },
+            },
+        }));
+    }
+    else {
+        console.log('S3 Bucket already exists. Skipping creation...');
+    }
+    yield (0, github_3.deactivateDeployments)(repo, environmentPrefix);
+    const deployment = (yield github_2.githubClient.rest.repos.createDeployment(Object.assign(Object.assign({}, repo), { ref: `refs/heads/${branchName}`, environment: `${environmentPrefix || 'pr-'}${(_b = payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`, auto_merge: false, transient_environment: true, required_contexts: [] })));
+    if ('id' in deployment.data) {
+        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'in_progress' }));
+        console.log('Uploading files...');
+        yield (0, s3_2.uploadDirectory)(bucketName, uploadDir);
+        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'success', environment_url: websiteUrl, description: `Deployed to: ${websiteUrl}` }));
+        console.log(`Website URL: ${websiteUrl}`);
+    }
+});
+exports.prUpdated = prUpdated;
+
+
+/***/ }),
 /* 122 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -6414,120 +6390,10 @@ exports.XmlText = XmlText;
 
 
 /***/ }),
-/* 158 */
-/***/ (function(__unusedmodule, exports) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (requiredEnvVars) => {
-    console.log('Checking environment variables...');
-    const missingList = [];
-    for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-            missingList.push(envVar);
-        }
-    }
-    if (missingList.length >= 1) {
-        throw `The following env vars are missing but are required. ${missingList.join(', ')}`;
-    }
-    return true;
-};
-
-
-/***/ }),
+/* 158 */,
 /* 159 */,
 /* 160 */,
-/* 161 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.requiredEnvVars = void 0;
-const github = __importStar(__webpack_require__(469));
-const client_s3_1 = __webpack_require__(246);
-const githubClient_1 = __importDefault(__webpack_require__(291));
-const s3Client_1 = __importDefault(__webpack_require__(940));
-const checkBucketExists_1 = __importDefault(__webpack_require__(222));
-const deactivateDeployments_1 = __importDefault(__webpack_require__(14));
-const s3UploadDirectory_1 = __importDefault(__webpack_require__(704));
-const validateEnvVars_1 = __importDefault(__webpack_require__(158));
-exports.requiredEnvVars = [
-    'AWS_ACCESS_KEY_ID',
-    'AWS_SECRET_ACCESS_KEY',
-    'GITHUB_TOKEN',
-];
-exports.default = (bucketName, uploadDirectory, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
-    const region = process.env.AWS_REGION || 'us-east-1';
-    const websiteUrl = `http://${bucketName}.s3-website.${region}.amazonaws.com`;
-    const { repo } = github.context;
-    const branchName = github.context.payload.pull_request.head.ref;
-    console.log('PR Updated');
-    (0, validateEnvVars_1.default)(exports.requiredEnvVars);
-    const bucketExists = yield (0, checkBucketExists_1.default)(bucketName);
-    if (!bucketExists) {
-        console.log('S3 bucket does not exist. Creating...');
-        yield s3Client_1.default.send(new client_s3_1.CreateBucketCommand({
-            Bucket: bucketName,
-            CreateBucketConfiguration: { LocationConstraint: region },
-        }));
-        console.log('Configuring bucket website...');
-        yield s3Client_1.default.send(new client_s3_1.PutBucketWebsiteCommand({
-            Bucket: bucketName,
-            WebsiteConfiguration: {
-                IndexDocument: { Suffix: 'index.html' },
-                ErrorDocument: { Key: 'index.html' },
-            },
-        }));
-    }
-    else {
-        console.log('S3 Bucket already exists. Skipping creation...');
-    }
-    yield (0, deactivateDeployments_1.default)(repo, environmentPrefix);
-    const deployment = (yield githubClient_1.default.rest.repos.createDeployment(Object.assign(Object.assign({}, repo), { ref: `refs/heads/${branchName}`, environment: `${environmentPrefix || 'pr-'}${github.context.payload.pull_request.number}`, auto_merge: false, transient_environment: true, required_contexts: [] })));
-    if ('id' in deployment.data) {
-        yield githubClient_1.default.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'in_progress' }));
-        console.log('Uploading files...');
-        yield (0, s3UploadDirectory_1.default)(bucketName, uploadDirectory);
-        yield githubClient_1.default.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'success', environment_url: websiteUrl, description: `Deployed to: ${websiteUrl}` }));
-        console.log(`Website URL: ${websiteUrl}`);
-    }
-});
-
-
-/***/ }),
+/* 161 */,
 /* 162 */
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -9321,106 +9187,7 @@ exports.NODE_RETRY_MODE_CONFIG_OPTIONS = {
 
 /***/ }),
 /* 195 */,
-/* 196 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultRegionInfoProvider = void 0;
-const config_resolver_1 = __webpack_require__(529);
-const regionHash = {
-    "ap-southeast-1": {
-        hostname: "portal.sso.ap-southeast-1.amazonaws.com",
-        signingRegion: "ap-southeast-1",
-    },
-    "ap-southeast-2": {
-        hostname: "portal.sso.ap-southeast-2.amazonaws.com",
-        signingRegion: "ap-southeast-2",
-    },
-    "ca-central-1": {
-        hostname: "portal.sso.ca-central-1.amazonaws.com",
-        signingRegion: "ca-central-1",
-    },
-    "eu-central-1": {
-        hostname: "portal.sso.eu-central-1.amazonaws.com",
-        signingRegion: "eu-central-1",
-    },
-    "eu-west-1": {
-        hostname: "portal.sso.eu-west-1.amazonaws.com",
-        signingRegion: "eu-west-1",
-    },
-    "eu-west-2": {
-        hostname: "portal.sso.eu-west-2.amazonaws.com",
-        signingRegion: "eu-west-2",
-    },
-    "us-east-1": {
-        hostname: "portal.sso.us-east-1.amazonaws.com",
-        signingRegion: "us-east-1",
-    },
-    "us-east-2": {
-        hostname: "portal.sso.us-east-2.amazonaws.com",
-        signingRegion: "us-east-2",
-    },
-    "us-west-2": {
-        hostname: "portal.sso.us-west-2.amazonaws.com",
-        signingRegion: "us-west-2",
-    },
-};
-const partitionHash = {
-    aws: {
-        regions: [
-            "af-south-1",
-            "ap-east-1",
-            "ap-northeast-1",
-            "ap-northeast-2",
-            "ap-northeast-3",
-            "ap-south-1",
-            "ap-southeast-1",
-            "ap-southeast-2",
-            "ca-central-1",
-            "eu-central-1",
-            "eu-north-1",
-            "eu-south-1",
-            "eu-west-1",
-            "eu-west-2",
-            "eu-west-3",
-            "me-south-1",
-            "sa-east-1",
-            "us-east-1",
-            "us-east-2",
-            "us-west-1",
-            "us-west-2",
-        ],
-        hostname: "portal.sso.{region}.amazonaws.com",
-    },
-    "aws-cn": {
-        regions: ["cn-north-1", "cn-northwest-1"],
-        hostname: "portal.sso.{region}.amazonaws.com.cn",
-    },
-    "aws-iso": {
-        regions: ["us-iso-east-1", "us-iso-west-1"],
-        hostname: "portal.sso.{region}.c2s.ic.gov",
-    },
-    "aws-iso-b": {
-        regions: ["us-isob-east-1"],
-        hostname: "portal.sso.{region}.sc2s.sgov.gov",
-    },
-    "aws-us-gov": {
-        regions: ["us-gov-east-1", "us-gov-west-1"],
-        hostname: "portal.sso.{region}.amazonaws.com",
-    },
-};
-const defaultRegionInfoProvider = async (region, options) => config_resolver_1.getRegionInfo(region, {
-    ...options,
-    signingService: "awsssoportal",
-    regionHash,
-    partitionHash,
-});
-exports.defaultRegionInfoProvider = defaultRegionInfoProvider;
-
-
-/***/ }),
+/* 196 */,
 /* 197 */
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -10277,38 +10044,7 @@ exports.PutBucketVersioningCommand = PutBucketVersioningCommand;
 
 
 /***/ }),
-/* 222 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const client_s3_1 = __webpack_require__(246);
-const s3Client_1 = __importDefault(__webpack_require__(940));
-exports.default = (bucketName) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield s3Client_1.default.send(new client_s3_1.HeadBucketCommand({ Bucket: bucketName }));
-        return true;
-    }
-    catch (e) {
-        return false;
-    }
-});
-
-
-/***/ }),
+/* 222 */,
 /* 223 */,
 /* 224 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
@@ -12004,7 +11740,91 @@ function register(state, name, method, options) {
 
 
 /***/ }),
-/* 281 */,
+/* 281 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "v1", {
+  enumerable: true,
+  get: function () {
+    return _v.default;
+  }
+});
+Object.defineProperty(exports, "v3", {
+  enumerable: true,
+  get: function () {
+    return _v2.default;
+  }
+});
+Object.defineProperty(exports, "v4", {
+  enumerable: true,
+  get: function () {
+    return _v3.default;
+  }
+});
+Object.defineProperty(exports, "v5", {
+  enumerable: true,
+  get: function () {
+    return _v4.default;
+  }
+});
+Object.defineProperty(exports, "NIL", {
+  enumerable: true,
+  get: function () {
+    return _nil.default;
+  }
+});
+Object.defineProperty(exports, "version", {
+  enumerable: true,
+  get: function () {
+    return _version.default;
+  }
+});
+Object.defineProperty(exports, "validate", {
+  enumerable: true,
+  get: function () {
+    return _validate.default;
+  }
+});
+Object.defineProperty(exports, "stringify", {
+  enumerable: true,
+  get: function () {
+    return _stringify.default;
+  }
+});
+Object.defineProperty(exports, "parse", {
+  enumerable: true,
+  get: function () {
+    return _parse.default;
+  }
+});
+
+var _v = _interopRequireDefault(__webpack_require__(893));
+
+var _v2 = _interopRequireDefault(__webpack_require__(209));
+
+var _v3 = _interopRequireDefault(__webpack_require__(733));
+
+var _v4 = _interopRequireDefault(__webpack_require__(384));
+
+var _nil = _interopRequireDefault(__webpack_require__(327));
+
+var _version = _interopRequireDefault(__webpack_require__(695));
+
+var _validate = _interopRequireDefault(__webpack_require__(78));
+
+var _stringify = _interopRequireDefault(__webpack_require__(411));
+
+var _parse = _interopRequireDefault(__webpack_require__(22));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
 /* 282 */,
 /* 283 */,
 /* 284 */
@@ -12178,39 +11998,7 @@ for (var i = 0; i < modules.length; i++) {
 /***/ }),
 /* 289 */,
 /* 290 */,
-/* 291 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const github = __importStar(__webpack_require__(469));
-const { GITHUB_TOKEN } = process.env;
-exports.default = github.getOctokit(GITHUB_TOKEN, {
-    previews: ['ant-man-preview', 'flash-preview'],
-});
-
-
-/***/ }),
+/* 291 */,
 /* 292 */,
 /* 293 */
 /***/ (function(module) {
@@ -13312,25 +13100,6 @@ exports.numToUint8 = numToUint8;
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13340,32 +13109,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
-const github = __importStar(__webpack_require__(469));
-const prClosedAction_1 = __importDefault(__webpack_require__(751));
-const prUpdatedAction_1 = __importDefault(__webpack_require__(161));
+const core_1 = __webpack_require__(470);
+const github_1 = __webpack_require__(469);
+const pr_closed_1 = __webpack_require__(62);
+const pr_updated_1 = __webpack_require__(121);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const bucketPrefix = core.getInput('bucket-prefix').toLowerCase();
-        const folderToCopy = core.getInput('folder-to-copy');
-        const environmentPrefix = core.getInput('environment-prefix').toLowerCase();
-        const prNumber = github.context.payload.pull_request.number;
+        const bucketPrefix = (0, core_1.getInput)('bucket-prefix').toLowerCase();
+        const folderToCopy = (0, core_1.getInput)('folder-to-copy');
+        const environmentPrefix = (0, core_1.getInput)('environment-prefix').toLowerCase();
+        const prNumber = (_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
         const bucketName = `${bucketPrefix}-pr${prNumber}`;
         console.log(`Bucket Name: ${bucketName}`);
-        const githubActionType = github.context.payload.action;
-        if (github.context.eventName === 'pull_request') {
+        const githubActionType = github_1.context.payload.action;
+        if (github_1.context.eventName === 'pull_request') {
             switch (githubActionType) {
                 case 'opened':
                 case 'reopened':
                 case 'synchronize':
-                    yield (0, prUpdatedAction_1.default)(bucketName, folderToCopy, environmentPrefix);
+                    yield (0, pr_updated_1.prUpdated)(bucketName, folderToCopy, environmentPrefix);
                     break;
                 case 'closed':
-                    yield (0, prClosedAction_1.default)(bucketName, environmentPrefix);
+                    yield (0, pr_closed_1.prClosed)(bucketName, environmentPrefix);
                     break;
                 default:
                     console.log('PR not created, modified or deleted. Skipping...');
@@ -13378,7 +13145,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.log(error);
-        core.setFailed(error);
+        (0, core_1.setFailed)(error);
     }
 });
 main();
@@ -18610,78 +18377,7 @@ exports.GetAccessKeyInfoCommand = GetAccessKeyInfoCommand;
 /***/ }),
 /* 440 */,
 /* 441 */,
-/* 442 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const github = __importStar(__webpack_require__(469));
-const githubClient_1 = __importDefault(__webpack_require__(291));
-exports.default = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
-    const environment = `${environmentPrefix || 'pr-'}${(_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number}`;
-    const deployments = yield githubClient_1.default.graphql(`
-      query GetDeployments($owner: String!, $repo: String!, $environments: [String!]) {
-        repository(owner: $owner, name: $repo) {
-          deployments(first: 100, environments: $environments) {
-            nodes {
-              id
-            }
-          }
-        }
-      }`, Object.assign(Object.assign({}, repo), { environments: [environment] }));
-    const nodes = (_c = (_b = deployments.repository) === null || _b === void 0 ? void 0 : _b.deployments) === null || _c === void 0 ? void 0 : _c.nodes;
-    console.log(JSON.stringify(deployments));
-    if (!nodes || nodes.length <= 0) {
-        console.log('No exiting deployments found for pull request');
-        return;
-    }
-    for (const node of nodes) {
-        console.log(`Deleting existing deployment - ${node.id}`);
-        yield githubClient_1.default.graphql(`
-          mutation DeleteDeployment($id: ID!) {
-            deleteDeployment(input: {id: $id} ) {
-              clientMutationId
-            }
-          }
-        `, { id: node.id });
-    }
-});
-
-
-/***/ }),
+/* 442 */,
 /* 443 */,
 /* 444 */,
 /* 445 */,
@@ -23690,7 +23386,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 /***/ }),
-/* 545 */,
+/* 545 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.githubClient = void 0;
+const github = __importStar(__webpack_require__(469));
+const { GITHUB_TOKEN } = process.env;
+exports.githubClient = github.getOctokit(GITHUB_TOKEN, {
+    previews: ['ant-man-preview', 'flash-preview'],
+});
+
+
+/***/ }),
 /* 546 */
 /***/ (function(module) {
 
@@ -24927,16 +24656,7 @@ exports.EventStreamMarshaller = EventStreamMarshaller;
 
 
 /***/ }),
-/* 601 */
-/***/ (function(__unusedmodule, exports) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (filePath) => filePath.replace(/^(\\|\/)+/g, '').replace(/\\/g, '/');
-
-
-/***/ }),
+/* 601 */,
 /* 602 */,
 /* 603 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
@@ -38936,7 +38656,18 @@ Utf7IMAPDecoder.prototype.end = function() {
 
 
 /***/ }),
-/* 646 */,
+/* 646 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.s3Client = void 0;
+const client_s3_1 = __webpack_require__(246);
+exports.s3Client = new client_s3_1.S3Client({});
+
+
+/***/ }),
 /* 647 */,
 /* 648 */,
 /* 649 */
@@ -40352,60 +40083,7 @@ exports.NODEJS_TIMEOUT_ERROR_CODES = ["ECONNRESET", "EPIPE", "ETIMEDOUT"];
 
 /***/ }),
 /* 703 */,
-/* 704 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const client_s3_1 = __webpack_require__(246);
-const fs_1 = __webpack_require__(747);
-const mime_types_1 = __importDefault(__webpack_require__(432));
-const path_1 = __importDefault(__webpack_require__(622));
-const recursive_readdir_1 = __importDefault(__webpack_require__(50));
-const s3Client_1 = __importDefault(__webpack_require__(940));
-const filePathToS3Key_1 = __importDefault(__webpack_require__(601));
-exports.default = (bucketName, directory) => __awaiter(void 0, void 0, void 0, function* () {
-    const normalizedPath = path_1.default.normalize(directory);
-    const files = yield (0, recursive_readdir_1.default)(normalizedPath);
-    yield Promise.all(files.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
-        const s3Key = (0, filePathToS3Key_1.default)(filePath.replace(normalizedPath, ''));
-        console.log(`Uploading ${s3Key} to ${bucketName}`);
-        try {
-            const fileBuffer = yield fs_1.promises.readFile(filePath);
-            const mimeType = mime_types_1.default.lookup(filePath) || 'application/octet-stream';
-            yield s3Client_1.default.send(new client_s3_1.PutObjectCommand({
-                Bucket: bucketName,
-                Key: s3Key,
-                Body: fileBuffer,
-                ACL: 'public-read',
-                ServerSideEncryption: 'AES256',
-                ContentType: mimeType,
-            }));
-        }
-        catch (error) {
-            const e = error;
-            const message = `Failed to upload ${s3Key}: ${e.name} - ${e.message}`;
-            console.log(message);
-            throw message;
-        }
-    })));
-});
-
-
-/***/ }),
+/* 704 */,
 /* 705 */
 /***/ (function(__unusedmodule, exports) {
 
@@ -41110,71 +40788,98 @@ var EndpointMode;
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requiredEnvVars = void 0;
-const github = __importStar(__webpack_require__(469));
-const client_s3_1 = __webpack_require__(246);
-const s3Client_1 = __importDefault(__webpack_require__(940));
-const deactivateDeployments_1 = __importDefault(__webpack_require__(14));
-const deleteDeployments_1 = __importDefault(__webpack_require__(442));
-const validateEnvVars_1 = __importDefault(__webpack_require__(158));
-exports.requiredEnvVars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
-exports.default = (bucketName, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
-    const { repo } = github.context;
-    (0, validateEnvVars_1.default)(exports.requiredEnvVars);
-    console.log('Emptying S3 bucket...');
-    console.log('Fetching objects...');
-    const objects = yield s3Client_1.default.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
-    if (objects.Contents && objects.Contents.length >= 1) {
-        console.log('Deleting objects...');
-        yield s3Client_1.default.send(new client_s3_1.DeleteObjectsCommand({
-            Bucket: bucketName,
-            Delete: {
-                Objects: objects.Contents.map((object) => ({
-                    Key: object.Key,
-                })),
-            },
-        }));
-    }
-    else {
-        console.log('S3 bucket already empty.');
-    }
-    yield s3Client_1.default.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
-    yield (0, deactivateDeployments_1.default)(repo, environmentPrefix);
-    yield (0, deleteDeployments_1.default)(repo, environmentPrefix);
-    console.log('S3 bucket removed');
+exports.defaultRegionInfoProvider = void 0;
+const config_resolver_1 = __webpack_require__(529);
+const regionHash = {
+    "ap-southeast-1": {
+        hostname: "portal.sso.ap-southeast-1.amazonaws.com",
+        signingRegion: "ap-southeast-1",
+    },
+    "ap-southeast-2": {
+        hostname: "portal.sso.ap-southeast-2.amazonaws.com",
+        signingRegion: "ap-southeast-2",
+    },
+    "ca-central-1": {
+        hostname: "portal.sso.ca-central-1.amazonaws.com",
+        signingRegion: "ca-central-1",
+    },
+    "eu-central-1": {
+        hostname: "portal.sso.eu-central-1.amazonaws.com",
+        signingRegion: "eu-central-1",
+    },
+    "eu-west-1": {
+        hostname: "portal.sso.eu-west-1.amazonaws.com",
+        signingRegion: "eu-west-1",
+    },
+    "eu-west-2": {
+        hostname: "portal.sso.eu-west-2.amazonaws.com",
+        signingRegion: "eu-west-2",
+    },
+    "us-east-1": {
+        hostname: "portal.sso.us-east-1.amazonaws.com",
+        signingRegion: "us-east-1",
+    },
+    "us-east-2": {
+        hostname: "portal.sso.us-east-2.amazonaws.com",
+        signingRegion: "us-east-2",
+    },
+    "us-west-2": {
+        hostname: "portal.sso.us-west-2.amazonaws.com",
+        signingRegion: "us-west-2",
+    },
+};
+const partitionHash = {
+    aws: {
+        regions: [
+            "af-south-1",
+            "ap-east-1",
+            "ap-northeast-1",
+            "ap-northeast-2",
+            "ap-northeast-3",
+            "ap-south-1",
+            "ap-southeast-1",
+            "ap-southeast-2",
+            "ca-central-1",
+            "eu-central-1",
+            "eu-north-1",
+            "eu-south-1",
+            "eu-west-1",
+            "eu-west-2",
+            "eu-west-3",
+            "me-south-1",
+            "sa-east-1",
+            "us-east-1",
+            "us-east-2",
+            "us-west-1",
+            "us-west-2",
+        ],
+        hostname: "portal.sso.{region}.amazonaws.com",
+    },
+    "aws-cn": {
+        regions: ["cn-north-1", "cn-northwest-1"],
+        hostname: "portal.sso.{region}.amazonaws.com.cn",
+    },
+    "aws-iso": {
+        regions: ["us-iso-east-1", "us-iso-west-1"],
+        hostname: "portal.sso.{region}.c2s.ic.gov",
+    },
+    "aws-iso-b": {
+        regions: ["us-isob-east-1"],
+        hostname: "portal.sso.{region}.sc2s.sgov.gov",
+    },
+    "aws-us-gov": {
+        regions: ["us-gov-east-1", "us-gov-west-1"],
+        hostname: "portal.sso.{region}.amazonaws.com",
+    },
+};
+const defaultRegionInfoProvider = async (region, options) => config_resolver_1.getRegionInfo(region, {
+    ...options,
+    signingService: "awsssoportal",
+    regionHash,
+    partitionHash,
 });
+exports.defaultRegionInfoProvider = defaultRegionInfoProvider;
 
 
 /***/ }),
@@ -45899,7 +45604,7 @@ exports.serializeFloat = serializeFloat;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRuntimeConfig = void 0;
 const url_parser_1 = __webpack_require__(187);
-const endpoints_1 = __webpack_require__(196);
+const endpoints_1 = __webpack_require__(751);
 const getRuntimeConfig = (config) => {
     var _a, _b, _c, _d, _e;
     return ({
@@ -46780,10 +46485,103 @@ exports.ListMultipartUploadsCommand = ListMultipartUploadsCommand;
 
 /***/ }),
 /* 922 */,
-/* 923 */,
+/* 923 */
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateEnvVars = void 0;
+const validateEnvVars = (requiredEnvVars) => {
+    console.log('Checking environment variables...');
+    const missingList = [];
+    for (const envVar of requiredEnvVars) {
+        if (!process.env[envVar]) {
+            missingList.push(envVar);
+        }
+    }
+    if (missingList.length >= 1) {
+        throw `The following env vars are missing but are required. ${missingList.join(', ')}`;
+    }
+    return true;
+};
+exports.validateEnvVars = validateEnvVars;
+
+
+/***/ }),
 /* 924 */,
 /* 925 */,
-/* 926 */,
+/* 926 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteDeployments = exports.deactivateDeployments = void 0;
+const github_1 = __webpack_require__(469);
+const github_2 = __webpack_require__(545);
+const deactivateDeployments = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const environment = `${environmentPrefix || 'pr-'}${(_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number}`;
+    const deployments = yield github_2.githubClient.rest.repos.listDeployments({
+        repo: repo.repo,
+        owner: repo.owner,
+        environment,
+    });
+    const existing = deployments.data.length;
+    if (existing < 1) {
+        console.log('No exiting deployments found for pull request');
+        return;
+    }
+    for (const deployment of deployments.data) {
+        console.log(`Deactivating existing deployment - ${deployment.id}`);
+        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.id, state: 'inactive' }));
+    }
+});
+exports.deactivateDeployments = deactivateDeployments;
+const deleteDeployments = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b, _c, _d;
+    const environment = `${environmentPrefix || 'pr-'}${(_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`;
+    const deployments = yield github_2.githubClient.graphql(`
+        query GetDeployments($owner: String!, $repo: String!, $environments: [String!]) {
+          repository(owner: $owner, name: $repo) {
+            deployments(first: 100, environments: $environments) {
+              nodes {
+                id
+              }
+            }
+          }
+        }`, Object.assign(Object.assign({}, repo), { environments: [environment] }));
+    const nodes = (_d = (_c = deployments.repository) === null || _c === void 0 ? void 0 : _c.deployments) === null || _d === void 0 ? void 0 : _d.nodes;
+    console.log(JSON.stringify(deployments));
+    if (!nodes || nodes.length <= 0) {
+        console.log('No exiting deployments found for pull request');
+        return;
+    }
+    for (const node of nodes) {
+        console.log(`Deleting existing deployment - ${node.id}`);
+        yield github_2.githubClient.graphql(`
+            mutation DeleteDeployment($id: ID!) {
+              deleteDeployment(input: {id: $id} ) {
+                clientMutationId
+              }
+            }
+          `, { id: node.id });
+    }
+});
+exports.deleteDeployments = deleteDeployments;
+
+
+/***/ }),
 /* 927 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -48316,17 +48114,7 @@ exports.PutObjectLegalHoldCommand = PutObjectLegalHoldCommand;
 
 
 /***/ }),
-/* 940 */
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const client_s3_1 = __webpack_require__(246);
-exports.default = new client_s3_1.S3Client({});
-
-
-/***/ }),
+/* 940 */,
 /* 941 */,
 /* 942 */
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
@@ -48343,7 +48131,75 @@ tslib_1.__exportStar(__webpack_require__(157), exports);
 /* 943 */,
 /* 944 */,
 /* 945 */,
-/* 946 */,
+/* 946 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.uploadDirectory = exports.checkBucketExists = exports.filePathToS3Key = void 0;
+const client_s3_1 = __webpack_require__(246);
+const fs_1 = __webpack_require__(747);
+const mime_types_1 = __importDefault(__webpack_require__(432));
+const path_1 = __webpack_require__(622);
+const recursive_readdir_1 = __importDefault(__webpack_require__(50));
+const s3_1 = __webpack_require__(646);
+const filePathToS3Key = (filePath) => {
+    return filePath.replace(/^(\\|\/)+/g, '').replace(/\\/g, '/');
+};
+exports.filePathToS3Key = filePathToS3Key;
+const checkBucketExists = (bucketName) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield s3_1.s3Client.send(new client_s3_1.HeadBucketCommand({ Bucket: bucketName }));
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+});
+exports.checkBucketExists = checkBucketExists;
+const uploadDirectory = (bucketName, directory) => __awaiter(void 0, void 0, void 0, function* () {
+    const normalizedPath = (0, path_1.normalize)(directory);
+    const files = yield (0, recursive_readdir_1.default)(normalizedPath);
+    yield Promise.all(files.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
+        const s3Key = (0, exports.filePathToS3Key)(filePath.replace(normalizedPath, ''));
+        console.log(`Uploading ${s3Key} to ${bucketName}`);
+        try {
+            const fileBuffer = yield fs_1.promises.readFile(filePath);
+            const mimeType = mime_types_1.default.lookup(filePath) || 'application/octet-stream';
+            yield s3_1.s3Client.send(new client_s3_1.PutObjectCommand({
+                Bucket: bucketName,
+                Key: s3Key,
+                Body: fileBuffer,
+                ACL: 'public-read',
+                ServerSideEncryption: 'AES256',
+                ContentType: mimeType,
+            }));
+        }
+        catch (error) {
+            const e = error;
+            const message = `Failed to upload ${s3Key}: ${e.name} - ${e.message}`;
+            console.log(message);
+            throw message;
+        }
+    })));
+});
+exports.uploadDirectory = uploadDirectory;
+
+
+/***/ }),
 /* 947 */,
 /* 948 */
 /***/ (function(module) {
