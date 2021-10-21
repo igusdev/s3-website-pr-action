@@ -1939,17 +1939,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>= 8":
+"@types/node@npm:*, @types/node@npm:>= 8, @types/node@npm:^14.0.0":
   version: 14.17.27
   resolution: "@types/node@npm:14.17.27"
   checksum: 4f7eeaa329f4b2b9ff4bb0bb4582ad92e328a4e66f62d5b96ac4e3b51210ed092bb56726c30643beb860f6df633a29e08ed94adad2d573c85b4794d0bf0bbc06
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^12.20.33":
-  version: 12.20.33
-  resolution: "@types/node@npm:12.20.33"
-  checksum: 2b7a6ce348760003d0564bda87a8360e534c7099da12513d17c06f82a336cd39be0b485cc1a6f0ddce9661135affe8dc3d2673d4f219d988c6f065aebfb30970
   languageName: node
   linkType: hard
 
@@ -5947,7 +5940,7 @@ resolve@^1.20.0:
     "@octokit/types": ^6.34.0
     "@types/jest": ^27.0.2
     "@types/mime-types": ^2.1.1
-    "@types/node": ^12.20.33
+    "@types/node": ^14.0.0
     "@types/recursive-readdir": ^2.2.0
     "@typescript-eslint/eslint-plugin": ^5.1.0
     "@typescript-eslint/parser": ^5.1.0
