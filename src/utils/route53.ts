@@ -12,27 +12,19 @@ export const getHostedZone = async (domainName: string) => {
   console.info(`[route53] Looking for a hosted zone "${domainName}"...`);
 
   const { HostedZones: hostedZones } = await route53Client.send(
-    new ListHostedZonesByNameCommand({ DNSName: domainName })
+    new ListHostedZonesByNameCommand({})
   );
 
-  if (!hostedZones) {
+  const hostedZone = hostedZones?.find(
+    (zone) => zone.Name === `${domainName}.`
+  );
+
+  if (!hostedZone) {
     console.info(`[route53] No hosted zone found`);
     return;
   }
 
-  if (hostedZones.length === 1) {
-    console.info(`[route53] Found Hosted zone: "${hostedZones[0].Name}"`);
-    return hostedZones[0];
-  }
-
-  if (hostedZones.length > 1) {
-    console.warn(
-      `[route53] Found multiple hosted zones: ${hostedZones
-        .map((hostedZone) => `"${hostedZone.Name}"`)
-        .join(', ')}. The first one will be used.`
-    );
-    return hostedZones[0];
-  }
+  return hostedZone;
 };
 
 export const getRecord = async (hostedZoneId: string, domainName: string) => {
@@ -61,7 +53,9 @@ export const getRecord = async (hostedZoneId: string, domainName: string) => {
     };
   });
 
-  return records.find(({ Name, Type }) => Name === domainName && Type === 'A');
+  return records.find(
+    ({ Name, Type }) => Name === `${domainName}.` && Type === 'A'
+  );
 };
 
 export const recordNeedsUpdate = async (
@@ -82,7 +76,7 @@ export const recordNeedsUpdate = async (
   if (
     AliasTarget &&
     AliasTarget.HostedZoneId === cloudForntHostedZoneId &&
-    AliasTarget.DNSName === cloudfrontDomainName
+    AliasTarget.DNSName === `${cloudfrontDomainName}.`
   ) {
     console.info(`[route53] Found 'A' record is properly configured.`);
     return false;
@@ -106,10 +100,10 @@ const modifyRecord = async (
           {
             Action: action,
             ResourceRecordSet: {
-              Name: domainName,
+              Name: `${domainName}.`,
               AliasTarget: {
                 HostedZoneId: cloudForntHostedZoneId,
-                DNSName: cloudfrontDomainName,
+                DNSName: `${cloudfrontDomainName}.`,
                 EvaluateTargetHealth: false,
               },
               Type: 'A',

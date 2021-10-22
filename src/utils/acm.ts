@@ -23,7 +23,8 @@ export const getCertificateARN = async (domainName: string) => {
 
   const certificate = certificates.find(
     (certificate) =>
-      certificate.DomainName === domainName && !!certificate.CertificateArn
+      domainNameMatch(certificate.DomainName, domainName) &&
+      !!certificate.CertificateArn
   );
 
   if (!certificate) {
@@ -34,3 +35,8 @@ export const getCertificateARN = async (domainName: string) => {
   console.info(`[ACM] Found certificate for "${domainName}".`);
   return certificate.CertificateArn;
 };
+
+export const domainNameMatch = (
+  certificateDomainName = '',
+  domainName: string
+) => [`*.${domainName}`, domainName].includes(certificateDomainName);
