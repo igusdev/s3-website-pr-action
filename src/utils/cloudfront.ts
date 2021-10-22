@@ -247,11 +247,11 @@ const getDistributionConfig = (
       },
     },
     AllowedMethods: {
-      Quantity: 2,
+      Quantity: 3,
       Items: ['HEAD', 'GET', 'OPTIONS'],
       CachedMethods: {
         Quantity: 2,
-        Items: ['HEAD', 'GET', 'OPTIONS'],
+        Items: ['HEAD', 'GET'],
       },
     },
     TrustedSigners: {
