@@ -3,7 +3,7 @@ import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
 import { normalize } from 'path';
-import { s3Client } from '../clients/s3';
+import { s3Client } from '../clients/aws';
 import { readRecursively } from './fs';
 
 export const filePathToS3Key = (filePath: string) => {

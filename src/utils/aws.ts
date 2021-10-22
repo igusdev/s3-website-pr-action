@@ -23,10 +23,49 @@ export const websiteEndpoint = {
   'sa-east-1': 's3-website-sa-east-1.amazonaws.com',
 };
 
+// https://docs.aws.amazon.com/general/latest/gr/rande.html#cf_region
+export const cloudForntHostedZoneId = 'Z2FDTNDATAQYW2';
+
+/**
+ * Gets the aws region set in the process environment.
+ */
 export const getAwsRegion = () => process.env.AWS_REGION as string;
 
+/**
+ * Sets the aws region in the process environment if not already set.
+ */
 export const setupAwsRegion = () => {
   if (!process.env.AWS_REGION) {
     process.env.AWS_REGION = 'us-east-1';
   }
+};
+
+/**
+ * Helper to get all resources of given type from aws.
+ */
+export const getAll = async <T>(
+  getEntities: (
+    nextMarker: undefined | string,
+    index: number
+  ) => Promise<{
+    items: T[];
+    nextMarker: undefined | string;
+  }>
+) => {
+  let index = 0;
+  let nextMarker: string | undefined = undefined;
+  let response: {
+    items: T[];
+    nextMarker: undefined | string;
+  };
+  const entities: T[] = [];
+  do {
+    response = await getEntities(nextMarker, ++index);
+    if (!response.items) {
+      break;
+    }
+    entities.push(...response.items);
+  } while ((nextMarker = response.nextMarker));
+
+  return entities;
 };

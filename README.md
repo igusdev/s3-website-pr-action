@@ -4,7 +4,7 @@ This is a fork of <https://github.com/danburtenshaw/s3-website-pr-action>
 
 ## Automatically deploy built PR bundles to an S3 static website
 
-![Example](Example.png?raw=true)
+![Example](example.png?raw=true)
 
 ## Usage 📝
 
@@ -69,9 +69,10 @@ Note: By default, workflows using the `pull_request` activity type will include 
 
 #### Optional Parameters
 
-| Parameter          | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-' |
+| Parameter          | Description                                                                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-'                                                                                             |
+| domain-name        | The domain name to which bucket-prefix will be attached and routed to cloud front. If not provided no cloud-front environment will be created. |
 
 ### PR closed
 
@@ -120,9 +121,10 @@ Execute the `s3-website-pr-action` action on pull request `closed` events. This 
 
 #### Optional Parameters
 
-| Parameter          | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-' |
+| Parameter          | Description                                                                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-'                                                                                             |
+| domain-name        | The domain name to which bucket-prefix will be attached and routed to cloud front. If not provided no cloud-front environment will be removed. |
 
 ## IAM 🔐
 
@@ -137,7 +139,6 @@ Replace `<YOUR_BUCKET_PREFIX>` with the same `bucket-prefix` value that you defi
     {
       "Effect": "Allow",
       "Action": [
-        "s3:HeadBucket",
         "s3:CreateBucket",
         "s3:DeleteBucket",
         "s3:GetObject",
@@ -148,6 +149,28 @@ Replace `<YOUR_BUCKET_PREFIX>` with the same `bucket-prefix` value that you defi
         "s3:ListBucket"
       ],
       "Resource": ["arn:aws:s3:::<YOUR_BUCKET_PREFIX>-*"]
+    },
+    // Only needed if domain-name provided
+    {
+      "Effect": "Allow",
+      "Action": [
+        "acm:ListCertificates",
+        "cloudfront:CreateDistribution",
+        "cloudfront:GetDistribution",
+        "cloudfront:ListDistributions",
+        "cloudfront:UpdateDistribution",
+        "cloudfront:DeleteDistribution",
+        "route53:ListHostedZonesByName"
+      ],
+      "Resource": ["*"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": ["arn:aws:route53:::hostedzone/<YOUR_HOSTED_ZONE_TO_ALLOW>"]
     }
   ]
 }

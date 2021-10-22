@@ -9,8 +9,8 @@ const main = async () => {
 
   try {
     const bucketPrefix = getInput('bucket-prefix').toLowerCase();
-    const folderToCopy = getInput('folder-to-copy');
     const environmentPrefix = getInput('environment-prefix').toLowerCase();
+    const domainName = getInput('domain-name') || undefined;
 
     const prNumber = context.payload.pull_request?.number;
     const bucketName = `${bucketPrefix}-pr${prNumber}`;
@@ -23,12 +23,18 @@ const main = async () => {
       switch (githubActionType) {
         case 'opened':
         case 'reopened':
-        case 'synchronize':
-          await prUpdated(bucketName, folderToCopy, environmentPrefix);
+        case 'synchronize': {
+          const folderToCopy = getInput('folder-to-copy');
+          await prUpdated(
+            bucketName,
+            folderToCopy,
+            environmentPrefix,
+            domainName
+          );
           break;
-
+        }
         case 'closed':
-          await prClosed(bucketName, environmentPrefix);
+          await prClosed(bucketName, environmentPrefix, domainName);
           break;
 
         default:

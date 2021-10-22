@@ -130,6 +130,133 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-acm@npm:^3.37.0":
+  version: 3.37.0
+  resolution: "@aws-sdk/client-acm@npm:3.37.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": ^1.0.0
+    "@aws-crypto/sha256-js": ^1.0.0
+    "@aws-sdk/client-sts": 3.37.0
+    "@aws-sdk/config-resolver": 3.37.0
+    "@aws-sdk/credential-provider-node": 3.37.0
+    "@aws-sdk/fetch-http-handler": 3.37.0
+    "@aws-sdk/hash-node": 3.37.0
+    "@aws-sdk/invalid-dependency": 3.37.0
+    "@aws-sdk/middleware-content-length": 3.37.0
+    "@aws-sdk/middleware-host-header": 3.37.0
+    "@aws-sdk/middleware-logger": 3.37.0
+    "@aws-sdk/middleware-retry": 3.37.0
+    "@aws-sdk/middleware-serde": 3.37.0
+    "@aws-sdk/middleware-signing": 3.37.0
+    "@aws-sdk/middleware-stack": 3.37.0
+    "@aws-sdk/middleware-user-agent": 3.37.0
+    "@aws-sdk/node-config-provider": 3.37.0
+    "@aws-sdk/node-http-handler": 3.37.0
+    "@aws-sdk/protocol-http": 3.37.0
+    "@aws-sdk/smithy-client": 3.37.0
+    "@aws-sdk/types": 3.37.0
+    "@aws-sdk/url-parser": 3.37.0
+    "@aws-sdk/util-base64-browser": 3.37.0
+    "@aws-sdk/util-base64-node": 3.37.0
+    "@aws-sdk/util-body-length-browser": 3.37.0
+    "@aws-sdk/util-body-length-node": 3.37.0
+    "@aws-sdk/util-user-agent-browser": 3.37.0
+    "@aws-sdk/util-user-agent-node": 3.37.0
+    "@aws-sdk/util-utf8-browser": 3.37.0
+    "@aws-sdk/util-utf8-node": 3.37.0
+    "@aws-sdk/util-waiter": 3.37.0
+    tslib: ^2.3.0
+  checksum: ae2d6eb9432ebff209719cbf3b5eb5040cb8b1132b64b9a4c27f1da05059f534798d971830a6b88f7f60cfe04b9bb828af85d8fea29f50ab125bc3c94d85e93e
+  languageName: node
+  linkType: hard
+
+"@aws-sdk/client-cloudfront@npm:^3.37.0":
+  version: 3.37.0
+  resolution: "@aws-sdk/client-cloudfront@npm:3.37.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": ^1.0.0
+    "@aws-crypto/sha256-js": ^1.0.0
+    "@aws-sdk/client-sts": 3.37.0
+    "@aws-sdk/config-resolver": 3.37.0
+    "@aws-sdk/credential-provider-node": 3.37.0
+    "@aws-sdk/fetch-http-handler": 3.37.0
+    "@aws-sdk/hash-node": 3.37.0
+    "@aws-sdk/invalid-dependency": 3.37.0
+    "@aws-sdk/middleware-content-length": 3.37.0
+    "@aws-sdk/middleware-host-header": 3.37.0
+    "@aws-sdk/middleware-logger": 3.37.0
+    "@aws-sdk/middleware-retry": 3.37.0
+    "@aws-sdk/middleware-serde": 3.37.0
+    "@aws-sdk/middleware-signing": 3.37.0
+    "@aws-sdk/middleware-stack": 3.37.0
+    "@aws-sdk/middleware-user-agent": 3.37.0
+    "@aws-sdk/node-config-provider": 3.37.0
+    "@aws-sdk/node-http-handler": 3.37.0
+    "@aws-sdk/protocol-http": 3.37.0
+    "@aws-sdk/smithy-client": 3.37.0
+    "@aws-sdk/types": 3.37.0
+    "@aws-sdk/url-parser": 3.37.0
+    "@aws-sdk/util-base64-browser": 3.37.0
+    "@aws-sdk/util-base64-node": 3.37.0
+    "@aws-sdk/util-body-length-browser": 3.37.0
+    "@aws-sdk/util-body-length-node": 3.37.0
+    "@aws-sdk/util-user-agent-browser": 3.37.0
+    "@aws-sdk/util-user-agent-node": 3.37.0
+    "@aws-sdk/util-utf8-browser": 3.37.0
+    "@aws-sdk/util-utf8-node": 3.37.0
+    "@aws-sdk/util-waiter": 3.37.0
+    "@aws-sdk/xml-builder": 3.37.0
+    entities: 2.2.0
+    fast-xml-parser: 3.19.0
+    tslib: ^2.3.0
+  checksum: 61258aba050807e417d79b4beb871b30736d71dd56f9a9bcd4e218e14b63e3a1ab330440298f8ee496f90c7dde2a1d7adee86da967c33281e18f71fff03e1978
+  languageName: node
+  linkType: hard
+
+"@aws-sdk/client-route-53@npm:^3.37.0":
+  version: 3.37.0
+  resolution: "@aws-sdk/client-route-53@npm:3.37.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": ^1.0.0
+    "@aws-crypto/sha256-js": ^1.0.0
+    "@aws-sdk/client-sts": 3.37.0
+    "@aws-sdk/config-resolver": 3.37.0
+    "@aws-sdk/credential-provider-node": 3.37.0
+    "@aws-sdk/fetch-http-handler": 3.37.0
+    "@aws-sdk/hash-node": 3.37.0
+    "@aws-sdk/invalid-dependency": 3.37.0
+    "@aws-sdk/middleware-content-length": 3.37.0
+    "@aws-sdk/middleware-host-header": 3.37.0
+    "@aws-sdk/middleware-logger": 3.37.0
+    "@aws-sdk/middleware-retry": 3.37.0
+    "@aws-sdk/middleware-sdk-route53": 3.37.0
+    "@aws-sdk/middleware-serde": 3.37.0
+    "@aws-sdk/middleware-signing": 3.37.0
+    "@aws-sdk/middleware-stack": 3.37.0
+    "@aws-sdk/middleware-user-agent": 3.37.0
+    "@aws-sdk/node-config-provider": 3.37.0
+    "@aws-sdk/node-http-handler": 3.37.0
+    "@aws-sdk/protocol-http": 3.37.0
+    "@aws-sdk/smithy-client": 3.37.0
+    "@aws-sdk/types": 3.37.0
+    "@aws-sdk/url-parser": 3.37.0
+    "@aws-sdk/util-base64-browser": 3.37.0
+    "@aws-sdk/util-base64-node": 3.37.0
+    "@aws-sdk/util-body-length-browser": 3.37.0
+    "@aws-sdk/util-body-length-node": 3.37.0
+    "@aws-sdk/util-user-agent-browser": 3.37.0
+    "@aws-sdk/util-user-agent-node": 3.37.0
+    "@aws-sdk/util-utf8-browser": 3.37.0
+    "@aws-sdk/util-utf8-node": 3.37.0
+    "@aws-sdk/util-waiter": 3.37.0
+    "@aws-sdk/xml-builder": 3.37.0
+    entities: 2.2.0
+    fast-xml-parser: 3.19.0
+    tslib: ^2.3.0
+  checksum: c1fce2b58f7a3afd52e9d1c1599ccbd4e9cd5e7d3ff29d598b2e34f33e7bf82abd2a2ff7a17ae0fb6d1103e6dfff2dc0e98d314ebd6b175ca87342f8daa64a25
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-s3@npm:^3.37.0":
   version: 3.37.0
   resolution: "@aws-sdk/client-s3@npm:3.37.0"
@@ -604,6 +731,16 @@ __metadata:
     tslib: ^2.3.0
     uuid: ^8.3.2
   checksum: 8902bf5de62f6b5e5b6bbfbe4853531de5230fcf214cd73914b51f60cd6a7a3b51054f00c78218e5b7f46ddb0a99decafab2ddc782ede472f174665b2f71cab7
+  languageName: node
+  linkType: hard
+
+"@aws-sdk/middleware-sdk-route53@npm:3.37.0":
+  version: 3.37.0
+  resolution: "@aws-sdk/middleware-sdk-route53@npm:3.37.0"
+  dependencies:
+    "@aws-sdk/types": 3.37.0
+    tslib: ^2.3.0
+  checksum: c59b4928eebeb88cda482d9482acf007d0a19c39ebc0a49d6b5c77d921d21f26dfee2cf3e0c6f64440c3a5d080471414197ba43e0ca2d29aa231a3077ba257bf
   languageName: node
   linkType: hard
 
@@ -5943,6 +6080,9 @@ resolve@^1.20.0:
   dependencies:
     "@actions/core": ^1.6.0
     "@actions/github": ^5.0.0
+    "@aws-sdk/client-acm": ^3.37.0
+    "@aws-sdk/client-cloudfront": ^3.37.0
+    "@aws-sdk/client-route-53": ^3.37.0
     "@aws-sdk/client-s3": ^3.37.0
     "@octokit/types": ^6.34.0
     "@types/jest": ^27.0.2

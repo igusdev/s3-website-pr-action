@@ -33,4 +33,5 @@ jobs:
       - name: Run Action
         uses: ./
         with:
+          domain-name: 'igusdev.igus.de'
           bucket-prefix: 's3-website-pr-action'
