@@ -1,15 +1,10 @@
 import { context } from '@actions/github';
-import {
-  CreateBucketCommand,
-  PutBucketWebsiteCommand,
-} from '@aws-sdk/client-s3';
 import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods';
 import { githubClient } from '../clients/github';
-import { s3Client } from '../clients/s3';
 import { getAwsRegion, websiteEndpoint } from '../utils/aws';
 import { validateEnvVars } from '../utils/env';
 import { deactivateDeployments } from '../utils/github';
-import { checkBucketExists, uploadDirectory } from '../utils/s3';
+import { createBucket, deleteBucket, uploadDirectory } from '../utils/s3';
 
 export const requiredEnvVars = [
   'AWS_ACCESS_KEY_ID',
@@ -33,60 +28,44 @@ export const prUpdated = async (
 
   validateEnvVars(requiredEnvVars);
 
-  const bucketExists = await checkBucketExists(bucketName);
-
-  if (!bucketExists) {
-    console.log('S3 bucket does not exist. Creating...');
-    await s3Client.send(
-      new CreateBucketCommand({
-        Bucket: bucketName,
-        CreateBucketConfiguration: { LocationConstraint: region },
-      })
-    );
-
-    console.log('Configuring bucket website...');
-    await s3Client.send(
-      new PutBucketWebsiteCommand({
-        Bucket: bucketName,
-        WebsiteConfiguration: {
-          IndexDocument: { Suffix: 'index.html' },
-          ErrorDocument: { Key: 'index.html' },
-        },
-      })
-    );
-  } else {
-    console.log('S3 Bucket already exists. Skipping creation...');
-  }
-
+  await createBucket(bucketName, region);
   await deactivateDeployments(repo, environmentPrefix);
 
-  const deployment = (await githubClient.rest.repos.createDeployment({
-    ...repo,
-    ref: `refs/heads/${branchName}`,
-    environment: `${environmentPrefix || 'pr-'}${payload.pull_request?.number}`,
-    auto_merge: false,
-    transient_environment: true,
-    required_contexts: [],
-  })) as RestEndpointMethodTypes['repos']['createDeployment']['response'];
-
-  if ('id' in deployment.data) {
-    await githubClient.rest.repos.createDeploymentStatus({
+  try {
+    const deployment = (await githubClient.rest.repos.createDeployment({
       ...repo,
-      deployment_id: deployment.data.id,
-      state: 'in_progress',
-    });
+      ref: `refs/heads/${branchName}`,
+      environment: `${environmentPrefix || 'pr-'}${
+        payload.pull_request?.number
+      }`,
+      auto_merge: false,
+      transient_environment: true,
+      required_contexts: [],
+    })) as RestEndpointMethodTypes['repos']['createDeployment']['response'];
 
-    console.log('Uploading files...');
-    await uploadDirectory(bucketName, uploadDir);
+    if ('id' in deployment.data) {
+      await githubClient.rest.repos.createDeploymentStatus({
+        ...repo,
+        deployment_id: deployment.data.id,
+        state: 'in_progress',
+      });
 
-    await githubClient.rest.repos.createDeploymentStatus({
-      ...repo,
-      deployment_id: deployment.data.id,
-      state: 'success',
-      environment_url: websiteUrl,
-      description: `Deployed to: ${websiteUrl}`,
-    });
+      console.log('Uploading files...');
+      await uploadDirectory(bucketName, uploadDir);
 
-    console.log(`Website URL: ${websiteUrl}`);
+      await githubClient.rest.repos.createDeploymentStatus({
+        ...repo,
+        deployment_id: deployment.data.id,
+        state: 'success',
+        environment_url: websiteUrl,
+        description: `Deployed to: ${websiteUrl}`,
+      });
+
+      console.log(`Website URL: ${websiteUrl}`);
+    }
+  } catch (error) {
+    console.error(`Couldn't deploy website`, error);
+    await deleteBucket(bucketName);
+    await deactivateDeployments(repo, environmentPrefix);
   }
 };

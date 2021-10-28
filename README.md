@@ -4,7 +4,7 @@ This is a fork of <https://github.com/danburtenshaw/s3-website-pr-action>
 
 ## Automatically deploy built PR bundles to an S3 static website
 
-![Example](Example.png?raw=true)
+![Example](example.png?raw=true)
 
 ## Usage 📝
 
@@ -137,7 +137,6 @@ Replace `<YOUR_BUCKET_PREFIX>` with the same `bucket-prefix` value that you defi
     {
       "Effect": "Allow",
       "Action": [
-        "s3:HeadBucket",
         "s3:CreateBucket",
         "s3:DeleteBucket",
         "s3:GetObject",
