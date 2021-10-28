@@ -50562,38 +50562,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.prClosed = exports.requiredEnvVars = void 0;
 const github_1 = __nccwpck_require__(95438);
-const client_s3_1 = __nccwpck_require__(19250);
-const s3_1 = __nccwpck_require__(21621);
 const env_1 = __nccwpck_require__(53251);
 const github_2 = __nccwpck_require__(1225);
-const s3_2 = __nccwpck_require__(32090);
+const s3_1 = __nccwpck_require__(32090);
 exports.requiredEnvVars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
 const prClosed = (bucketName, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
     const { repo } = github_1.context;
     (0, env_1.validateEnvVars)(exports.requiredEnvVars);
-    if (yield (0, s3_2.checkBucketExists)(bucketName)) {
-        console.log('Emptying S3 bucket...');
-        console.log('Fetching objects...');
-        const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
-        if (objects.Contents && objects.Contents.length >= 1) {
-            console.log('Deleting objects...');
-            yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
-                Bucket: bucketName,
-                Delete: {
-                    Objects: objects.Contents.map((object) => ({
-                        Key: object.Key,
-                    })),
-                },
-            }));
-        }
-        else {
-            console.log('S3 bucket already empty.');
-        }
-        yield s3_1.s3Client.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
-    }
-    else {
-        console.log('S3 bucket does not exist.');
-    }
+    yield (0, s3_1.deleteBucket)(bucketName);
     yield (0, github_2.deactivateDeployments)(repo, environmentPrefix);
     yield (0, github_2.deleteDeployments)(repo, environmentPrefix);
     console.log('S3 bucket removed');
@@ -50620,13 +50596,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.prUpdated = exports.requiredEnvVars = void 0;
 const github_1 = __nccwpck_require__(95438);
-const client_s3_1 = __nccwpck_require__(19250);
 const github_2 = __nccwpck_require__(70197);
-const s3_1 = __nccwpck_require__(21621);
 const aws_1 = __nccwpck_require__(76067);
 const env_1 = __nccwpck_require__(53251);
 const github_3 = __nccwpck_require__(1225);
-const s3_2 = __nccwpck_require__(32090);
+const s3_1 = __nccwpck_require__(32090);
 exports.requiredEnvVars = [
     'AWS_ACCESS_KEY_ID',
     'AWS_SECRET_ACCESS_KEY',
@@ -50640,33 +50614,22 @@ const prUpdated = (bucketName, uploadDir, environmentPrefix) => __awaiter(void 0
     const branchName = (_a = payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.ref;
     console.log('PR Updated');
     (0, env_1.validateEnvVars)(exports.requiredEnvVars);
-    const bucketExists = yield (0, s3_2.checkBucketExists)(bucketName);
-    if (!bucketExists) {
-        console.log('S3 bucket does not exist. Creating...');
-        yield s3_1.s3Client.send(new client_s3_1.CreateBucketCommand({
-            Bucket: bucketName,
-            CreateBucketConfiguration: { LocationConstraint: region },
-        }));
-        console.log('Configuring bucket website...');
-        yield s3_1.s3Client.send(new client_s3_1.PutBucketWebsiteCommand({
-            Bucket: bucketName,
-            WebsiteConfiguration: {
-                IndexDocument: { Suffix: 'index.html' },
-                ErrorDocument: { Key: 'index.html' },
-            },
-        }));
-    }
-    else {
-        console.log('S3 Bucket already exists. Skipping creation...');
-    }
+    yield (0, s3_1.createBucket)(bucketName, region);
     yield (0, github_3.deactivateDeployments)(repo, environmentPrefix);
-    const deployment = (yield github_2.githubClient.rest.repos.createDeployment(Object.assign(Object.assign({}, repo), { ref: `refs/heads/${branchName}`, environment: `${environmentPrefix || 'pr-'}${(_b = payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`, auto_merge: false, transient_environment: true, required_contexts: [] })));
-    if ('id' in deployment.data) {
-        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'in_progress' }));
-        console.log('Uploading files...');
-        yield (0, s3_2.uploadDirectory)(bucketName, uploadDir);
-        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'success', environment_url: websiteUrl, description: `Deployed to: ${websiteUrl}` }));
-        console.log(`Website URL: ${websiteUrl}`);
+    try {
+        const deployment = (yield github_2.githubClient.rest.repos.createDeployment(Object.assign(Object.assign({}, repo), { ref: `refs/heads/${branchName}`, environment: `${environmentPrefix || 'pr-'}${(_b = payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`, auto_merge: false, transient_environment: true, required_contexts: [] })));
+        if ('id' in deployment.data) {
+            yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'in_progress' }));
+            console.log('Uploading files...');
+            yield (0, s3_1.uploadDirectory)(bucketName, uploadDir);
+            yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'success', environment_url: websiteUrl, description: `Deployed to: ${websiteUrl}` }));
+            console.log(`Website URL: ${websiteUrl}`);
+        }
+    }
+    catch (error) {
+        console.error(`Couldn't deploy website`, error);
+        yield (0, s3_1.deleteBucket)(bucketName);
+        yield (0, github_3.deactivateDeployments)(repo, environmentPrefix);
     }
 });
 exports.prUpdated = prUpdated;
@@ -50969,7 +50932,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.uploadDirectory = exports.checkBucketExists = exports.filePathToS3Key = void 0;
+exports.uploadDirectory = exports.createBucket = exports.deleteBucket = exports.checkBucketExists = exports.filePathToS3Key = void 0;
 const client_s3_1 = __nccwpck_require__(19250);
 const fs_1 = __nccwpck_require__(35747);
 const mime_types_1 = __nccwpck_require__(43583);
@@ -50990,6 +50953,54 @@ const checkBucketExists = (bucketName) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.checkBucketExists = checkBucketExists;
+const deleteBucket = (bucketName) => __awaiter(void 0, void 0, void 0, function* () {
+    if (yield (0, exports.checkBucketExists)(bucketName)) {
+        console.log('Emptying S3 bucket...');
+        console.log('Fetching objects...');
+        const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
+        if (objects.Contents && objects.Contents.length >= 1) {
+            console.log('Deleting objects...');
+            yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
+                Bucket: bucketName,
+                Delete: {
+                    Objects: objects.Contents.map((object) => ({
+                        Key: object.Key,
+                    })),
+                },
+            }));
+        }
+        else {
+            console.log('S3 bucket already empty.');
+        }
+        yield s3_1.s3Client.send(new client_s3_1.DeleteBucketCommand({ Bucket: bucketName }));
+    }
+    else {
+        console.log('S3 bucket does not exist.');
+    }
+});
+exports.deleteBucket = deleteBucket;
+const createBucket = (bucketName, region) => __awaiter(void 0, void 0, void 0, function* () {
+    const bucketExists = yield (0, exports.checkBucketExists)(bucketName);
+    if (!bucketExists) {
+        console.log('S3 bucket does not exist. Creating...');
+        yield s3_1.s3Client.send(new client_s3_1.CreateBucketCommand({
+            Bucket: bucketName,
+            CreateBucketConfiguration: { LocationConstraint: region },
+        }));
+        console.log('Configuring bucket website...');
+        yield s3_1.s3Client.send(new client_s3_1.PutBucketWebsiteCommand({
+            Bucket: bucketName,
+            WebsiteConfiguration: {
+                IndexDocument: { Suffix: 'index.html' },
+                ErrorDocument: { Key: 'index.html' },
+            },
+        }));
+    }
+    else {
+        console.log('S3 Bucket already exists. Skipping creation...');
+    }
+});
+exports.createBucket = createBucket;
 const uploadDirectory = (bucketName, directory) => __awaiter(void 0, void 0, void 0, function* () {
     const normalizedPath = (0, path_1.normalize)(directory);
     const files = yield (0, fs_2.readRecursively)(normalizedPath);

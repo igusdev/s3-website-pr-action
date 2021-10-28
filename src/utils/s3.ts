@@ -1,4 +1,12 @@
-import { HeadBucketCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  CreateBucketCommand,
+  DeleteBucketCommand,
+  DeleteObjectsCommand,
+  HeadBucketCommand,
+  ListObjectsV2Command,
+  PutBucketWebsiteCommand,
+  PutObjectCommand,
+} from '@aws-sdk/client-s3';
 import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
@@ -16,6 +24,64 @@ export const checkBucketExists = async (bucketName: string) => {
     return true;
   } catch (e) {
     return false;
+  }
+};
+
+export const deleteBucket = async (bucketName: string) => {
+  if (await checkBucketExists(bucketName)) {
+    console.log('Emptying S3 bucket...');
+    console.log('Fetching objects...');
+
+    const objects = await s3Client.send(
+      new ListObjectsV2Command({ Bucket: bucketName })
+    );
+
+    if (objects.Contents && objects.Contents.length >= 1) {
+      console.log('Deleting objects...');
+      await s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: bucketName,
+          Delete: {
+            Objects: objects.Contents.map((object) => ({
+              Key: object.Key,
+            })),
+          },
+        })
+      );
+    } else {
+      console.log('S3 bucket already empty.');
+    }
+
+    await s3Client.send(new DeleteBucketCommand({ Bucket: bucketName }));
+  } else {
+    console.log('S3 bucket does not exist.');
+  }
+};
+
+export const createBucket = async (bucketName: string, region: string) => {
+  const bucketExists = await checkBucketExists(bucketName);
+
+  if (!bucketExists) {
+    console.log('S3 bucket does not exist. Creating...');
+    await s3Client.send(
+      new CreateBucketCommand({
+        Bucket: bucketName,
+        CreateBucketConfiguration: { LocationConstraint: region },
+      })
+    );
+
+    console.log('Configuring bucket website...');
+    await s3Client.send(
+      new PutBucketWebsiteCommand({
+        Bucket: bucketName,
+        WebsiteConfiguration: {
+          IndexDocument: { Suffix: 'index.html' },
+          ErrorDocument: { Key: 'index.html' },
+        },
+      })
+    );
+  } else {
+    console.log('S3 Bucket already exists. Skipping creation...');
   }
 };
 
