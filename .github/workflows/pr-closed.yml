@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js for use with actions
         uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: 16.x
           cache: 'yarn'
 
       - name: Install dependencies
