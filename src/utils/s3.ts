@@ -6,8 +6,8 @@ import {
   ListObjectsV2Command,
   PutBucketWebsiteCommand,
   PutObjectCommand,
+  S3ServiceException,
 } from '@aws-sdk/client-s3';
-import type { SdkError } from '@aws-sdk/types';
 import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
 import { normalize } from 'path';
@@ -115,7 +115,7 @@ export const uploadDirectory = async (
           })
         );
       } catch (error) {
-        const e = error as SdkError;
+        const e = error as S3ServiceException;
         const message = `Failed to upload ${s3Key}: ${e.name} - ${e.message}`;
         console.log(message);
         throw message;
