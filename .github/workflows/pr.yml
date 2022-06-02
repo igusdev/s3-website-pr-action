@@ -36,6 +36,7 @@ jobs:
           name: dist
           path: dist
   test:
+    if: startsWith(github.head_ref, 'renovate/') == false
     name: Run Action
     needs: build-test
     runs-on: ubuntu-latest
