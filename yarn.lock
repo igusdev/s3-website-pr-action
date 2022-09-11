@@ -1903,6 +1903,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/openapi-types@npm:^13.9.1":
+  version: 13.9.1
+  resolution: "@octokit/openapi-types@npm:13.9.1"
+  checksum: 512bbe0b810c291084e0468f1bf8c02e531dce15314dc58e85fdf9403bbe1889055d24a4e33e71923ab80d2bd6b14b064548eb7854de5afeddb972fcd2153084
+  languageName: node
+  linkType: hard
+
 "@octokit/plugin-paginate-rest@npm:^2.17.0":
   version: 2.17.0
   resolution: "@octokit/plugin-paginate-rest@npm:2.17.0"
@@ -1966,6 +1973,15 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^11.2.0
   checksum: f122b9aee8f6baddd515e34a0913e73b21d4bc82d6ee59d77a8aaf01b4a02c10867dd013003d087a83dc96db23511893669015af6d30c27cece185e21cf1df89
+  languageName: node
+  linkType: hard
+
+"@octokit/types@npm:^7.0.0":
+  version: 7.3.1
+  resolution: "@octokit/types@npm:7.3.1"
+  dependencies:
+    "@octokit/openapi-types": ^13.9.1
+  checksum: 0060a2bfc1ff055c658a39c8f93f10005549b8eba6cad109ed488d718de5cdeccc725667cbf153199645d811a7254691f4f45e4fe72c2a9793a79827a709b75d
   languageName: node
   linkType: hard
 
@@ -5932,7 +5948,7 @@ fsevents@^2.3.2:
     "@actions/core": ^1.8.2
     "@actions/github": ^5.0.3
     "@aws-sdk/client-s3": ^3.100.0
-    "@octokit/types": ^6.34.0
+    "@octokit/types": ^7.0.0
     "@types/jest": ^28.1.0
     "@types/mime-types": ^2.1.1
     "@types/node": ^17.0.38
