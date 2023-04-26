@@ -72,34 +72,34 @@ export const createBucket = async (bucketName: string, region: string) => {
       })
     );
 
+    console.log('Configuring bucket access block...');
+    await s3Client.send(
+      new PutPublicAccessBlockCommand({
+        Bucket: bucketName,
+        PublicAccessBlockConfiguration: {
+          BlockPublicPolicy: false,
+        },
+      })
+    );
+
     console.log('Configuring bucket access policy...');
-    await Promise.all([
-      s3Client.send(
-        new PutPublicAccessBlockCommand({
-          Bucket: bucketName,
-          PublicAccessBlockConfiguration: {
-            BlockPublicPolicy: false,
-          },
-        })
-      ),
-      s3Client.send(
-        new PutBucketPolicyCommand({
-          Bucket: bucketName,
-          Policy: JSON.stringify({
-            Version: '2012-10-17',
-            Statement: [
-              {
-                Sid: 'PublicReadGetObject',
-                Effect: 'Allow',
-                Principal: '*',
-                Action: ['s3:GetObject'],
-                Resource: [`arn:aws:s3:::${bucketName}/*`],
-              },
-            ],
-          }),
-        })
-      ),
-    ]);
+    await s3Client.send(
+      new PutBucketPolicyCommand({
+        Bucket: bucketName,
+        Policy: JSON.stringify({
+          Version: '2012-10-17',
+          Statement: [
+            {
+              Sid: 'PublicReadGetObject',
+              Effect: 'Allow',
+              Principal: '*',
+              Action: ['s3:GetObject'],
+              Resource: [`arn:aws:s3:::${bucketName}/*`],
+            },
+          ],
+        }),
+      })
+    );
 
     console.log('Configuring bucket website...');
     await s3Client.send(

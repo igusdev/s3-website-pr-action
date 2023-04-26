@@ -53072,30 +53072,29 @@ const createBucket = (bucketName, region) => __awaiter(void 0, void 0, void 0, f
             Bucket: bucketName,
             CreateBucketConfiguration: { LocationConstraint: region },
         }));
+        console.log('Configuring bucket access block...');
+        yield s3_1.s3Client.send(new client_s3_1.PutPublicAccessBlockCommand({
+            Bucket: bucketName,
+            PublicAccessBlockConfiguration: {
+                BlockPublicPolicy: false,
+            },
+        }));
         console.log('Configuring bucket access policy...');
-        yield Promise.all([
-            s3_1.s3Client.send(new client_s3_1.PutPublicAccessBlockCommand({
-                Bucket: bucketName,
-                PublicAccessBlockConfiguration: {
-                    BlockPublicPolicy: false,
-                },
-            })),
-            s3_1.s3Client.send(new client_s3_1.PutBucketPolicyCommand({
-                Bucket: bucketName,
-                Policy: JSON.stringify({
-                    Version: '2012-10-17',
-                    Statement: [
-                        {
-                            Sid: 'PublicReadGetObject',
-                            Effect: 'Allow',
-                            Principal: '*',
-                            Action: ['s3:GetObject'],
-                            Resource: [`arn:aws:s3:::${bucketName}/*`],
-                        },
-                    ],
-                }),
-            })),
-        ]);
+        yield s3_1.s3Client.send(new client_s3_1.PutBucketPolicyCommand({
+            Bucket: bucketName,
+            Policy: JSON.stringify({
+                Version: '2012-10-17',
+                Statement: [
+                    {
+                        Sid: 'PublicReadGetObject',
+                        Effect: 'Allow',
+                        Principal: '*',
+                        Action: ['s3:GetObject'],
+                        Resource: [`arn:aws:s3:::${bucketName}/*`],
+                    },
+                ],
+            }),
+        }));
         console.log('Configuring bucket website...');
         yield s3_1.s3Client.send(new client_s3_1.PutBucketWebsiteCommand({
             Bucket: bucketName,

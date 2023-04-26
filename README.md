@@ -137,14 +137,17 @@ Replace `<YOUR_BUCKET_PREFIX>` with the same `bucket-prefix` value that you defi
     {
       "Effect": "Allow",
       "Action": [
-        "s3:CreateBucket",
-        "s3:DeleteBucket",
-        "s3:GetObject",
         "s3:PutObject",
-        "s3:DeleteObject",
+        "s3:GetObject",
+        "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketWebsite",
-        "s3:PutObjectAcl",
-        "s3:ListBucket"
+        "s3:PutBucketPolicy",
+        "s3:GetBucketPolicy",
+        "s3:CreateBucket",
+        "s3:ListBucket",
+        "s3:DeleteObject",
+        "s3:DeleteBucket",
+        "s3:PutObjectAcl"
       ],
       "Resource": ["arn:aws:s3:::<YOUR_BUCKET_PREFIX>-*"]
     }
