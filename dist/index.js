@@ -53070,9 +53070,32 @@ const createBucket = (bucketName, region) => __awaiter(void 0, void 0, void 0, f
         console.log('S3 bucket does not exist. Creating...');
         yield s3_1.s3Client.send(new client_s3_1.CreateBucketCommand({
             Bucket: bucketName,
-            ObjectOwnership: client_s3_1.ObjectOwnership.ObjectWriter,
             CreateBucketConfiguration: { LocationConstraint: region },
         }));
+        console.log('Configuring bucket access policy...');
+        yield Promise.all([
+            s3_1.s3Client.send(new client_s3_1.PutPublicAccessBlockCommand({
+                Bucket: bucketName,
+                PublicAccessBlockConfiguration: {
+                    BlockPublicPolicy: false,
+                },
+            })),
+            s3_1.s3Client.send(new client_s3_1.PutBucketPolicyCommand({
+                Bucket: bucketName,
+                Policy: JSON.stringify({
+                    Version: '2012-10-17',
+                    Statement: [
+                        {
+                            Sid: 'PublicReadGetObject',
+                            Effect: 'Allow',
+                            Principal: '*',
+                            Action: ['s3:GetObject'],
+                            Resource: [`arn:aws:s3:::${bucketName}/*`],
+                        },
+                    ],
+                }),
+            })),
+        ]);
         console.log('Configuring bucket website...');
         yield s3_1.s3Client.send(new client_s3_1.PutBucketWebsiteCommand({
             Bucket: bucketName,
@@ -53100,7 +53123,6 @@ const uploadDirectory = (bucketName, directory) => __awaiter(void 0, void 0, voi
                 Bucket: bucketName,
                 Key: s3Key,
                 Body: fileBuffer,
-                ACL: 'public-read',
                 ServerSideEncryption: 'AES256',
                 ContentType: mimeType,
                 CacheControl: getCacheControl(s3Key),

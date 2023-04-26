@@ -4,9 +4,10 @@ import {
   DeleteObjectsCommand,
   HeadBucketCommand,
   ListObjectsV2Command,
-  ObjectOwnership,
+  PutBucketPolicyCommand,
   PutBucketWebsiteCommand,
   PutObjectCommand,
+  PutPublicAccessBlockCommand,
   S3ServiceException,
 } from '@aws-sdk/client-s3';
 import { promises as fs } from 'fs';
@@ -67,10 +68,38 @@ export const createBucket = async (bucketName: string, region: string) => {
     await s3Client.send(
       new CreateBucketCommand({
         Bucket: bucketName,
-        ObjectOwnership: ObjectOwnership.ObjectWriter,
         CreateBucketConfiguration: { LocationConstraint: region },
       })
     );
+
+    console.log('Configuring bucket access policy...');
+    await Promise.all([
+      s3Client.send(
+        new PutPublicAccessBlockCommand({
+          Bucket: bucketName,
+          PublicAccessBlockConfiguration: {
+            BlockPublicPolicy: false,
+          },
+        })
+      ),
+      s3Client.send(
+        new PutBucketPolicyCommand({
+          Bucket: bucketName,
+          Policy: JSON.stringify({
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Sid: 'PublicReadGetObject',
+                Effect: 'Allow',
+                Principal: '*',
+                Action: ['s3:GetObject'],
+                Resource: [`arn:aws:s3:::${bucketName}/*`],
+              },
+            ],
+          }),
+        })
+      ),
+    ]);
 
     console.log('Configuring bucket website...');
     await s3Client.send(
@@ -110,7 +139,6 @@ export const uploadDirectory = async (
             Bucket: bucketName,
             Key: s3Key,
             Body: fileBuffer,
-            ACL: 'public-read',
             ServerSideEncryption: 'AES256',
             ContentType: mimeType,
             CacheControl: getCacheControl(s3Key),
