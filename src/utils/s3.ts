@@ -4,6 +4,7 @@ import {
   DeleteObjectsCommand,
   HeadBucketCommand,
   ListObjectsV2Command,
+  ObjectOwnership,
   PutBucketWebsiteCommand,
   PutObjectCommand,
   S3ServiceException,
@@ -66,7 +67,7 @@ export const createBucket = async (bucketName: string, region: string) => {
     await s3Client.send(
       new CreateBucketCommand({
         Bucket: bucketName,
-        ACL: 'public-read',
+        ObjectOwnership: ObjectOwnership.ObjectWriter,
         CreateBucketConfiguration: { LocationConstraint: region },
       })
     );

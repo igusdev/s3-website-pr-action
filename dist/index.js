@@ -53070,7 +53070,7 @@ const createBucket = (bucketName, region) => __awaiter(void 0, void 0, void 0, f
         console.log('S3 bucket does not exist. Creating...');
         yield s3_1.s3Client.send(new client_s3_1.CreateBucketCommand({
             Bucket: bucketName,
-            ACL: 'public-read',
+            ObjectOwnership: client_s3_1.ObjectOwnership.ObjectWriter,
             CreateBucketConfiguration: { LocationConstraint: region },
         }));
         console.log('Configuring bucket website...');
