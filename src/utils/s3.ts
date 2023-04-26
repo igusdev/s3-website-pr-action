@@ -66,6 +66,7 @@ export const createBucket = async (bucketName: string, region: string) => {
     await s3Client.send(
       new CreateBucketCommand({
         Bucket: bucketName,
+        ACL: 'public-read',
         CreateBucketConfiguration: { LocationConstraint: region },
       })
     );
