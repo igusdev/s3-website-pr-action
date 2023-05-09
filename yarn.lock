@@ -920,21 +920,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/types@npm:3.329.0":
+"@aws-sdk/types@npm:3.329.0, @aws-sdk/types@npm:^3.222.0":
   version: 3.329.0
   resolution: "@aws-sdk/types@npm:3.329.0"
   dependencies:
     tslib: ^2.5.0
   checksum: c3ba783f227e5bd5f46a62554c7a63ae85c42c168331b40118387a18e03e4eac21a0994da0da94ab41476fd67186fe90c5d06847604161635a8a0ed529a38ff6
-  languageName: node
-  linkType: hard
-
-"@aws-sdk/types@npm:^3.222.0":
-  version: 3.310.0
-  resolution: "@aws-sdk/types@npm:3.310.0"
-  dependencies:
-    tslib: ^2.5.0
-  checksum: a978fc8ac63a34e75cbf6b74aae4b78db805e3452a33f85449cdcd77edf23bbdc27a9b0fb4edcd4ce97a37691eaa837058d64f0e20723b34da41cead900efc67
   languageName: node
   linkType: hard
 
@@ -2257,14 +2248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>= 8":
-  version: 18.16.1
-  resolution: "@types/node@npm:18.16.1"
-  checksum: bd43d9e1df253955d73348ae9c8bc73f328ad3bd5481a134743142a04b0d1b74e39b90369aa0d361fd0b86a6a5c98035a226c1e1a4f67ba98e71b06734cc4f7d
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.16.6":
+"@types/node@npm:*, @types/node@npm:>= 8, @types/node@npm:^18.16.6":
   version: 18.16.6
   resolution: "@types/node@npm:18.16.6"
   checksum: f90d5cd93b5f53703e4913702651a3175de07aee073635454ae10933b4070c8fd00ac276044820e2cbe622212028103d3b8d644577f6cd0d2522c7fc8df7be5e
@@ -3519,14 +3503,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^3.3.0":
-  version: 3.4.0
-  resolution: "eslint-visitor-keys@npm:3.4.0"
-  checksum: 8b8cc611219b8864952a7485540482763e33289d734161bd6fe00cb6c1fc98af6bd8fe5c1d02d6d2b2657ff5cc52d30828fd52606ed50924412953a3e7d95cb7
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^3.4.1":
+"eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.1":
   version: 3.4.1
   resolution: "eslint-visitor-keys@npm:3.4.1"
   checksum: b4ebd35aed5426cd81b1fb92487825f1acf47a31e91d76597a3ee0664d69627140c4dafaf9b319cfeb1f48c1113a393e21a734c669e6565a72e6fcc311bd9911
@@ -6811,11 +6788,11 @@ fsevents@^2.3.2:
 
 "typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: eec385fd53e1800b0986bac2889deafee8e1910ce10108a5fe10644422426f71625c47b3e78e042371df16592881b1b1f97884ab45dc993f3b96a5c954f65dc2
+  checksum: c3f7b80577bddf6fab202a7925131ac733bfc414aec298c2404afcddc7a6f242cfa8395cf2d48192265052e11a7577c27f6e5fac8d8fe6a6602023c83d6b3292
   languageName: node
   linkType: hard
 
