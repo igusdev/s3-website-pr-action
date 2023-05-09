@@ -22808,9 +22808,9 @@ exports.defaultEndpointResolver = defaultEndpointResolver;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ruleSet = void 0;
-const G = "required", H = "type", I = "fn", J = "argv", K = "ref", L = "properties", M = "headers";
-const a = false, b = true, c = "PartitionResult", d = "tree", e = "booleanEquals", f = "stringEquals", g = "sigv4", h = "us-east-1", i = "sts", j = "endpoint", k = "https://sts.{Region}.{PartitionResult#dnsSuffix}", l = "error", m = "getAttr", n = { [G]: false, [H]: "String" }, o = { [G]: true, "default": false, [H]: "Boolean" }, p = { [K]: "Region" }, q = { [K]: "UseFIPS" }, r = { [K]: "UseDualStack" }, s = { [I]: "isSet", [J]: [{ [K]: "Endpoint" }] }, t = { [K]: "Endpoint" }, u = { "url": "https://sts.amazonaws.com", [L]: { "authSchemes": [{ "name": g, "signingRegion": h, "signingName": i }] }, [M]: {} }, v = {}, w = { "conditions": [{ [I]: f, [J]: [p, "aws-global"] }], [j]: u, [H]: j }, x = { [I]: e, [J]: [q, true] }, y = { [I]: e, [J]: [r, true] }, z = { [I]: e, [J]: [true, { [I]: m, [J]: [{ [K]: c }, "supportsFIPS"] }] }, A = { [K]: c }, B = { [I]: e, [J]: [true, { [I]: m, [J]: [A, "supportsDualStack"] }] }, C = { "url": k, [L]: {}, [M]: {} }, D = [t], E = [x], F = [y];
-const _data = { version: "1.0", parameters: { Region: n, UseDualStack: o, UseFIPS: o, Endpoint: n, UseGlobalEndpoint: o }, rules: [{ conditions: [{ [I]: "aws.partition", [J]: [p], assign: c }], [H]: d, rules: [{ conditions: [{ [I]: e, [J]: [{ [K]: "UseGlobalEndpoint" }, b] }, { [I]: e, [J]: [q, a] }, { [I]: e, [J]: [r, a] }, { [I]: "not", [J]: [s] }], [H]: d, rules: [{ conditions: [{ [I]: f, [J]: [p, "ap-northeast-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "ap-south-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "ap-southeast-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "ap-southeast-2"] }], endpoint: u, [H]: j }, w, { conditions: [{ [I]: f, [J]: [p, "ca-central-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "eu-central-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "eu-north-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "eu-west-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "eu-west-2"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "eu-west-3"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "sa-east-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, h] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "us-east-2"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "us-west-1"] }], endpoint: u, [H]: j }, { conditions: [{ [I]: f, [J]: [p, "us-west-2"] }], endpoint: u, [H]: j }, { endpoint: { url: k, [L]: { authSchemes: [{ name: g, signingRegion: "{Region}", signingName: i }] }, [M]: v }, [H]: j }] }, { conditions: [s, { [I]: "parseURL", [J]: D, assign: "url" }], [H]: d, rules: [{ conditions: E, error: "Invalid Configuration: FIPS and custom endpoint are not supported", [H]: l }, { [H]: d, rules: [{ conditions: F, error: "Invalid Configuration: Dualstack and custom endpoint are not supported", [H]: l }, { endpoint: { url: t, [L]: v, [M]: v }, [H]: j }] }] }, { conditions: [x, y], [H]: d, rules: [{ conditions: [z, B], [H]: d, rules: [{ endpoint: { url: "https://sts-fips.{Region}.{PartitionResult#dualStackDnsSuffix}", [L]: v, [M]: v }, [H]: j }] }, { error: "FIPS and DualStack are enabled, but this partition does not support one or both", [H]: l }] }, { conditions: E, [H]: d, rules: [{ conditions: [z], [H]: d, rules: [{ [H]: d, rules: [{ conditions: [{ [I]: f, [J]: ["aws-us-gov", { [I]: m, [J]: [A, "name"] }] }], endpoint: C, [H]: j }, { endpoint: { url: "https://sts-fips.{Region}.{PartitionResult#dnsSuffix}", [L]: v, [M]: v }, [H]: j }] }] }, { error: "FIPS is enabled but this partition does not support FIPS", [H]: l }] }, { conditions: F, [H]: d, rules: [{ conditions: [B], [H]: d, rules: [{ endpoint: { url: "https://sts.{Region}.{PartitionResult#dualStackDnsSuffix}", [L]: v, [M]: v }, [H]: j }] }, { error: "DualStack is enabled but this partition does not support DualStack", [H]: l }] }, { [H]: d, rules: [w, { endpoint: C, [H]: j }] }] }] };
+const F = "required", G = "type", H = "fn", I = "argv", J = "ref";
+const a = false, b = true, c = "booleanEquals", d = "tree", e = "stringEquals", f = "sigv4", g = "sts", h = "us-east-1", i = "endpoint", j = "https://sts.{Region}.{PartitionResult#dnsSuffix}", k = "error", l = "getAttr", m = { [F]: false, [G]: "String" }, n = { [F]: true, "default": false, [G]: "Boolean" }, o = { [J]: "Endpoint" }, p = { [H]: "isSet", [I]: [{ [J]: "Region" }] }, q = { [J]: "Region" }, r = { [H]: "aws.partition", [I]: [q], "assign": "PartitionResult" }, s = { [J]: "UseFIPS" }, t = { [J]: "UseDualStack" }, u = { "url": "https://sts.amazonaws.com", "properties": { "authSchemes": [{ "name": f, "signingName": g, "signingRegion": h }] }, "headers": {} }, v = {}, w = { "conditions": [{ [H]: e, [I]: [q, "aws-global"] }], [i]: u, [G]: i }, x = { [H]: c, [I]: [s, true] }, y = { [H]: c, [I]: [t, true] }, z = { [H]: c, [I]: [true, { [H]: l, [I]: [{ [J]: "PartitionResult" }, "supportsFIPS"] }] }, A = { [J]: "PartitionResult" }, B = { [H]: c, [I]: [true, { [H]: l, [I]: [A, "supportsDualStack"] }] }, C = [{ [H]: "isSet", [I]: [o] }], D = [x], E = [y];
+const _data = { version: "1.0", parameters: { Region: m, UseDualStack: n, UseFIPS: n, Endpoint: m, UseGlobalEndpoint: n }, rules: [{ conditions: [{ [H]: c, [I]: [{ [J]: "UseGlobalEndpoint" }, b] }, { [H]: "not", [I]: C }, p, r, { [H]: c, [I]: [s, a] }, { [H]: c, [I]: [t, a] }], [G]: d, rules: [{ conditions: [{ [H]: e, [I]: [q, "ap-northeast-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "ap-south-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "ap-southeast-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "ap-southeast-2"] }], endpoint: u, [G]: i }, w, { conditions: [{ [H]: e, [I]: [q, "ca-central-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "eu-central-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "eu-north-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "eu-west-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "eu-west-2"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "eu-west-3"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "sa-east-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, h] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "us-east-2"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "us-west-1"] }], endpoint: u, [G]: i }, { conditions: [{ [H]: e, [I]: [q, "us-west-2"] }], endpoint: u, [G]: i }, { endpoint: { url: j, properties: { authSchemes: [{ name: f, signingName: g, signingRegion: "{Region}" }] }, headers: v }, [G]: i }] }, { conditions: C, [G]: d, rules: [{ conditions: D, error: "Invalid Configuration: FIPS and custom endpoint are not supported", [G]: k }, { [G]: d, rules: [{ conditions: E, error: "Invalid Configuration: Dualstack and custom endpoint are not supported", [G]: k }, { endpoint: { url: o, properties: v, headers: v }, [G]: i }] }] }, { [G]: d, rules: [{ conditions: [p], [G]: d, rules: [{ conditions: [r], [G]: d, rules: [{ conditions: [x, y], [G]: d, rules: [{ conditions: [z, B], [G]: d, rules: [{ [G]: d, rules: [{ endpoint: { url: "https://sts-fips.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: v, headers: v }, [G]: i }] }] }, { error: "FIPS and DualStack are enabled, but this partition does not support one or both", [G]: k }] }, { conditions: D, [G]: d, rules: [{ conditions: [z], [G]: d, rules: [{ [G]: d, rules: [{ conditions: [{ [H]: e, [I]: ["aws-us-gov", { [H]: l, [I]: [A, "name"] }] }], endpoint: { url: "https://sts.{Region}.amazonaws.com", properties: v, headers: v }, [G]: i }, { endpoint: { url: "https://sts-fips.{Region}.{PartitionResult#dnsSuffix}", properties: v, headers: v }, [G]: i }] }] }, { error: "FIPS is enabled but this partition does not support FIPS", [G]: k }] }, { conditions: E, [G]: d, rules: [{ conditions: [B], [G]: d, rules: [{ [G]: d, rules: [{ endpoint: { url: "https://sts.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: v, headers: v }, [G]: i }] }] }, { error: "DualStack is enabled but this partition does not support DualStack", [G]: k }] }, { [G]: d, rules: [w, { endpoint: { url: j, properties: v, headers: v }, [G]: i }] }] }] }, { error: "Invalid Configuration: Missing Region", [G]: k }] }] };
 exports.ruleSet = _data;
 
 
@@ -28343,7 +28343,7 @@ const retryMiddleware = (options) => (next, context) => async (args) => {
                 return { response, output };
             }
             catch (e) {
-                const retryErrorInfo = getRetyErrorInto(e);
+                const retryErrorInfo = getRetryErrorInfo(e);
                 lastError = (0, util_1.asSdkError)(e);
                 try {
                     retryToken = await retryStrategy.refreshRetryTokenForRetry(retryToken, retryErrorInfo);
@@ -28374,7 +28374,7 @@ exports.retryMiddleware = retryMiddleware;
 const isRetryStrategyV2 = (retryStrategy) => typeof retryStrategy.acquireInitialRetryToken !== "undefined" &&
     typeof retryStrategy.refreshRetryTokenForRetry !== "undefined" &&
     typeof retryStrategy.recordSuccess !== "undefined";
-const getRetyErrorInto = (error) => {
+const getRetryErrorInfo = (error) => {
     const errorInfo = {
         errorType: getRetryErrorType(error),
     };
@@ -29559,7 +29559,10 @@ const http_1 = __nccwpck_require__(13685);
 const https_1 = __nccwpck_require__(95687);
 const constants_1 = __nccwpck_require__(33647);
 const get_transformed_headers_1 = __nccwpck_require__(96225);
+const set_connection_timeout_1 = __nccwpck_require__(63598);
+const set_socket_timeout_1 = __nccwpck_require__(44751);
 const write_request_body_1 = __nccwpck_require__(5248);
+const set_socket_keep_alive_1 = __nccwpck_require__(44035);
 exports.DEFAULT_REQUEST_TIMEOUT = 0;
 class NodeHttpHandler {
     constructor(options) {
@@ -29578,14 +29581,12 @@ class NodeHttpHandler {
         });
     }
     resolveDefaultConfig(options) {
-        var _a, _b;
         const { requestTimeout, connectionTimeout, socketTimeout, httpAgent, httpsAgent } = options || {};
         const keepAlive = true;
         const maxSockets = 50;
         return {
             connectionTimeout,
-            socketTimeout,
-            requestTimeout: (_b = (_a = requestTimeout !== null && requestTimeout !== void 0 ? requestTimeout : connectionTimeout) !== null && _a !== void 0 ? _a : socketTimeout) !== null && _b !== void 0 ? _b : exports.DEFAULT_REQUEST_TIMEOUT,
+            requestTimeout: requestTimeout !== null && requestTimeout !== void 0 ? requestTimeout : socketTimeout,
             httpAgent: httpAgent || new http_1.Agent({ keepAlive, maxSockets }),
             httpsAgent: httpsAgent || new https_1.Agent({ keepAlive, maxSockets }),
         };
@@ -29600,7 +29601,6 @@ class NodeHttpHandler {
             this.config = await this.configProvider;
         }
         return new Promise((resolve, reject) => {
-            var _a, _b;
             if (!this.config) {
                 throw new Error("Node HTTP request handler config is not resolved");
             }
@@ -29637,11 +29637,8 @@ class NodeHttpHandler {
                     reject(err);
                 }
             });
-            const timeout = (_b = (_a = this.config) === null || _a === void 0 ? void 0 : _a.requestTimeout) !== null && _b !== void 0 ? _b : exports.DEFAULT_REQUEST_TIMEOUT;
-            req.setTimeout(timeout, () => {
-                req.destroy();
-                reject(Object.assign(new Error(`Connection timed out after ${timeout} ms`), { name: "TimeoutError" }));
-            });
+            (0, set_connection_timeout_1.setConnectionTimeout)(req, reject, this.config.connectionTimeout);
+            (0, set_socket_timeout_1.setSocketTimeout)(req, reject, this.config.requestTimeout);
             if (abortSignal) {
                 abortSignal.onabort = () => {
                     req.abort();
@@ -29649,6 +29646,13 @@ class NodeHttpHandler {
                     abortError.name = "AbortError";
                     reject(abortError);
                 };
+            }
+            const httpAgent = nodeHttpsOptions.agent;
+            if (typeof httpAgent === "object" && "keepAlive" in httpAgent) {
+                (0, set_socket_keep_alive_1.setSocketKeepAlive)(req, {
+                    keepAlive: httpAgent.keepAlive,
+                    keepAliveMsecs: httpAgent.keepAliveMsecs,
+                });
             }
             (0, write_request_body_1.writeRequestBody)(req, request);
         });
@@ -29931,6 +29935,74 @@ class NodeHttp2Handler {
     }
 }
 exports.NodeHttp2Handler = NodeHttp2Handler;
+
+
+/***/ }),
+
+/***/ 63598:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.setConnectionTimeout = void 0;
+const setConnectionTimeout = (request, reject, timeoutInMs = 0) => {
+    if (!timeoutInMs) {
+        return;
+    }
+    request.on("socket", (socket) => {
+        if (socket.connecting) {
+            const timeoutId = setTimeout(() => {
+                request.destroy();
+                reject(Object.assign(new Error(`Socket timed out without establishing a connection within ${timeoutInMs} ms`), {
+                    name: "TimeoutError",
+                }));
+            }, timeoutInMs);
+            socket.on("connect", () => {
+                clearTimeout(timeoutId);
+            });
+        }
+    });
+};
+exports.setConnectionTimeout = setConnectionTimeout;
+
+
+/***/ }),
+
+/***/ 44035:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.setSocketKeepAlive = void 0;
+const setSocketKeepAlive = (request, { keepAlive, keepAliveMsecs }) => {
+    if (keepAlive !== true) {
+        return;
+    }
+    request.on("socket", (socket) => {
+        socket.setKeepAlive(keepAlive, keepAliveMsecs || 0);
+    });
+};
+exports.setSocketKeepAlive = setSocketKeepAlive;
+
+
+/***/ }),
+
+/***/ 44751:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.setSocketTimeout = void 0;
+const setSocketTimeout = (request, reject, timeoutInMs = 0) => {
+    request.setTimeout(timeoutInMs, () => {
+        request.destroy();
+        reject(Object.assign(new Error(`Connection timed out after ${timeoutInMs} ms`), { name: "TimeoutError" }));
+    });
+};
+exports.setSocketTimeout = setSocketTimeout;
 
 
 /***/ }),
@@ -30507,7 +30579,7 @@ exports.THROTTLING_ERROR_CODES = [
 ];
 exports.TRANSIENT_ERROR_CODES = ["AbortError", "TimeoutError", "RequestTimeout", "RequestTimeoutException"];
 exports.TRANSIENT_ERROR_STATUS_CODES = [500, 502, 503, 504];
-exports.NODEJS_TIMEOUT_ERROR_CODES = ["ECONNRESET", "EPIPE", "ETIMEDOUT"];
+exports.NODEJS_TIMEOUT_ERROR_CODES = ["ECONNRESET", "ECONNREFUSED", "EPIPE", "ETIMEDOUT"];
 
 
 /***/ }),
@@ -34763,6 +34835,36 @@ exports.AdaptiveRetryStrategy = AdaptiveRetryStrategy;
 
 /***/ }),
 
+/***/ 98118:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ConfiguredRetryStrategy = void 0;
+const constants_1 = __nccwpck_require__(65056);
+const StandardRetryStrategy_1 = __nccwpck_require__(43449);
+class ConfiguredRetryStrategy extends StandardRetryStrategy_1.StandardRetryStrategy {
+    constructor(maxAttempts, computeNextBackoffDelay = constants_1.DEFAULT_RETRY_DELAY_BASE) {
+        super(typeof maxAttempts === "function" ? maxAttempts : async () => maxAttempts);
+        if (typeof computeNextBackoffDelay === "number") {
+            this.computeNextBackoffDelay = () => computeNextBackoffDelay;
+        }
+        else {
+            this.computeNextBackoffDelay = computeNextBackoffDelay;
+        }
+    }
+    async refreshRetryTokenForRetry(tokenToRenew, errorInfo) {
+        const token = await super.refreshRetryTokenForRetry(tokenToRenew, errorInfo);
+        token.getRetryDelay = () => this.computeNextBackoffDelay(token.getRetryCount());
+        return token;
+    }
+}
+exports.ConfiguredRetryStrategy = ConfiguredRetryStrategy;
+
+
+/***/ }),
+
 /***/ 258:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -34886,11 +34988,11 @@ const config_1 = __nccwpck_require__(6514);
 const constants_1 = __nccwpck_require__(65056);
 const defaultRetryToken_1 = __nccwpck_require__(41360);
 class StandardRetryStrategy {
-    constructor(maxAttemptsProvider) {
-        this.maxAttemptsProvider = maxAttemptsProvider;
+    constructor(maxAttempts) {
+        this.maxAttempts = maxAttempts;
         this.mode = config_1.RETRY_MODES.STANDARD;
         this.retryToken = (0, defaultRetryToken_1.getDefaultRetryToken)(constants_1.INITIAL_RETRY_TOKENS, constants_1.DEFAULT_RETRY_DELAY_BASE);
-        this.maxAttemptsProvider = maxAttemptsProvider;
+        this.maxAttemptsProvider = typeof maxAttempts === "function" ? maxAttempts : async () => maxAttempts;
     }
     async acquireInitialRetryToken(retryTokenScope) {
         return this.retryToken;
@@ -34944,7 +35046,7 @@ var RETRY_MODES;
     RETRY_MODES["ADAPTIVE"] = "adaptive";
 })(RETRY_MODES = exports.RETRY_MODES || (exports.RETRY_MODES = {}));
 exports.DEFAULT_MAX_ATTEMPTS = 3;
-exports.DEFAULT_RETRY_MODE = "STANDARD";
+exports.DEFAULT_RETRY_MODE = RETRY_MODES.STANDARD;
 
 
 /***/ }),
@@ -35066,6 +35168,7 @@ exports.getDefaultRetryToken = getDefaultRetryToken;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const tslib_1 = __nccwpck_require__(4351);
 tslib_1.__exportStar(__nccwpck_require__(66968), exports);
+tslib_1.__exportStar(__nccwpck_require__(98118), exports);
 tslib_1.__exportStar(__nccwpck_require__(258), exports);
 tslib_1.__exportStar(__nccwpck_require__(43449), exports);
 tslib_1.__exportStar(__nccwpck_require__(6514), exports);
@@ -53016,6 +53119,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.uploadDirectory = exports.createBucket = exports.deleteBucket = exports.checkBucketExists = exports.filePathToS3Key = void 0;
 const client_s3_1 = __nccwpck_require__(19250);
@@ -53039,16 +53149,38 @@ const checkBucketExists = (bucketName) => __awaiter(void 0, void 0, void 0, func
 });
 exports.checkBucketExists = checkBucketExists;
 const deleteBucket = (bucketName) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, e_1, _b, _c;
+    var _d;
     if (yield (0, exports.checkBucketExists)(bucketName)) {
         console.log('Emptying S3 bucket...');
         console.log('Fetching objects...');
-        const objects = yield s3_1.s3Client.send(new client_s3_1.ListObjectsV2Command({ Bucket: bucketName }));
-        if (objects.Contents && objects.Contents.length >= 1) {
+        const objects = [];
+        try {
+            for (var _e = true, _f = __asyncValues((0, client_s3_1.paginateListObjectsV2)({ client: s3_1.s3Client }, { Bucket: bucketName })), _g; _g = yield _f.next(), _a = _g.done, !_a;) {
+                _c = _g.value;
+                _e = false;
+                try {
+                    const data = _c;
+                    objects.push(...((_d = data.Contents) !== null && _d !== void 0 ? _d : []));
+                }
+                finally {
+                    _e = true;
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (!_e && !_a && (_b = _f.return)) yield _b.call(_f);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        if (objects.length >= 1) {
             console.log('Deleting objects...');
             yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
                 Bucket: bucketName,
                 Delete: {
-                    Objects: objects.Contents.map((object) => ({
+                    Objects: objects.map((object) => ({
                         Key: object.Key,
                     })),
                 },
@@ -53326,7 +53458,7 @@ module.exports = require("zlib");
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.319.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn test:unit","test:e2e":"ts-mocha test/**/*.ispec.ts && karma start karma.conf.js","test:unit":"ts-mocha test/**/*.spec.ts"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"3.0.0","@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.319.0","@aws-sdk/config-resolver":"3.310.0","@aws-sdk/credential-provider-node":"3.319.0","@aws-sdk/eventstream-serde-browser":"3.310.0","@aws-sdk/eventstream-serde-config-resolver":"3.310.0","@aws-sdk/eventstream-serde-node":"3.310.0","@aws-sdk/fetch-http-handler":"3.310.0","@aws-sdk/hash-blob-browser":"3.310.0","@aws-sdk/hash-node":"3.310.0","@aws-sdk/hash-stream-node":"3.310.0","@aws-sdk/invalid-dependency":"3.310.0","@aws-sdk/md5-js":"3.310.0","@aws-sdk/middleware-bucket-endpoint":"3.310.0","@aws-sdk/middleware-content-length":"3.310.0","@aws-sdk/middleware-endpoint":"3.310.0","@aws-sdk/middleware-expect-continue":"3.310.0","@aws-sdk/middleware-flexible-checksums":"3.310.0","@aws-sdk/middleware-host-header":"3.310.0","@aws-sdk/middleware-location-constraint":"3.310.0","@aws-sdk/middleware-logger":"3.310.0","@aws-sdk/middleware-recursion-detection":"3.310.0","@aws-sdk/middleware-retry":"3.310.0","@aws-sdk/middleware-sdk-s3":"3.310.0","@aws-sdk/middleware-serde":"3.310.0","@aws-sdk/middleware-signing":"3.310.0","@aws-sdk/middleware-ssec":"3.310.0","@aws-sdk/middleware-stack":"3.310.0","@aws-sdk/middleware-user-agent":"3.319.0","@aws-sdk/node-config-provider":"3.310.0","@aws-sdk/node-http-handler":"3.310.0","@aws-sdk/protocol-http":"3.310.0","@aws-sdk/signature-v4-multi-region":"3.310.0","@aws-sdk/smithy-client":"3.316.0","@aws-sdk/types":"3.310.0","@aws-sdk/url-parser":"3.310.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.316.0","@aws-sdk/util-defaults-mode-node":"3.316.0","@aws-sdk/util-endpoints":"3.319.0","@aws-sdk/util-retry":"3.310.0","@aws-sdk/util-stream-browser":"3.310.0","@aws-sdk/util-stream-node":"3.310.0","@aws-sdk/util-user-agent-browser":"3.310.0","@aws-sdk/util-user-agent-node":"3.310.0","@aws-sdk/util-utf8":"3.310.0","@aws-sdk/util-waiter":"3.310.0","@aws-sdk/xml-builder":"3.310.0","fast-xml-parser":"4.1.2","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/chai":"^4.2.11","@types/mocha":"^8.0.4","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.329.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn test:unit","test:e2e":"ts-mocha test/**/*.ispec.ts && karma start karma.conf.js","test:unit":"ts-mocha test/**/*.spec.ts"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"3.0.0","@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.329.0","@aws-sdk/config-resolver":"3.329.0","@aws-sdk/credential-provider-node":"3.329.0","@aws-sdk/eventstream-serde-browser":"3.329.0","@aws-sdk/eventstream-serde-config-resolver":"3.329.0","@aws-sdk/eventstream-serde-node":"3.329.0","@aws-sdk/fetch-http-handler":"3.329.0","@aws-sdk/hash-blob-browser":"3.329.0","@aws-sdk/hash-node":"3.329.0","@aws-sdk/hash-stream-node":"3.329.0","@aws-sdk/invalid-dependency":"3.329.0","@aws-sdk/md5-js":"3.329.0","@aws-sdk/middleware-bucket-endpoint":"3.329.0","@aws-sdk/middleware-content-length":"3.329.0","@aws-sdk/middleware-endpoint":"3.329.0","@aws-sdk/middleware-expect-continue":"3.329.0","@aws-sdk/middleware-flexible-checksums":"3.329.0","@aws-sdk/middleware-host-header":"3.329.0","@aws-sdk/middleware-location-constraint":"3.329.0","@aws-sdk/middleware-logger":"3.329.0","@aws-sdk/middleware-recursion-detection":"3.329.0","@aws-sdk/middleware-retry":"3.329.0","@aws-sdk/middleware-sdk-s3":"3.329.0","@aws-sdk/middleware-serde":"3.329.0","@aws-sdk/middleware-signing":"3.329.0","@aws-sdk/middleware-ssec":"3.329.0","@aws-sdk/middleware-stack":"3.329.0","@aws-sdk/middleware-user-agent":"3.329.0","@aws-sdk/node-config-provider":"3.329.0","@aws-sdk/node-http-handler":"3.329.0","@aws-sdk/protocol-http":"3.329.0","@aws-sdk/signature-v4-multi-region":"3.329.0","@aws-sdk/smithy-client":"3.329.0","@aws-sdk/types":"3.329.0","@aws-sdk/url-parser":"3.329.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.329.0","@aws-sdk/util-defaults-mode-node":"3.329.0","@aws-sdk/util-endpoints":"3.329.0","@aws-sdk/util-retry":"3.329.0","@aws-sdk/util-stream-browser":"3.329.0","@aws-sdk/util-stream-node":"3.329.0","@aws-sdk/util-user-agent-browser":"3.329.0","@aws-sdk/util-user-agent-node":"3.329.0","@aws-sdk/util-utf8":"3.310.0","@aws-sdk/util-waiter":"3.329.0","@aws-sdk/xml-builder":"3.310.0","fast-xml-parser":"4.1.2","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/chai":"^4.2.11","@types/mocha":"^8.0.4","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
 
 /***/ }),
 
@@ -53334,7 +53466,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"AWS SDK for JavaScript Sso Oidc Client for Node.js, Browser and React Native","version":"3.319.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso-oidc"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.310.0","@aws-sdk/fetch-http-handler":"3.310.0","@aws-sdk/hash-node":"3.310.0","@aws-sdk/invalid-dependency":"3.310.0","@aws-sdk/middleware-content-length":"3.310.0","@aws-sdk/middleware-endpoint":"3.310.0","@aws-sdk/middleware-host-header":"3.310.0","@aws-sdk/middleware-logger":"3.310.0","@aws-sdk/middleware-recursion-detection":"3.310.0","@aws-sdk/middleware-retry":"3.310.0","@aws-sdk/middleware-serde":"3.310.0","@aws-sdk/middleware-stack":"3.310.0","@aws-sdk/middleware-user-agent":"3.319.0","@aws-sdk/node-config-provider":"3.310.0","@aws-sdk/node-http-handler":"3.310.0","@aws-sdk/protocol-http":"3.310.0","@aws-sdk/smithy-client":"3.316.0","@aws-sdk/types":"3.310.0","@aws-sdk/url-parser":"3.310.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.316.0","@aws-sdk/util-defaults-mode-node":"3.316.0","@aws-sdk/util-endpoints":"3.319.0","@aws-sdk/util-retry":"3.310.0","@aws-sdk/util-user-agent-browser":"3.310.0","@aws-sdk/util-user-agent-node":"3.310.0","@aws-sdk/util-utf8":"3.310.0","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso-oidc","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso-oidc"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"AWS SDK for JavaScript Sso Oidc Client for Node.js, Browser and React Native","version":"3.329.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso-oidc"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.329.0","@aws-sdk/fetch-http-handler":"3.329.0","@aws-sdk/hash-node":"3.329.0","@aws-sdk/invalid-dependency":"3.329.0","@aws-sdk/middleware-content-length":"3.329.0","@aws-sdk/middleware-endpoint":"3.329.0","@aws-sdk/middleware-host-header":"3.329.0","@aws-sdk/middleware-logger":"3.329.0","@aws-sdk/middleware-recursion-detection":"3.329.0","@aws-sdk/middleware-retry":"3.329.0","@aws-sdk/middleware-serde":"3.329.0","@aws-sdk/middleware-stack":"3.329.0","@aws-sdk/middleware-user-agent":"3.329.0","@aws-sdk/node-config-provider":"3.329.0","@aws-sdk/node-http-handler":"3.329.0","@aws-sdk/protocol-http":"3.329.0","@aws-sdk/smithy-client":"3.329.0","@aws-sdk/types":"3.329.0","@aws-sdk/url-parser":"3.329.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.329.0","@aws-sdk/util-defaults-mode-node":"3.329.0","@aws-sdk/util-endpoints":"3.329.0","@aws-sdk/util-retry":"3.329.0","@aws-sdk/util-user-agent-browser":"3.329.0","@aws-sdk/util-user-agent-node":"3.329.0","@aws-sdk/util-utf8":"3.310.0","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso-oidc","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso-oidc"}}');
 
 /***/ }),
 
@@ -53342,7 +53474,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"A
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SDK for JavaScript Sso Client for Node.js, Browser and React Native","version":"3.319.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.310.0","@aws-sdk/fetch-http-handler":"3.310.0","@aws-sdk/hash-node":"3.310.0","@aws-sdk/invalid-dependency":"3.310.0","@aws-sdk/middleware-content-length":"3.310.0","@aws-sdk/middleware-endpoint":"3.310.0","@aws-sdk/middleware-host-header":"3.310.0","@aws-sdk/middleware-logger":"3.310.0","@aws-sdk/middleware-recursion-detection":"3.310.0","@aws-sdk/middleware-retry":"3.310.0","@aws-sdk/middleware-serde":"3.310.0","@aws-sdk/middleware-stack":"3.310.0","@aws-sdk/middleware-user-agent":"3.319.0","@aws-sdk/node-config-provider":"3.310.0","@aws-sdk/node-http-handler":"3.310.0","@aws-sdk/protocol-http":"3.310.0","@aws-sdk/smithy-client":"3.316.0","@aws-sdk/types":"3.310.0","@aws-sdk/url-parser":"3.310.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.316.0","@aws-sdk/util-defaults-mode-node":"3.316.0","@aws-sdk/util-endpoints":"3.319.0","@aws-sdk/util-retry":"3.310.0","@aws-sdk/util-user-agent-browser":"3.310.0","@aws-sdk/util-user-agent-node":"3.310.0","@aws-sdk/util-utf8":"3.310.0","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SDK for JavaScript Sso Client for Node.js, Browser and React Native","version":"3.329.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.329.0","@aws-sdk/fetch-http-handler":"3.329.0","@aws-sdk/hash-node":"3.329.0","@aws-sdk/invalid-dependency":"3.329.0","@aws-sdk/middleware-content-length":"3.329.0","@aws-sdk/middleware-endpoint":"3.329.0","@aws-sdk/middleware-host-header":"3.329.0","@aws-sdk/middleware-logger":"3.329.0","@aws-sdk/middleware-recursion-detection":"3.329.0","@aws-sdk/middleware-retry":"3.329.0","@aws-sdk/middleware-serde":"3.329.0","@aws-sdk/middleware-stack":"3.329.0","@aws-sdk/middleware-user-agent":"3.329.0","@aws-sdk/node-config-provider":"3.329.0","@aws-sdk/node-http-handler":"3.329.0","@aws-sdk/protocol-http":"3.329.0","@aws-sdk/smithy-client":"3.329.0","@aws-sdk/types":"3.329.0","@aws-sdk/url-parser":"3.329.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.329.0","@aws-sdk/util-defaults-mode-node":"3.329.0","@aws-sdk/util-endpoints":"3.329.0","@aws-sdk/util-retry":"3.329.0","@aws-sdk/util-user-agent-browser":"3.329.0","@aws-sdk/util-user-agent-node":"3.329.0","@aws-sdk/util-utf8":"3.310.0","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso"}}');
 
 /***/ }),
 
@@ -53350,7 +53482,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SD
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sts","description":"AWS SDK for JavaScript Sts Client for Node.js, Browser and React Native","version":"3.319.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sts","test":"yarn test:unit","test:unit":"jest"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.310.0","@aws-sdk/credential-provider-node":"3.319.0","@aws-sdk/fetch-http-handler":"3.310.0","@aws-sdk/hash-node":"3.310.0","@aws-sdk/invalid-dependency":"3.310.0","@aws-sdk/middleware-content-length":"3.310.0","@aws-sdk/middleware-endpoint":"3.310.0","@aws-sdk/middleware-host-header":"3.310.0","@aws-sdk/middleware-logger":"3.310.0","@aws-sdk/middleware-recursion-detection":"3.310.0","@aws-sdk/middleware-retry":"3.310.0","@aws-sdk/middleware-sdk-sts":"3.310.0","@aws-sdk/middleware-serde":"3.310.0","@aws-sdk/middleware-signing":"3.310.0","@aws-sdk/middleware-stack":"3.310.0","@aws-sdk/middleware-user-agent":"3.319.0","@aws-sdk/node-config-provider":"3.310.0","@aws-sdk/node-http-handler":"3.310.0","@aws-sdk/protocol-http":"3.310.0","@aws-sdk/smithy-client":"3.316.0","@aws-sdk/types":"3.310.0","@aws-sdk/url-parser":"3.310.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.316.0","@aws-sdk/util-defaults-mode-node":"3.316.0","@aws-sdk/util-endpoints":"3.319.0","@aws-sdk/util-retry":"3.310.0","@aws-sdk/util-user-agent-browser":"3.310.0","@aws-sdk/util-user-agent-node":"3.310.0","@aws-sdk/util-utf8":"3.310.0","fast-xml-parser":"4.1.2","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sts","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sts"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sts","description":"AWS SDK for JavaScript Sts Client for Node.js, Browser and React Native","version":"3.329.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"tsc -p tsconfig.cjs.json","build:docs":"typedoc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sts","test":"yarn test:unit","test:unit":"jest"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/config-resolver":"3.329.0","@aws-sdk/credential-provider-node":"3.329.0","@aws-sdk/fetch-http-handler":"3.329.0","@aws-sdk/hash-node":"3.329.0","@aws-sdk/invalid-dependency":"3.329.0","@aws-sdk/middleware-content-length":"3.329.0","@aws-sdk/middleware-endpoint":"3.329.0","@aws-sdk/middleware-host-header":"3.329.0","@aws-sdk/middleware-logger":"3.329.0","@aws-sdk/middleware-recursion-detection":"3.329.0","@aws-sdk/middleware-retry":"3.329.0","@aws-sdk/middleware-sdk-sts":"3.329.0","@aws-sdk/middleware-serde":"3.329.0","@aws-sdk/middleware-signing":"3.329.0","@aws-sdk/middleware-stack":"3.329.0","@aws-sdk/middleware-user-agent":"3.329.0","@aws-sdk/node-config-provider":"3.329.0","@aws-sdk/node-http-handler":"3.329.0","@aws-sdk/protocol-http":"3.329.0","@aws-sdk/smithy-client":"3.329.0","@aws-sdk/types":"3.329.0","@aws-sdk/url-parser":"3.329.0","@aws-sdk/util-base64":"3.310.0","@aws-sdk/util-body-length-browser":"3.310.0","@aws-sdk/util-body-length-node":"3.310.0","@aws-sdk/util-defaults-mode-browser":"3.329.0","@aws-sdk/util-defaults-mode-node":"3.329.0","@aws-sdk/util-endpoints":"3.329.0","@aws-sdk/util-retry":"3.329.0","@aws-sdk/util-user-agent-browser":"3.329.0","@aws-sdk/util-user-agent-node":"3.329.0","@aws-sdk/util-utf8":"3.310.0","fast-xml-parser":"4.1.2","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/service-client-documentation-generator":"3.310.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typedoc":"0.23.23","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sts","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sts"}}');
 
 /***/ }),
 
@@ -53358,7 +53490,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-sts","description":"AWS SD
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"partitions":[{"id":"aws","outputs":{"dnsSuffix":"amazonaws.com","dualStackDnsSuffix":"api.aws","name":"aws","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^(us|eu|ap|sa|ca|me|af)\\\\-\\\\w+\\\\-\\\\d+$","regions":{"af-south-1":{"description":"Africa (Cape Town)"},"ap-east-1":{"description":"Asia Pacific (Hong Kong)"},"ap-northeast-1":{"description":"Asia Pacific (Tokyo)"},"ap-northeast-2":{"description":"Asia Pacific (Seoul)"},"ap-northeast-3":{"description":"Asia Pacific (Osaka)"},"ap-south-1":{"description":"Asia Pacific (Mumbai)"},"ap-south-2":{"description":"Asia Pacific (Hyderabad)"},"ap-southeast-1":{"description":"Asia Pacific (Singapore)"},"ap-southeast-2":{"description":"Asia Pacific (Sydney)"},"ap-southeast-3":{"description":"Asia Pacific (Jakarta)"},"ap-southeast-4":{"description":"Asia Pacific (Melbourne)"},"aws-global":{"description":"AWS Standard global region"},"ca-central-1":{"description":"Canada (Central)"},"eu-central-1":{"description":"Europe (Frankfurt)"},"eu-central-2":{"description":"Europe (Zurich)"},"eu-north-1":{"description":"Europe (Stockholm)"},"eu-south-1":{"description":"Europe (Milan)"},"eu-south-2":{"description":"Europe (Spain)"},"eu-west-1":{"description":"Europe (Ireland)"},"eu-west-2":{"description":"Europe (London)"},"eu-west-3":{"description":"Europe (Paris)"},"me-central-1":{"description":"Middle East (UAE)"},"me-south-1":{"description":"Middle East (Bahrain)"},"sa-east-1":{"description":"South America (Sao Paulo)"},"us-east-1":{"description":"US East (N. Virginia)"},"us-east-2":{"description":"US East (Ohio)"},"us-west-1":{"description":"US West (N. California)"},"us-west-2":{"description":"US West (Oregon)"}}},{"id":"aws-cn","outputs":{"dnsSuffix":"amazonaws.com.cn","dualStackDnsSuffix":"api.amazonwebservices.com.cn","name":"aws-cn","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^cn\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-cn-global":{"description":"AWS China global region"},"cn-north-1":{"description":"China (Beijing)"},"cn-northwest-1":{"description":"China (Ningxia)"}}},{"id":"aws-us-gov","outputs":{"dnsSuffix":"amazonaws.com","dualStackDnsSuffix":"api.aws","name":"aws-us-gov","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^us\\\\-gov\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-us-gov-global":{"description":"AWS GovCloud (US) global region"},"us-gov-east-1":{"description":"AWS GovCloud (US-East)"},"us-gov-west-1":{"description":"AWS GovCloud (US-West)"}}},{"id":"aws-iso","outputs":{"dnsSuffix":"c2s.ic.gov","dualStackDnsSuffix":"c2s.ic.gov","name":"aws-iso","supportsDualStack":false,"supportsFIPS":true},"regionRegex":"^us\\\\-iso\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-iso-global":{"description":"AWS ISO (US) global region"},"us-iso-east-1":{"description":"US ISO East"},"us-iso-west-1":{"description":"US ISO WEST"}}},{"id":"aws-iso-b","outputs":{"dnsSuffix":"sc2s.sgov.gov","dualStackDnsSuffix":"sc2s.sgov.gov","name":"aws-iso-b","supportsDualStack":false,"supportsFIPS":true},"regionRegex":"^us\\\\-isob\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-iso-b-global":{"description":"AWS ISOB (US) global region"},"us-isob-east-1":{"description":"US ISOB East (Ohio)"}}}],"version":"1.1"}');
+module.exports = JSON.parse('{"partitions":[{"id":"aws","outputs":{"dnsSuffix":"amazonaws.com","dualStackDnsSuffix":"api.aws","name":"aws","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^(us|eu|ap|sa|ca|me|af)\\\\-\\\\w+\\\\-\\\\d+$","regions":{"af-south-1":{"description":"Africa (Cape Town)"},"ap-east-1":{"description":"Asia Pacific (Hong Kong)"},"ap-northeast-1":{"description":"Asia Pacific (Tokyo)"},"ap-northeast-2":{"description":"Asia Pacific (Seoul)"},"ap-northeast-3":{"description":"Asia Pacific (Osaka)"},"ap-south-1":{"description":"Asia Pacific (Mumbai)"},"ap-south-2":{"description":"Asia Pacific (Hyderabad)"},"ap-southeast-1":{"description":"Asia Pacific (Singapore)"},"ap-southeast-2":{"description":"Asia Pacific (Sydney)"},"ap-southeast-3":{"description":"Asia Pacific (Jakarta)"},"ap-southeast-4":{"description":"Asia Pacific (Melbourne)"},"aws-global":{"description":"AWS Standard global region"},"ca-central-1":{"description":"Canada (Central)"},"eu-central-1":{"description":"Europe (Frankfurt)"},"eu-central-2":{"description":"Europe (Zurich)"},"eu-north-1":{"description":"Europe (Stockholm)"},"eu-south-1":{"description":"Europe (Milan)"},"eu-south-2":{"description":"Europe (Spain)"},"eu-west-1":{"description":"Europe (Ireland)"},"eu-west-2":{"description":"Europe (London)"},"eu-west-3":{"description":"Europe (Paris)"},"me-central-1":{"description":"Middle East (UAE)"},"me-south-1":{"description":"Middle East (Bahrain)"},"sa-east-1":{"description":"South America (Sao Paulo)"},"us-east-1":{"description":"US East (N. Virginia)"},"us-east-2":{"description":"US East (Ohio)"},"us-west-1":{"description":"US West (N. California)"},"us-west-2":{"description":"US West (Oregon)"}}},{"id":"aws-cn","outputs":{"dnsSuffix":"amazonaws.com.cn","dualStackDnsSuffix":"api.amazonwebservices.com.cn","name":"aws-cn","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^cn\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-cn-global":{"description":"AWS China global region"},"cn-north-1":{"description":"China (Beijing)"},"cn-northwest-1":{"description":"China (Ningxia)"}}},{"id":"aws-us-gov","outputs":{"dnsSuffix":"amazonaws.com","dualStackDnsSuffix":"api.aws","name":"aws-us-gov","supportsDualStack":true,"supportsFIPS":true},"regionRegex":"^us\\\\-gov\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-us-gov-global":{"description":"AWS GovCloud (US) global region"},"us-gov-east-1":{"description":"AWS GovCloud (US-East)"},"us-gov-west-1":{"description":"AWS GovCloud (US-West)"}}},{"id":"aws-iso","outputs":{"dnsSuffix":"c2s.ic.gov","dualStackDnsSuffix":"c2s.ic.gov","name":"aws-iso","supportsDualStack":false,"supportsFIPS":true},"regionRegex":"^us\\\\-iso\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-iso-global":{"description":"AWS ISO (US) global region"},"us-iso-east-1":{"description":"US ISO East"},"us-iso-west-1":{"description":"US ISO WEST"}}},{"id":"aws-iso-b","outputs":{"dnsSuffix":"sc2s.sgov.gov","dualStackDnsSuffix":"sc2s.sgov.gov","name":"aws-iso-b","supportsDualStack":false,"supportsFIPS":true},"regionRegex":"^us\\\\-isob\\\\-\\\\w+\\\\-\\\\d+$","regions":{"aws-iso-b-global":{"description":"AWS ISOB (US) global region"},"us-isob-east-1":{"description":"US ISOB East (Ohio)"}}},{"id":"aws-iso-e","outputs":{"dnsSuffix":"cloud.adc-e.uk","dualStackDnsSuffix":"cloud.adc-e.uk","name":"aws-iso-e","supportsDualStack":false,"supportsFIPS":true},"regionRegex":"^eu\\\\-isoe\\\\-\\\\w+\\\\-\\\\d+$","regions":{}}],"version":"1.1"}');
 
 /***/ }),
 

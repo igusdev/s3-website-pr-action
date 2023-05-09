@@ -3,12 +3,13 @@ import {
   DeleteBucketCommand,
   DeleteObjectsCommand,
   HeadBucketCommand,
-  ListObjectsV2Command,
   PutBucketPolicyCommand,
   PutBucketWebsiteCommand,
   PutObjectCommand,
   PutPublicAccessBlockCommand,
   S3ServiceException,
+  _Object,
+  paginateListObjectsV2,
 } from '@aws-sdk/client-s3';
 import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
@@ -34,17 +35,21 @@ export const deleteBucket = async (bucketName: string) => {
     console.log('Emptying S3 bucket...');
     console.log('Fetching objects...');
 
-    const objects = await s3Client.send(
-      new ListObjectsV2Command({ Bucket: bucketName })
-    );
+    const objects: _Object[] = [];
+    for await (const data of paginateListObjectsV2(
+      { client: s3Client },
+      { Bucket: bucketName }
+    )) {
+      objects.push(...(data.Contents ?? []));
+    }
 
-    if (objects.Contents && objects.Contents.length >= 1) {
+    if (objects.length >= 1) {
       console.log('Deleting objects...');
       await s3Client.send(
         new DeleteObjectsCommand({
           Bucket: bucketName,
           Delete: {
-            Objects: objects.Contents.map((object) => ({
+            Objects: objects.map((object) => ({
               Key: object.Key,
             })),
           },
