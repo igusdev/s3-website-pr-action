@@ -53154,14 +53154,14 @@ const deleteBucket = (bucketName) => __awaiter(void 0, void 0, void 0, function*
     if (yield (0, exports.checkBucketExists)(bucketName)) {
         console.log('Emptying S3 bucket...');
         console.log('Fetching objects...');
-        const objects = [];
+        const keys = [];
         try {
             for (var _e = true, _f = __asyncValues((0, client_s3_1.paginateListObjectsV2)({ client: s3_1.s3Client }, { Bucket: bucketName })), _g; _g = yield _f.next(), _a = _g.done, !_a;) {
                 _c = _g.value;
                 _e = false;
                 try {
                     const data = _c;
-                    objects.push(...((_d = data.Contents) !== null && _d !== void 0 ? _d : []));
+                    keys.push(...((_d = data.Contents) !== null && _d !== void 0 ? _d : []).map(({ Key }) => ({ Key })));
                 }
                 finally {
                     _e = true;
@@ -53175,16 +53175,19 @@ const deleteBucket = (bucketName) => __awaiter(void 0, void 0, void 0, function*
             }
             finally { if (e_1) throw e_1.error; }
         }
-        if (objects.length >= 1) {
+        if (keys.length >= 1) {
             console.log('Deleting objects...');
-            yield s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
-                Bucket: bucketName,
-                Delete: {
-                    Objects: objects.map((object) => ({
-                        Key: object.Key,
-                    })),
-                },
-            }));
+            const chunkSize = 1000;
+            const commands = [];
+            for (let i = 0; i < keys.length; i += chunkSize) {
+                commands.push(s3_1.s3Client.send(new client_s3_1.DeleteObjectsCommand({
+                    Bucket: bucketName,
+                    Delete: {
+                        Objects: keys.slice(i, i + chunkSize),
+                    },
+                })));
+            }
+            yield Promise.all(commands);
         }
         else {
             console.log('S3 bucket already empty.');

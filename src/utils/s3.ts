@@ -2,13 +2,14 @@ import {
   CreateBucketCommand,
   DeleteBucketCommand,
   DeleteObjectsCommand,
+  DeleteObjectsCommandOutput,
   HeadBucketCommand,
+  ObjectIdentifier,
   PutBucketPolicyCommand,
   PutBucketWebsiteCommand,
   PutObjectCommand,
   PutPublicAccessBlockCommand,
   S3ServiceException,
-  _Object,
   paginateListObjectsV2,
 } from '@aws-sdk/client-s3';
 import { promises as fs } from 'fs';
@@ -35,26 +36,33 @@ export const deleteBucket = async (bucketName: string) => {
     console.log('Emptying S3 bucket...');
     console.log('Fetching objects...');
 
-    const objects: _Object[] = [];
+    const keys: ObjectIdentifier[] = [];
     for await (const data of paginateListObjectsV2(
       { client: s3Client },
       { Bucket: bucketName }
     )) {
-      objects.push(...(data.Contents ?? []));
+      keys.push(...(data.Contents ?? []).map(({ Key }) => ({ Key })));
     }
 
-    if (objects.length >= 1) {
+    if (keys.length >= 1) {
       console.log('Deleting objects...');
-      await s3Client.send(
-        new DeleteObjectsCommand({
-          Bucket: bucketName,
-          Delete: {
-            Objects: objects.map((object) => ({
-              Key: object.Key,
-            })),
-          },
-        })
-      );
+
+      // AWS supports deleting max 1000 objects at a time
+      const chunkSize = 1000;
+      const commands: Promise<DeleteObjectsCommandOutput>[] = [];
+      for (let i = 0; i < keys.length; i += chunkSize) {
+        commands.push(
+          s3Client.send(
+            new DeleteObjectsCommand({
+              Bucket: bucketName,
+              Delete: {
+                Objects: keys.slice(i, i + chunkSize),
+              },
+            })
+          )
+        );
+      }
+      await Promise.all(commands);
     } else {
       console.log('S3 bucket already empty.');
     }
