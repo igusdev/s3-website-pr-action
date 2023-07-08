@@ -2021,10 +2021,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/openapi-types@npm:^17.1.1":
-  version: 17.1.1
-  resolution: "@octokit/openapi-types@npm:17.1.1"
-  checksum: f3552580aec08244f52860b6a7eec261044583d880fc5ac89738d44ba8cfa88a1e06a0678800565c3fed6f1bc67bedc5068bf66e9e5d55e1bf13d237df017be7
+"@octokit/openapi-types@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "@octokit/openapi-types@npm:18.0.0"
+  checksum: d90fab10d962be71e72b85ffab2055cffd9c3196ff1edc3e4106deb78e99e8782965cf7aa6a4c1398f828e4d0c3e0f905915debfe34396d956dfce8e75b21664
   languageName: node
   linkType: hard
 
@@ -2076,6 +2076,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/types@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "@octokit/types@npm:11.0.0"
+  dependencies:
+    "@octokit/openapi-types": ^18.0.0
+  checksum: 036d5ed58f7fcebdcf613ede2af2395bfaabe1b0359a10f2f058468edba9a91525452327efa0dc2770e5d84e2961a2e5717321911389f2a0922b989abce8826a
+  languageName: node
+  linkType: hard
+
 "@octokit/types@npm:^4.0.1":
   version: 4.1.9
   resolution: "@octokit/types@npm:4.1.9"
@@ -2091,15 +2100,6 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^11.2.0
   checksum: 5094b54ac13adfb2d84a047f4d4c67319b5cf0516ab8a54409af4733392d24da160e0e17ef969fed4276c87e19a3e3983af4233056debd1043d96f73ea4ad14e
-  languageName: node
-  linkType: hard
-
-"@octokit/types@npm:^9.2.1":
-  version: 9.2.1
-  resolution: "@octokit/types@npm:9.2.1"
-  dependencies:
-    "@octokit/openapi-types": ^17.1.1
-  checksum: f37f65e737d930f0522015145d7dae638963782513ba2e0a7a54c68a029cafd173e1af559dc1faf8159a1bfee777f4b50d9b9ff38be2b5189c7dde0584b06a49
   languageName: node
   linkType: hard
 
@@ -6137,7 +6137,7 @@ fsevents@^2.3.2:
     "@actions/core": ^1.10.0
     "@actions/github": ^5.1.1
     "@aws-sdk/client-s3": ^3.329.0
-    "@octokit/types": ^9.2.1
+    "@octokit/types": ^11.0.0
     "@types/jest": ^29.5.1
     "@types/mime-types": ^2.1.1
     "@types/node": ^18.16.6
