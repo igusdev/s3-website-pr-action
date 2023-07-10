@@ -1,9 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    ":timezone(Europe/Berlin)",
     "config:base",
     ":preserveSemverRanges",
-    ":prHourlyLimitNone",
-    ":label(dependencies)"
-  ]
+    ":enableVulnerabilityAlerts",
+    ":maintainLockFilesMonthly",
+    ":disableDependencyDashboard",
+    ":noUnscheduledUpdates",
+    ":label(dependencies)",
+    ":semanticCommitTypeAll(build)"
+  ],
+  "schedule": ["before 8am on the 2nd and 4th day instance on Monday"],
+  "lockFileMaintenance": {
+    "semanticCommitType": "build"
+  },
+  "platformCommit": true,
+  "postUpdateOptions": ["yarnDedupeHighest"],
 }
