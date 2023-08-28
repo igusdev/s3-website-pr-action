@@ -39,7 +39,7 @@ export const deleteBucket = async (bucketName: string) => {
     const keys: ObjectIdentifier[] = [];
     for await (const data of paginateListObjectsV2(
       { client: s3Client },
-      { Bucket: bucketName }
+      { Bucket: bucketName },
     )) {
       keys.push(...(data.Contents ?? []).map(({ Key }) => ({ Key })));
     }
@@ -58,8 +58,8 @@ export const deleteBucket = async (bucketName: string) => {
               Delete: {
                 Objects: keys.slice(i, i + chunkSize),
               },
-            })
-          )
+            }),
+          ),
         );
       }
       await Promise.all(commands);
@@ -82,7 +82,7 @@ export const createBucket = async (bucketName: string, region: string) => {
       new CreateBucketCommand({
         Bucket: bucketName,
         CreateBucketConfiguration: { LocationConstraint: region },
-      })
+      }),
     );
 
     console.log('Configuring bucket access block...');
@@ -92,7 +92,7 @@ export const createBucket = async (bucketName: string, region: string) => {
         PublicAccessBlockConfiguration: {
           BlockPublicPolicy: false,
         },
-      })
+      }),
     );
 
     console.log('Configuring bucket access policy...');
@@ -111,7 +111,7 @@ export const createBucket = async (bucketName: string, region: string) => {
             },
           ],
         }),
-      })
+      }),
     );
 
     console.log('Configuring bucket website...');
@@ -122,7 +122,7 @@ export const createBucket = async (bucketName: string, region: string) => {
           IndexDocument: { Suffix: 'index.html' },
           ErrorDocument: { Key: 'index.html' },
         },
-      })
+      }),
     );
   } else {
     console.log('S3 Bucket already exists. Skipping creation...');
@@ -131,7 +131,7 @@ export const createBucket = async (bucketName: string, region: string) => {
 
 export const uploadDirectory = async (
   bucketName: string,
-  directory: string
+  directory: string,
 ) => {
   const normalizedPath = normalize(directory);
 
@@ -155,7 +155,7 @@ export const uploadDirectory = async (
             ServerSideEncryption: 'AES256',
             ContentType: mimeType,
             CacheControl: getCacheControl(s3Key),
-          })
+          }),
         );
       } catch (error) {
         const e = error as S3ServiceException;
@@ -163,7 +163,7 @@ export const uploadDirectory = async (
         console.log(message);
         throw message;
       }
-    })
+    }),
   );
 };
 

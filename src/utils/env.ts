@@ -11,7 +11,7 @@ export const validateEnvVars = (requiredEnvVars: string[]) => {
 
   if (missingList.length >= 1) {
     throw `The following env vars are missing but are required. ${missingList.join(
-      ', '
+      ', ',
     )}`;
   }
 

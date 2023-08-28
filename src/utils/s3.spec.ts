@@ -24,13 +24,13 @@ describe('s3 utils', () => {
 
     test('should return correct S3 key for nested object with /', () => {
       expect(filePathToS3Key('myfolder/test/index.html')).toBe(
-        'myfolder/test/index.html'
+        'myfolder/test/index.html',
       );
     });
 
     test('should return correct S3 key for nested object with \\', () => {
       expect(filePathToS3Key('myfolder\\test\\index.html')).toBe(
-        'myfolder/test/index.html'
+        'myfolder/test/index.html',
       );
     });
   });

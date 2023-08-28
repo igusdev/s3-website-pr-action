@@ -15,7 +15,7 @@ export const requiredEnvVars = [
 export const prUpdated = async (
   bucketName: string,
   uploadDir: string,
-  environmentPrefix: string
+  environmentPrefix: string,
 ) => {
   const region = getAwsRegion();
   const websiteUrl = `http://${bucketName}.${
@@ -35,9 +35,8 @@ export const prUpdated = async (
     const deployment = (await githubClient.rest.repos.createDeployment({
       ...repo,
       ref: `refs/heads/${branchName}`,
-      environment: `${environmentPrefix || 'pr-'}${
-        payload.pull_request?.number
-      }`,
+      environment: `${environmentPrefix || 'pr-'}${payload.pull_request
+        ?.number}`,
       auto_merge: false,
       transient_environment: true,
       required_contexts: [],
