@@ -16,6 +16,7 @@ import { promises as fs } from 'fs';
 import { lookup } from 'mime-types';
 import { normalize } from 'path';
 import { s3Client } from '../clients/s3';
+import { KnownRegion } from './aws';
 import { readRecursively } from './fs';
 
 export const filePathToS3Key = (filePath: string) => {
@@ -73,7 +74,7 @@ export const deleteBucket = async (bucketName: string) => {
   }
 };
 
-export const createBucket = async (bucketName: string, region: string) => {
+export const createBucket = async (bucketName: string, region: KnownRegion) => {
   const bucketExists = await checkBucketExists(bucketName);
 
   if (!bucketExists) {
@@ -81,7 +82,8 @@ export const createBucket = async (bucketName: string, region: string) => {
     await s3Client.send(
       new CreateBucketCommand({
         Bucket: bucketName,
-        CreateBucketConfiguration: { LocationConstraint: region },
+        CreateBucketConfiguration:
+          region === 'us-east-1' ? undefined : { LocationConstraint: region },
       }),
     );
 
