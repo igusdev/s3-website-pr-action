@@ -69068,8 +69068,10 @@ const core_1 = __nccwpck_require__(42186);
 const github_1 = __nccwpck_require__(95438);
 const pr_closed_1 = __nccwpck_require__(2789);
 const pr_updated_1 = __nccwpck_require__(81055);
+const aws_1 = __nccwpck_require__(76067);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    (0, aws_1.setupAwsRegion)();
     try {
         const bucketPrefix = (0, core_1.getInput)('bucket-prefix').toLowerCase();
         const folderToCopy = (0, core_1.getInput)('folder-to-copy');
