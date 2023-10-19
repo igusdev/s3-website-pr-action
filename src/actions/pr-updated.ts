@@ -18,9 +18,7 @@ export const prUpdated = async (
   environmentPrefix: string,
 ) => {
   const region = getAwsRegion();
-  const websiteUrl = `http://${bucketName}.${
-    websiteEndpoint[region as keyof typeof websiteEndpoint]
-  }`;
+  const websiteUrl = `http://${bucketName}.${websiteEndpoint[region]}`;
   const { repo, payload } = context;
   const branchName = payload.pull_request?.head.ref;
 
