@@ -1,6 +1,6 @@
-import { readdir, stat } from 'fs';
-import { join } from 'path';
-import { promisify } from 'util';
+import { readdir, stat } from 'node:fs';
+import { join } from 'node:path';
+import { promisify } from 'node:util';
 
 export const readRecursively = async (dir: string): Promise<string[]> => {
   const dirContent = await promisify(readdir)(dir);

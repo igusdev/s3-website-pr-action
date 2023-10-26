@@ -12,9 +12,9 @@ import {
   S3ServiceException,
   paginateListObjectsV2,
 } from '@aws-sdk/client-s3';
-import { promises as fs } from 'fs';
+import { promises as fs } from 'node:fs';
 import { lookup } from 'mime-types';
-import { normalize } from 'path';
+import { normalize } from 'node:path';
 import { s3Client } from '../clients/s3';
 import { KnownRegion } from './aws';
 import { readRecursively } from './fs';
