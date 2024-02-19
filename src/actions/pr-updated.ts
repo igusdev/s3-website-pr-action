@@ -20,7 +20,7 @@ export const prUpdated = async (
   const region = getAwsRegion();
   const websiteUrl = `http://${bucketName}.${websiteEndpoint[region]}`;
   const { repo, payload } = context;
-  const branchName = payload.pull_request?.head.ref;
+  const branchName = payload.pull_request?.head?.ref;
 
   console.log('PR Updated');
 
@@ -33,8 +33,9 @@ export const prUpdated = async (
     const deployment = (await githubClient.rest.repos.createDeployment({
       ...repo,
       ref: `refs/heads/${branchName}`,
-      environment: `${environmentPrefix || 'pr-'}${payload.pull_request
-        ?.number}`,
+      environment: `${environmentPrefix || 'pr-'}${
+        payload.pull_request?.number
+      }`,
       auto_merge: false,
       transient_environment: true,
       required_contexts: [],

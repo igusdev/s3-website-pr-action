@@ -8,8 +8,9 @@ export const deactivateDeployments = async (
   },
   environmentPrefix: string,
 ) => {
-  const environment = `${environmentPrefix || 'pr-'}${context.payload
-    .pull_request?.number}`;
+  const environment = `${environmentPrefix || 'pr-'}${
+    context.payload.pull_request?.number
+  }`;
 
   const deployments = await githubClient.rest.repos.listDeployments({
     repo: repo.repo,
@@ -41,8 +42,9 @@ export const deleteDeployments = async (
   },
   environmentPrefix: string,
 ) => {
-  const environment = `${environmentPrefix || 'pr-'}${context.payload
-    .pull_request?.number}`;
+  const environment = `${environmentPrefix || 'pr-'}${
+    context.payload.pull_request?.number
+  }`;
 
   const deployments = await githubClient.graphql<{
     repository?: { deployments?: { nodes: { id: string }[] } };
