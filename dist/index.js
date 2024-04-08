@@ -3073,15 +3073,17 @@ exports.uint32ArrayFrom = uint32ArrayFrom;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultEndpointResolver = void 0;
-const util_endpoints_1 = __nccwpck_require__(5473);
+const util_endpoints_1 = __nccwpck_require__(3350);
+const util_endpoints_2 = __nccwpck_require__(5473);
 const ruleset_1 = __nccwpck_require__(6114);
 const defaultEndpointResolver = (endpointParams, context = {}) => {
-    return (0, util_endpoints_1.resolveEndpoint)(ruleset_1.ruleSet, {
+    return (0, util_endpoints_2.resolveEndpoint)(ruleset_1.ruleSet, {
         endpointParams: endpointParams,
         logger: context.logger,
     });
 };
 exports.defaultEndpointResolver = defaultEndpointResolver;
+util_endpoints_2.customEndpointFunctions.aws = util_endpoints_1.awsEndpointFunctions;
 
 
 /***/ }),
@@ -3093,9 +3095,9 @@ exports.defaultEndpointResolver = defaultEndpointResolver;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ruleSet = void 0;
-const cc = "required", cd = "type", ce = "conditions", cf = "fn", cg = "argv", ch = "ref", ci = "assign", cj = "url", ck = "properties", cl = "backend", cm = "authSchemes", cn = "disableDoubleEncoding", co = "signingName", cp = "signingRegion", cq = "headers";
-const a = false, b = true, c = "isSet", d = "booleanEquals", e = "error", f = "aws.partition", g = "stringEquals", h = "getAttr", i = "name", j = "substring", k = "bucketSuffix", l = "parseURL", m = "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", n = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "{url#scheme}://{url#authority}{url#path}", t = "hardwareType", u = "regionPrefix", v = "bucketAliasSuffix", w = "outpostId", x = "isValidHostLabel", y = "s3-outposts", z = "s3", A = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", B = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", C = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", D = "aws.parseArn", E = "bucketArn", F = "arnType", G = "", H = "s3-object-lambda", I = "accesspoint", J = "accessPointName", K = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", L = "mrapPartition", M = "outpostType", N = "arnPrefix", O = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", P = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", Q = "https://s3.{partitionResult#dnsSuffix}", R = { [cc]: false, [cd]: "String" }, S = { [cc]: true, "default": false, [cd]: "Boolean" }, T = { [cc]: false, [cd]: "Boolean" }, U = { [cf]: d, [cg]: [{ [ch]: "Accelerate" }, true] }, V = { [cf]: d, [cg]: [{ [ch]: "UseFIPS" }, true] }, W = { [cf]: d, [cg]: [{ [ch]: "UseDualStack" }, true] }, X = { [cf]: c, [cg]: [{ [ch]: "Endpoint" }] }, Y = { [cf]: f, [cg]: [{ [ch]: "Region" }], [ci]: "partitionResult" }, Z = { [cf]: g, [cg]: [{ [cf]: h, [cg]: [{ [ch]: "partitionResult" }, i] }, "aws-cn"] }, aa = { [cf]: c, [cg]: [{ [ch]: "Bucket" }] }, ab = { [ch]: "Bucket" }, ac = { [cf]: l, [cg]: [{ [ch]: "Endpoint" }], [ci]: "url" }, ad = { [cf]: d, [cg]: [{ [cf]: h, [cg]: [{ [ch]: "url" }, "isIp"] }, true] }, ae = { [ch]: "url" }, af = { [cf]: "uriEncode", [cg]: [ab], [ci]: "uri_encoded_bucket" }, ag = { [cl]: "S3Express", [cm]: [{ [cn]: true, [i]: "sigv4", [co]: "s3express", [cp]: "{Region}" }] }, ah = {}, ai = { [cf]: p, [cg]: [ab, false] }, aj = { [e]: "S3Express bucket name is not a valid virtual hostable name.", [cd]: e }, ak = { [cl]: "S3Express", [cm]: [{ [cn]: true, [i]: "sigv4-s3express", [co]: "s3express", [cp]: "{Region}" }] }, al = { [cf]: c, [cg]: [{ [ch]: "UseS3ExpressControlEndpoint" }] }, am = { [cf]: d, [cg]: [{ [ch]: "UseS3ExpressControlEndpoint" }, true] }, an = { [cf]: r, [cg]: [X] }, ao = { [e]: "Unrecognized S3Express bucket name format.", [cd]: e }, ap = { [cf]: r, [cg]: [aa] }, aq = { [ch]: t }, ar = { [ce]: [an], [e]: "Expected a endpoint to be specified but no endpoint was found", [cd]: e }, as = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: y, [cp]: "{Region}" }] }, at = { [cf]: d, [cg]: [{ [ch]: "ForcePathStyle" }, false] }, au = { [ch]: "ForcePathStyle" }, av = { [cf]: d, [cg]: [{ [ch]: "Accelerate" }, false] }, aw = { [cf]: g, [cg]: [{ [ch]: "Region" }, "aws-global"] }, ax = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: z, [cp]: "us-east-1" }] }, ay = { [cf]: r, [cg]: [aw] }, az = { [cf]: d, [cg]: [{ [ch]: "UseGlobalEndpoint" }, true] }, aA = { [cj]: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [ck]: { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: z, [cp]: "{Region}" }] }, [cq]: {} }, aB = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: z, [cp]: "{Region}" }] }, aC = { [cf]: d, [cg]: [{ [ch]: "UseGlobalEndpoint" }, false] }, aD = { [cf]: d, [cg]: [{ [ch]: "UseDualStack" }, false] }, aE = { [cj]: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, aF = { [cf]: d, [cg]: [{ [ch]: "UseFIPS" }, false] }, aG = { [cj]: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, aH = { [cj]: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, aI = { [cf]: d, [cg]: [{ [cf]: h, [cg]: [ae, "isIp"] }, false] }, aJ = { [cj]: A, [ck]: aB, [cq]: {} }, aK = { [cj]: q, [ck]: aB, [cq]: {} }, aL = { [n]: aK, [cd]: n }, aM = { [cj]: B, [ck]: aB, [cq]: {} }, aN = { [cj]: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, aO = { [e]: "Invalid region: region was not a valid DNS name.", [cd]: e }, aP = { [ch]: E }, aQ = { [ch]: F }, aR = { [cf]: h, [cg]: [aP, "service"] }, aS = { [ch]: J }, aT = { [ce]: [W], [e]: "S3 Object Lambda does not support Dual-stack", [cd]: e }, aU = { [ce]: [U], [e]: "S3 Object Lambda does not support S3 Accelerate", [cd]: e }, aV = { [ce]: [{ [cf]: c, [cg]: [{ [ch]: "DisableAccessPoints" }] }, { [cf]: d, [cg]: [{ [ch]: "DisableAccessPoints" }, true] }], [e]: "Access points are not supported for this operation", [cd]: e }, aW = { [ce]: [{ [cf]: c, [cg]: [{ [ch]: "UseArnRegion" }] }, { [cf]: d, [cg]: [{ [ch]: "UseArnRegion" }, false] }, { [cf]: r, [cg]: [{ [cf]: g, [cg]: [{ [cf]: h, [cg]: [aP, "region"] }, "{Region}"] }] }], [e]: "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`", [cd]: e }, aX = { [cf]: h, [cg]: [{ [ch]: "bucketPartition" }, i] }, aY = { [cf]: h, [cg]: [aP, "accountId"] }, aZ = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: H, [cp]: "{bucketArn#region}" }] }, ba = { [e]: "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`", [cd]: e }, bb = { [e]: "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`", [cd]: e }, bc = { [e]: "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)", [cd]: e }, bd = { [e]: "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`", [cd]: e }, be = { [e]: "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.", [cd]: e }, bf = { [e]: "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided", [cd]: e }, bg = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: z, [cp]: "{bucketArn#region}" }] }, bh = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: y, [cp]: "{bucketArn#region}" }] }, bi = { [cf]: D, [cg]: [ab] }, bj = { [cj]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: aB, [cq]: {} }, bk = { [cj]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: aB, [cq]: {} }, bl = { [cj]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: aB, [cq]: {} }, bm = { [cj]: O, [ck]: aB, [cq]: {} }, bn = { [cj]: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: aB, [cq]: {} }, bo = { [ch]: "UseObjectLambdaEndpoint" }, bp = { [cm]: [{ [cn]: true, [i]: "sigv4", [co]: H, [cp]: "{Region}" }] }, bq = { [cj]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, br = { [cj]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, bs = { [cj]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, bt = { [cj]: s, [ck]: aB, [cq]: {} }, bu = { [cj]: "https://s3.{Region}.{partitionResult#dnsSuffix}", [ck]: aB, [cq]: {} }, bv = [{ [ch]: "Region" }], bw = [{ [ch]: "Endpoint" }], bx = [ab], by = [W], bz = [U], bA = [X, ac], bB = [{ [cf]: c, [cg]: [{ [ch]: "DisableS3ExpressSessionAuth" }] }, { [cf]: d, [cg]: [{ [ch]: "DisableS3ExpressSessionAuth" }, true] }], bC = [ad], bD = [af], bE = [ai], bF = [V], bG = [{ [cf]: j, [cg]: [ab, 6, 14, true], [ci]: "s3expressAvailabilityZoneId" }, { [cf]: j, [cg]: [ab, 14, 16, true], [ci]: "s3expressAvailabilityZoneDelim" }, { [cf]: g, [cg]: [{ [ch]: "s3expressAvailabilityZoneDelim" }, "--"] }], bH = [{ [ce]: [V], [n]: { [cj]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [ck]: ag, [cq]: {} }, [cd]: n }, { [n]: { [cj]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [ck]: ag, [cq]: {} }, [cd]: n }], bI = [{ [cf]: j, [cg]: [ab, 6, 15, true], [ci]: "s3expressAvailabilityZoneId" }, { [cf]: j, [cg]: [ab, 15, 17, true], [ci]: "s3expressAvailabilityZoneDelim" }, { [cf]: g, [cg]: [{ [ch]: "s3expressAvailabilityZoneDelim" }, "--"] }], bJ = [{ [ce]: [V], [n]: { [cj]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [ck]: ak, [cq]: {} }, [cd]: n }, { [n]: { [cj]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [ck]: ak, [cq]: {} }, [cd]: n }], bK = [aa], bL = [{ [cf]: x, [cg]: [{ [ch]: w }, false] }], bM = [{ [cf]: g, [cg]: [{ [ch]: u }, "beta"] }], bN = [Y], bO = [{ [cf]: x, [cg]: [{ [ch]: "Region" }, false] }], bP = [{ [cf]: g, [cg]: [{ [ch]: "Region" }, "us-east-1"] }], bQ = [{ [cf]: g, [cg]: [aQ, I] }], bR = [{ [cf]: h, [cg]: [aP, "resourceId[1]"], [ci]: J }, { [cf]: r, [cg]: [{ [cf]: g, [cg]: [aS, G] }] }], bS = [aP, "resourceId[1]"], bT = [{ [cf]: r, [cg]: [{ [cf]: g, [cg]: [{ [cf]: h, [cg]: [aP, "region"] }, G] }] }], bU = [{ [cf]: r, [cg]: [{ [cf]: c, [cg]: [{ [cf]: h, [cg]: [aP, "resourceId[2]"] }] }] }], bV = [aP, "resourceId[2]"], bW = [{ [cf]: f, [cg]: [{ [cf]: h, [cg]: [aP, "region"] }], [ci]: "bucketPartition" }], bX = [{ [cf]: g, [cg]: [aX, { [cf]: h, [cg]: [{ [ch]: "partitionResult" }, i] }] }], bY = [{ [cf]: x, [cg]: [{ [cf]: h, [cg]: [aP, "region"] }, true] }], bZ = [{ [cf]: x, [cg]: [aY, false] }], ca = [{ [cf]: x, [cg]: [aS, false] }], cb = [{ [cf]: x, [cg]: [{ [ch]: "Region" }, true] }];
-const _data = { version: "1.0", parameters: { Bucket: R, Region: R, UseFIPS: S, UseDualStack: S, Endpoint: R, ForcePathStyle: S, Accelerate: S, UseGlobalEndpoint: S, UseObjectLambdaEndpoint: T, Key: R, Prefix: R, DisableAccessPoints: T, DisableMultiRegionAccessPoints: S, UseArnRegion: T, UseS3ExpressControlEndpoint: T, DisableS3ExpressSessionAuth: T }, rules: [{ [ce]: [{ [cf]: c, [cg]: bv }], rules: [{ [ce]: [U, V], error: "Accelerate cannot be used with FIPS", [cd]: e }, { [ce]: [W, X], error: "Cannot set dual-stack in combination with a custom endpoint.", [cd]: e }, { [ce]: [X, V], error: "A custom endpoint cannot be combined with FIPS", [cd]: e }, { [ce]: [X, U], error: "A custom endpoint cannot be combined with S3 Accelerate", [cd]: e }, { [ce]: [V, Y, Z], error: "Partition does not support FIPS", [cd]: e }, { [ce]: [aa, { [cf]: j, [cg]: [ab, 0, 6, b], [ci]: k }, { [cf]: g, [cg]: [{ [ch]: k }, "--x-s3"] }], rules: [{ [ce]: by, error: "S3Express does not support Dual-stack.", [cd]: e }, { [ce]: bz, error: "S3Express does not support S3 Accelerate.", [cd]: e }, { [ce]: bA, rules: [{ [ce]: bB, rules: [{ [ce]: bC, rules: [{ [ce]: bD, rules: [{ endpoint: { [cj]: m, [ck]: ag, [cq]: ah }, [cd]: n }], [cd]: o }], [cd]: o }, { [ce]: bE, rules: [{ endpoint: { [cj]: q, [ck]: ag, [cq]: ah }, [cd]: n }], [cd]: o }, aj], [cd]: o }, { [ce]: bC, rules: [{ [ce]: bD, rules: [{ endpoint: { [cj]: m, [ck]: ak, [cq]: ah }, [cd]: n }], [cd]: o }], [cd]: o }, { [ce]: bE, rules: [{ endpoint: { [cj]: q, [ck]: ak, [cq]: ah }, [cd]: n }], [cd]: o }, aj], [cd]: o }, { [ce]: [al, am], rules: [{ [ce]: [af, an], rules: [{ [ce]: bF, endpoint: { [cj]: "https://s3express-control-fips.{Region}.amazonaws.com/{uri_encoded_bucket}", [ck]: ag, [cq]: ah }, [cd]: n }, { endpoint: { [cj]: "https://s3express-control.{Region}.amazonaws.com/{uri_encoded_bucket}", [ck]: ag, [cq]: ah }, [cd]: n }], [cd]: o }], [cd]: o }, { [ce]: bE, rules: [{ [ce]: bB, rules: [{ [ce]: bG, rules: bH, [cd]: o }, { [ce]: bI, rules: bH, [cd]: o }, ao], [cd]: o }, { [ce]: bG, rules: bJ, [cd]: o }, { [ce]: bI, rules: bJ, [cd]: o }, ao], [cd]: o }, aj], [cd]: o }, { [ce]: [ap, al, am], rules: [{ [ce]: bA, endpoint: { [cj]: s, [ck]: ag, [cq]: ah }, [cd]: n }, { [ce]: bF, endpoint: { [cj]: "https://s3express-control-fips.{Region}.amazonaws.com", [ck]: ag, [cq]: ah }, [cd]: n }, { endpoint: { [cj]: "https://s3express-control.{Region}.amazonaws.com", [ck]: ag, [cq]: ah }, [cd]: n }], [cd]: o }, { [ce]: [aa, { [cf]: j, [cg]: [ab, 49, 50, b], [ci]: t }, { [cf]: j, [cg]: [ab, 8, 12, b], [ci]: u }, { [cf]: j, [cg]: [ab, 0, 7, b], [ci]: v }, { [cf]: j, [cg]: [ab, 32, 49, b], [ci]: w }, { [cf]: f, [cg]: bv, [ci]: "regionPartition" }, { [cf]: g, [cg]: [{ [ch]: v }, "--op-s3"] }], rules: [{ [ce]: bL, rules: [{ [ce]: [{ [cf]: g, [cg]: [aq, "e"] }], rules: [{ [ce]: bM, rules: [ar, { [ce]: bA, endpoint: { [cj]: "https://{Bucket}.ec2.{url#authority}", [ck]: as, [cq]: ah }, [cd]: n }], [cd]: o }, { endpoint: { [cj]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [ck]: as, [cq]: ah }, [cd]: n }], [cd]: o }, { [ce]: [{ [cf]: g, [cg]: [aq, "o"] }], rules: [{ [ce]: bM, rules: [ar, { [ce]: bA, endpoint: { [cj]: "https://{Bucket}.op-{outpostId}.{url#authority}", [ck]: as, [cq]: ah }, [cd]: n }], [cd]: o }, { endpoint: { [cj]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [ck]: as, [cq]: ah }, [cd]: n }], [cd]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [cd]: e }], [cd]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [cd]: e }], [cd]: o }, { [ce]: bK, rules: [{ [ce]: [X, { [cf]: r, [cg]: [{ [cf]: c, [cg]: [{ [cf]: l, [cg]: bw }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [cd]: e }, { [ce]: [at, ai], rules: [{ [ce]: bN, rules: [{ [ce]: bO, rules: [{ [ce]: [U, Z], error: "S3 Accelerate cannot be used in this region", [cd]: e }, { [ce]: [W, V, av, an, aw], endpoint: { [cj]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [W, V, av, an, ay, az], rules: [{ endpoint: aA, [cd]: n }], [cd]: o }, { [ce]: [W, V, av, an, ay, aC], endpoint: aA, [cd]: n }, { [ce]: [aD, V, av, an, aw], endpoint: { [cj]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, V, av, an, ay, az], rules: [{ endpoint: aE, [cd]: n }], [cd]: o }, { [ce]: [aD, V, av, an, ay, aC], endpoint: aE, [cd]: n }, { [ce]: [W, aF, U, an, aw], endpoint: { [cj]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [W, aF, U, an, ay, az], rules: [{ endpoint: aG, [cd]: n }], [cd]: o }, { [ce]: [W, aF, U, an, ay, aC], endpoint: aG, [cd]: n }, { [ce]: [W, aF, av, an, aw], endpoint: { [cj]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [W, aF, av, an, ay, az], rules: [{ endpoint: aH, [cd]: n }], [cd]: o }, { [ce]: [W, aF, av, an, ay, aC], endpoint: aH, [cd]: n }, { [ce]: [aD, aF, av, X, ac, ad, aw], endpoint: { [cj]: A, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, aF, av, X, ac, aI, aw], endpoint: { [cj]: q, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, aF, av, X, ac, ad, ay, az], rules: [{ [ce]: bP, endpoint: aJ, [cd]: n }, { endpoint: aJ, [cd]: n }], [cd]: o }, { [ce]: [aD, aF, av, X, ac, aI, ay, az], rules: [{ [ce]: bP, endpoint: aK, [cd]: n }, aL], [cd]: o }, { [ce]: [aD, aF, av, X, ac, ad, ay, aC], endpoint: aJ, [cd]: n }, { [ce]: [aD, aF, av, X, ac, aI, ay, aC], endpoint: aK, [cd]: n }, { [ce]: [aD, aF, U, an, aw], endpoint: { [cj]: B, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, aF, U, an, ay, az], rules: [{ [ce]: bP, endpoint: aM, [cd]: n }, { endpoint: aM, [cd]: n }], [cd]: o }, { [ce]: [aD, aF, U, an, ay, aC], endpoint: aM, [cd]: n }, { [ce]: [aD, aF, av, an, aw], endpoint: { [cj]: C, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, aF, av, an, ay, az], rules: [{ [ce]: bP, endpoint: { [cj]: C, [ck]: aB, [cq]: ah }, [cd]: n }, { endpoint: aN, [cd]: n }], [cd]: o }, { [ce]: [aD, aF, av, an, ay, aC], endpoint: aN, [cd]: n }], [cd]: o }, aO], [cd]: o }], [cd]: o }, { [ce]: [X, ac, { [cf]: g, [cg]: [{ [cf]: h, [cg]: [ae, "scheme"] }, "http"] }, { [cf]: p, [cg]: [ab, b] }, at, aF, aD, av], rules: [{ [ce]: bN, rules: [{ [ce]: bO, rules: [aL], [cd]: o }, aO], [cd]: o }], [cd]: o }, { [ce]: [at, { [cf]: D, [cg]: bx, [ci]: E }], rules: [{ [ce]: [{ [cf]: h, [cg]: [aP, "resourceId[0]"], [ci]: F }, { [cf]: r, [cg]: [{ [cf]: g, [cg]: [aQ, G] }] }], rules: [{ [ce]: [{ [cf]: g, [cg]: [aR, H] }], rules: [{ [ce]: bQ, rules: [{ [ce]: bR, rules: [aT, aU, { [ce]: bT, rules: [aV, { [ce]: bU, rules: [aW, { [ce]: bW, rules: [{ [ce]: bN, rules: [{ [ce]: bX, rules: [{ [ce]: bY, rules: [{ [ce]: [{ [cf]: g, [cg]: [aY, G] }], error: "Invalid ARN: Missing account id", [cd]: e }, { [ce]: bZ, rules: [{ [ce]: ca, rules: [{ [ce]: bA, endpoint: { [cj]: K, [ck]: aZ, [cq]: ah }, [cd]: n }, { [ce]: bF, endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: aZ, [cq]: ah }, [cd]: n }, { endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: aZ, [cq]: ah }, [cd]: n }], [cd]: o }, ba], [cd]: o }, bb], [cd]: o }, bc], [cd]: o }, bd], [cd]: o }], [cd]: o }], [cd]: o }, be], [cd]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [cd]: e }], [cd]: o }, bf], [cd]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [cd]: e }], [cd]: o }, { [ce]: bQ, rules: [{ [ce]: bR, rules: [{ [ce]: bT, rules: [{ [ce]: bQ, rules: [{ [ce]: bT, rules: [aV, { [ce]: bU, rules: [aW, { [ce]: bW, rules: [{ [ce]: bN, rules: [{ [ce]: [{ [cf]: g, [cg]: [aX, "{partitionResult#name}"] }], rules: [{ [ce]: bY, rules: [{ [ce]: [{ [cf]: g, [cg]: [aR, z] }], rules: [{ [ce]: bZ, rules: [{ [ce]: ca, rules: [{ [ce]: bz, error: "Access Points do not support S3 Accelerate", [cd]: e }, { [ce]: [V, W], endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: bg, [cq]: ah }, [cd]: n }, { [ce]: [V, aD], endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: bg, [cq]: ah }, [cd]: n }, { [ce]: [aF, W], endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: bg, [cq]: ah }, [cd]: n }, { [ce]: [aF, aD, X, ac], endpoint: { [cj]: K, [ck]: bg, [cq]: ah }, [cd]: n }, { [ce]: [aF, aD], endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: bg, [cq]: ah }, [cd]: n }], [cd]: o }, ba], [cd]: o }, bb], [cd]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [cd]: e }], [cd]: o }, bc], [cd]: o }, bd], [cd]: o }], [cd]: o }], [cd]: o }, be], [cd]: o }], [cd]: o }], [cd]: o }, { [ce]: [{ [cf]: x, [cg]: [aS, b] }], rules: [{ [ce]: by, error: "S3 MRAP does not support dual-stack", [cd]: e }, { [ce]: bF, error: "S3 MRAP does not support FIPS", [cd]: e }, { [ce]: bz, error: "S3 MRAP does not support S3 Accelerate", [cd]: e }, { [ce]: [{ [cf]: d, [cg]: [{ [ch]: "DisableMultiRegionAccessPoints" }, b] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [cd]: e }, { [ce]: [{ [cf]: f, [cg]: bv, [ci]: L }], rules: [{ [ce]: [{ [cf]: g, [cg]: [{ [cf]: h, [cg]: [{ [ch]: L }, i] }, { [cf]: h, [cg]: [aP, "partition"] }] }], rules: [{ endpoint: { [cj]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [ck]: { [cm]: [{ [cn]: b, name: "sigv4a", [co]: z, signingRegionSet: ["*"] }] }, [cq]: ah }, [cd]: n }], [cd]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [cd]: e }], [cd]: o }], [cd]: o }, { error: "Invalid Access Point Name", [cd]: e }], [cd]: o }, bf], [cd]: o }, { [ce]: [{ [cf]: g, [cg]: [aR, y] }], rules: [{ [ce]: by, error: "S3 Outposts does not support Dual-stack", [cd]: e }, { [ce]: bF, error: "S3 Outposts does not support FIPS", [cd]: e }, { [ce]: bz, error: "S3 Outposts does not support S3 Accelerate", [cd]: e }, { [ce]: [{ [cf]: c, [cg]: [{ [cf]: h, [cg]: [aP, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [cd]: e }, { [ce]: [{ [cf]: h, [cg]: bS, [ci]: w }], rules: [{ [ce]: bL, rules: [aW, { [ce]: bW, rules: [{ [ce]: bN, rules: [{ [ce]: bX, rules: [{ [ce]: bY, rules: [{ [ce]: bZ, rules: [{ [ce]: [{ [cf]: h, [cg]: bV, [ci]: M }], rules: [{ [ce]: [{ [cf]: h, [cg]: [aP, "resourceId[3]"], [ci]: J }], rules: [{ [ce]: [{ [cf]: g, [cg]: [{ [ch]: M }, I] }], rules: [{ [ce]: bA, endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [ck]: bh, [cq]: ah }, [cd]: n }, { endpoint: { [cj]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [ck]: bh, [cq]: ah }, [cd]: n }], [cd]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [cd]: e }], [cd]: o }, { error: "Invalid ARN: expected an access point name", [cd]: e }], [cd]: o }, { error: "Invalid ARN: Expected a 4-component resource", [cd]: e }], [cd]: o }, bb], [cd]: o }, bc], [cd]: o }, bd], [cd]: o }], [cd]: o }], [cd]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [cd]: e }], [cd]: o }, { error: "Invalid ARN: The Outpost Id was not set", [cd]: e }], [cd]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [cd]: e }], [cd]: o }, { error: "Invalid ARN: No ARN type specified", [cd]: e }], [cd]: o }, { [ce]: [{ [cf]: j, [cg]: [ab, 0, 4, a], [ci]: N }, { [cf]: g, [cg]: [{ [ch]: N }, "arn:"] }, { [cf]: r, [cg]: [{ [cf]: c, [cg]: [bi] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [cd]: e }, { [ce]: [{ [cf]: d, [cg]: [au, b] }, bi], error: "Path-style addressing cannot be used with ARN buckets", [cd]: e }, { [ce]: bD, rules: [{ [ce]: bN, rules: [{ [ce]: [av], rules: [{ [ce]: [W, an, V, aw], endpoint: { [cj]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [W, an, V, ay, az], rules: [{ endpoint: bj, [cd]: n }], [cd]: o }, { [ce]: [W, an, V, ay, aC], endpoint: bj, [cd]: n }, { [ce]: [aD, an, V, aw], endpoint: { [cj]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, an, V, ay, az], rules: [{ endpoint: bk, [cd]: n }], [cd]: o }, { [ce]: [aD, an, V, ay, aC], endpoint: bk, [cd]: n }, { [ce]: [W, an, aF, aw], endpoint: { [cj]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [W, an, aF, ay, az], rules: [{ endpoint: bl, [cd]: n }], [cd]: o }, { [ce]: [W, an, aF, ay, aC], endpoint: bl, [cd]: n }, { [ce]: [aD, X, ac, aF, aw], endpoint: { [cj]: O, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, X, ac, aF, ay, az], rules: [{ [ce]: bP, endpoint: bm, [cd]: n }, { endpoint: bm, [cd]: n }], [cd]: o }, { [ce]: [aD, X, ac, aF, ay, aC], endpoint: bm, [cd]: n }, { [ce]: [aD, an, aF, aw], endpoint: { [cj]: P, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aD, an, aF, ay, az], rules: [{ [ce]: bP, endpoint: { [cj]: P, [ck]: aB, [cq]: ah }, [cd]: n }, { endpoint: bn, [cd]: n }], [cd]: o }, { [ce]: [aD, an, aF, ay, aC], endpoint: bn, [cd]: n }], [cd]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [cd]: e }], [cd]: o }], [cd]: o }], [cd]: o }, { [ce]: [{ [cf]: c, [cg]: [bo] }, { [cf]: d, [cg]: [bo, b] }], rules: [{ [ce]: bN, rules: [{ [ce]: cb, rules: [aT, aU, { [ce]: bA, endpoint: { [cj]: s, [ck]: bp, [cq]: ah }, [cd]: n }, { [ce]: bF, endpoint: { [cj]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [ck]: bp, [cq]: ah }, [cd]: n }, { endpoint: { [cj]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [ck]: bp, [cq]: ah }, [cd]: n }], [cd]: o }, aO], [cd]: o }], [cd]: o }, { [ce]: [ap], rules: [{ [ce]: bN, rules: [{ [ce]: cb, rules: [{ [ce]: [V, W, an, aw], endpoint: { [cj]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [V, W, an, ay, az], rules: [{ endpoint: bq, [cd]: n }], [cd]: o }, { [ce]: [V, W, an, ay, aC], endpoint: bq, [cd]: n }, { [ce]: [V, aD, an, aw], endpoint: { [cj]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [V, aD, an, ay, az], rules: [{ endpoint: br, [cd]: n }], [cd]: o }, { [ce]: [V, aD, an, ay, aC], endpoint: br, [cd]: n }, { [ce]: [aF, W, an, aw], endpoint: { [cj]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aF, W, an, ay, az], rules: [{ endpoint: bs, [cd]: n }], [cd]: o }, { [ce]: [aF, W, an, ay, aC], endpoint: bs, [cd]: n }, { [ce]: [aF, aD, X, ac, aw], endpoint: { [cj]: s, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aF, aD, X, ac, ay, az], rules: [{ [ce]: bP, endpoint: bt, [cd]: n }, { endpoint: bt, [cd]: n }], [cd]: o }, { [ce]: [aF, aD, X, ac, ay, aC], endpoint: bt, [cd]: n }, { [ce]: [aF, aD, an, aw], endpoint: { [cj]: Q, [ck]: ax, [cq]: ah }, [cd]: n }, { [ce]: [aF, aD, an, ay, az], rules: [{ [ce]: bP, endpoint: { [cj]: Q, [ck]: aB, [cq]: ah }, [cd]: n }, { endpoint: bu, [cd]: n }], [cd]: o }, { [ce]: [aF, aD, an, ay, aC], endpoint: bu, [cd]: n }], [cd]: o }, aO], [cd]: o }], [cd]: o }], [cd]: o }, { error: "A region must be set when sending requests to S3.", [cd]: e }] };
+const ce = "required", cf = "type", cg = "conditions", ch = "fn", ci = "argv", cj = "ref", ck = "assign", cl = "url", cm = "properties", cn = "backend", co = "authSchemes", cp = "disableDoubleEncoding", cq = "signingName", cr = "signingRegion", cs = "headers", ct = "signingRegionSet";
+const a = false, b = true, c = "isSet", d = "booleanEquals", e = "error", f = "aws.partition", g = "stringEquals", h = "getAttr", i = "name", j = "substring", k = "bucketSuffix", l = "parseURL", m = "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", n = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "{url#scheme}://{url#authority}{url#path}", t = "hardwareType", u = "regionPrefix", v = "bucketAliasSuffix", w = "outpostId", x = "isValidHostLabel", y = "sigv4a", z = "s3-outposts", A = "s3", B = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", C = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", D = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", E = "aws.parseArn", F = "bucketArn", G = "arnType", H = "", I = "s3-object-lambda", J = "accesspoint", K = "accessPointName", L = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", M = "mrapPartition", N = "outpostType", O = "arnPrefix", P = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", Q = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}", S = { [ce]: false, [cf]: "String" }, T = { [ce]: true, "default": false, [cf]: "Boolean" }, U = { [ce]: false, [cf]: "Boolean" }, V = { [ch]: d, [ci]: [{ [cj]: "Accelerate" }, true] }, W = { [ch]: d, [ci]: [{ [cj]: "UseFIPS" }, true] }, X = { [ch]: d, [ci]: [{ [cj]: "UseDualStack" }, true] }, Y = { [ch]: c, [ci]: [{ [cj]: "Endpoint" }] }, Z = { [ch]: f, [ci]: [{ [cj]: "Region" }], [ck]: "partitionResult" }, aa = { [ch]: g, [ci]: [{ [ch]: h, [ci]: [{ [cj]: "partitionResult" }, i] }, "aws-cn"] }, ab = { [ch]: c, [ci]: [{ [cj]: "Bucket" }] }, ac = { [cj]: "Bucket" }, ad = { [ch]: l, [ci]: [{ [cj]: "Endpoint" }], [ck]: "url" }, ae = { [ch]: d, [ci]: [{ [ch]: h, [ci]: [{ [cj]: "url" }, "isIp"] }, true] }, af = { [cj]: "url" }, ag = { [ch]: "uriEncode", [ci]: [ac], [ck]: "uri_encoded_bucket" }, ah = { [cn]: "S3Express", [co]: [{ [cp]: true, [i]: "sigv4", [cq]: "s3express", [cr]: "{Region}" }] }, ai = {}, aj = { [ch]: p, [ci]: [ac, false] }, ak = { [e]: "S3Express bucket name is not a valid virtual hostable name.", [cf]: e }, al = { [cn]: "S3Express", [co]: [{ [cp]: true, [i]: "sigv4-s3express", [cq]: "s3express", [cr]: "{Region}" }] }, am = { [ch]: c, [ci]: [{ [cj]: "UseS3ExpressControlEndpoint" }] }, an = { [ch]: d, [ci]: [{ [cj]: "UseS3ExpressControlEndpoint" }, true] }, ao = { [ch]: r, [ci]: [Y] }, ap = { [e]: "Unrecognized S3Express bucket name format.", [cf]: e }, aq = { [ch]: r, [ci]: [ab] }, ar = { [cj]: t }, as = { [cg]: [ao], [e]: "Expected a endpoint to be specified but no endpoint was found", [cf]: e }, at = { [co]: [{ [cp]: true, [i]: y, [cq]: z, [ct]: ["*"] }, { [cp]: true, [i]: "sigv4", [cq]: z, [cr]: "{Region}" }] }, au = { [ch]: d, [ci]: [{ [cj]: "ForcePathStyle" }, false] }, av = { [cj]: "ForcePathStyle" }, aw = { [ch]: d, [ci]: [{ [cj]: "Accelerate" }, false] }, ax = { [ch]: g, [ci]: [{ [cj]: "Region" }, "aws-global"] }, ay = { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: A, [cr]: "us-east-1" }] }, az = { [ch]: r, [ci]: [ax] }, aA = { [ch]: d, [ci]: [{ [cj]: "UseGlobalEndpoint" }, true] }, aB = { [cl]: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cm]: { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: A, [cr]: "{Region}" }] }, [cs]: {} }, aC = { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: A, [cr]: "{Region}" }] }, aD = { [ch]: d, [ci]: [{ [cj]: "UseGlobalEndpoint" }, false] }, aE = { [ch]: d, [ci]: [{ [cj]: "UseDualStack" }, false] }, aF = { [cl]: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, aG = { [ch]: d, [ci]: [{ [cj]: "UseFIPS" }, false] }, aH = { [cl]: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, aI = { [cl]: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, aJ = { [ch]: d, [ci]: [{ [ch]: h, [ci]: [af, "isIp"] }, false] }, aK = { [cl]: B, [cm]: aC, [cs]: {} }, aL = { [cl]: q, [cm]: aC, [cs]: {} }, aM = { [n]: aL, [cf]: n }, aN = { [cl]: C, [cm]: aC, [cs]: {} }, aO = { [cl]: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, aP = { [e]: "Invalid region: region was not a valid DNS name.", [cf]: e }, aQ = { [cj]: F }, aR = { [cj]: G }, aS = { [ch]: h, [ci]: [aQ, "service"] }, aT = { [cj]: K }, aU = { [cg]: [X], [e]: "S3 Object Lambda does not support Dual-stack", [cf]: e }, aV = { [cg]: [V], [e]: "S3 Object Lambda does not support S3 Accelerate", [cf]: e }, aW = { [cg]: [{ [ch]: c, [ci]: [{ [cj]: "DisableAccessPoints" }] }, { [ch]: d, [ci]: [{ [cj]: "DisableAccessPoints" }, true] }], [e]: "Access points are not supported for this operation", [cf]: e }, aX = { [cg]: [{ [ch]: c, [ci]: [{ [cj]: "UseArnRegion" }] }, { [ch]: d, [ci]: [{ [cj]: "UseArnRegion" }, false] }, { [ch]: r, [ci]: [{ [ch]: g, [ci]: [{ [ch]: h, [ci]: [aQ, "region"] }, "{Region}"] }] }], [e]: "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`", [cf]: e }, aY = { [ch]: h, [ci]: [{ [cj]: "bucketPartition" }, i] }, aZ = { [ch]: h, [ci]: [aQ, "accountId"] }, ba = { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: I, [cr]: "{bucketArn#region}" }] }, bb = { [e]: "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`", [cf]: e }, bc = { [e]: "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`", [cf]: e }, bd = { [e]: "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)", [cf]: e }, be = { [e]: "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`", [cf]: e }, bf = { [e]: "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.", [cf]: e }, bg = { [e]: "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided", [cf]: e }, bh = { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: A, [cr]: "{bucketArn#region}" }] }, bi = { [co]: [{ [cp]: true, [i]: y, [cq]: z, [ct]: ["*"] }, { [cp]: true, [i]: "sigv4", [cq]: z, [cr]: "{bucketArn#region}" }] }, bj = { [ch]: E, [ci]: [ac] }, bk = { [cl]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: aC, [cs]: {} }, bl = { [cl]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: aC, [cs]: {} }, bm = { [cl]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: aC, [cs]: {} }, bn = { [cl]: P, [cm]: aC, [cs]: {} }, bo = { [cl]: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: aC, [cs]: {} }, bp = { [cj]: "UseObjectLambdaEndpoint" }, bq = { [co]: [{ [cp]: true, [i]: "sigv4", [cq]: I, [cr]: "{Region}" }] }, br = { [cl]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, bs = { [cl]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, bt = { [cl]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, bu = { [cl]: s, [cm]: aC, [cs]: {} }, bv = { [cl]: "https://s3.{Region}.{partitionResult#dnsSuffix}", [cm]: aC, [cs]: {} }, bw = [{ [cj]: "Region" }], bx = [{ [cj]: "Endpoint" }], by = [ac], bz = [X], bA = [V], bB = [Y, ad], bC = [{ [ch]: c, [ci]: [{ [cj]: "DisableS3ExpressSessionAuth" }] }, { [ch]: d, [ci]: [{ [cj]: "DisableS3ExpressSessionAuth" }, true] }], bD = [ae], bE = [ag], bF = [aj], bG = [W], bH = [{ [ch]: j, [ci]: [ac, 6, 14, true], [ck]: "s3expressAvailabilityZoneId" }, { [ch]: j, [ci]: [ac, 14, 16, true], [ck]: "s3expressAvailabilityZoneDelim" }, { [ch]: g, [ci]: [{ [cj]: "s3expressAvailabilityZoneDelim" }, "--"] }], bI = [{ [cg]: [W], [n]: { [cl]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [cm]: ah, [cs]: {} }, [cf]: n }, { [n]: { [cl]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [cm]: ah, [cs]: {} }, [cf]: n }], bJ = [{ [ch]: j, [ci]: [ac, 6, 15, true], [ck]: "s3expressAvailabilityZoneId" }, { [ch]: j, [ci]: [ac, 15, 17, true], [ck]: "s3expressAvailabilityZoneDelim" }, { [ch]: g, [ci]: [{ [cj]: "s3expressAvailabilityZoneDelim" }, "--"] }], bK = [{ [cg]: [W], [n]: { [cl]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [cm]: al, [cs]: {} }, [cf]: n }, { [n]: { [cl]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.amazonaws.com", [cm]: al, [cs]: {} }, [cf]: n }], bL = [ab], bM = [{ [ch]: x, [ci]: [{ [cj]: w }, false] }], bN = [{ [ch]: g, [ci]: [{ [cj]: u }, "beta"] }], bO = ["*"], bP = [Z], bQ = [{ [ch]: x, [ci]: [{ [cj]: "Region" }, false] }], bR = [{ [ch]: g, [ci]: [{ [cj]: "Region" }, "us-east-1"] }], bS = [{ [ch]: g, [ci]: [aR, J] }], bT = [{ [ch]: h, [ci]: [aQ, "resourceId[1]"], [ck]: K }, { [ch]: r, [ci]: [{ [ch]: g, [ci]: [aT, H] }] }], bU = [aQ, "resourceId[1]"], bV = [{ [ch]: r, [ci]: [{ [ch]: g, [ci]: [{ [ch]: h, [ci]: [aQ, "region"] }, H] }] }], bW = [{ [ch]: r, [ci]: [{ [ch]: c, [ci]: [{ [ch]: h, [ci]: [aQ, "resourceId[2]"] }] }] }], bX = [aQ, "resourceId[2]"], bY = [{ [ch]: f, [ci]: [{ [ch]: h, [ci]: [aQ, "region"] }], [ck]: "bucketPartition" }], bZ = [{ [ch]: g, [ci]: [aY, { [ch]: h, [ci]: [{ [cj]: "partitionResult" }, i] }] }], ca = [{ [ch]: x, [ci]: [{ [ch]: h, [ci]: [aQ, "region"] }, true] }], cb = [{ [ch]: x, [ci]: [aZ, false] }], cc = [{ [ch]: x, [ci]: [aT, false] }], cd = [{ [ch]: x, [ci]: [{ [cj]: "Region" }, true] }];
+const _data = { version: "1.0", parameters: { Bucket: S, Region: S, UseFIPS: T, UseDualStack: T, Endpoint: S, ForcePathStyle: T, Accelerate: T, UseGlobalEndpoint: T, UseObjectLambdaEndpoint: U, Key: S, Prefix: S, DisableAccessPoints: U, DisableMultiRegionAccessPoints: T, UseArnRegion: U, UseS3ExpressControlEndpoint: U, DisableS3ExpressSessionAuth: U }, rules: [{ [cg]: [{ [ch]: c, [ci]: bw }], rules: [{ [cg]: [V, W], error: "Accelerate cannot be used with FIPS", [cf]: e }, { [cg]: [X, Y], error: "Cannot set dual-stack in combination with a custom endpoint.", [cf]: e }, { [cg]: [Y, W], error: "A custom endpoint cannot be combined with FIPS", [cf]: e }, { [cg]: [Y, V], error: "A custom endpoint cannot be combined with S3 Accelerate", [cf]: e }, { [cg]: [W, Z, aa], error: "Partition does not support FIPS", [cf]: e }, { [cg]: [ab, { [ch]: j, [ci]: [ac, 0, 6, b], [ck]: k }, { [ch]: g, [ci]: [{ [cj]: k }, "--x-s3"] }], rules: [{ [cg]: bz, error: "S3Express does not support Dual-stack.", [cf]: e }, { [cg]: bA, error: "S3Express does not support S3 Accelerate.", [cf]: e }, { [cg]: bB, rules: [{ [cg]: bC, rules: [{ [cg]: bD, rules: [{ [cg]: bE, rules: [{ endpoint: { [cl]: m, [cm]: ah, [cs]: ai }, [cf]: n }], [cf]: o }], [cf]: o }, { [cg]: bF, rules: [{ endpoint: { [cl]: q, [cm]: ah, [cs]: ai }, [cf]: n }], [cf]: o }, ak], [cf]: o }, { [cg]: bD, rules: [{ [cg]: bE, rules: [{ endpoint: { [cl]: m, [cm]: al, [cs]: ai }, [cf]: n }], [cf]: o }], [cf]: o }, { [cg]: bF, rules: [{ endpoint: { [cl]: q, [cm]: al, [cs]: ai }, [cf]: n }], [cf]: o }, ak], [cf]: o }, { [cg]: [am, an], rules: [{ [cg]: [ag, ao], rules: [{ [cg]: bG, endpoint: { [cl]: "https://s3express-control-fips.{Region}.amazonaws.com/{uri_encoded_bucket}", [cm]: ah, [cs]: ai }, [cf]: n }, { endpoint: { [cl]: "https://s3express-control.{Region}.amazonaws.com/{uri_encoded_bucket}", [cm]: ah, [cs]: ai }, [cf]: n }], [cf]: o }], [cf]: o }, { [cg]: bF, rules: [{ [cg]: bC, rules: [{ [cg]: bH, rules: bI, [cf]: o }, { [cg]: bJ, rules: bI, [cf]: o }, ap], [cf]: o }, { [cg]: bH, rules: bK, [cf]: o }, { [cg]: bJ, rules: bK, [cf]: o }, ap], [cf]: o }, ak], [cf]: o }, { [cg]: [aq, am, an], rules: [{ [cg]: bB, endpoint: { [cl]: s, [cm]: ah, [cs]: ai }, [cf]: n }, { [cg]: bG, endpoint: { [cl]: "https://s3express-control-fips.{Region}.amazonaws.com", [cm]: ah, [cs]: ai }, [cf]: n }, { endpoint: { [cl]: "https://s3express-control.{Region}.amazonaws.com", [cm]: ah, [cs]: ai }, [cf]: n }], [cf]: o }, { [cg]: [ab, { [ch]: j, [ci]: [ac, 49, 50, b], [ck]: t }, { [ch]: j, [ci]: [ac, 8, 12, b], [ck]: u }, { [ch]: j, [ci]: [ac, 0, 7, b], [ck]: v }, { [ch]: j, [ci]: [ac, 32, 49, b], [ck]: w }, { [ch]: f, [ci]: bw, [ck]: "regionPartition" }, { [ch]: g, [ci]: [{ [cj]: v }, "--op-s3"] }], rules: [{ [cg]: bM, rules: [{ [cg]: [{ [ch]: g, [ci]: [ar, "e"] }], rules: [{ [cg]: bN, rules: [as, { [cg]: bB, endpoint: { [cl]: "https://{Bucket}.ec2.{url#authority}", [cm]: at, [cs]: ai }, [cf]: n }], [cf]: o }, { endpoint: { [cl]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cm]: at, [cs]: ai }, [cf]: n }], [cf]: o }, { [cg]: [{ [ch]: g, [ci]: [ar, "o"] }], rules: [{ [cg]: bN, rules: [as, { [cg]: bB, endpoint: { [cl]: "https://{Bucket}.op-{outpostId}.{url#authority}", [cm]: at, [cs]: ai }, [cf]: n }], [cf]: o }, { endpoint: { [cl]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cm]: at, [cs]: ai }, [cf]: n }], [cf]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [cf]: e }], [cf]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [cf]: e }], [cf]: o }, { [cg]: bL, rules: [{ [cg]: [Y, { [ch]: r, [ci]: [{ [ch]: c, [ci]: [{ [ch]: l, [ci]: bx }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [cf]: e }, { [cg]: [au, aj], rules: [{ [cg]: bP, rules: [{ [cg]: bQ, rules: [{ [cg]: [V, aa], error: "S3 Accelerate cannot be used in this region", [cf]: e }, { [cg]: [X, W, aw, ao, ax], endpoint: { [cl]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [X, W, aw, ao, az, aA], rules: [{ endpoint: aB, [cf]: n }], [cf]: o }, { [cg]: [X, W, aw, ao, az, aD], endpoint: aB, [cf]: n }, { [cg]: [aE, W, aw, ao, ax], endpoint: { [cl]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, W, aw, ao, az, aA], rules: [{ endpoint: aF, [cf]: n }], [cf]: o }, { [cg]: [aE, W, aw, ao, az, aD], endpoint: aF, [cf]: n }, { [cg]: [X, aG, V, ao, ax], endpoint: { [cl]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [X, aG, V, ao, az, aA], rules: [{ endpoint: aH, [cf]: n }], [cf]: o }, { [cg]: [X, aG, V, ao, az, aD], endpoint: aH, [cf]: n }, { [cg]: [X, aG, aw, ao, ax], endpoint: { [cl]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [X, aG, aw, ao, az, aA], rules: [{ endpoint: aI, [cf]: n }], [cf]: o }, { [cg]: [X, aG, aw, ao, az, aD], endpoint: aI, [cf]: n }, { [cg]: [aE, aG, aw, Y, ad, ae, ax], endpoint: { [cl]: B, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, aG, aw, Y, ad, aJ, ax], endpoint: { [cl]: q, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, aG, aw, Y, ad, ae, az, aA], rules: [{ [cg]: bR, endpoint: aK, [cf]: n }, { endpoint: aK, [cf]: n }], [cf]: o }, { [cg]: [aE, aG, aw, Y, ad, aJ, az, aA], rules: [{ [cg]: bR, endpoint: aL, [cf]: n }, aM], [cf]: o }, { [cg]: [aE, aG, aw, Y, ad, ae, az, aD], endpoint: aK, [cf]: n }, { [cg]: [aE, aG, aw, Y, ad, aJ, az, aD], endpoint: aL, [cf]: n }, { [cg]: [aE, aG, V, ao, ax], endpoint: { [cl]: C, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, aG, V, ao, az, aA], rules: [{ [cg]: bR, endpoint: aN, [cf]: n }, { endpoint: aN, [cf]: n }], [cf]: o }, { [cg]: [aE, aG, V, ao, az, aD], endpoint: aN, [cf]: n }, { [cg]: [aE, aG, aw, ao, ax], endpoint: { [cl]: D, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, aG, aw, ao, az, aA], rules: [{ [cg]: bR, endpoint: { [cl]: D, [cm]: aC, [cs]: ai }, [cf]: n }, { endpoint: aO, [cf]: n }], [cf]: o }, { [cg]: [aE, aG, aw, ao, az, aD], endpoint: aO, [cf]: n }], [cf]: o }, aP], [cf]: o }], [cf]: o }, { [cg]: [Y, ad, { [ch]: g, [ci]: [{ [ch]: h, [ci]: [af, "scheme"] }, "http"] }, { [ch]: p, [ci]: [ac, b] }, au, aG, aE, aw], rules: [{ [cg]: bP, rules: [{ [cg]: bQ, rules: [aM], [cf]: o }, aP], [cf]: o }], [cf]: o }, { [cg]: [au, { [ch]: E, [ci]: by, [ck]: F }], rules: [{ [cg]: [{ [ch]: h, [ci]: [aQ, "resourceId[0]"], [ck]: G }, { [ch]: r, [ci]: [{ [ch]: g, [ci]: [aR, H] }] }], rules: [{ [cg]: [{ [ch]: g, [ci]: [aS, I] }], rules: [{ [cg]: bS, rules: [{ [cg]: bT, rules: [aU, aV, { [cg]: bV, rules: [aW, { [cg]: bW, rules: [aX, { [cg]: bY, rules: [{ [cg]: bP, rules: [{ [cg]: bZ, rules: [{ [cg]: ca, rules: [{ [cg]: [{ [ch]: g, [ci]: [aZ, H] }], error: "Invalid ARN: Missing account id", [cf]: e }, { [cg]: cb, rules: [{ [cg]: cc, rules: [{ [cg]: bB, endpoint: { [cl]: L, [cm]: ba, [cs]: ai }, [cf]: n }, { [cg]: bG, endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: ba, [cs]: ai }, [cf]: n }, { endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: ba, [cs]: ai }, [cf]: n }], [cf]: o }, bb], [cf]: o }, bc], [cf]: o }, bd], [cf]: o }, be], [cf]: o }], [cf]: o }], [cf]: o }, bf], [cf]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [cf]: e }], [cf]: o }, bg], [cf]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [cf]: e }], [cf]: o }, { [cg]: bS, rules: [{ [cg]: bT, rules: [{ [cg]: bV, rules: [{ [cg]: bS, rules: [{ [cg]: bV, rules: [aW, { [cg]: bW, rules: [aX, { [cg]: bY, rules: [{ [cg]: bP, rules: [{ [cg]: [{ [ch]: g, [ci]: [aY, "{partitionResult#name}"] }], rules: [{ [cg]: ca, rules: [{ [cg]: [{ [ch]: g, [ci]: [aS, A] }], rules: [{ [cg]: cb, rules: [{ [cg]: cc, rules: [{ [cg]: bA, error: "Access Points do not support S3 Accelerate", [cf]: e }, { [cg]: [W, X], endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: bh, [cs]: ai }, [cf]: n }, { [cg]: [W, aE], endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: bh, [cs]: ai }, [cf]: n }, { [cg]: [aG, X], endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: bh, [cs]: ai }, [cf]: n }, { [cg]: [aG, aE, Y, ad], endpoint: { [cl]: L, [cm]: bh, [cs]: ai }, [cf]: n }, { [cg]: [aG, aE], endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: bh, [cs]: ai }, [cf]: n }], [cf]: o }, bb], [cf]: o }, bc], [cf]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [cf]: e }], [cf]: o }, bd], [cf]: o }, be], [cf]: o }], [cf]: o }], [cf]: o }, bf], [cf]: o }], [cf]: o }], [cf]: o }, { [cg]: [{ [ch]: x, [ci]: [aT, b] }], rules: [{ [cg]: bz, error: "S3 MRAP does not support dual-stack", [cf]: e }, { [cg]: bG, error: "S3 MRAP does not support FIPS", [cf]: e }, { [cg]: bA, error: "S3 MRAP does not support S3 Accelerate", [cf]: e }, { [cg]: [{ [ch]: d, [ci]: [{ [cj]: "DisableMultiRegionAccessPoints" }, b] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [cf]: e }, { [cg]: [{ [ch]: f, [ci]: bw, [ck]: M }], rules: [{ [cg]: [{ [ch]: g, [ci]: [{ [ch]: h, [ci]: [{ [cj]: M }, i] }, { [ch]: h, [ci]: [aQ, "partition"] }] }], rules: [{ endpoint: { [cl]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [cm]: { [co]: [{ [cp]: b, name: y, [cq]: A, [ct]: bO }] }, [cs]: ai }, [cf]: n }], [cf]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [cf]: e }], [cf]: o }], [cf]: o }, { error: "Invalid Access Point Name", [cf]: e }], [cf]: o }, bg], [cf]: o }, { [cg]: [{ [ch]: g, [ci]: [aS, z] }], rules: [{ [cg]: bz, error: "S3 Outposts does not support Dual-stack", [cf]: e }, { [cg]: bG, error: "S3 Outposts does not support FIPS", [cf]: e }, { [cg]: bA, error: "S3 Outposts does not support S3 Accelerate", [cf]: e }, { [cg]: [{ [ch]: c, [ci]: [{ [ch]: h, [ci]: [aQ, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [cf]: e }, { [cg]: [{ [ch]: h, [ci]: bU, [ck]: w }], rules: [{ [cg]: bM, rules: [aX, { [cg]: bY, rules: [{ [cg]: bP, rules: [{ [cg]: bZ, rules: [{ [cg]: ca, rules: [{ [cg]: cb, rules: [{ [cg]: [{ [ch]: h, [ci]: bX, [ck]: N }], rules: [{ [cg]: [{ [ch]: h, [ci]: [aQ, "resourceId[3]"], [ck]: K }], rules: [{ [cg]: [{ [ch]: g, [ci]: [{ [cj]: N }, J] }], rules: [{ [cg]: bB, endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [cm]: bi, [cs]: ai }, [cf]: n }, { endpoint: { [cl]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cm]: bi, [cs]: ai }, [cf]: n }], [cf]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [cf]: e }], [cf]: o }, { error: "Invalid ARN: expected an access point name", [cf]: e }], [cf]: o }, { error: "Invalid ARN: Expected a 4-component resource", [cf]: e }], [cf]: o }, bc], [cf]: o }, bd], [cf]: o }, be], [cf]: o }], [cf]: o }], [cf]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [cf]: e }], [cf]: o }, { error: "Invalid ARN: The Outpost Id was not set", [cf]: e }], [cf]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [cf]: e }], [cf]: o }, { error: "Invalid ARN: No ARN type specified", [cf]: e }], [cf]: o }, { [cg]: [{ [ch]: j, [ci]: [ac, 0, 4, a], [ck]: O }, { [ch]: g, [ci]: [{ [cj]: O }, "arn:"] }, { [ch]: r, [ci]: [{ [ch]: c, [ci]: [bj] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [cf]: e }, { [cg]: [{ [ch]: d, [ci]: [av, b] }, bj], error: "Path-style addressing cannot be used with ARN buckets", [cf]: e }, { [cg]: bE, rules: [{ [cg]: bP, rules: [{ [cg]: [aw], rules: [{ [cg]: [X, ao, W, ax], endpoint: { [cl]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [X, ao, W, az, aA], rules: [{ endpoint: bk, [cf]: n }], [cf]: o }, { [cg]: [X, ao, W, az, aD], endpoint: bk, [cf]: n }, { [cg]: [aE, ao, W, ax], endpoint: { [cl]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, ao, W, az, aA], rules: [{ endpoint: bl, [cf]: n }], [cf]: o }, { [cg]: [aE, ao, W, az, aD], endpoint: bl, [cf]: n }, { [cg]: [X, ao, aG, ax], endpoint: { [cl]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [X, ao, aG, az, aA], rules: [{ endpoint: bm, [cf]: n }], [cf]: o }, { [cg]: [X, ao, aG, az, aD], endpoint: bm, [cf]: n }, { [cg]: [aE, Y, ad, aG, ax], endpoint: { [cl]: P, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, Y, ad, aG, az, aA], rules: [{ [cg]: bR, endpoint: bn, [cf]: n }, { endpoint: bn, [cf]: n }], [cf]: o }, { [cg]: [aE, Y, ad, aG, az, aD], endpoint: bn, [cf]: n }, { [cg]: [aE, ao, aG, ax], endpoint: { [cl]: Q, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aE, ao, aG, az, aA], rules: [{ [cg]: bR, endpoint: { [cl]: Q, [cm]: aC, [cs]: ai }, [cf]: n }, { endpoint: bo, [cf]: n }], [cf]: o }, { [cg]: [aE, ao, aG, az, aD], endpoint: bo, [cf]: n }], [cf]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [cf]: e }], [cf]: o }], [cf]: o }], [cf]: o }, { [cg]: [{ [ch]: c, [ci]: [bp] }, { [ch]: d, [ci]: [bp, b] }], rules: [{ [cg]: bP, rules: [{ [cg]: cd, rules: [aU, aV, { [cg]: bB, endpoint: { [cl]: s, [cm]: bq, [cs]: ai }, [cf]: n }, { [cg]: bG, endpoint: { [cl]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [cm]: bq, [cs]: ai }, [cf]: n }, { endpoint: { [cl]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [cm]: bq, [cs]: ai }, [cf]: n }], [cf]: o }, aP], [cf]: o }], [cf]: o }, { [cg]: [aq], rules: [{ [cg]: bP, rules: [{ [cg]: cd, rules: [{ [cg]: [W, X, ao, ax], endpoint: { [cl]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [W, X, ao, az, aA], rules: [{ endpoint: br, [cf]: n }], [cf]: o }, { [cg]: [W, X, ao, az, aD], endpoint: br, [cf]: n }, { [cg]: [W, aE, ao, ax], endpoint: { [cl]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [W, aE, ao, az, aA], rules: [{ endpoint: bs, [cf]: n }], [cf]: o }, { [cg]: [W, aE, ao, az, aD], endpoint: bs, [cf]: n }, { [cg]: [aG, X, ao, ax], endpoint: { [cl]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aG, X, ao, az, aA], rules: [{ endpoint: bt, [cf]: n }], [cf]: o }, { [cg]: [aG, X, ao, az, aD], endpoint: bt, [cf]: n }, { [cg]: [aG, aE, Y, ad, ax], endpoint: { [cl]: s, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aG, aE, Y, ad, az, aA], rules: [{ [cg]: bR, endpoint: bu, [cf]: n }, { endpoint: bu, [cf]: n }], [cf]: o }, { [cg]: [aG, aE, Y, ad, az, aD], endpoint: bu, [cf]: n }, { [cg]: [aG, aE, ao, ax], endpoint: { [cl]: R, [cm]: ay, [cs]: ai }, [cf]: n }, { [cg]: [aG, aE, ao, az, aA], rules: [{ [cg]: bR, endpoint: { [cl]: R, [cm]: aC, [cs]: ai }, [cf]: n }, { endpoint: bv, [cf]: n }], [cf]: o }, { [cg]: [aG, aE, ao, az, aD], endpoint: bv, [cf]: n }], [cf]: o }, aP], [cf]: o }], [cf]: o }], [cf]: o }, { error: "A region must be set when sending requests to S3.", [cf]: e }] };
 exports.ruleSet = _data;
 
 
@@ -4082,11 +4084,11 @@ var PutBucketInventoryConfigurationRequestFilterSensitiveLog = /* @__PURE__ */ _
 }), "PutBucketInventoryConfigurationRequestFilterSensitiveLog");
 
 // src/protocols/Aws_restXml.ts
+var import_core = __nccwpck_require__(9963);
 var import_xml_builder = __nccwpck_require__(2329);
-var import_core = __nccwpck_require__(5829);
+var import_core2 = __nccwpck_require__(5829);
 var import_protocol_http = __nccwpck_require__(4418);
 
-var import_fast_xml_parser = __nccwpck_require__(2603);
 
 // src/models/models_1.ts
 
@@ -4233,7 +4235,7 @@ var WriteGetObjectResponseRequestFilterSensitiveLog = /* @__PURE__ */ __name((ob
 
 // src/protocols/Aws_restXml.ts
 var se_AbortMultipartUploadCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO]
@@ -4250,7 +4252,7 @@ var se_AbortMultipartUploadCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_AbortMultipartUploadCommand");
 var se_CompleteMultipartUploadCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xacc]: input[_CCRC],
@@ -4283,7 +4285,7 @@ var se_CompleteMultipartUploadCommand = /* @__PURE__ */ __name(async (input, con
   return b.build();
 }, "se_CompleteMultipartUploadCommand");
 var se_CopyObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaa]: input[_ACL],
     [_cc]: input[_CC],
@@ -4342,7 +4344,7 @@ var se_CopyObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_CopyObjectCommand");
 var se_CreateBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaa]: input[_ACL],
@@ -4368,7 +4370,7 @@ var se_CreateBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_CreateBucketCommand");
 var se_CreateMultipartUploadCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaa]: input[_ACL],
     [_cc]: input[_CC],
@@ -4417,7 +4419,7 @@ var se_CreateMultipartUploadCommand = /* @__PURE__ */ __name(async (input, conte
   return b.build();
 }, "se_CreateMultipartUploadCommand");
 var se_CreateSessionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xacsm]: input[_SM]
   });
@@ -4431,7 +4433,7 @@ var se_CreateSessionCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_CreateSessionCommand");
 var se_DeleteBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4442,7 +4444,7 @@ var se_DeleteBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_DeleteBucketCommand");
 var se_DeleteBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4457,7 +4459,7 @@ var se_DeleteBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async 
   return b.build();
 }, "se_DeleteBucketAnalyticsConfigurationCommand");
 var se_DeleteBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4471,7 +4473,7 @@ var se_DeleteBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_DeleteBucketCorsCommand");
 var se_DeleteBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4485,7 +4487,7 @@ var se_DeleteBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, cont
   return b.build();
 }, "se_DeleteBucketEncryptionCommand");
 var se_DeleteBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {};
   b.bp("/");
   b.p("Bucket", () => input.Bucket, "{Bucket}", false);
@@ -4498,7 +4500,7 @@ var se_DeleteBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __na
   return b.build();
 }, "se_DeleteBucketIntelligentTieringConfigurationCommand");
 var se_DeleteBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4513,7 +4515,7 @@ var se_DeleteBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async 
   return b.build();
 }, "se_DeleteBucketInventoryConfigurationCommand");
 var se_DeleteBucketLifecycleCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4527,7 +4529,7 @@ var se_DeleteBucketLifecycleCommand = /* @__PURE__ */ __name(async (input, conte
   return b.build();
 }, "se_DeleteBucketLifecycleCommand");
 var se_DeleteBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4542,7 +4544,7 @@ var se_DeleteBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (i
   return b.build();
 }, "se_DeleteBucketMetricsConfigurationCommand");
 var se_DeleteBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4556,7 +4558,7 @@ var se_DeleteBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (inpu
   return b.build();
 }, "se_DeleteBucketOwnershipControlsCommand");
 var se_DeleteBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4570,7 +4572,7 @@ var se_DeleteBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_DeleteBucketPolicyCommand");
 var se_DeleteBucketReplicationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4584,7 +4586,7 @@ var se_DeleteBucketReplicationCommand = /* @__PURE__ */ __name(async (input, con
   return b.build();
 }, "se_DeleteBucketReplicationCommand");
 var se_DeleteBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4598,7 +4600,7 @@ var se_DeleteBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_DeleteBucketTaggingCommand");
 var se_DeleteBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4612,7 +4614,7 @@ var se_DeleteBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_DeleteBucketWebsiteCommand");
 var se_DeleteObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xam]: input[_MFA],
     [_xarp]: input[_RP],
@@ -4631,7 +4633,7 @@ var se_DeleteObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_DeleteObjectCommand");
 var se_DeleteObjectsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xam]: input[_MFA],
@@ -4658,7 +4660,7 @@ var se_DeleteObjectsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_DeleteObjectsCommand");
 var se_DeleteObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4674,7 +4676,7 @@ var se_DeleteObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_DeleteObjectTaggingCommand");
 var se_DeletePublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4688,7 +4690,7 @@ var se_DeletePublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, con
   return b.build();
 }, "se_DeletePublicAccessBlockCommand");
 var se_GetBucketAccelerateConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO],
     [_xarp]: input[_RP]
@@ -4703,7 +4705,7 @@ var se_GetBucketAccelerateConfigurationCommand = /* @__PURE__ */ __name(async (i
   return b.build();
 }, "se_GetBucketAccelerateConfigurationCommand");
 var se_GetBucketAclCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4717,7 +4719,7 @@ var se_GetBucketAclCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_GetBucketAclCommand");
 var se_GetBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4733,7 +4735,7 @@ var se_GetBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_GetBucketAnalyticsConfigurationCommand");
 var se_GetBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4747,7 +4749,7 @@ var se_GetBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_GetBucketCorsCommand");
 var se_GetBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4761,7 +4763,7 @@ var se_GetBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_GetBucketEncryptionCommand");
 var se_GetBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {};
   b.bp("/");
   b.p("Bucket", () => input.Bucket, "{Bucket}", false);
@@ -4775,7 +4777,7 @@ var se_GetBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(
   return b.build();
 }, "se_GetBucketIntelligentTieringConfigurationCommand");
 var se_GetBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4791,7 +4793,7 @@ var se_GetBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_GetBucketInventoryConfigurationCommand");
 var se_GetBucketLifecycleConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4805,7 +4807,7 @@ var se_GetBucketLifecycleConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_GetBucketLifecycleConfigurationCommand");
 var se_GetBucketLocationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4819,7 +4821,7 @@ var se_GetBucketLocationCommand = /* @__PURE__ */ __name(async (input, context) 
   return b.build();
 }, "se_GetBucketLocationCommand");
 var se_GetBucketLoggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4833,7 +4835,7 @@ var se_GetBucketLoggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_GetBucketLoggingCommand");
 var se_GetBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4849,7 +4851,7 @@ var se_GetBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (inpu
   return b.build();
 }, "se_GetBucketMetricsConfigurationCommand");
 var se_GetBucketNotificationConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4863,7 +4865,7 @@ var se_GetBucketNotificationConfigurationCommand = /* @__PURE__ */ __name(async 
   return b.build();
 }, "se_GetBucketNotificationConfigurationCommand");
 var se_GetBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4877,7 +4879,7 @@ var se_GetBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (input, 
   return b.build();
 }, "se_GetBucketOwnershipControlsCommand");
 var se_GetBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4891,7 +4893,7 @@ var se_GetBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context) =>
   return b.build();
 }, "se_GetBucketPolicyCommand");
 var se_GetBucketPolicyStatusCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4905,7 +4907,7 @@ var se_GetBucketPolicyStatusCommand = /* @__PURE__ */ __name(async (input, conte
   return b.build();
 }, "se_GetBucketPolicyStatusCommand");
 var se_GetBucketReplicationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4919,7 +4921,7 @@ var se_GetBucketReplicationCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_GetBucketReplicationCommand");
 var se_GetBucketRequestPaymentCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4933,7 +4935,7 @@ var se_GetBucketRequestPaymentCommand = /* @__PURE__ */ __name(async (input, con
   return b.build();
 }, "se_GetBucketRequestPaymentCommand");
 var se_GetBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4947,7 +4949,7 @@ var se_GetBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_GetBucketTaggingCommand");
 var se_GetBucketVersioningCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4961,7 +4963,7 @@ var se_GetBucketVersioningCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_GetBucketVersioningCommand");
 var se_GetBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -4975,7 +4977,7 @@ var se_GetBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_GetBucketWebsiteCommand");
 var se_GetObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_im]: input[_IM],
     [_ims]: [() => isSerializableHeaderValue(input[_IMS]), () => (0, import_smithy_client.dateToUtcString)(input[_IMS]).toString()],
@@ -5008,7 +5010,7 @@ var se_GetObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_GetObjectCommand");
 var se_GetObjectAclCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO]
@@ -5025,7 +5027,7 @@ var se_GetObjectAclCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_GetObjectAclCommand");
 var se_GetObjectAttributesCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xamp]: [() => isSerializableHeaderValue(input[_MP]), () => input[_MP].toString()],
     [_xapnm]: input[_PNM],
@@ -5051,7 +5053,7 @@ var se_GetObjectAttributesCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_GetObjectAttributesCommand");
 var se_GetObjectLegalHoldCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO]
@@ -5068,7 +5070,7 @@ var se_GetObjectLegalHoldCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_GetObjectLegalHoldCommand");
 var se_GetObjectLockConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5082,7 +5084,7 @@ var se_GetObjectLockConfigurationCommand = /* @__PURE__ */ __name(async (input, 
   return b.build();
 }, "se_GetObjectLockConfigurationCommand");
 var se_GetObjectRetentionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO]
@@ -5099,7 +5101,7 @@ var se_GetObjectRetentionCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_GetObjectRetentionCommand");
 var se_GetObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO],
     [_xarp]: input[_RP]
@@ -5116,7 +5118,7 @@ var se_GetObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_GetObjectTaggingCommand");
 var se_GetObjectTorrentCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO]
@@ -5132,7 +5134,7 @@ var se_GetObjectTorrentCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_GetObjectTorrentCommand");
 var se_GetPublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5146,7 +5148,7 @@ var se_GetPublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_GetPublicAccessBlockCommand");
 var se_HeadBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5157,7 +5159,7 @@ var se_HeadBucketCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_HeadBucketCommand");
 var se_HeadObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_im]: input[_IM],
     [_ims]: [() => isSerializableHeaderValue(input[_IMS]), () => (0, import_smithy_client.dateToUtcString)(input[_IMS]).toString()],
@@ -5183,7 +5185,7 @@ var se_HeadObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_HeadObjectCommand");
 var se_ListBucketAnalyticsConfigurationsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5199,7 +5201,7 @@ var se_ListBucketAnalyticsConfigurationsCommand = /* @__PURE__ */ __name(async (
   return b.build();
 }, "se_ListBucketAnalyticsConfigurationsCommand");
 var se_ListBucketIntelligentTieringConfigurationsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {};
   b.bp("/");
   b.p("Bucket", () => input.Bucket, "{Bucket}", false);
@@ -5213,7 +5215,7 @@ var se_ListBucketIntelligentTieringConfigurationsCommand = /* @__PURE__ */ __nam
   return b.build();
 }, "se_ListBucketIntelligentTieringConfigurationsCommand");
 var se_ListBucketInventoryConfigurationsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5229,7 +5231,7 @@ var se_ListBucketInventoryConfigurationsCommand = /* @__PURE__ */ __name(async (
   return b.build();
 }, "se_ListBucketInventoryConfigurationsCommand");
 var se_ListBucketMetricsConfigurationsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO]
   });
@@ -5245,7 +5247,7 @@ var se_ListBucketMetricsConfigurationsCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_ListBucketMetricsConfigurationsCommand");
 var se_ListBucketsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {
     "content-type": "application/xml"
   };
@@ -5259,7 +5261,7 @@ var se_ListBucketsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_ListBucketsCommand");
 var se_ListDirectoryBucketsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {};
   b.bp("/");
   const query = (0, import_smithy_client.map)({
@@ -5272,7 +5274,7 @@ var se_ListDirectoryBucketsCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_ListDirectoryBucketsCommand");
 var se_ListMultipartUploadsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO],
     [_xarp]: input[_RP]
@@ -5293,7 +5295,7 @@ var se_ListMultipartUploadsCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_ListMultipartUploadsCommand");
 var se_ListObjectsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO],
@@ -5316,7 +5318,7 @@ var se_ListObjectsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_ListObjectsCommand");
 var se_ListObjectsV2Command = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO],
@@ -5342,7 +5344,7 @@ var se_ListObjectsV2Command = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_ListObjectsV2Command");
 var se_ListObjectVersionsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xaebo]: input[_EBO],
     [_xarp]: input[_RP],
@@ -5367,7 +5369,7 @@ var se_ListObjectVersionsCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_ListObjectVersionsCommand");
 var se_ListPartsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xarp]: input[_RP],
     [_xaebo]: input[_EBO],
@@ -5389,7 +5391,7 @@ var se_ListPartsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_ListPartsCommand");
 var se_PutBucketAccelerateConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaebo]: input[_EBO],
@@ -5412,7 +5414,7 @@ var se_PutBucketAccelerateConfigurationCommand = /* @__PURE__ */ __name(async (i
   return b.build();
 }, "se_PutBucketAccelerateConfigurationCommand");
 var se_PutBucketAclCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaa]: input[_ACL],
@@ -5442,7 +5444,7 @@ var se_PutBucketAclCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_PutBucketAclCommand");
 var se_PutBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaebo]: input[_EBO]
@@ -5465,7 +5467,7 @@ var se_PutBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_PutBucketAnalyticsConfigurationCommand");
 var se_PutBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5489,7 +5491,7 @@ var se_PutBucketCorsCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_PutBucketCorsCommand");
 var se_PutBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5513,7 +5515,7 @@ var se_PutBucketEncryptionCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_PutBucketEncryptionCommand");
 var se_PutBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = {
     "content-type": "application/xml"
   };
@@ -5535,7 +5537,7 @@ var se_PutBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(
   return b.build();
 }, "se_PutBucketIntelligentTieringConfigurationCommand");
 var se_PutBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaebo]: input[_EBO]
@@ -5558,7 +5560,7 @@ var se_PutBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_PutBucketInventoryConfigurationCommand");
 var se_PutBucketLifecycleConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xasca]: input[_CA],
@@ -5582,7 +5584,7 @@ var se_PutBucketLifecycleConfigurationCommand = /* @__PURE__ */ __name(async (in
   return b.build();
 }, "se_PutBucketLifecycleConfigurationCommand");
 var se_PutBucketLoggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5606,7 +5608,7 @@ var se_PutBucketLoggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_PutBucketLoggingCommand");
 var se_PutBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaebo]: input[_EBO]
@@ -5629,7 +5631,7 @@ var se_PutBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (inpu
   return b.build();
 }, "se_PutBucketMetricsConfigurationCommand");
 var se_PutBucketNotificationConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaebo]: input[_EBO],
@@ -5652,7 +5654,7 @@ var se_PutBucketNotificationConfigurationCommand = /* @__PURE__ */ __name(async 
   return b.build();
 }, "se_PutBucketNotificationConfigurationCommand");
 var se_PutBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5675,7 +5677,7 @@ var se_PutBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (input, 
   return b.build();
 }, "se_PutBucketOwnershipControlsCommand");
 var se_PutBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "text/plain",
     [_cm]: input[_CMD],
@@ -5698,7 +5700,7 @@ var se_PutBucketPolicyCommand = /* @__PURE__ */ __name(async (input, context) =>
   return b.build();
 }, "se_PutBucketPolicyCommand");
 var se_PutBucketReplicationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5723,7 +5725,7 @@ var se_PutBucketReplicationCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_PutBucketReplicationCommand");
 var se_PutBucketRequestPaymentCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5747,7 +5749,7 @@ var se_PutBucketRequestPaymentCommand = /* @__PURE__ */ __name(async (input, con
   return b.build();
 }, "se_PutBucketRequestPaymentCommand");
 var se_PutBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5771,7 +5773,7 @@ var se_PutBucketTaggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_PutBucketTaggingCommand");
 var se_PutBucketVersioningCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5796,7 +5798,7 @@ var se_PutBucketVersioningCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_PutBucketVersioningCommand");
 var se_PutBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -5820,7 +5822,7 @@ var se_PutBucketWebsiteCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_PutBucketWebsiteCommand");
 var se_PutObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_ct]: input[_CT] || "application/octet-stream",
     [_xaa]: input[_ACL],
@@ -5879,7 +5881,7 @@ var se_PutObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_PutObjectCommand");
 var se_PutObjectAclCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xaa]: input[_ACL],
@@ -5912,7 +5914,7 @@ var se_PutObjectAclCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_PutObjectAclCommand");
 var se_PutObjectLegalHoldCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xarp]: input[_RP],
@@ -5940,7 +5942,7 @@ var se_PutObjectLegalHoldCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_PutObjectLegalHoldCommand");
 var se_PutObjectLockConfigurationCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xarp]: input[_RP],
@@ -5966,7 +5968,7 @@ var se_PutObjectLockConfigurationCommand = /* @__PURE__ */ __name(async (input, 
   return b.build();
 }, "se_PutObjectLockConfigurationCommand");
 var se_PutObjectRetentionCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xarp]: input[_RP],
@@ -5995,7 +5997,7 @@ var se_PutObjectRetentionCommand = /* @__PURE__ */ __name(async (input, context)
   return b.build();
 }, "se_PutObjectRetentionCommand");
 var se_PutObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -6022,7 +6024,7 @@ var se_PutObjectTaggingCommand = /* @__PURE__ */ __name(async (input, context) =
   return b.build();
 }, "se_PutObjectTaggingCommand");
 var se_PutPublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_cm]: input[_CMD],
@@ -6046,7 +6048,7 @@ var se_PutPublicAccessBlockCommand = /* @__PURE__ */ __name(async (input, contex
   return b.build();
 }, "se_PutPublicAccessBlockCommand");
 var se_RestoreObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xarp]: input[_RP],
@@ -6073,7 +6075,7 @@ var se_RestoreObjectCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_RestoreObjectCommand");
 var se_SelectObjectContentCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/xml",
     [_xasseca]: input[_SSECA],
@@ -6112,7 +6114,7 @@ var se_SelectObjectContentCommand = /* @__PURE__ */ __name(async (input, context
   return b.build();
 }, "se_SelectObjectContentCommand");
 var se_UploadPartCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "content-type": "application/octet-stream",
     [_cl_]: [() => isSerializableHeaderValue(input[_CLo]), () => input[_CLo].toString()],
@@ -6146,7 +6148,7 @@ var se_UploadPartCommand = /* @__PURE__ */ __name(async (input, context) => {
   return b.build();
 }, "se_UploadPartCommand");
 var se_UploadPartCopyCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     [_xacs__]: input[_CS],
     [_xacsim]: input[_CSIM],
@@ -6177,7 +6179,7 @@ var se_UploadPartCopyCommand = /* @__PURE__ */ __name(async (input, context) => 
   return b.build();
 }, "se_UploadPartCopyCommand");
 var se_WriteGetObjectResponseCommand = /* @__PURE__ */ __name(async (input, context) => {
-  const b = (0, import_core.requestBuilder)(input, context);
+  const b = (0, import_core2.requestBuilder)(input, context);
   const headers = (0, import_smithy_client.map)({}, isSerializableHeaderValue, {
     "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
     "content-type": "application/octet-stream",
@@ -6276,7 +6278,7 @@ var de_CompleteMultipartUploadCommand = /* @__PURE__ */ __name(async (output, co
     [_BKE]: [() => void 0 !== output.headers[_xassebke], () => (0, import_smithy_client.parseBoolean)(output.headers[_xassebke])],
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_B] != null) {
     contents[_B] = (0, import_smithy_client.expectString)(data[_B]);
   }
@@ -6320,7 +6322,7 @@ var de_CopyObjectCommand = /* @__PURE__ */ __name(async (output, context) => {
     [_BKE]: [() => void 0 !== output.headers[_xassebke], () => (0, import_smithy_client.parseBoolean)(output.headers[_xassebke])],
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.CopyObjectResult = de_CopyObjectResult(data, context);
   return contents;
 }, "de_CopyObjectCommand");
@@ -6355,7 +6357,7 @@ var de_CreateMultipartUploadCommand = /* @__PURE__ */ __name(async (output, cont
     [_RC]: [, output.headers[_xarc]],
     [_CA]: [, output.headers[_xaca]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_B] != null) {
     contents[_B] = (0, import_smithy_client.expectString)(data[_B]);
   }
@@ -6374,7 +6376,7 @@ var de_CreateSessionCommand = /* @__PURE__ */ __name(async (output, context) => 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_C] != null) {
     contents[_C] = de_SessionCredentials(data[_C], context);
   }
@@ -6531,7 +6533,7 @@ var de_DeleteObjectsCommand = /* @__PURE__ */ __name(async (output, context) => 
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.Deleted === "") {
     contents[_De] = [];
   } else if (data[_De] != null) {
@@ -6573,7 +6575,7 @@ var de_GetBucketAccelerateConfigurationCommand = /* @__PURE__ */ __name(async (o
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_S] != null) {
     contents[_S] = (0, import_smithy_client.expectString)(data[_S]);
   }
@@ -6586,7 +6588,7 @@ var de_GetBucketAclCommand = /* @__PURE__ */ __name(async (output, context) => {
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.AccessControlList === "") {
     contents[_Gr] = [];
   } else if (data[_ACLc] != null && data[_ACLc][_G] != null) {
@@ -6604,7 +6606,7 @@ var de_GetBucketAnalyticsConfigurationCommand = /* @__PURE__ */ __name(async (ou
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.AnalyticsConfiguration = de_AnalyticsConfiguration(data, context);
   return contents;
 }, "de_GetBucketAnalyticsConfigurationCommand");
@@ -6615,7 +6617,7 @@ var de_GetBucketCorsCommand = /* @__PURE__ */ __name(async (output, context) => 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.CORSRule === "") {
     contents[_CORSRu] = [];
   } else if (data[_CORSR] != null) {
@@ -6630,7 +6632,7 @@ var de_GetBucketEncryptionCommand = /* @__PURE__ */ __name(async (output, contex
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.ServerSideEncryptionConfiguration = de_ServerSideEncryptionConfiguration(data, context);
   return contents;
 }, "de_GetBucketEncryptionCommand");
@@ -6641,7 +6643,7 @@ var de_GetBucketIntelligentTieringConfigurationCommand = /* @__PURE__ */ __name(
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.IntelligentTieringConfiguration = de_IntelligentTieringConfiguration(data, context);
   return contents;
 }, "de_GetBucketIntelligentTieringConfigurationCommand");
@@ -6652,7 +6654,7 @@ var de_GetBucketInventoryConfigurationCommand = /* @__PURE__ */ __name(async (ou
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.InventoryConfiguration = de_InventoryConfiguration(data, context);
   return contents;
 }, "de_GetBucketInventoryConfigurationCommand");
@@ -6663,7 +6665,7 @@ var de_GetBucketLifecycleConfigurationCommand = /* @__PURE__ */ __name(async (ou
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.Rule === "") {
     contents[_Rul] = [];
   } else if (data[_Ru] != null) {
@@ -6678,7 +6680,7 @@ var de_GetBucketLocationCommand = /* @__PURE__ */ __name(async (output, context)
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_LC] != null) {
     contents[_LC] = (0, import_smithy_client.expectString)(data[_LC]);
   }
@@ -6691,7 +6693,7 @@ var de_GetBucketLoggingCommand = /* @__PURE__ */ __name(async (output, context) 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_LE] != null) {
     contents[_LE] = de_LoggingEnabled(data[_LE], context);
   }
@@ -6704,7 +6706,7 @@ var de_GetBucketMetricsConfigurationCommand = /* @__PURE__ */ __name(async (outp
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.MetricsConfiguration = de_MetricsConfiguration(data, context);
   return contents;
 }, "de_GetBucketMetricsConfigurationCommand");
@@ -6715,7 +6717,7 @@ var de_GetBucketNotificationConfigurationCommand = /* @__PURE__ */ __name(async 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_EBC] != null) {
     contents[_EBC] = de_EventBridgeConfiguration(data[_EBC], context);
   }
@@ -6743,7 +6745,7 @@ var de_GetBucketOwnershipControlsCommand = /* @__PURE__ */ __name(async (output,
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.OwnershipControls = de_OwnershipControls(data, context);
   return contents;
 }, "de_GetBucketOwnershipControlsCommand");
@@ -6765,7 +6767,7 @@ var de_GetBucketPolicyStatusCommand = /* @__PURE__ */ __name(async (output, cont
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.PolicyStatus = de_PolicyStatus(data, context);
   return contents;
 }, "de_GetBucketPolicyStatusCommand");
@@ -6776,7 +6778,7 @@ var de_GetBucketReplicationCommand = /* @__PURE__ */ __name(async (output, conte
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.ReplicationConfiguration = de_ReplicationConfiguration(data, context);
   return contents;
 }, "de_GetBucketReplicationCommand");
@@ -6787,7 +6789,7 @@ var de_GetBucketRequestPaymentCommand = /* @__PURE__ */ __name(async (output, co
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_Pa] != null) {
     contents[_Pa] = (0, import_smithy_client.expectString)(data[_Pa]);
   }
@@ -6800,7 +6802,7 @@ var de_GetBucketTaggingCommand = /* @__PURE__ */ __name(async (output, context) 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.TagSet === "") {
     contents[_TS] = [];
   } else if (data[_TS] != null && data[_TS][_Ta] != null) {
@@ -6815,7 +6817,7 @@ var de_GetBucketVersioningCommand = /* @__PURE__ */ __name(async (output, contex
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_MDf] != null) {
     contents[_MFAD] = (0, import_smithy_client.expectString)(data[_MDf]);
   }
@@ -6831,7 +6833,7 @@ var de_GetBucketWebsiteCommand = /* @__PURE__ */ __name(async (output, context) 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_ED] != null) {
     contents[_ED] = de_ErrorDocument(data[_ED], context);
   }
@@ -6913,7 +6915,7 @@ var de_GetObjectAclCommand = /* @__PURE__ */ __name(async (output, context) => {
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.AccessControlList === "") {
     contents[_Gr] = [];
   } else if (data[_ACLc] != null && data[_ACLc][_G] != null) {
@@ -6935,7 +6937,7 @@ var de_GetObjectAttributesCommand = /* @__PURE__ */ __name(async (output, contex
     [_VI]: [, output.headers[_xavi]],
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_Ch] != null) {
     contents[_Ch] = de_Checksum(data[_Ch], context);
   }
@@ -6960,7 +6962,7 @@ var de_GetObjectLegalHoldCommand = /* @__PURE__ */ __name(async (output, context
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.LegalHold = de_ObjectLockLegalHold(data, context);
   return contents;
 }, "de_GetObjectLegalHoldCommand");
@@ -6971,7 +6973,7 @@ var de_GetObjectLockConfigurationCommand = /* @__PURE__ */ __name(async (output,
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.ObjectLockConfiguration = de_ObjectLockConfiguration(data, context);
   return contents;
 }, "de_GetObjectLockConfigurationCommand");
@@ -6982,7 +6984,7 @@ var de_GetObjectRetentionCommand = /* @__PURE__ */ __name(async (output, context
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.Retention = de_ObjectLockRetention(data, context);
   return contents;
 }, "de_GetObjectRetentionCommand");
@@ -6994,7 +6996,7 @@ var de_GetObjectTaggingCommand = /* @__PURE__ */ __name(async (output, context) 
     $metadata: deserializeMetadata(output),
     [_VI]: [, output.headers[_xavi]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.TagSet === "") {
     contents[_TS] = [];
   } else if (data[_TS] != null && data[_TS][_Ta] != null) {
@@ -7022,7 +7024,7 @@ var de_GetPublicAccessBlockCommand = /* @__PURE__ */ __name(async (output, conte
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.PublicAccessBlockConfiguration = de_PublicAccessBlockConfiguration(data, context);
   return contents;
 }, "de_GetPublicAccessBlockCommand");
@@ -7101,7 +7103,7 @@ var de_ListBucketAnalyticsConfigurationsCommand = /* @__PURE__ */ __name(async (
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.AnalyticsConfiguration === "") {
     contents[_ACLn] = [];
   } else if (data[_AC] != null) {
@@ -7125,7 +7127,7 @@ var de_ListBucketIntelligentTieringConfigurationsCommand = /* @__PURE__ */ __nam
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_CTo] != null) {
     contents[_CTo] = (0, import_smithy_client.expectString)(data[_CTo]);
   }
@@ -7149,7 +7151,7 @@ var de_ListBucketInventoryConfigurationsCommand = /* @__PURE__ */ __name(async (
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_CTo] != null) {
     contents[_CTo] = (0, import_smithy_client.expectString)(data[_CTo]);
   }
@@ -7173,7 +7175,7 @@ var de_ListBucketMetricsConfigurationsCommand = /* @__PURE__ */ __name(async (ou
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_CTo] != null) {
     contents[_CTo] = (0, import_smithy_client.expectString)(data[_CTo]);
   }
@@ -7197,7 +7199,7 @@ var de_ListBucketsCommand = /* @__PURE__ */ __name(async (output, context) => {
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.Buckets === "") {
     contents[_Bu] = [];
   } else if (data[_Bu] != null && data[_Bu][_B] != null) {
@@ -7215,7 +7217,7 @@ var de_ListDirectoryBucketsCommand = /* @__PURE__ */ __name(async (output, conte
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.Buckets === "") {
     contents[_Bu] = [];
   } else if (data[_Bu] != null && data[_Bu][_B] != null) {
@@ -7234,7 +7236,7 @@ var de_ListMultipartUploadsCommand = /* @__PURE__ */ __name(async (output, conte
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_B] != null) {
     contents[_B] = (0, import_smithy_client.expectString)(data[_B]);
   }
@@ -7285,7 +7287,7 @@ var de_ListObjectsCommand = /* @__PURE__ */ __name(async (output, context) => {
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.CommonPrefixes === "") {
     contents[_CP] = [];
   } else if (data[_CP] != null) {
@@ -7330,7 +7332,7 @@ var de_ListObjectsV2Command = /* @__PURE__ */ __name(async (output, context) => 
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.CommonPrefixes === "") {
     contents[_CP] = [];
   } else if (data[_CP] != null) {
@@ -7381,7 +7383,7 @@ var de_ListObjectVersionsCommand = /* @__PURE__ */ __name(async (output, context
     $metadata: deserializeMetadata(output),
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data.CommonPrefixes === "") {
     contents[_CP] = [];
   } else if (data[_CP] != null) {
@@ -7442,7 +7444,7 @@ var de_ListPartsCommand = /* @__PURE__ */ __name(async (output, context) => {
     [_ARI]: [, output.headers[_xaari]],
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context)), "body");
   if (data[_B] != null) {
     contents[_B] = (0, import_smithy_client.expectString)(data[_B]);
   }
@@ -7810,7 +7812,7 @@ var de_UploadPartCopyCommand = /* @__PURE__ */ __name(async (output, context) =>
     [_BKE]: [() => void 0 !== output.headers[_xassebke], () => (0, import_smithy_client.parseBoolean)(output.headers[_xassebke])],
     [_RC]: [, output.headers[_xarc]]
   });
-  const data = (0, import_smithy_client.expectObject)(await parseBody(output.body, context));
+  const data = (0, import_smithy_client.expectObject)(await (0, import_core.parseXmlBody)(output.body, context));
   contents.CopyPartResult = de_CopyPartResult(data, context);
   return contents;
 }, "de_UploadPartCopyCommand");
@@ -7827,9 +7829,9 @@ var de_WriteGetObjectResponseCommand = /* @__PURE__ */ __name(async (output, con
 var de_CommandError = /* @__PURE__ */ __name(async (output, context) => {
   const parsedOutput = {
     ...output,
-    body: await parseErrorBody(output.body, context)
+    body: await (0, import_core.parseXmlErrorBody)(output.body, context)
   };
-  const errorCode = loadRestXmlErrorCode(output, parsedOutput.body);
+  const errorCode = (0, import_core.loadRestXmlErrorCode)(output, parsedOutput.body);
   switch (errorCode) {
     case "NoSuchUpload":
     case "com.amazonaws.s3#NoSuchUpload":
@@ -7987,19 +7989,19 @@ var de_SelectObjectContentEventStream = /* @__PURE__ */ __name((output, context)
 }, "de_SelectObjectContentEventStream");
 var de_ContinuationEvent_event = /* @__PURE__ */ __name(async (output, context) => {
   const contents = {};
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   Object.assign(contents, de_ContinuationEvent(data, context));
   return contents;
 }, "de_ContinuationEvent_event");
 var de_EndEvent_event = /* @__PURE__ */ __name(async (output, context) => {
   const contents = {};
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   Object.assign(contents, de_EndEvent(data, context));
   return contents;
 }, "de_EndEvent_event");
 var de_ProgressEvent_event = /* @__PURE__ */ __name(async (output, context) => {
   const contents = {};
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   contents.Details = de_Progress(data, context);
   return contents;
 }, "de_ProgressEvent_event");
@@ -8010,7 +8012,7 @@ var de_RecordsEvent_event = /* @__PURE__ */ __name(async (output, context) => {
 }, "de_RecordsEvent_event");
 var de_StatsEvent_event = /* @__PURE__ */ __name(async (output, context) => {
   const contents = {};
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   contents.Details = de_Stats(data, context);
   return contents;
 }, "de_StatsEvent_event");
@@ -11501,46 +11503,6 @@ var _xatd = "x-amz-tagging-directive";
 var _xavi = "x-amz-version-id";
 var _xawrl = "x-amz-website-redirect-location";
 var _xi = "x-id";
-var parseBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
-  if (encoded.length) {
-    const parser = new import_fast_xml_parser.XMLParser({
-      attributeNamePrefix: "",
-      htmlEntities: true,
-      ignoreAttributes: false,
-      ignoreDeclaration: true,
-      parseTagValue: false,
-      trimValues: false,
-      tagValueProcessor: (_, val) => val.trim() === "" && val.includes("\n") ? "" : void 0
-    });
-    parser.addEntity("#xD", "\r");
-    parser.addEntity("#10", "\n");
-    const parsedObj = parser.parse(encoded);
-    const textNodeName = "#text";
-    const key = Object.keys(parsedObj)[0];
-    const parsedObjToReturn = parsedObj[key];
-    if (parsedObjToReturn[textNodeName]) {
-      parsedObjToReturn[key] = parsedObjToReturn[textNodeName];
-      delete parsedObjToReturn[textNodeName];
-    }
-    return (0, import_smithy_client.getValueFromTextNode)(parsedObjToReturn);
-  }
-  return {};
-}), "parseBody");
-var parseErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
-  const value = await parseBody(errorBody, context);
-  if (value.Error) {
-    value.Error.message = value.Error.message ?? value.Error.Message;
-  }
-  return value;
-}, "parseErrorBody");
-var loadRestXmlErrorCode = /* @__PURE__ */ __name((output, data) => {
-  if ((data == null ? void 0 : data.Code) !== void 0) {
-    return data.Code;
-  }
-  if (output.statusCode == 404) {
-    return "NotFound";
-  }
-}, "loadRestXmlErrorCode");
 
 // src/commands/CreateSessionCommand.ts
 var _CreateSessionCommand = class _CreateSessionCommand extends import_smithy_client.Command.classBuilder().ep({
@@ -13679,16 +13641,16 @@ var S3 = _S3;
 (0, import_smithy_client.createAggregatedClient)(commands, S3);
 
 // src/pagination/ListDirectoryBucketsPaginator.ts
-
-var paginateListDirectoryBuckets = (0, import_core.createPaginator)(S3Client, ListDirectoryBucketsCommand, "ContinuationToken", "ContinuationToken", "MaxDirectoryBuckets");
+var import_core3 = __nccwpck_require__(5829);
+var paginateListDirectoryBuckets = (0, import_core3.createPaginator)(S3Client, ListDirectoryBucketsCommand, "ContinuationToken", "ContinuationToken", "MaxDirectoryBuckets");
 
 // src/pagination/ListObjectsV2Paginator.ts
-
-var paginateListObjectsV2 = (0, import_core.createPaginator)(S3Client, ListObjectsV2Command, "ContinuationToken", "NextContinuationToken", "MaxKeys");
+var import_core4 = __nccwpck_require__(5829);
+var paginateListObjectsV2 = (0, import_core4.createPaginator)(S3Client, ListObjectsV2Command, "ContinuationToken", "NextContinuationToken", "MaxKeys");
 
 // src/pagination/ListPartsPaginator.ts
-
-var paginateListParts = (0, import_core.createPaginator)(S3Client, ListPartsCommand, "PartNumberMarker", "NextPartNumberMarker", "MaxParts");
+var import_core5 = __nccwpck_require__(5829);
+var paginateListParts = (0, import_core5.createPaginator)(S3Client, ListPartsCommand, "PartNumberMarker", "NextPartNumberMarker", "MaxParts");
 
 // src/waiters/waitForBucketExists.ts
 var import_util_waiter = __nccwpck_require__(8011);
@@ -13791,9 +13753,6 @@ var waitUntilObjectNotExists = /* @__PURE__ */ __name(async (params, input) => {
   const result = await (0, import_util_waiter.createWaiter)({ ...serviceDefaults, ...params }, input, checkState4);
   return (0, import_util_waiter.checkExceptions)(result);
 }, "waitUntilObjectNotExists");
-
-// src/index.ts
-var import_util_endpoints = __nccwpck_require__(3350);
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -13849,7 +13808,7 @@ const getRuntimeConfig = (config) => {
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         md5: config?.md5 ?? hash_node_1.Hash.bind(null, "md5"),
         region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS),
-        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+        requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -14024,15 +13983,17 @@ exports.defaultProvider = ((input) => {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultEndpointResolver = void 0;
-const util_endpoints_1 = __nccwpck_require__(5473);
+const util_endpoints_1 = __nccwpck_require__(3350);
+const util_endpoints_2 = __nccwpck_require__(5473);
 const ruleset_1 = __nccwpck_require__(1756);
 const defaultEndpointResolver = (endpointParams, context = {}) => {
-    return (0, util_endpoints_1.resolveEndpoint)(ruleset_1.ruleSet, {
+    return (0, util_endpoints_2.resolveEndpoint)(ruleset_1.ruleSet, {
         endpointParams: endpointParams,
         logger: context.logger,
     });
 };
 exports.defaultEndpointResolver = defaultEndpointResolver;
+util_endpoints_2.customEndpointFunctions.aws = util_endpoints_1.awsEndpointFunctions;
 
 
 /***/ }),
@@ -14561,6 +14522,7 @@ var StartDeviceAuthorizationRequestFilterSensitiveLog = /* @__PURE__ */ __name((
 }), "StartDeviceAuthorizationRequestFilterSensitiveLog");
 
 // src/protocols/Aws_restJson1.ts
+var import_core2 = __nccwpck_require__(9963);
 
 
 var se_CreateTokenCommand = /* @__PURE__ */ __name(async (input, context) => {
@@ -14653,7 +14615,7 @@ var de_CreateTokenCommand = /* @__PURE__ */ __name(async (output, context) => {
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     accessToken: import_smithy_client.expectString,
     expiresIn: import_smithy_client.expectInt32,
@@ -14671,7 +14633,7 @@ var de_CreateTokenWithIAMCommand = /* @__PURE__ */ __name(async (output, context
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     accessToken: import_smithy_client.expectString,
     expiresIn: import_smithy_client.expectInt32,
@@ -14691,7 +14653,7 @@ var de_RegisterClientCommand = /* @__PURE__ */ __name(async (output, context) =>
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     authorizationEndpoint: import_smithy_client.expectString,
     clientId: import_smithy_client.expectString,
@@ -14710,7 +14672,7 @@ var de_StartDeviceAuthorizationCommand = /* @__PURE__ */ __name(async (output, c
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     deviceCode: import_smithy_client.expectString,
     expiresIn: import_smithy_client.expectInt32,
@@ -14725,9 +14687,9 @@ var de_StartDeviceAuthorizationCommand = /* @__PURE__ */ __name(async (output, c
 var de_CommandError = /* @__PURE__ */ __name(async (output, context) => {
   const parsedOutput = {
     ...output,
-    body: await parseErrorBody(output.body, context)
+    body: await (0, import_core2.parseJsonErrorBody)(output.body, context)
   };
-  const errorCode = loadRestJsonErrorCode(output, parsedOutput.body);
+  const errorCode = (0, import_core2.loadRestJsonErrorCode)(output, parsedOutput.body);
   switch (errorCode) {
     case "AccessDeniedException":
     case "com.amazonaws.ssooidc#AccessDeniedException":
@@ -14968,48 +14930,7 @@ var deserializeMetadata = /* @__PURE__ */ __name((output) => ({
   extendedRequestId: output.headers["x-amz-id-2"],
   cfId: output.headers["x-amz-cf-id"]
 }), "deserializeMetadata");
-var collectBodyString = /* @__PURE__ */ __name((streamBody, context) => (0, import_smithy_client.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body)), "collectBodyString");
 var _ai = "aws_iam";
-var parseBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
-  if (encoded.length) {
-    return JSON.parse(encoded);
-  }
-  return {};
-}), "parseBody");
-var parseErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
-  const value = await parseBody(errorBody, context);
-  value.message = value.message ?? value.Message;
-  return value;
-}, "parseErrorBody");
-var loadRestJsonErrorCode = /* @__PURE__ */ __name((output, data) => {
-  const findKey = /* @__PURE__ */ __name((object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase()), "findKey");
-  const sanitizeErrorCode = /* @__PURE__ */ __name((rawValue) => {
-    let cleanValue = rawValue;
-    if (typeof cleanValue === "number") {
-      cleanValue = cleanValue.toString();
-    }
-    if (cleanValue.indexOf(",") >= 0) {
-      cleanValue = cleanValue.split(",")[0];
-    }
-    if (cleanValue.indexOf(":") >= 0) {
-      cleanValue = cleanValue.split(":")[0];
-    }
-    if (cleanValue.indexOf("#") >= 0) {
-      cleanValue = cleanValue.split("#")[1];
-    }
-    return cleanValue;
-  }, "sanitizeErrorCode");
-  const headerKey = findKey(output.headers, "x-amzn-errortype");
-  if (headerKey !== void 0) {
-    return sanitizeErrorCode(output.headers[headerKey]);
-  }
-  if (data.code !== void 0) {
-    return sanitizeErrorCode(data.code);
-  }
-  if (data["__type"] !== void 0) {
-    return sanitizeErrorCode(data["__type"]);
-  }
-}, "loadRestJsonErrorCode");
 
 // src/commands/CreateTokenCommand.ts
 var _CreateTokenCommand = class _CreateTokenCommand extends import_smithy_client.Command.classBuilder().ep({
@@ -15087,9 +15008,6 @@ var _SSOOIDC = class _SSOOIDC extends SSOOIDCClient {
 __name(_SSOOIDC, "SSOOIDC");
 var SSOOIDC = _SSOOIDC;
 (0, import_smithy_client.createAggregatedClient)(commands, SSOOIDC);
-
-// src/index.ts
-var import_util_endpoints = __nccwpck_require__(3350);
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -15138,7 +15056,7 @@ const getRuntimeConfig = (config) => {
             (0, util_user_agent_node_1.defaultUserAgent)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS),
-        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+        requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -15286,15 +15204,17 @@ exports.resolveHttpAuthSchemeConfig = resolveHttpAuthSchemeConfig;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultEndpointResolver = void 0;
-const util_endpoints_1 = __nccwpck_require__(5473);
+const util_endpoints_1 = __nccwpck_require__(3350);
+const util_endpoints_2 = __nccwpck_require__(5473);
 const ruleset_1 = __nccwpck_require__(3341);
 const defaultEndpointResolver = (endpointParams, context = {}) => {
-    return (0, util_endpoints_1.resolveEndpoint)(ruleset_1.ruleSet, {
+    return (0, util_endpoints_2.resolveEndpoint)(ruleset_1.ruleSet, {
         endpointParams: endpointParams,
         logger: context.logger,
     });
 };
 exports.defaultEndpointResolver = defaultEndpointResolver;
+util_endpoints_2.customEndpointFunctions.aws = util_endpoints_1.awsEndpointFunctions;
 
 
 /***/ }),
@@ -15629,6 +15549,7 @@ var LogoutRequestFilterSensitiveLog = /* @__PURE__ */ __name((obj) => ({
 }), "LogoutRequestFilterSensitiveLog");
 
 // src/protocols/Aws_restJson1.ts
+var import_core2 = __nccwpck_require__(9963);
 
 
 var se_GetRoleCredentialsCommand = /* @__PURE__ */ __name(async (input, context) => {
@@ -15691,7 +15612,7 @@ var de_GetRoleCredentialsCommand = /* @__PURE__ */ __name(async (output, context
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     roleCredentials: import_smithy_client._json
   });
@@ -15705,7 +15626,7 @@ var de_ListAccountRolesCommand = /* @__PURE__ */ __name(async (output, context) 
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     nextToken: import_smithy_client.expectString,
     roleList: import_smithy_client._json
@@ -15720,7 +15641,7 @@ var de_ListAccountsCommand = /* @__PURE__ */ __name(async (output, context) => {
   const contents = (0, import_smithy_client.map)({
     $metadata: deserializeMetadata(output)
   });
-  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await parseBody(output.body, context)), "body");
+  const data = (0, import_smithy_client.expectNonNull)((0, import_smithy_client.expectObject)(await (0, import_core2.parseJsonBody)(output.body, context)), "body");
   const doc = (0, import_smithy_client.take)(data, {
     accountList: import_smithy_client._json,
     nextToken: import_smithy_client.expectString
@@ -15741,9 +15662,9 @@ var de_LogoutCommand = /* @__PURE__ */ __name(async (output, context) => {
 var de_CommandError = /* @__PURE__ */ __name(async (output, context) => {
   const parsedOutput = {
     ...output,
-    body: await parseErrorBody(output.body, context)
+    body: await (0, import_core2.parseJsonErrorBody)(output.body, context)
   };
-  const errorCode = loadRestJsonErrorCode(output, parsedOutput.body);
+  const errorCode = (0, import_core2.loadRestJsonErrorCode)(output, parsedOutput.body);
   switch (errorCode) {
     case "InvalidRequestException":
     case "com.amazonaws.sso#InvalidRequestException":
@@ -15825,7 +15746,6 @@ var deserializeMetadata = /* @__PURE__ */ __name((output) => ({
   extendedRequestId: output.headers["x-amz-id-2"],
   cfId: output.headers["x-amz-cf-id"]
 }), "deserializeMetadata");
-var collectBodyString = /* @__PURE__ */ __name((streamBody, context) => (0, import_smithy_client.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body)), "collectBodyString");
 var isSerializableHeaderValue = /* @__PURE__ */ __name((value) => value !== void 0 && value !== null && value !== "" && (!Object.getOwnPropertyNames(value).includes("length") || value.length != 0) && (!Object.getOwnPropertyNames(value).includes("size") || value.size != 0), "isSerializableHeaderValue");
 var _aI = "accountId";
 var _aT = "accessToken";
@@ -15837,46 +15757,6 @@ var _nt = "next_token";
 var _rN = "roleName";
 var _rn = "role_name";
 var _xasbt = "x-amz-sso_bearer_token";
-var parseBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
-  if (encoded.length) {
-    return JSON.parse(encoded);
-  }
-  return {};
-}), "parseBody");
-var parseErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
-  const value = await parseBody(errorBody, context);
-  value.message = value.message ?? value.Message;
-  return value;
-}, "parseErrorBody");
-var loadRestJsonErrorCode = /* @__PURE__ */ __name((output, data) => {
-  const findKey = /* @__PURE__ */ __name((object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase()), "findKey");
-  const sanitizeErrorCode = /* @__PURE__ */ __name((rawValue) => {
-    let cleanValue = rawValue;
-    if (typeof cleanValue === "number") {
-      cleanValue = cleanValue.toString();
-    }
-    if (cleanValue.indexOf(",") >= 0) {
-      cleanValue = cleanValue.split(",")[0];
-    }
-    if (cleanValue.indexOf(":") >= 0) {
-      cleanValue = cleanValue.split(":")[0];
-    }
-    if (cleanValue.indexOf("#") >= 0) {
-      cleanValue = cleanValue.split("#")[1];
-    }
-    return cleanValue;
-  }, "sanitizeErrorCode");
-  const headerKey = findKey(output.headers, "x-amzn-errortype");
-  if (headerKey !== void 0) {
-    return sanitizeErrorCode(output.headers[headerKey]);
-  }
-  if (data.code !== void 0) {
-    return sanitizeErrorCode(data.code);
-  }
-  if (data["__type"] !== void 0) {
-    return sanitizeErrorCode(data["__type"]);
-  }
-}, "loadRestJsonErrorCode");
 
 // src/commands/GetRoleCredentialsCommand.ts
 var _GetRoleCredentialsCommand = class _GetRoleCredentialsCommand extends import_smithy_client.Command.classBuilder().ep({
@@ -15962,9 +15842,6 @@ var paginateListAccountRoles = (0, import_core.createPaginator)(SSOClient, ListA
 // src/pagination/ListAccountsPaginator.ts
 
 var paginateListAccounts = (0, import_core.createPaginator)(SSOClient, ListAccountsCommand, "nextToken", "nextToken", "maxResults");
-
-// src/index.ts
-var import_util_endpoints = __nccwpck_require__(3350);
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -16011,7 +15888,7 @@ const getRuntimeConfig = (config) => {
             (0, util_user_agent_node_1.defaultUserAgent)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS),
-        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+        requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -16338,15 +16215,17 @@ exports.commonParams = {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultEndpointResolver = void 0;
-const util_endpoints_1 = __nccwpck_require__(5473);
+const util_endpoints_1 = __nccwpck_require__(3350);
+const util_endpoints_2 = __nccwpck_require__(5473);
 const ruleset_1 = __nccwpck_require__(6882);
 const defaultEndpointResolver = (endpointParams, context = {}) => {
-    return (0, util_endpoints_1.resolveEndpoint)(ruleset_1.ruleSet, {
+    return (0, util_endpoints_2.resolveEndpoint)(ruleset_1.ruleSet, {
         endpointParams: endpointParams,
         logger: context.logger,
     });
 };
 exports.defaultEndpointResolver = defaultEndpointResolver;
+util_endpoints_2.customEndpointFunctions.aws = util_endpoints_1.awsEndpointFunctions;
 
 
 /***/ }),
@@ -16627,9 +16506,9 @@ var GetSessionTokenResponseFilterSensitiveLog = /* @__PURE__ */ __name((obj) => 
 }), "GetSessionTokenResponseFilterSensitiveLog");
 
 // src/protocols/Aws_query.ts
+var import_core = __nccwpck_require__(9963);
 var import_protocol_http = __nccwpck_require__(4418);
 
-var import_fast_xml_parser = __nccwpck_require__(2603);
 var se_AssumeRoleCommand = /* @__PURE__ */ __name(async (input, context) => {
   const headers = SHARED_HEADERS;
   let body;
@@ -16714,7 +16593,7 @@ var de_AssumeRoleCommand = /* @__PURE__ */ __name(async (output, context) => {
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_AssumeRoleResponse(data.AssumeRoleResult, context);
   const response = {
@@ -16727,7 +16606,7 @@ var de_AssumeRoleWithSAMLCommand = /* @__PURE__ */ __name(async (output, context
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_AssumeRoleWithSAMLResponse(data.AssumeRoleWithSAMLResult, context);
   const response = {
@@ -16740,7 +16619,7 @@ var de_AssumeRoleWithWebIdentityCommand = /* @__PURE__ */ __name(async (output, 
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_AssumeRoleWithWebIdentityResponse(data.AssumeRoleWithWebIdentityResult, context);
   const response = {
@@ -16753,7 +16632,7 @@ var de_DecodeAuthorizationMessageCommand = /* @__PURE__ */ __name(async (output,
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_DecodeAuthorizationMessageResponse(data.DecodeAuthorizationMessageResult, context);
   const response = {
@@ -16766,7 +16645,7 @@ var de_GetAccessKeyInfoCommand = /* @__PURE__ */ __name(async (output, context) 
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_GetAccessKeyInfoResponse(data.GetAccessKeyInfoResult, context);
   const response = {
@@ -16779,7 +16658,7 @@ var de_GetCallerIdentityCommand = /* @__PURE__ */ __name(async (output, context)
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_GetCallerIdentityResponse(data.GetCallerIdentityResult, context);
   const response = {
@@ -16792,7 +16671,7 @@ var de_GetFederationTokenCommand = /* @__PURE__ */ __name(async (output, context
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_GetFederationTokenResponse(data.GetFederationTokenResult, context);
   const response = {
@@ -16805,7 +16684,7 @@ var de_GetSessionTokenCommand = /* @__PURE__ */ __name(async (output, context) =
   if (output.statusCode >= 300) {
     return de_CommandError(output, context);
   }
-  const data = await parseBody(output.body, context);
+  const data = await (0, import_core.parseXmlBody)(output.body, context);
   let contents = {};
   contents = de_GetSessionTokenResponse(data.GetSessionTokenResult, context);
   const response = {
@@ -16817,7 +16696,7 @@ var de_GetSessionTokenCommand = /* @__PURE__ */ __name(async (output, context) =
 var de_CommandError = /* @__PURE__ */ __name(async (output, context) => {
   const parsedOutput = {
     ...output,
-    body: await parseErrorBody(output.body, context)
+    body: await (0, import_core.parseXmlErrorBody)(output.body, context)
   };
   const errorCode = loadQueryErrorCode(output, parsedOutput.body);
   switch (errorCode) {
@@ -17424,7 +17303,6 @@ var deserializeMetadata = /* @__PURE__ */ __name((output) => ({
   extendedRequestId: output.headers["x-amz-id-2"],
   cfId: output.headers["x-amz-cf-id"]
 }), "deserializeMetadata");
-var collectBodyString = /* @__PURE__ */ __name((streamBody, context) => (0, import_smithy_client.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body)), "collectBodyString");
 var throwDefaultError = (0, import_smithy_client.withBaseException)(STSServiceException);
 var buildHttpRpcRequest = /* @__PURE__ */ __name(async (context, headers, path, resolvedHostname, body) => {
   const { hostname, protocol = "https", port, path: basePath } = await context.endpoint();
@@ -17503,38 +17381,6 @@ var _Va = "Value";
 var _WIT = "WebIdentityToken";
 var _a = "arn";
 var _m = "message";
-var parseBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
-  if (encoded.length) {
-    const parser = new import_fast_xml_parser.XMLParser({
-      attributeNamePrefix: "",
-      htmlEntities: true,
-      ignoreAttributes: false,
-      ignoreDeclaration: true,
-      parseTagValue: false,
-      trimValues: false,
-      tagValueProcessor: (_2, val) => val.trim() === "" && val.includes("\n") ? "" : void 0
-    });
-    parser.addEntity("#xD", "\r");
-    parser.addEntity("#10", "\n");
-    const parsedObj = parser.parse(encoded);
-    const textNodeName = "#text";
-    const key = Object.keys(parsedObj)[0];
-    const parsedObjToReturn = parsedObj[key];
-    if (parsedObjToReturn[textNodeName]) {
-      parsedObjToReturn[key] = parsedObjToReturn[textNodeName];
-      delete parsedObjToReturn[textNodeName];
-    }
-    return (0, import_smithy_client.getValueFromTextNode)(parsedObjToReturn);
-  }
-  return {};
-}), "parseBody");
-var parseErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
-  const value = await parseBody(errorBody, context);
-  if (value.Error) {
-    value.Error.message = value.Error.message ?? value.Error.Message;
-  }
-  return value;
-}, "parseErrorBody");
 var buildFormUrlencodedString = /* @__PURE__ */ __name((formEntries) => Object.entries(formEntries).map(([key, value]) => (0, import_smithy_client.extendedEncodeURIComponent)(key) + "=" + (0, import_smithy_client.extendedEncodeURIComponent)(value)).join("&"), "buildFormUrlencodedString");
 var loadQueryErrorCode = /* @__PURE__ */ __name((output, data) => {
   var _a2;
@@ -17706,7 +17552,6 @@ var STS = _STS;
 // src/index.ts
 var import_EndpointParameters9 = __nccwpck_require__(510);
 var import_runtimeExtensions = __nccwpck_require__(2053);
-var import_util_endpoints = __nccwpck_require__(3350);
 
 // src/defaultStsRoleAssumers.ts
 var ASSUME_ROLE_DEFAULT_REGION = "us-east-1";
@@ -17886,7 +17731,7 @@ const getRuntimeConfig = (config) => {
         ],
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS),
-        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+        requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -18016,6 +17861,12 @@ __export(src_exports, {
   _toStr: () => _toStr,
   awsExpectUnion: () => awsExpectUnion,
   emitWarningIfUnsupportedVersion: () => emitWarningIfUnsupportedVersion,
+  loadRestJsonErrorCode: () => loadRestJsonErrorCode,
+  loadRestXmlErrorCode: () => loadRestXmlErrorCode,
+  parseJsonBody: () => parseJsonBody,
+  parseJsonErrorBody: () => parseJsonErrorBody,
+  parseXmlBody: () => parseXmlBody,
+  parseXmlErrorBody: () => parseXmlErrorBody,
   resolveAWSSDKSigV4Config: () => resolveAWSSDKSigV4Config,
   resolveAwsSdkSigV4Config: () => resolveAwsSdkSigV4Config
 });
@@ -18109,11 +17960,13 @@ var _AwsSdkSigV4Signer = class _AwsSdkSigV4Signer {
     return (error) => {
       const serverTime = error.ServerTime ?? getDateHeader(error.$response);
       if (serverTime) {
-        const config = throwSigningPropertyError(
-          "config",
-          signingProperties.config
-        );
+        const config = throwSigningPropertyError("config", signingProperties.config);
+        const initialSystemClockOffset = config.systemClockOffset;
         config.systemClockOffset = getUpdatedSystemClockOffset(serverTime, config.systemClockOffset);
+        const clockSkewCorrected = config.systemClockOffset !== initialSystemClockOffset;
+        if (clockSkewCorrected && error.$metadata) {
+          error.$metadata.clockSkewCorrected = true;
+        }
       }
       throw error;
     };
@@ -18121,10 +17974,7 @@ var _AwsSdkSigV4Signer = class _AwsSdkSigV4Signer {
   successHandler(httpResponse, signingProperties) {
     const dateHeader = getDateHeader(httpResponse);
     if (dateHeader) {
-      const config = throwSigningPropertyError(
-        "config",
-        signingProperties.config
-      );
+      const config = throwSigningPropertyError("config", signingProperties.config);
       config.systemClockOffset = getUpdatedSystemClockOffset(dateHeader, config.systemClockOffset);
     }
   }
@@ -18295,6 +18145,119 @@ var awsExpectUnion = /* @__PURE__ */ __name((value) => {
   }
   return (0, import_smithy_client.expectUnion)(value);
 }, "awsExpectUnion");
+
+// src/protocols/common.ts
+
+var collectBodyString = /* @__PURE__ */ __name((streamBody, context) => (0, import_smithy_client.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body)), "collectBodyString");
+
+// src/protocols/json/parseJsonBody.ts
+var parseJsonBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
+  if (encoded.length) {
+    try {
+      return JSON.parse(encoded);
+    } catch (e) {
+      if ((e == null ? void 0 : e.name) === "SyntaxError") {
+        Object.defineProperty(e, "$responseBodyText", {
+          value: encoded
+        });
+      }
+      throw e;
+    }
+  }
+  return {};
+}), "parseJsonBody");
+var parseJsonErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
+  const value = await parseJsonBody(errorBody, context);
+  value.message = value.message ?? value.Message;
+  return value;
+}, "parseJsonErrorBody");
+var loadRestJsonErrorCode = /* @__PURE__ */ __name((output, data) => {
+  const findKey = /* @__PURE__ */ __name((object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase()), "findKey");
+  const sanitizeErrorCode = /* @__PURE__ */ __name((rawValue) => {
+    let cleanValue = rawValue;
+    if (typeof cleanValue === "number") {
+      cleanValue = cleanValue.toString();
+    }
+    if (cleanValue.indexOf(",") >= 0) {
+      cleanValue = cleanValue.split(",")[0];
+    }
+    if (cleanValue.indexOf(":") >= 0) {
+      cleanValue = cleanValue.split(":")[0];
+    }
+    if (cleanValue.indexOf("#") >= 0) {
+      cleanValue = cleanValue.split("#")[1];
+    }
+    return cleanValue;
+  }, "sanitizeErrorCode");
+  const headerKey = findKey(output.headers, "x-amzn-errortype");
+  if (headerKey !== void 0) {
+    return sanitizeErrorCode(output.headers[headerKey]);
+  }
+  if (data.code !== void 0) {
+    return sanitizeErrorCode(data.code);
+  }
+  if (data["__type"] !== void 0) {
+    return sanitizeErrorCode(data["__type"]);
+  }
+}, "loadRestJsonErrorCode");
+
+// src/protocols/xml/parseXmlBody.ts
+
+var import_fast_xml_parser = __nccwpck_require__(2603);
+var parseXmlBody = /* @__PURE__ */ __name((streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
+  if (encoded.length) {
+    const parser = new import_fast_xml_parser.XMLParser({
+      attributeNamePrefix: "",
+      htmlEntities: true,
+      ignoreAttributes: false,
+      ignoreDeclaration: true,
+      parseTagValue: false,
+      trimValues: false,
+      tagValueProcessor: (_, val) => val.trim() === "" && val.includes("\n") ? "" : void 0
+    });
+    parser.addEntity("#xD", "\r");
+    parser.addEntity("#10", "\n");
+    let parsedObj;
+    try {
+      parsedObj = parser.parse(encoded);
+    } catch (e) {
+      if (e && typeof e === "object") {
+        Object.defineProperty(e, "$responseBodyText", {
+          value: encoded
+        });
+      }
+      throw e;
+    }
+    const textNodeName = "#text";
+    const key = Object.keys(parsedObj)[0];
+    const parsedObjToReturn = parsedObj[key];
+    if (parsedObjToReturn[textNodeName]) {
+      parsedObjToReturn[key] = parsedObjToReturn[textNodeName];
+      delete parsedObjToReturn[textNodeName];
+    }
+    return (0, import_smithy_client.getValueFromTextNode)(parsedObjToReturn);
+  }
+  return {};
+}), "parseXmlBody");
+var parseXmlErrorBody = /* @__PURE__ */ __name(async (errorBody, context) => {
+  const value = await parseXmlBody(errorBody, context);
+  if (value.Error) {
+    value.Error.message = value.Error.message ?? value.Error.Message;
+  }
+  return value;
+}, "parseXmlErrorBody");
+var loadRestXmlErrorCode = /* @__PURE__ */ __name((output, data) => {
+  var _a;
+  if (((_a = data == null ? void 0 : data.Error) == null ? void 0 : _a.Code) !== void 0) {
+    return data.Error.Code;
+  }
+  if ((data == null ? void 0 : data.Code) !== void 0) {
+    return data.Code;
+  }
+  if (output.statusCode == 404) {
+    return "NotFound";
+  }
+}, "loadRestXmlErrorCode");
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -20996,7 +20959,8 @@ var resolveS3Config = /* @__PURE__ */ __name((input, {
           SessionMode: "ReadWrite"
         })
       )
-    )
+    ),
+    bucketEndpoint: input.bucketEndpoint ?? false
   };
 }, "resolveS3Config");
 
@@ -21045,12 +21009,49 @@ var getThrow200ExceptionsPlugin = /* @__PURE__ */ __name((config) => ({
 
 // src/validate-bucket-name.ts
 var import_util_arn_parser = __nccwpck_require__(5487);
-function validateBucketNameMiddleware() {
+
+// src/bucket-endpoint-middleware.ts
+function bucketEndpointMiddleware(options) {
+  return (next, context) => async (args) => {
+    var _a, _b, _c, _d;
+    if (options.bucketEndpoint) {
+      const endpoint = context.endpointV2;
+      if (endpoint) {
+        const bucket = args.input.Bucket;
+        if (typeof bucket === "string") {
+          try {
+            const bucketEndpointUrl = new URL(bucket);
+            endpoint.url = bucketEndpointUrl;
+          } catch (e) {
+            const warning = `@aws-sdk/middleware-sdk-s3: bucketEndpoint=true was set but Bucket=${bucket} could not be parsed as URL.`;
+            if (((_b = (_a = context.logger) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) === "NoOpLogger") {
+              console.warn(warning);
+            } else {
+              (_d = (_c = context.logger) == null ? void 0 : _c.warn) == null ? void 0 : _d.call(_c, warning);
+            }
+            throw e;
+          }
+        }
+      }
+    }
+    return next(args);
+  };
+}
+__name(bucketEndpointMiddleware, "bucketEndpointMiddleware");
+var bucketEndpointMiddlewareOptions = {
+  name: "bucketEndpointMiddleware",
+  override: true,
+  relation: "after",
+  toMiddleware: "endpointV2Middleware"
+};
+
+// src/validate-bucket-name.ts
+function validateBucketNameMiddleware({ bucketEndpoint }) {
   return (next) => async (args) => {
     const {
       input: { Bucket }
     } = args;
-    if (typeof Bucket === "string" && !(0, import_util_arn_parser.validate)(Bucket) && Bucket.indexOf("/") >= 0) {
+    if (!bucketEndpoint && typeof Bucket === "string" && !(0, import_util_arn_parser.validate)(Bucket) && Bucket.indexOf("/") >= 0) {
       const err = new Error(`Bucket name shouldn't contain '/', received '${Bucket}'`);
       err.name = "InvalidBucketName";
       throw err;
@@ -21065,9 +21066,10 @@ var validateBucketNameMiddlewareOptions = {
   name: "validateBucketNameMiddleware",
   override: true
 };
-var getValidateBucketNamePlugin = /* @__PURE__ */ __name((unused) => ({
+var getValidateBucketNamePlugin = /* @__PURE__ */ __name((options) => ({
   applyToStack: (clientStack) => {
-    clientStack.add(validateBucketNameMiddleware(), validateBucketNameMiddlewareOptions);
+    clientStack.add(validateBucketNameMiddleware(options), validateBucketNameMiddlewareOptions);
+    clientStack.addRelativeTo(bucketEndpointMiddleware(options), bucketEndpointMiddlewareOptions);
   }
 }), "getValidateBucketNamePlugin");
 // Annotate the CommonJS export names for ESM import in node:
@@ -21163,14 +21165,21 @@ var resolveAwsAuthConfig = /* @__PURE__ */ __name((input) => {
         },
         authScheme
       );
+      const isSigv4a = (authScheme == null ? void 0 : authScheme.name) === "sigv4a";
       const signingRegion = authScheme.signingRegion;
       const signingService = authScheme.signingName;
-      input.signingRegion = input.signingRegion || signingRegion;
+      let regionForSigner;
+      if (isSigv4a) {
+        regionForSigner = input.signingRegion || signingRegion;
+      } else {
+        input.signingRegion = input.signingRegion || signingRegion;
+        regionForSigner = input.signingRegion;
+      }
       input.signingName = input.signingName || signingService || input.serviceId;
       const params = {
         ...input,
         credentials: normalizedCreds,
-        region: input.signingRegion,
+        region: regionForSigner,
         service: input.signingName,
         sha256,
         uriEscapePath: signingEscapePath
@@ -21247,13 +21256,39 @@ var getUpdatedSystemClockOffset = /* @__PURE__ */ __name((clockTime, currentSyst
 
 // src/awsAuthMiddleware.ts
 var awsAuthMiddleware = /* @__PURE__ */ __name((options) => (next, context) => async function(args) {
-  var _a, _b, _c, _d;
+  var _a, _b, _c, _d, _e, _f, _g;
   if (!import_protocol_http.HttpRequest.isInstance(args.request))
     return next(args);
-  const authScheme = (_c = (_b = (_a = context.endpointV2) == null ? void 0 : _a.properties) == null ? void 0 : _b.authSchemes) == null ? void 0 : _c[0];
-  const multiRegionOverride = (authScheme == null ? void 0 : authScheme.name) === "sigv4a" ? (_d = authScheme == null ? void 0 : authScheme.signingRegionSet) == null ? void 0 : _d.join(",") : void 0;
-  const signer = await options.signer(authScheme);
+  let authScheme;
+  let signer;
+  const firstAuthScheme = (_c = (_b = (_a = context.endpointV2) == null ? void 0 : _a.properties) == null ? void 0 : _b.authSchemes) == null ? void 0 : _c[0];
+  const secondAuthScheme = (_f = (_e = (_d = context.endpointV2) == null ? void 0 : _d.properties) == null ? void 0 : _e.authSchemes) == null ? void 0 : _f[1];
+  const firstAuthSchemeIsSigv4a = (firstAuthScheme == null ? void 0 : firstAuthScheme.name) === "sigv4a";
+  if (firstAuthSchemeIsSigv4a && secondAuthScheme) {
+    signer = await options.signer(authScheme = firstAuthScheme);
+    const uncheckedSigner = signer;
+    const sigv4aAvailable = (() => {
+      var _a2;
+      if (typeof (uncheckedSigner == null ? void 0 : uncheckedSigner.getSigv4aSigner) === "function") {
+        if (((_a2 = uncheckedSigner == null ? void 0 : uncheckedSigner.signerOptions) == null ? void 0 : _a2.runtime) !== "node") {
+          return false;
+        }
+        try {
+          uncheckedSigner.getSigv4aSigner();
+          return true;
+        } catch (e) {
+        }
+      }
+      return false;
+    })();
+    if (!sigv4aAvailable) {
+      signer = await options.signer(authScheme = secondAuthScheme);
+    }
+  } else {
+    signer = await options.signer(authScheme = firstAuthScheme);
+  }
   let signedRequest;
+  const multiRegionOverride = (authScheme == null ? void 0 : authScheme.name) === "sigv4a" ? (_g = authScheme == null ? void 0 : authScheme.signingRegionSet) == null ? void 0 : _g.join(",") : void 0;
   const signingOptions = {
     signingDate: getSkewCorrectedDate(options.systemClockOffset),
     signingRegion: multiRegionOverride || context["signing_region"],
@@ -21339,6 +21374,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   getSsecPlugin: () => getSsecPlugin,
+  isValidBase64EncodedSSECustomerKey: () => isValidBase64EncodedSSECustomerKey,
   ssecMiddleware: () => ssecMiddleware,
   ssecMiddlewareOptions: () => ssecMiddlewareOptions
 });
@@ -21361,8 +21397,7 @@ function ssecMiddleware(options) {
       if (value) {
         let valueForHash;
         if (typeof value === "string") {
-          const isBase64Encoded = /^(?:[A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value);
-          if (isBase64Encoded) {
+          if (isValidBase64EncodedSSECustomerKey(value, options)) {
             valueForHash = options.base64Decoder(value);
           } else {
             valueForHash = options.utf8Decoder(value);
@@ -21395,6 +21430,18 @@ var getSsecPlugin = /* @__PURE__ */ __name((config) => ({
     clientStack.add(ssecMiddleware(config), ssecMiddlewareOptions);
   }
 }), "getSsecPlugin");
+function isValidBase64EncodedSSECustomerKey(str, options) {
+  const base64Regex = /^(?:[A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+  if (!base64Regex.test(str))
+    return false;
+  try {
+    const decodedBytes = options.base64Decoder(str);
+    return decodedBytes.length === 32;
+  } catch {
+    return false;
+  }
+}
+__name(isValidBase64EncodedSSECustomerKey, "isValidBase64EncodedSSECustomerKey");
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -22027,7 +22074,9 @@ var build = /* @__PURE__ */ __name((arnObject) => {
   return `arn:${partition}:${service}:${region}:${accountId}:${resource}`;
 }, "build");
 // Annotate the CommonJS export names for ESM import in node:
+
 0 && (0);
+
 
 
 /***/ }),
@@ -22078,6 +22127,7 @@ __export(src_exports, {
   RuleSetObject: () => import_util_endpoints.RuleSetObject,
   RuleSetRules: () => import_util_endpoints.RuleSetRules,
   TreeRuleObject: () => import_util_endpoints.TreeRuleObject,
+  awsEndpointFunctions: () => awsEndpointFunctions,
   getUserAgentPrefix: () => getUserAgentPrefix,
   isIpAddress: () => import_util_endpoints.isIpAddress,
   partition: () => partition,
@@ -22796,1428 +22846,6 @@ var XmlNode = _XmlNode;
 
 /***/ }),
 
-/***/ 2856:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const WritableStream = (__nccwpck_require__(4492).Writable)
-const inherits = (__nccwpck_require__(7261).inherits)
-
-const StreamSearch = __nccwpck_require__(8534)
-
-const PartStream = __nccwpck_require__(8710)
-const HeaderParser = __nccwpck_require__(333)
-
-const DASH = 45
-const B_ONEDASH = Buffer.from('-')
-const B_CRLF = Buffer.from('\r\n')
-const EMPTY_FN = function () {}
-
-function Dicer (cfg) {
-  if (!(this instanceof Dicer)) { return new Dicer(cfg) }
-  WritableStream.call(this, cfg)
-
-  if (!cfg || (!cfg.headerFirst && typeof cfg.boundary !== 'string')) { throw new TypeError('Boundary required') }
-
-  if (typeof cfg.boundary === 'string') { this.setBoundary(cfg.boundary) } else { this._bparser = undefined }
-
-  this._headerFirst = cfg.headerFirst
-
-  this._dashes = 0
-  this._parts = 0
-  this._finished = false
-  this._realFinish = false
-  this._isPreamble = true
-  this._justMatched = false
-  this._firstWrite = true
-  this._inHeader = true
-  this._part = undefined
-  this._cb = undefined
-  this._ignoreData = false
-  this._partOpts = { highWaterMark: cfg.partHwm }
-  this._pause = false
-
-  const self = this
-  this._hparser = new HeaderParser(cfg)
-  this._hparser.on('header', function (header) {
-    self._inHeader = false
-    self._part.emit('header', header)
-  })
-}
-inherits(Dicer, WritableStream)
-
-Dicer.prototype.emit = function (ev) {
-  if (ev === 'finish' && !this._realFinish) {
-    if (!this._finished) {
-      const self = this
-      process.nextTick(function () {
-        self.emit('error', new Error('Unexpected end of multipart data'))
-        if (self._part && !self._ignoreData) {
-          const type = (self._isPreamble ? 'Preamble' : 'Part')
-          self._part.emit('error', new Error(type + ' terminated early due to unexpected end of multipart data'))
-          self._part.push(null)
-          process.nextTick(function () {
-            self._realFinish = true
-            self.emit('finish')
-            self._realFinish = false
-          })
-          return
-        }
-        self._realFinish = true
-        self.emit('finish')
-        self._realFinish = false
-      })
-    }
-  } else { WritableStream.prototype.emit.apply(this, arguments) }
-}
-
-Dicer.prototype._write = function (data, encoding, cb) {
-  // ignore unexpected data (e.g. extra trailer data after finished)
-  if (!this._hparser && !this._bparser) { return cb() }
-
-  if (this._headerFirst && this._isPreamble) {
-    if (!this._part) {
-      this._part = new PartStream(this._partOpts)
-      if (this._events.preamble) { this.emit('preamble', this._part) } else { this._ignore() }
-    }
-    const r = this._hparser.push(data)
-    if (!this._inHeader && r !== undefined && r < data.length) { data = data.slice(r) } else { return cb() }
-  }
-
-  // allows for "easier" testing
-  if (this._firstWrite) {
-    this._bparser.push(B_CRLF)
-    this._firstWrite = false
-  }
-
-  this._bparser.push(data)
-
-  if (this._pause) { this._cb = cb } else { cb() }
-}
-
-Dicer.prototype.reset = function () {
-  this._part = undefined
-  this._bparser = undefined
-  this._hparser = undefined
-}
-
-Dicer.prototype.setBoundary = function (boundary) {
-  const self = this
-  this._bparser = new StreamSearch('\r\n--' + boundary)
-  this._bparser.on('info', function (isMatch, data, start, end) {
-    self._oninfo(isMatch, data, start, end)
-  })
-}
-
-Dicer.prototype._ignore = function () {
-  if (this._part && !this._ignoreData) {
-    this._ignoreData = true
-    this._part.on('error', EMPTY_FN)
-    // we must perform some kind of read on the stream even though we are
-    // ignoring the data, otherwise node's Readable stream will not emit 'end'
-    // after pushing null to the stream
-    this._part.resume()
-  }
-}
-
-Dicer.prototype._oninfo = function (isMatch, data, start, end) {
-  let buf; const self = this; let i = 0; let r; let shouldWriteMore = true
-
-  if (!this._part && this._justMatched && data) {
-    while (this._dashes < 2 && (start + i) < end) {
-      if (data[start + i] === DASH) {
-        ++i
-        ++this._dashes
-      } else {
-        if (this._dashes) { buf = B_ONEDASH }
-        this._dashes = 0
-        break
-      }
-    }
-    if (this._dashes === 2) {
-      if ((start + i) < end && this._events.trailer) { this.emit('trailer', data.slice(start + i, end)) }
-      this.reset()
-      this._finished = true
-      // no more parts will be added
-      if (self._parts === 0) {
-        self._realFinish = true
-        self.emit('finish')
-        self._realFinish = false
-      }
-    }
-    if (this._dashes) { return }
-  }
-  if (this._justMatched) { this._justMatched = false }
-  if (!this._part) {
-    this._part = new PartStream(this._partOpts)
-    this._part._read = function (n) {
-      self._unpause()
-    }
-    if (this._isPreamble && this._events.preamble) { this.emit('preamble', this._part) } else if (this._isPreamble !== true && this._events.part) { this.emit('part', this._part) } else { this._ignore() }
-    if (!this._isPreamble) { this._inHeader = true }
-  }
-  if (data && start < end && !this._ignoreData) {
-    if (this._isPreamble || !this._inHeader) {
-      if (buf) { shouldWriteMore = this._part.push(buf) }
-      shouldWriteMore = this._part.push(data.slice(start, end))
-      if (!shouldWriteMore) { this._pause = true }
-    } else if (!this._isPreamble && this._inHeader) {
-      if (buf) { this._hparser.push(buf) }
-      r = this._hparser.push(data.slice(start, end))
-      if (!this._inHeader && r !== undefined && r < end) { this._oninfo(false, data, start + r, end) }
-    }
-  }
-  if (isMatch) {
-    this._hparser.reset()
-    if (this._isPreamble) { this._isPreamble = false } else {
-      if (start !== end) {
-        ++this._parts
-        this._part.on('end', function () {
-          if (--self._parts === 0) {
-            if (self._finished) {
-              self._realFinish = true
-              self.emit('finish')
-              self._realFinish = false
-            } else {
-              self._unpause()
-            }
-          }
-        })
-      }
-    }
-    this._part.push(null)
-    this._part = undefined
-    this._ignoreData = false
-    this._justMatched = true
-    this._dashes = 0
-  }
-}
-
-Dicer.prototype._unpause = function () {
-  if (!this._pause) { return }
-
-  this._pause = false
-  if (this._cb) {
-    const cb = this._cb
-    this._cb = undefined
-    cb()
-  }
-}
-
-module.exports = Dicer
-
-
-/***/ }),
-
-/***/ 333:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const EventEmitter = (__nccwpck_require__(5673).EventEmitter)
-const inherits = (__nccwpck_require__(7261).inherits)
-const getLimit = __nccwpck_require__(9692)
-
-const StreamSearch = __nccwpck_require__(8534)
-
-const B_DCRLF = Buffer.from('\r\n\r\n')
-const RE_CRLF = /\r\n/g
-const RE_HDR = /^([^:]+):[ \t]?([\x00-\xFF]+)?$/ // eslint-disable-line no-control-regex
-
-function HeaderParser (cfg) {
-  EventEmitter.call(this)
-
-  cfg = cfg || {}
-  const self = this
-  this.nread = 0
-  this.maxed = false
-  this.npairs = 0
-  this.maxHeaderPairs = getLimit(cfg, 'maxHeaderPairs', 2000)
-  this.maxHeaderSize = getLimit(cfg, 'maxHeaderSize', 80 * 1024)
-  this.buffer = ''
-  this.header = {}
-  this.finished = false
-  this.ss = new StreamSearch(B_DCRLF)
-  this.ss.on('info', function (isMatch, data, start, end) {
-    if (data && !self.maxed) {
-      if (self.nread + end - start >= self.maxHeaderSize) {
-        end = self.maxHeaderSize - self.nread + start
-        self.nread = self.maxHeaderSize
-        self.maxed = true
-      } else { self.nread += (end - start) }
-
-      self.buffer += data.toString('binary', start, end)
-    }
-    if (isMatch) { self._finish() }
-  })
-}
-inherits(HeaderParser, EventEmitter)
-
-HeaderParser.prototype.push = function (data) {
-  const r = this.ss.push(data)
-  if (this.finished) { return r }
-}
-
-HeaderParser.prototype.reset = function () {
-  this.finished = false
-  this.buffer = ''
-  this.header = {}
-  this.ss.reset()
-}
-
-HeaderParser.prototype._finish = function () {
-  if (this.buffer) { this._parseHeader() }
-  this.ss.matches = this.ss.maxMatches
-  const header = this.header
-  this.header = {}
-  this.buffer = ''
-  this.finished = true
-  this.nread = this.npairs = 0
-  this.maxed = false
-  this.emit('header', header)
-}
-
-HeaderParser.prototype._parseHeader = function () {
-  if (this.npairs === this.maxHeaderPairs) { return }
-
-  const lines = this.buffer.split(RE_CRLF)
-  const len = lines.length
-  let m, h
-
-  for (var i = 0; i < len; ++i) { // eslint-disable-line no-var
-    if (lines[i].length === 0) { continue }
-    if (lines[i][0] === '\t' || lines[i][0] === ' ') {
-      // folded header content
-      // RFC2822 says to just remove the CRLF and not the whitespace following
-      // it, so we follow the RFC and include the leading whitespace ...
-      if (h) {
-        this.header[h][this.header[h].length - 1] += lines[i]
-        continue
-      }
-    }
-
-    const posColon = lines[i].indexOf(':')
-    if (
-      posColon === -1 ||
-      posColon === 0
-    ) {
-      return
-    }
-    m = RE_HDR.exec(lines[i])
-    h = m[1].toLowerCase()
-    this.header[h] = this.header[h] || []
-    this.header[h].push((m[2] || ''))
-    if (++this.npairs === this.maxHeaderPairs) { break }
-  }
-}
-
-module.exports = HeaderParser
-
-
-/***/ }),
-
-/***/ 8710:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const inherits = (__nccwpck_require__(7261).inherits)
-const ReadableStream = (__nccwpck_require__(4492).Readable)
-
-function PartStream (opts) {
-  ReadableStream.call(this, opts)
-}
-inherits(PartStream, ReadableStream)
-
-PartStream.prototype._read = function (n) {}
-
-module.exports = PartStream
-
-
-/***/ }),
-
-/***/ 8534:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-/**
- * Copyright Brian White. All rights reserved.
- *
- * @see https://github.com/mscdex/streamsearch
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to
- * deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
- * sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- * IN THE SOFTWARE.
- *
- * Based heavily on the Streaming Boyer-Moore-Horspool C++ implementation
- * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
- */
-const EventEmitter = (__nccwpck_require__(5673).EventEmitter)
-const inherits = (__nccwpck_require__(7261).inherits)
-
-function SBMH (needle) {
-  if (typeof needle === 'string') {
-    needle = Buffer.from(needle)
-  }
-
-  if (!Buffer.isBuffer(needle)) {
-    throw new TypeError('The needle has to be a String or a Buffer.')
-  }
-
-  const needleLength = needle.length
-
-  if (needleLength === 0) {
-    throw new Error('The needle cannot be an empty String/Buffer.')
-  }
-
-  if (needleLength > 256) {
-    throw new Error('The needle cannot have a length bigger than 256.')
-  }
-
-  this.maxMatches = Infinity
-  this.matches = 0
-
-  this._occ = new Array(256)
-    .fill(needleLength) // Initialize occurrence table.
-  this._lookbehind_size = 0
-  this._needle = needle
-  this._bufpos = 0
-
-  this._lookbehind = Buffer.alloc(needleLength)
-
-  // Populate occurrence table with analysis of the needle,
-  // ignoring last letter.
-  for (var i = 0; i < needleLength - 1; ++i) { // eslint-disable-line no-var
-    this._occ[needle[i]] = needleLength - 1 - i
-  }
-}
-inherits(SBMH, EventEmitter)
-
-SBMH.prototype.reset = function () {
-  this._lookbehind_size = 0
-  this.matches = 0
-  this._bufpos = 0
-}
-
-SBMH.prototype.push = function (chunk, pos) {
-  if (!Buffer.isBuffer(chunk)) {
-    chunk = Buffer.from(chunk, 'binary')
-  }
-  const chlen = chunk.length
-  this._bufpos = pos || 0
-  let r
-  while (r !== chlen && this.matches < this.maxMatches) { r = this._sbmh_feed(chunk) }
-  return r
-}
-
-SBMH.prototype._sbmh_feed = function (data) {
-  const len = data.length
-  const needle = this._needle
-  const needleLength = needle.length
-  const lastNeedleChar = needle[needleLength - 1]
-
-  // Positive: points to a position in `data`
-  //           pos == 3 points to data[3]
-  // Negative: points to a position in the lookbehind buffer
-  //           pos == -2 points to lookbehind[lookbehind_size - 2]
-  let pos = -this._lookbehind_size
-  let ch
-
-  if (pos < 0) {
-    // Lookbehind buffer is not empty. Perform Boyer-Moore-Horspool
-    // search with character lookup code that considers both the
-    // lookbehind buffer and the current round's haystack data.
-    //
-    // Loop until
-    //   there is a match.
-    // or until
-    //   we've moved past the position that requires the
-    //   lookbehind buffer. In this case we switch to the
-    //   optimized loop.
-    // or until
-    //   the character to look at lies outside the haystack.
-    while (pos < 0 && pos <= len - needleLength) {
-      ch = this._sbmh_lookup_char(data, pos + needleLength - 1)
-
-      if (
-        ch === lastNeedleChar &&
-        this._sbmh_memcmp(data, pos, needleLength - 1)
-      ) {
-        this._lookbehind_size = 0
-        ++this.matches
-        this.emit('info', true)
-
-        return (this._bufpos = pos + needleLength)
-      }
-      pos += this._occ[ch]
-    }
-
-    // No match.
-
-    if (pos < 0) {
-      // There's too few data for Boyer-Moore-Horspool to run,
-      // so let's use a different algorithm to skip as much as
-      // we can.
-      // Forward pos until
-      //   the trailing part of lookbehind + data
-      //   looks like the beginning of the needle
-      // or until
-      //   pos == 0
-      while (pos < 0 && !this._sbmh_memcmp(data, pos, len - pos)) { ++pos }
-    }
-
-    if (pos >= 0) {
-      // Discard lookbehind buffer.
-      this.emit('info', false, this._lookbehind, 0, this._lookbehind_size)
-      this._lookbehind_size = 0
-    } else {
-      // Cut off part of the lookbehind buffer that has
-      // been processed and append the entire haystack
-      // into it.
-      const bytesToCutOff = this._lookbehind_size + pos
-      if (bytesToCutOff > 0) {
-        // The cut off data is guaranteed not to contain the needle.
-        this.emit('info', false, this._lookbehind, 0, bytesToCutOff)
-      }
-
-      this._lookbehind.copy(this._lookbehind, 0, bytesToCutOff,
-        this._lookbehind_size - bytesToCutOff)
-      this._lookbehind_size -= bytesToCutOff
-
-      data.copy(this._lookbehind, this._lookbehind_size)
-      this._lookbehind_size += len
-
-      this._bufpos = len
-      return len
-    }
-  }
-
-  pos += (pos >= 0) * this._bufpos
-
-  // Lookbehind buffer is now empty. We only need to check if the
-  // needle is in the haystack.
-  if (data.indexOf(needle, pos) !== -1) {
-    pos = data.indexOf(needle, pos)
-    ++this.matches
-    if (pos > 0) { this.emit('info', true, data, this._bufpos, pos) } else { this.emit('info', true) }
-
-    return (this._bufpos = pos + needleLength)
-  } else {
-    pos = len - needleLength
-  }
-
-  // There was no match. If there's trailing haystack data that we cannot
-  // match yet using the Boyer-Moore-Horspool algorithm (because the trailing
-  // data is less than the needle size) then match using a modified
-  // algorithm that starts matching from the beginning instead of the end.
-  // Whatever trailing data is left after running this algorithm is added to
-  // the lookbehind buffer.
-  while (
-    pos < len &&
-    (
-      data[pos] !== needle[0] ||
-      (
-        (Buffer.compare(
-          data.subarray(pos, pos + len - pos),
-          needle.subarray(0, len - pos)
-        ) !== 0)
-      )
-    )
-  ) {
-    ++pos
-  }
-  if (pos < len) {
-    data.copy(this._lookbehind, 0, pos, pos + (len - pos))
-    this._lookbehind_size = len - pos
-  }
-
-  // Everything until pos is guaranteed not to contain needle data.
-  if (pos > 0) { this.emit('info', false, data, this._bufpos, pos < len ? pos : len) }
-
-  this._bufpos = len
-  return len
-}
-
-SBMH.prototype._sbmh_lookup_char = function (data, pos) {
-  return (pos < 0)
-    ? this._lookbehind[this._lookbehind_size + pos]
-    : data[pos]
-}
-
-SBMH.prototype._sbmh_memcmp = function (data, pos, len) {
-  for (var i = 0; i < len; ++i) { // eslint-disable-line no-var
-    if (this._sbmh_lookup_char(data, pos + i) !== this._needle[i]) { return false }
-  }
-  return true
-}
-
-module.exports = SBMH
-
-
-/***/ }),
-
-/***/ 3438:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const WritableStream = (__nccwpck_require__(4492).Writable)
-const { inherits } = __nccwpck_require__(7261)
-const Dicer = __nccwpck_require__(2856)
-
-const MultipartParser = __nccwpck_require__(415)
-const UrlencodedParser = __nccwpck_require__(6780)
-const parseParams = __nccwpck_require__(4426)
-
-function Busboy (opts) {
-  if (!(this instanceof Busboy)) { return new Busboy(opts) }
-
-  if (typeof opts !== 'object') {
-    throw new TypeError('Busboy expected an options-Object.')
-  }
-  if (typeof opts.headers !== 'object') {
-    throw new TypeError('Busboy expected an options-Object with headers-attribute.')
-  }
-  if (typeof opts.headers['content-type'] !== 'string') {
-    throw new TypeError('Missing Content-Type-header.')
-  }
-
-  const {
-    headers,
-    ...streamOptions
-  } = opts
-
-  this.opts = {
-    autoDestroy: false,
-    ...streamOptions
-  }
-  WritableStream.call(this, this.opts)
-
-  this._done = false
-  this._parser = this.getParserByHeaders(headers)
-  this._finished = false
-}
-inherits(Busboy, WritableStream)
-
-Busboy.prototype.emit = function (ev) {
-  if (ev === 'finish') {
-    if (!this._done) {
-      this._parser?.end()
-      return
-    } else if (this._finished) {
-      return
-    }
-    this._finished = true
-  }
-  WritableStream.prototype.emit.apply(this, arguments)
-}
-
-Busboy.prototype.getParserByHeaders = function (headers) {
-  const parsed = parseParams(headers['content-type'])
-
-  const cfg = {
-    defCharset: this.opts.defCharset,
-    fileHwm: this.opts.fileHwm,
-    headers,
-    highWaterMark: this.opts.highWaterMark,
-    isPartAFile: this.opts.isPartAFile,
-    limits: this.opts.limits,
-    parsedConType: parsed,
-    preservePath: this.opts.preservePath
-  }
-
-  if (MultipartParser.detect.test(parsed[0])) {
-    return new MultipartParser(this, cfg)
-  }
-  if (UrlencodedParser.detect.test(parsed[0])) {
-    return new UrlencodedParser(this, cfg)
-  }
-  throw new Error('Unsupported Content-Type.')
-}
-
-Busboy.prototype._write = function (chunk, encoding, cb) {
-  this._parser.write(chunk, cb)
-}
-
-module.exports = Busboy
-module.exports["default"] = Busboy
-module.exports.Busboy = Busboy
-
-module.exports.Dicer = Dicer
-
-
-/***/ }),
-
-/***/ 415:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-// TODO:
-//  * support 1 nested multipart level
-//    (see second multipart example here:
-//     http://www.w3.org/TR/html401/interact/forms.html#didx-multipartform-data)
-//  * support limits.fieldNameSize
-//     -- this will require modifications to utils.parseParams
-
-const { Readable } = __nccwpck_require__(4492)
-const { inherits } = __nccwpck_require__(7261)
-
-const Dicer = __nccwpck_require__(2856)
-
-const parseParams = __nccwpck_require__(4426)
-const decodeText = __nccwpck_require__(9136)
-const basename = __nccwpck_require__(496)
-const getLimit = __nccwpck_require__(9692)
-
-const RE_BOUNDARY = /^boundary$/i
-const RE_FIELD = /^form-data$/i
-const RE_CHARSET = /^charset$/i
-const RE_FILENAME = /^filename$/i
-const RE_NAME = /^name$/i
-
-Multipart.detect = /^multipart\/form-data/i
-function Multipart (boy, cfg) {
-  let i
-  let len
-  const self = this
-  let boundary
-  const limits = cfg.limits
-  const isPartAFile = cfg.isPartAFile || ((fieldName, contentType, fileName) => (contentType === 'application/octet-stream' || fileName !== undefined))
-  const parsedConType = cfg.parsedConType || []
-  const defCharset = cfg.defCharset || 'utf8'
-  const preservePath = cfg.preservePath
-  const fileOpts = { highWaterMark: cfg.fileHwm }
-
-  for (i = 0, len = parsedConType.length; i < len; ++i) {
-    if (Array.isArray(parsedConType[i]) &&
-      RE_BOUNDARY.test(parsedConType[i][0])) {
-      boundary = parsedConType[i][1]
-      break
-    }
-  }
-
-  function checkFinished () {
-    if (nends === 0 && finished && !boy._done) {
-      finished = false
-      self.end()
-    }
-  }
-
-  if (typeof boundary !== 'string') { throw new Error('Multipart: Boundary not found') }
-
-  const fieldSizeLimit = getLimit(limits, 'fieldSize', 1 * 1024 * 1024)
-  const fileSizeLimit = getLimit(limits, 'fileSize', Infinity)
-  const filesLimit = getLimit(limits, 'files', Infinity)
-  const fieldsLimit = getLimit(limits, 'fields', Infinity)
-  const partsLimit = getLimit(limits, 'parts', Infinity)
-  const headerPairsLimit = getLimit(limits, 'headerPairs', 2000)
-  const headerSizeLimit = getLimit(limits, 'headerSize', 80 * 1024)
-
-  let nfiles = 0
-  let nfields = 0
-  let nends = 0
-  let curFile
-  let curField
-  let finished = false
-
-  this._needDrain = false
-  this._pause = false
-  this._cb = undefined
-  this._nparts = 0
-  this._boy = boy
-
-  const parserCfg = {
-    boundary,
-    maxHeaderPairs: headerPairsLimit,
-    maxHeaderSize: headerSizeLimit,
-    partHwm: fileOpts.highWaterMark,
-    highWaterMark: cfg.highWaterMark
-  }
-
-  this.parser = new Dicer(parserCfg)
-  this.parser.on('drain', function () {
-    self._needDrain = false
-    if (self._cb && !self._pause) {
-      const cb = self._cb
-      self._cb = undefined
-      cb()
-    }
-  }).on('part', function onPart (part) {
-    if (++self._nparts > partsLimit) {
-      self.parser.removeListener('part', onPart)
-      self.parser.on('part', skipPart)
-      boy.hitPartsLimit = true
-      boy.emit('partsLimit')
-      return skipPart(part)
-    }
-
-    // hack because streams2 _always_ doesn't emit 'end' until nextTick, so let
-    // us emit 'end' early since we know the part has ended if we are already
-    // seeing the next part
-    if (curField) {
-      const field = curField
-      field.emit('end')
-      field.removeAllListeners('end')
-    }
-
-    part.on('header', function (header) {
-      let contype
-      let fieldname
-      let parsed
-      let charset
-      let encoding
-      let filename
-      let nsize = 0
-
-      if (header['content-type']) {
-        parsed = parseParams(header['content-type'][0])
-        if (parsed[0]) {
-          contype = parsed[0].toLowerCase()
-          for (i = 0, len = parsed.length; i < len; ++i) {
-            if (RE_CHARSET.test(parsed[i][0])) {
-              charset = parsed[i][1].toLowerCase()
-              break
-            }
-          }
-        }
-      }
-
-      if (contype === undefined) { contype = 'text/plain' }
-      if (charset === undefined) { charset = defCharset }
-
-      if (header['content-disposition']) {
-        parsed = parseParams(header['content-disposition'][0])
-        if (!RE_FIELD.test(parsed[0])) { return skipPart(part) }
-        for (i = 0, len = parsed.length; i < len; ++i) {
-          if (RE_NAME.test(parsed[i][0])) {
-            fieldname = parsed[i][1]
-          } else if (RE_FILENAME.test(parsed[i][0])) {
-            filename = parsed[i][1]
-            if (!preservePath) { filename = basename(filename) }
-          }
-        }
-      } else { return skipPart(part) }
-
-      if (header['content-transfer-encoding']) { encoding = header['content-transfer-encoding'][0].toLowerCase() } else { encoding = '7bit' }
-
-      let onData,
-        onEnd
-
-      if (isPartAFile(fieldname, contype, filename)) {
-        // file/binary field
-        if (nfiles === filesLimit) {
-          if (!boy.hitFilesLimit) {
-            boy.hitFilesLimit = true
-            boy.emit('filesLimit')
-          }
-          return skipPart(part)
-        }
-
-        ++nfiles
-
-        if (!boy._events.file) {
-          self.parser._ignore()
-          return
-        }
-
-        ++nends
-        const file = new FileStream(fileOpts)
-        curFile = file
-        file.on('end', function () {
-          --nends
-          self._pause = false
-          checkFinished()
-          if (self._cb && !self._needDrain) {
-            const cb = self._cb
-            self._cb = undefined
-            cb()
-          }
-        })
-        file._read = function (n) {
-          if (!self._pause) { return }
-          self._pause = false
-          if (self._cb && !self._needDrain) {
-            const cb = self._cb
-            self._cb = undefined
-            cb()
-          }
-        }
-        boy.emit('file', fieldname, file, filename, encoding, contype)
-
-        onData = function (data) {
-          if ((nsize += data.length) > fileSizeLimit) {
-            const extralen = fileSizeLimit - nsize + data.length
-            if (extralen > 0) { file.push(data.slice(0, extralen)) }
-            file.truncated = true
-            file.bytesRead = fileSizeLimit
-            part.removeAllListeners('data')
-            file.emit('limit')
-            return
-          } else if (!file.push(data)) { self._pause = true }
-
-          file.bytesRead = nsize
-        }
-
-        onEnd = function () {
-          curFile = undefined
-          file.push(null)
-        }
-      } else {
-        // non-file field
-        if (nfields === fieldsLimit) {
-          if (!boy.hitFieldsLimit) {
-            boy.hitFieldsLimit = true
-            boy.emit('fieldsLimit')
-          }
-          return skipPart(part)
-        }
-
-        ++nfields
-        ++nends
-        let buffer = ''
-        let truncated = false
-        curField = part
-
-        onData = function (data) {
-          if ((nsize += data.length) > fieldSizeLimit) {
-            const extralen = (fieldSizeLimit - (nsize - data.length))
-            buffer += data.toString('binary', 0, extralen)
-            truncated = true
-            part.removeAllListeners('data')
-          } else { buffer += data.toString('binary') }
-        }
-
-        onEnd = function () {
-          curField = undefined
-          if (buffer.length) { buffer = decodeText(buffer, 'binary', charset) }
-          boy.emit('field', fieldname, buffer, false, truncated, encoding, contype)
-          --nends
-          checkFinished()
-        }
-      }
-
-      /* As of node@2efe4ab761666 (v0.10.29+/v0.11.14+), busboy had become
-         broken. Streams2/streams3 is a huge black box of confusion, but
-         somehow overriding the sync state seems to fix things again (and still
-         seems to work for previous node versions).
-      */
-      part._readableState.sync = false
-
-      part.on('data', onData)
-      part.on('end', onEnd)
-    }).on('error', function (err) {
-      if (curFile) { curFile.emit('error', err) }
-    })
-  }).on('error', function (err) {
-    boy.emit('error', err)
-  }).on('finish', function () {
-    finished = true
-    checkFinished()
-  })
-}
-
-Multipart.prototype.write = function (chunk, cb) {
-  const r = this.parser.write(chunk)
-  if (r && !this._pause) {
-    cb()
-  } else {
-    this._needDrain = !r
-    this._cb = cb
-  }
-}
-
-Multipart.prototype.end = function () {
-  const self = this
-
-  if (self.parser.writable) {
-    self.parser.end()
-  } else if (!self._boy._done) {
-    process.nextTick(function () {
-      self._boy._done = true
-      self._boy.emit('finish')
-    })
-  }
-}
-
-function skipPart (part) {
-  part.resume()
-}
-
-function FileStream (opts) {
-  Readable.call(this, opts)
-
-  this.bytesRead = 0
-
-  this.truncated = false
-}
-
-inherits(FileStream, Readable)
-
-FileStream.prototype._read = function (n) {}
-
-module.exports = Multipart
-
-
-/***/ }),
-
-/***/ 6780:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const Decoder = __nccwpck_require__(9730)
-const decodeText = __nccwpck_require__(9136)
-const getLimit = __nccwpck_require__(9692)
-
-const RE_CHARSET = /^charset$/i
-
-UrlEncoded.detect = /^application\/x-www-form-urlencoded/i
-function UrlEncoded (boy, cfg) {
-  const limits = cfg.limits
-  const parsedConType = cfg.parsedConType
-  this.boy = boy
-
-  this.fieldSizeLimit = getLimit(limits, 'fieldSize', 1 * 1024 * 1024)
-  this.fieldNameSizeLimit = getLimit(limits, 'fieldNameSize', 100)
-  this.fieldsLimit = getLimit(limits, 'fields', Infinity)
-
-  let charset
-  for (var i = 0, len = parsedConType.length; i < len; ++i) { // eslint-disable-line no-var
-    if (Array.isArray(parsedConType[i]) &&
-        RE_CHARSET.test(parsedConType[i][0])) {
-      charset = parsedConType[i][1].toLowerCase()
-      break
-    }
-  }
-
-  if (charset === undefined) { charset = cfg.defCharset || 'utf8' }
-
-  this.decoder = new Decoder()
-  this.charset = charset
-  this._fields = 0
-  this._state = 'key'
-  this._checkingBytes = true
-  this._bytesKey = 0
-  this._bytesVal = 0
-  this._key = ''
-  this._val = ''
-  this._keyTrunc = false
-  this._valTrunc = false
-  this._hitLimit = false
-}
-
-UrlEncoded.prototype.write = function (data, cb) {
-  if (this._fields === this.fieldsLimit) {
-    if (!this.boy.hitFieldsLimit) {
-      this.boy.hitFieldsLimit = true
-      this.boy.emit('fieldsLimit')
-    }
-    return cb()
-  }
-
-  let idxeq; let idxamp; let i; let p = 0; const len = data.length
-
-  while (p < len) {
-    if (this._state === 'key') {
-      idxeq = idxamp = undefined
-      for (i = p; i < len; ++i) {
-        if (!this._checkingBytes) { ++p }
-        if (data[i] === 0x3D/* = */) {
-          idxeq = i
-          break
-        } else if (data[i] === 0x26/* & */) {
-          idxamp = i
-          break
-        }
-        if (this._checkingBytes && this._bytesKey === this.fieldNameSizeLimit) {
-          this._hitLimit = true
-          break
-        } else if (this._checkingBytes) { ++this._bytesKey }
-      }
-
-      if (idxeq !== undefined) {
-        // key with assignment
-        if (idxeq > p) { this._key += this.decoder.write(data.toString('binary', p, idxeq)) }
-        this._state = 'val'
-
-        this._hitLimit = false
-        this._checkingBytes = true
-        this._val = ''
-        this._bytesVal = 0
-        this._valTrunc = false
-        this.decoder.reset()
-
-        p = idxeq + 1
-      } else if (idxamp !== undefined) {
-        // key with no assignment
-        ++this._fields
-        let key; const keyTrunc = this._keyTrunc
-        if (idxamp > p) { key = (this._key += this.decoder.write(data.toString('binary', p, idxamp))) } else { key = this._key }
-
-        this._hitLimit = false
-        this._checkingBytes = true
-        this._key = ''
-        this._bytesKey = 0
-        this._keyTrunc = false
-        this.decoder.reset()
-
-        if (key.length) {
-          this.boy.emit('field', decodeText(key, 'binary', this.charset),
-            '',
-            keyTrunc,
-            false)
-        }
-
-        p = idxamp + 1
-        if (this._fields === this.fieldsLimit) { return cb() }
-      } else if (this._hitLimit) {
-        // we may not have hit the actual limit if there are encoded bytes...
-        if (i > p) { this._key += this.decoder.write(data.toString('binary', p, i)) }
-        p = i
-        if ((this._bytesKey = this._key.length) === this.fieldNameSizeLimit) {
-          // yep, we actually did hit the limit
-          this._checkingBytes = false
-          this._keyTrunc = true
-        }
-      } else {
-        if (p < len) { this._key += this.decoder.write(data.toString('binary', p)) }
-        p = len
-      }
-    } else {
-      idxamp = undefined
-      for (i = p; i < len; ++i) {
-        if (!this._checkingBytes) { ++p }
-        if (data[i] === 0x26/* & */) {
-          idxamp = i
-          break
-        }
-        if (this._checkingBytes && this._bytesVal === this.fieldSizeLimit) {
-          this._hitLimit = true
-          break
-        } else if (this._checkingBytes) { ++this._bytesVal }
-      }
-
-      if (idxamp !== undefined) {
-        ++this._fields
-        if (idxamp > p) { this._val += this.decoder.write(data.toString('binary', p, idxamp)) }
-        this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
-          decodeText(this._val, 'binary', this.charset),
-          this._keyTrunc,
-          this._valTrunc)
-        this._state = 'key'
-
-        this._hitLimit = false
-        this._checkingBytes = true
-        this._key = ''
-        this._bytesKey = 0
-        this._keyTrunc = false
-        this.decoder.reset()
-
-        p = idxamp + 1
-        if (this._fields === this.fieldsLimit) { return cb() }
-      } else if (this._hitLimit) {
-        // we may not have hit the actual limit if there are encoded bytes...
-        if (i > p) { this._val += this.decoder.write(data.toString('binary', p, i)) }
-        p = i
-        if ((this._val === '' && this.fieldSizeLimit === 0) ||
-            (this._bytesVal = this._val.length) === this.fieldSizeLimit) {
-          // yep, we actually did hit the limit
-          this._checkingBytes = false
-          this._valTrunc = true
-        }
-      } else {
-        if (p < len) { this._val += this.decoder.write(data.toString('binary', p)) }
-        p = len
-      }
-    }
-  }
-  cb()
-}
-
-UrlEncoded.prototype.end = function () {
-  if (this.boy._done) { return }
-
-  if (this._state === 'key' && this._key.length > 0) {
-    this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
-      '',
-      this._keyTrunc,
-      false)
-  } else if (this._state === 'val') {
-    this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
-      decodeText(this._val, 'binary', this.charset),
-      this._keyTrunc,
-      this._valTrunc)
-  }
-  this.boy._done = true
-  this.boy.emit('finish')
-}
-
-module.exports = UrlEncoded
-
-
-/***/ }),
-
-/***/ 9730:
-/***/ ((module) => {
-
-"use strict";
-
-
-const RE_PLUS = /\+/g
-
-const HEX = [
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-]
-
-function Decoder () {
-  this.buffer = undefined
-}
-Decoder.prototype.write = function (str) {
-  // Replace '+' with ' ' before decoding
-  str = str.replace(RE_PLUS, ' ')
-  let res = ''
-  let i = 0; let p = 0; const len = str.length
-  for (; i < len; ++i) {
-    if (this.buffer !== undefined) {
-      if (!HEX[str.charCodeAt(i)]) {
-        res += '%' + this.buffer
-        this.buffer = undefined
-        --i // retry character
-      } else {
-        this.buffer += str[i]
-        ++p
-        if (this.buffer.length === 2) {
-          res += String.fromCharCode(parseInt(this.buffer, 16))
-          this.buffer = undefined
-        }
-      }
-    } else if (str[i] === '%') {
-      if (i > p) {
-        res += str.substring(p, i)
-        p = i
-      }
-      this.buffer = ''
-      ++p
-    }
-  }
-  if (p < len && this.buffer === undefined) { res += str.substring(p) }
-  return res
-}
-Decoder.prototype.reset = function () {
-  this.buffer = undefined
-}
-
-module.exports = Decoder
-
-
-/***/ }),
-
-/***/ 496:
-/***/ ((module) => {
-
-"use strict";
-
-
-module.exports = function basename (path) {
-  if (typeof path !== 'string') { return '' }
-  for (var i = path.length - 1; i >= 0; --i) { // eslint-disable-line no-var
-    switch (path.charCodeAt(i)) {
-      case 0x2F: // '/'
-      case 0x5C: // '\'
-        path = path.slice(i + 1)
-        return (path === '..' || path === '.' ? '' : path)
-    }
-  }
-  return (path === '..' || path === '.' ? '' : path)
-}
-
-
-/***/ }),
-
-/***/ 9136:
-/***/ ((module) => {
-
-"use strict";
-
-
-// Node has always utf-8
-const utf8Decoder = new TextDecoder('utf-8')
-const textDecoders = new Map([
-  ['utf-8', utf8Decoder],
-  ['utf8', utf8Decoder]
-])
-
-function decodeText (text, textEncoding, destEncoding) {
-  if (text) {
-    if (textDecoders.has(destEncoding)) {
-      try {
-        return textDecoders.get(destEncoding).decode(Buffer.from(text, textEncoding))
-      } catch (e) { }
-    } else {
-      try {
-        textDecoders.set(destEncoding, new TextDecoder(destEncoding))
-        return textDecoders.get(destEncoding).decode(Buffer.from(text, textEncoding))
-      } catch (e) { }
-    }
-  }
-  return text
-}
-
-module.exports = decodeText
-
-
-/***/ }),
-
-/***/ 9692:
-/***/ ((module) => {
-
-"use strict";
-
-
-module.exports = function getLimit (limits, name, defaultLimit) {
-  if (
-    !limits ||
-    limits[name] === undefined ||
-    limits[name] === null
-  ) { return defaultLimit }
-
-  if (
-    typeof limits[name] !== 'number' ||
-    isNaN(limits[name])
-  ) { throw new TypeError('Limit ' + name + ' is not a valid number') }
-
-  return limits[name]
-}
-
-
-/***/ }),
-
-/***/ 4426:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-
-const decodeText = __nccwpck_require__(9136)
-
-const RE_ENCODED = /%([a-fA-F0-9]{2})/g
-
-function encodedReplacer (match, byte) {
-  return String.fromCharCode(parseInt(byte, 16))
-}
-
-function parseParams (str) {
-  const res = []
-  let state = 'key'
-  let charset = ''
-  let inquote = false
-  let escaping = false
-  let p = 0
-  let tmp = ''
-
-  for (var i = 0, len = str.length; i < len; ++i) { // eslint-disable-line no-var
-    const char = str[i]
-    if (char === '\\' && inquote) {
-      if (escaping) { escaping = false } else {
-        escaping = true
-        continue
-      }
-    } else if (char === '"') {
-      if (!escaping) {
-        if (inquote) {
-          inquote = false
-          state = 'key'
-        } else { inquote = true }
-        continue
-      } else { escaping = false }
-    } else {
-      if (escaping && inquote) { tmp += '\\' }
-      escaping = false
-      if ((state === 'charset' || state === 'lang') && char === "'") {
-        if (state === 'charset') {
-          state = 'lang'
-          charset = tmp.substring(1)
-        } else { state = 'value' }
-        tmp = ''
-        continue
-      } else if (state === 'key' &&
-        (char === '*' || char === '=') &&
-        res.length) {
-        if (char === '*') { state = 'charset' } else { state = 'value' }
-        res[p] = [tmp, undefined]
-        tmp = ''
-        continue
-      } else if (!inquote && char === ';') {
-        state = 'key'
-        if (charset) {
-          if (tmp.length) {
-            tmp = decodeText(tmp.replace(RE_ENCODED, encodedReplacer),
-              'binary',
-              charset)
-          }
-          charset = ''
-        } else if (tmp.length) {
-          tmp = decodeText(tmp, 'binary', 'utf8')
-        }
-        if (res[p] === undefined) { res[p] = tmp } else { res[p][1] = tmp }
-        tmp = ''
-        ++p
-        continue
-      } else if (!inquote && (char === ' ' || char === '\t')) { continue }
-    }
-    tmp += char
-  }
-  if (charset && tmp.length) {
-    tmp = decodeText(tmp.replace(RE_ENCODED, encodedReplacer),
-      'binary',
-      charset)
-  } else if (tmp) {
-    tmp = decodeText(tmp, 'binary', 'utf8')
-  }
-
-  if (res[p] === undefined) {
-    if (tmp) { res[p] = tmp }
-  } else { res[p][1] = tmp }
-
-  return res
-}
-
-module.exports = parseParams
-
-
-/***/ }),
-
 /***/ 334:
 /***/ ((module) => {
 
@@ -24339,9 +22967,14 @@ var import_graphql = __nccwpck_require__(8467);
 var import_auth_token = __nccwpck_require__(334);
 
 // pkg/dist-src/version.js
-var VERSION = "5.0.1";
+var VERSION = "5.1.0";
 
 // pkg/dist-src/index.js
+var noop = () => {
+};
+var consoleWarn = console.warn.bind(console);
+var consoleError = console.error.bind(console);
+var userAgentTrail = `octokit-core.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
 var Octokit = class {
   static {
     this.VERSION = VERSION;
@@ -24402,10 +23035,7 @@ var Octokit = class {
         format: ""
       }
     };
-    requestDefaults.headers["user-agent"] = [
-      options.userAgent,
-      `octokit-core.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`
-    ].filter(Boolean).join(" ");
+    requestDefaults.headers["user-agent"] = options.userAgent ? `${options.userAgent} ${userAgentTrail}` : userAgentTrail;
     if (options.baseUrl) {
       requestDefaults.baseUrl = options.baseUrl;
     }
@@ -24419,12 +23049,10 @@ var Octokit = class {
     this.graphql = (0, import_graphql.withCustomRequest)(this.request).defaults(requestDefaults);
     this.log = Object.assign(
       {
-        debug: () => {
-        },
-        info: () => {
-        },
-        warn: console.warn.bind(console),
-        error: console.error.bind(console)
+        debug: noop,
+        info: noop,
+        warn: consoleWarn,
+        error: consoleError
       },
       options.log
     );
@@ -24461,9 +23089,9 @@ var Octokit = class {
       this.auth = auth;
     }
     const classConstructor = this.constructor;
-    classConstructor.plugins.forEach((plugin) => {
-      Object.assign(this, plugin(this, options));
-    });
+    for (let i = 0; i < classConstructor.plugins.length; ++i) {
+      Object.assign(this, classConstructor.plugins[i](this, options));
+    }
   }
 };
 // Annotate the CommonJS export names for ESM import in node:
@@ -24506,7 +23134,7 @@ module.exports = __toCommonJS(dist_src_exports);
 var import_universal_user_agent = __nccwpck_require__(5030);
 
 // pkg/dist-src/version.js
-var VERSION = "9.0.1";
+var VERSION = "9.0.4";
 
 // pkg/dist-src/defaults.js
 var userAgent = `octokit-endpoint.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
@@ -24533,12 +23161,24 @@ function lowercaseKeys(object) {
   }, {});
 }
 
+// pkg/dist-src/util/is-plain-object.js
+function isPlainObject(value) {
+  if (typeof value !== "object" || value === null)
+    return false;
+  if (Object.prototype.toString.call(value) !== "[object Object]")
+    return false;
+  const proto = Object.getPrototypeOf(value);
+  if (proto === null)
+    return true;
+  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
+}
+
 // pkg/dist-src/util/merge-deep.js
-var import_is_plain_object = __nccwpck_require__(3287);
 function mergeDeep(defaults, options) {
   const result = Object.assign({}, defaults);
   Object.keys(options).forEach((key) => {
-    if ((0, import_is_plain_object.isPlainObject)(options[key])) {
+    if (isPlainObject(options[key])) {
       if (!(key in defaults))
         Object.assign(result, { [key]: options[key] });
       else
@@ -24613,10 +23253,13 @@ function extractUrlVariableNames(url) {
 
 // pkg/dist-src/util/omit.js
 function omit(object, keysToOmit) {
-  return Object.keys(object).filter((option) => !keysToOmit.includes(option)).reduce((obj, key) => {
-    obj[key] = object[key];
-    return obj;
-  }, {});
+  const result = { __proto__: null };
+  for (const key of Object.keys(object)) {
+    if (keysToOmit.indexOf(key) === -1) {
+      result[key] = object[key];
+    }
+  }
+  return result;
 }
 
 // pkg/dist-src/util/url-template.js
@@ -24714,7 +23357,7 @@ function parseUrl(template) {
 }
 function expand(template, context) {
   var operators = ["+", "#", ".", "/", ";", "?", "&"];
-  return template.replace(
+  template = template.replace(
     /\{([^\{\}]+)\}|([^\{\}]+)/g,
     function(_, expression, literal) {
       if (expression) {
@@ -24744,6 +23387,11 @@ function expand(template, context) {
       }
     }
   );
+  if (template === "/") {
+    return template;
+  } else {
+    return template.replace(/\/$/, "");
+  }
 }
 
 // pkg/dist-src/parse.js
@@ -25028,7 +23676,7 @@ __export(dist_src_exports, {
 module.exports = __toCommonJS(dist_src_exports);
 
 // pkg/dist-src/version.js
-var VERSION = "9.0.0";
+var VERSION = "9.2.1";
 
 // pkg/dist-src/normalize-paginated-list-response.js
 function normalizePaginatedListResponse(response) {
@@ -25189,6 +23837,8 @@ var paginatingEndpoints = [
   "GET /orgs/{org}/members/{username}/codespaces",
   "GET /orgs/{org}/migrations",
   "GET /orgs/{org}/migrations/{migration_id}/repositories",
+  "GET /orgs/{org}/organization-roles/{role_id}/teams",
+  "GET /orgs/{org}/organization-roles/{role_id}/users",
   "GET /orgs/{org}/outside_collaborators",
   "GET /orgs/{org}/packages",
   "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
@@ -25197,9 +23847,11 @@ var paginatingEndpoints = [
   "GET /orgs/{org}/personal-access-tokens",
   "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories",
   "GET /orgs/{org}/projects",
+  "GET /orgs/{org}/properties/values",
   "GET /orgs/{org}/public_members",
   "GET /orgs/{org}/repos",
   "GET /orgs/{org}/rulesets",
+  "GET /orgs/{org}/rulesets/rule-suites",
   "GET /orgs/{org}/secret-scanning/alerts",
   "GET /orgs/{org}/security-advisories",
   "GET /orgs/{org}/teams",
@@ -25291,6 +23943,7 @@ var paginatingEndpoints = [
   "GET /repos/{owner}/{repo}/releases/{release_id}/reactions",
   "GET /repos/{owner}/{repo}/rules/branches/{branch}",
   "GET /repos/{owner}/{repo}/rulesets",
+  "GET /repos/{owner}/{repo}/rulesets/rule-suites",
   "GET /repos/{owner}/{repo}/secret-scanning/alerts",
   "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations",
   "GET /repos/{owner}/{repo}/security-advisories",
@@ -25422,7 +24075,7 @@ __export(dist_src_exports, {
 module.exports = __toCommonJS(dist_src_exports);
 
 // pkg/dist-src/version.js
-var VERSION = "10.0.1";
+var VERSION = "10.4.0";
 
 // pkg/dist-src/generated/endpoints.js
 var Endpoints = {
@@ -25527,6 +24180,9 @@ var Endpoints = {
     enableWorkflow: [
       "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"
     ],
+    forceCancelWorkflowRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel"
+    ],
     generateRunnerJitconfigForOrg: [
       "POST /orgs/{org}/actions/runners/generate-jitconfig"
     ],
@@ -25546,6 +24202,9 @@ var Endpoints = {
       "GET /repos/{owner}/{repo}/actions/permissions/selected-actions"
     ],
     getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    getCustomOidcSubClaimForRepo: [
+      "GET /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
     getEnvironmentPublicKey: [
       "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"
     ],
@@ -25698,6 +24357,9 @@ var Endpoints = {
     setCustomLabelsForSelfHostedRunnerForRepo: [
       "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
     ],
+    setCustomOidcSubClaimForRepo: [
+      "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
     setGithubActionsDefaultWorkflowPermissionsOrganization: [
       "PUT /orgs/{org}/actions/permissions/workflow"
     ],
@@ -25767,6 +24429,7 @@ var Endpoints = {
     listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
     markNotificationsAsRead: ["PUT /notifications"],
     markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
+    markThreadAsDone: ["DELETE /notifications/threads/{thread_id}"],
     markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
     setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
     setThreadSubscription: [
@@ -25936,6 +24599,9 @@ var Endpoints = {
     addSelectedRepoToOrgSecret: [
       "PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"
     ],
+    checkPermissionsForDevcontainer: [
+      "GET /repos/{owner}/{repo}/codespaces/permissions_check"
+    ],
     codespaceMachinesForAuthenticatedUser: [
       "GET /user/codespaces/{codespace_name}/machines"
     ],
@@ -26040,10 +24706,10 @@ var Endpoints = {
     updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
   },
   copilot: {
-    addCopilotForBusinessSeatsForTeams: [
+    addCopilotSeatsForTeams: [
       "POST /orgs/{org}/copilot/billing/selected_teams"
     ],
-    addCopilotForBusinessSeatsForUsers: [
+    addCopilotSeatsForUsers: [
       "POST /orgs/{org}/copilot/billing/selected_users"
     ],
     cancelCopilotSeatAssignmentForTeams: [
@@ -26053,7 +24719,7 @@ var Endpoints = {
       "DELETE /orgs/{org}/copilot/billing/selected_users"
     ],
     getCopilotOrganizationDetails: ["GET /orgs/{org}/copilot/billing"],
-    getCopilotSeatAssignmentDetailsForUser: [
+    getCopilotSeatDetailsForUser: [
       "GET /orgs/{org}/members/{username}/copilot"
     ],
     listCopilotSeats: ["GET /orgs/{org}/copilot/billing/seats"]
@@ -26266,7 +24932,13 @@ var Endpoints = {
     root: ["GET /"]
   },
   migrations: {
-    cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
+    cancelImport: [
+      "DELETE /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.cancelImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#cancel-an-import"
+      }
+    ],
     deleteArchiveForAuthenticatedUser: [
       "DELETE /user/migrations/{migration_id}/archive"
     ],
@@ -26279,9 +24951,27 @@ var Endpoints = {
     getArchiveForAuthenticatedUser: [
       "GET /user/migrations/{migration_id}/archive"
     ],
-    getCommitAuthors: ["GET /repos/{owner}/{repo}/import/authors"],
-    getImportStatus: ["GET /repos/{owner}/{repo}/import"],
-    getLargeFiles: ["GET /repos/{owner}/{repo}/import/large_files"],
+    getCommitAuthors: [
+      "GET /repos/{owner}/{repo}/import/authors",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getCommitAuthors() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-commit-authors"
+      }
+    ],
+    getImportStatus: [
+      "GET /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getImportStatus() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-an-import-status"
+      }
+    ],
+    getLargeFiles: [
+      "GET /repos/{owner}/{repo}/import/large_files",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getLargeFiles() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-large-files"
+      }
+    ],
     getStatusForAuthenticatedUser: ["GET /user/migrations/{migration_id}"],
     getStatusForOrg: ["GET /orgs/{org}/migrations/{migration_id}"],
     listForAuthenticatedUser: ["GET /user/migrations"],
@@ -26295,22 +24985,60 @@ var Endpoints = {
       {},
       { renamed: ["migrations", "listReposForAuthenticatedUser"] }
     ],
-    mapCommitAuthor: ["PATCH /repos/{owner}/{repo}/import/authors/{author_id}"],
-    setLfsPreference: ["PATCH /repos/{owner}/{repo}/import/lfs"],
+    mapCommitAuthor: [
+      "PATCH /repos/{owner}/{repo}/import/authors/{author_id}",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.mapCommitAuthor() is deprecated, see https://docs.github.com/rest/migrations/source-imports#map-a-commit-author"
+      }
+    ],
+    setLfsPreference: [
+      "PATCH /repos/{owner}/{repo}/import/lfs",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.setLfsPreference() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-git-lfs-preference"
+      }
+    ],
     startForAuthenticatedUser: ["POST /user/migrations"],
     startForOrg: ["POST /orgs/{org}/migrations"],
-    startImport: ["PUT /repos/{owner}/{repo}/import"],
+    startImport: [
+      "PUT /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.startImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#start-an-import"
+      }
+    ],
     unlockRepoForAuthenticatedUser: [
       "DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"
     ],
     unlockRepoForOrg: [
       "DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"
     ],
-    updateImport: ["PATCH /repos/{owner}/{repo}/import"]
+    updateImport: [
+      "PATCH /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.updateImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-an-import"
+      }
+    ]
+  },
+  oidc: {
+    getOidcCustomSubTemplateForOrg: [
+      "GET /orgs/{org}/actions/oidc/customization/sub"
+    ],
+    updateOidcCustomSubTemplateForOrg: [
+      "PUT /orgs/{org}/actions/oidc/customization/sub"
+    ]
   },
   orgs: {
     addSecurityManagerTeam: [
       "PUT /orgs/{org}/security-managers/teams/{team_slug}"
+    ],
+    assignTeamToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    assignUserToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"
     ],
     blockUser: ["PUT /orgs/{org}/blocks/{username}"],
     cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
@@ -26320,16 +25048,32 @@ var Endpoints = {
     convertMemberToOutsideCollaborator: [
       "PUT /orgs/{org}/outside_collaborators/{username}"
     ],
+    createCustomOrganizationRole: ["POST /orgs/{org}/organization-roles"],
     createInvitation: ["POST /orgs/{org}/invitations"],
+    createOrUpdateCustomProperties: ["PATCH /orgs/{org}/properties/schema"],
+    createOrUpdateCustomPropertiesValuesForRepos: [
+      "PATCH /orgs/{org}/properties/values"
+    ],
+    createOrUpdateCustomProperty: [
+      "PUT /orgs/{org}/properties/schema/{custom_property_name}"
+    ],
     createWebhook: ["POST /orgs/{org}/hooks"],
     delete: ["DELETE /orgs/{org}"],
+    deleteCustomOrganizationRole: [
+      "DELETE /orgs/{org}/organization-roles/{role_id}"
+    ],
     deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
     enableOrDisableSecurityProductOnAllOrgRepos: [
       "POST /orgs/{org}/{security_product}/{enablement}"
     ],
     get: ["GET /orgs/{org}"],
+    getAllCustomProperties: ["GET /orgs/{org}/properties/schema"],
+    getCustomProperty: [
+      "GET /orgs/{org}/properties/schema/{custom_property_name}"
+    ],
     getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
     getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
+    getOrgRole: ["GET /orgs/{org}/organization-roles/{role_id}"],
     getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
     getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
     getWebhookDelivery: [
@@ -26338,12 +25082,19 @@ var Endpoints = {
     list: ["GET /organizations"],
     listAppInstallations: ["GET /orgs/{org}/installations"],
     listBlockedUsers: ["GET /orgs/{org}/blocks"],
+    listCustomPropertiesValuesForRepos: ["GET /orgs/{org}/properties/values"],
     listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
     listForAuthenticatedUser: ["GET /user/orgs"],
     listForUser: ["GET /users/{username}/orgs"],
     listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
     listMembers: ["GET /orgs/{org}/members"],
     listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
+    listOrgRoleTeams: ["GET /orgs/{org}/organization-roles/{role_id}/teams"],
+    listOrgRoleUsers: ["GET /orgs/{org}/organization-roles/{role_id}/users"],
+    listOrgRoles: ["GET /orgs/{org}/organization-roles"],
+    listOrganizationFineGrainedPermissions: [
+      "GET /orgs/{org}/organization-fine-grained-permissions"
+    ],
     listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
     listPatGrantRepositories: [
       "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories"
@@ -26358,9 +25109,15 @@ var Endpoints = {
     listSecurityManagerTeams: ["GET /orgs/{org}/security-managers"],
     listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
     listWebhooks: ["GET /orgs/{org}/hooks"],
+    patchCustomOrganizationRole: [
+      "PATCH /orgs/{org}/organization-roles/{role_id}"
+    ],
     pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
     redeliverWebhookDelivery: [
       "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
+    ],
+    removeCustomProperty: [
+      "DELETE /orgs/{org}/properties/schema/{custom_property_name}"
     ],
     removeMember: ["DELETE /orgs/{org}/members/{username}"],
     removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
@@ -26378,6 +25135,18 @@ var Endpoints = {
     ],
     reviewPatGrantRequestsInBulk: [
       "POST /orgs/{org}/personal-access-token-requests"
+    ],
+    revokeAllOrgRolesTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}"
+    ],
+    revokeAllOrgRolesUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}"
+    ],
+    revokeOrgRoleTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    revokeOrgRoleUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"
     ],
     setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
     setPublicMembershipForAuthenticatedUser: [
@@ -26669,6 +25438,9 @@ var Endpoints = {
       {},
       { mapToData: "users" }
     ],
+    cancelPagesDeployment: [
+      "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+    ],
     checkAutomatedSecurityFixes: [
       "GET /repos/{owner}/{repo}/automated-security-fixes"
     ],
@@ -26704,12 +25476,15 @@ var Endpoints = {
     createForAuthenticatedUser: ["POST /user/repos"],
     createFork: ["POST /repos/{owner}/{repo}/forks"],
     createInOrg: ["POST /orgs/{org}/repos"],
+    createOrUpdateCustomPropertiesValues: [
+      "PATCH /repos/{owner}/{repo}/properties/values"
+    ],
     createOrUpdateEnvironment: [
       "PUT /repos/{owner}/{repo}/environments/{environment_name}"
     ],
     createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
     createOrgRuleset: ["POST /orgs/{org}/rulesets"],
-    createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployment"],
+    createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments"],
     createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
     createRelease: ["POST /repos/{owner}/{repo}/releases"],
     createRepoRuleset: ["POST /repos/{owner}/{repo}/rulesets"],
@@ -26842,6 +25617,7 @@ var Endpoints = {
     getCustomDeploymentProtectionRule: [
       "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
     ],
+    getCustomPropertiesValues: ["GET /repos/{owner}/{repo}/properties/values"],
     getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
     getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
     getDeploymentBranchPolicy: [
@@ -26855,10 +25631,15 @@ var Endpoints = {
     ],
     getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
     getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
+    getOrgRuleSuite: ["GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}"],
+    getOrgRuleSuites: ["GET /orgs/{org}/rulesets/rule-suites"],
     getOrgRuleset: ["GET /orgs/{org}/rulesets/{ruleset_id}"],
     getOrgRulesets: ["GET /orgs/{org}/rulesets"],
     getPages: ["GET /repos/{owner}/{repo}/pages"],
     getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+    getPagesDeployment: [
+      "GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+    ],
     getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
     getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
     getPullRequestReviewProtection: [
@@ -26870,6 +25651,10 @@ var Endpoints = {
     getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
     getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
     getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
+    getRepoRuleSuite: [
+      "GET /repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}"
+    ],
+    getRepoRuleSuites: ["GET /repos/{owner}/{repo}/rulesets/rule-suites"],
     getRepoRuleset: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
     getRepoRulesets: ["GET /repos/{owner}/{repo}/rulesets"],
     getStatusChecksProtection: [
@@ -27065,6 +25850,9 @@ var Endpoints = {
     ]
   },
   securityAdvisories: {
+    createFork: [
+      "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+    ],
     createPrivateVulnerabilityReport: [
       "POST /repos/{owner}/{repo}/security-advisories/reports"
     ],
@@ -27556,10 +26344,22 @@ var import_endpoint = __nccwpck_require__(9440);
 var import_universal_user_agent = __nccwpck_require__(5030);
 
 // pkg/dist-src/version.js
-var VERSION = "8.1.4";
+var VERSION = "8.2.0";
+
+// pkg/dist-src/is-plain-object.js
+function isPlainObject(value) {
+  if (typeof value !== "object" || value === null)
+    return false;
+  if (Object.prototype.toString.call(value) !== "[object Object]")
+    return false;
+  const proto = Object.getPrototypeOf(value);
+  if (proto === null)
+    return true;
+  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
+}
 
 // pkg/dist-src/fetch-wrapper.js
-var import_is_plain_object = __nccwpck_require__(3287);
 var import_request_error = __nccwpck_require__(537);
 
 // pkg/dist-src/get-buffer-response.js
@@ -27572,7 +26372,7 @@ function fetchWrapper(requestOptions) {
   var _a, _b, _c;
   const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
   const parseSuccessResponseBody = ((_a = requestOptions.request) == null ? void 0 : _a.parseSuccessResponseBody) !== false;
-  if ((0, import_is_plain_object.isPlainObject)(requestOptions.body) || Array.isArray(requestOptions.body)) {
+  if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
   let headers = {};
@@ -27678,7 +26478,7 @@ function fetchWrapper(requestOptions) {
 async function getResponseData(response) {
   const contentType = response.headers.get("content-type");
   if (/application\/json/.test(contentType)) {
-    return response.json();
+    return response.json().catch(() => response.text()).catch(() => "");
   }
   if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
     return response.text();
@@ -27688,11 +26488,17 @@ async function getResponseData(response) {
 function toErrorMessage(data) {
   if (typeof data === "string")
     return data;
+  let suffix;
+  if ("documentation_url" in data) {
+    suffix = ` - ${data.documentation_url}`;
+  } else {
+    suffix = "";
+  }
   if ("message" in data) {
     if (Array.isArray(data.errors)) {
-      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}${suffix}`;
     }
-    return data.message;
+    return `${data.message}${suffix}`;
   }
   return `Unknown error: ${JSON.stringify(data)}`;
 }
@@ -28466,6 +27272,7 @@ __export(src_exports, {
   ENV_CMDS_AUTH_TOKEN: () => ENV_CMDS_AUTH_TOKEN,
   ENV_CMDS_FULL_URI: () => ENV_CMDS_FULL_URI,
   ENV_CMDS_RELATIVE_URI: () => ENV_CMDS_RELATIVE_URI,
+  Endpoint: () => Endpoint,
   fromContainerMetadata: () => fromContainerMetadata,
   fromInstanceMetadata: () => fromInstanceMetadata,
   getInstanceMetadataEndpoint: () => getInstanceMetadataEndpoint,
@@ -28638,6 +27445,13 @@ var InstanceMetadataV1FallbackError = _InstanceMetadataV1FallbackError;
 var import_node_config_provider = __nccwpck_require__(3461);
 var import_url_parser = __nccwpck_require__(4681);
 
+// src/config/Endpoint.ts
+var Endpoint = /* @__PURE__ */ ((Endpoint2) => {
+  Endpoint2["IPv4"] = "http://169.254.169.254";
+  Endpoint2["IPv6"] = "http://[fd00:ec2::254]";
+  return Endpoint2;
+})(Endpoint || {});
+
 // src/config/EndpointConfigOptions.ts
 var ENV_ENDPOINT_NAME = "AWS_EC2_METADATA_SERVICE_ENDPOINT";
 var CONFIG_ENDPOINT_NAME = "ec2_metadata_service_endpoint";
@@ -28686,7 +27500,8 @@ var getExtendedInstanceMetadataCredentials = /* @__PURE__ */ __name((credentials
   const refreshInterval = STATIC_STABILITY_REFRESH_INTERVAL_SECONDS + Math.floor(Math.random() * STATIC_STABILITY_REFRESH_INTERVAL_JITTER_WINDOW_SECONDS);
   const newExpiration = new Date(Date.now() + refreshInterval * 1e3);
   logger.warn(
-    "Attempting credential expiration extension due to a credential service availability issue. A refresh of these credentials will be attempted after ${new Date(newExpiration)}.\nFor more information, please visit: " + STATIC_STABILITY_DOC_URL
+    `Attempting credential expiration extension due to a credential service availability issue. A refresh of these credentials will be attempted after ${new Date(newExpiration)}.
+For more information, please visit: ` + STATIC_STABILITY_DOC_URL
   );
   const originalExpiration = credentials.originalExpiration ?? credentials.expiration;
   return {
@@ -30049,13 +28864,13 @@ var IP_ADDRESS_PATTERN = /(\d+\.){3}\d+/;
 var DOTS_PATTERN = /\.\./;
 var isDnsCompatibleBucketName = /* @__PURE__ */ __name((bucketName) => DOMAIN_PATTERN.test(bucketName) && !IP_ADDRESS_PATTERN.test(bucketName) && !DOTS_PATTERN.test(bucketName), "isDnsCompatibleBucketName");
 var isArnBucketName = /* @__PURE__ */ __name((bucketName) => {
-  const [arn, partition, service, region, account, typeOrId] = bucketName.split(":");
+  const [arn, partition, service, , , bucket] = bucketName.split(":");
   const isArn = arn === "arn" && bucketName.split(":").length >= 6;
-  const isValidArn = [arn, partition, service, account, typeOrId].filter(Boolean).length === 5;
+  const isValidArn = Boolean(isArn && partition && service && bucket);
   if (isArn && !isValidArn) {
     throw new Error(`Invalid ARN: ${bucketName} was an invalid ARN.`);
   }
-  return arn === "arn" && !!partition && !!service && !!account && !!typeOrId;
+  return isValidArn;
 }, "isArnBucketName");
 
 // src/adaptors/createConfigValueProvider.ts
@@ -30296,7 +29111,7 @@ module.exports = __toCommonJS(src_exports);
 var import_protocol_http = __nccwpck_require__(4418);
 
 
-var import_uuid = __nccwpck_require__(5840);
+var import_uuid = __nccwpck_require__(7761);
 
 // src/defaultRetryQuota.ts
 var import_util_retry = __nccwpck_require__(4902);
@@ -30605,6 +29420,7 @@ var retryMiddleware = /* @__PURE__ */ __name((options) => (next, context) => asy
 var isRetryStrategyV2 = /* @__PURE__ */ __name((retryStrategy) => typeof retryStrategy.acquireInitialRetryToken !== "undefined" && typeof retryStrategy.refreshRetryTokenForRetry !== "undefined" && typeof retryStrategy.recordSuccess !== "undefined", "isRetryStrategyV2");
 var getRetryErrorInfo = /* @__PURE__ */ __name((error) => {
   const errorInfo = {
+    error,
     errorType: getRetryErrorType(error)
   };
   const retryAfterHint = getRetryAfterHint(error.$response);
@@ -30670,6 +29486,687 @@ exports.isStreamingPayload = isStreamingPayload;
 
 /***/ }),
 
+/***/ 7761:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "NIL", ({
+  enumerable: true,
+  get: function () {
+    return _nil.default;
+  }
+}));
+Object.defineProperty(exports, "parse", ({
+  enumerable: true,
+  get: function () {
+    return _parse.default;
+  }
+}));
+Object.defineProperty(exports, "stringify", ({
+  enumerable: true,
+  get: function () {
+    return _stringify.default;
+  }
+}));
+Object.defineProperty(exports, "v1", ({
+  enumerable: true,
+  get: function () {
+    return _v.default;
+  }
+}));
+Object.defineProperty(exports, "v3", ({
+  enumerable: true,
+  get: function () {
+    return _v2.default;
+  }
+}));
+Object.defineProperty(exports, "v4", ({
+  enumerable: true,
+  get: function () {
+    return _v3.default;
+  }
+}));
+Object.defineProperty(exports, "v5", ({
+  enumerable: true,
+  get: function () {
+    return _v4.default;
+  }
+}));
+Object.defineProperty(exports, "validate", ({
+  enumerable: true,
+  get: function () {
+    return _validate.default;
+  }
+}));
+Object.defineProperty(exports, "version", ({
+  enumerable: true,
+  get: function () {
+    return _version.default;
+  }
+}));
+
+var _v = _interopRequireDefault(__nccwpck_require__(6310));
+
+var _v2 = _interopRequireDefault(__nccwpck_require__(9465));
+
+var _v3 = _interopRequireDefault(__nccwpck_require__(6001));
+
+var _v4 = _interopRequireDefault(__nccwpck_require__(8310));
+
+var _nil = _interopRequireDefault(__nccwpck_require__(3436));
+
+var _version = _interopRequireDefault(__nccwpck_require__(7780));
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6992));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(9618));
+
+var _parse = _interopRequireDefault(__nccwpck_require__(86));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
+/***/ 1380:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function md5(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('md5').update(bytes).digest();
+}
+
+var _default = md5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 4672:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = {
+  randomUUID: _crypto.default.randomUUID
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 3436:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = '00000000-0000-0000-0000-000000000000';
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 86:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6992));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function parse(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
+
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
+
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
+
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
+}
+
+var _default = parse;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 3194:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8136:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = rng;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
+
+let poolPtr = rnds8Pool.length;
+
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    _crypto.default.randomFillSync(rnds8Pool);
+
+    poolPtr = 0;
+  }
+
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
+}
+
+/***/ }),
+
+/***/ 6679:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('sha1').update(bytes).digest();
+}
+
+var _default = sha1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 9618:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+exports.unsafeStringify = unsafeStringify;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6992));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
+}
+
+function stringify(arr, offset = 0) {
+  const uuid = unsafeStringify(arr, offset); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+var _default = stringify;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6310:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _rng = _interopRequireDefault(__nccwpck_require__(8136));
+
+var _stringify = __nccwpck_require__(9618);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+let _nodeId;
+
+let _clockseq; // Previous uuid creation time
+
+
+let _lastMSecs = 0;
+let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+
+function v1(options, buf, offset) {
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || _rng.default)();
+
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+    }
+
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+
+
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf || (0, _stringify.unsafeStringify)(b);
+}
+
+var _default = v1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 9465:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(2568));
+
+var _md = _interopRequireDefault(__nccwpck_require__(1380));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v3 = (0, _v.default)('v3', 0x30, _md.default);
+var _default = v3;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 2568:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.URL = exports.DNS = void 0;
+exports["default"] = v35;
+
+var _stringify = __nccwpck_require__(9618);
+
+var _parse = _interopRequireDefault(__nccwpck_require__(86));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  const bytes = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+
+  return bytes;
+}
+
+const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+exports.DNS = DNS;
+const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+exports.URL = URL;
+
+function v35(name, version, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    var _namespace;
+
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
+    }
+
+    if (typeof namespace === 'string') {
+      namespace = (0, _parse.default)(namespace);
+    }
+
+    if (((_namespace = namespace) === null || _namespace === void 0 ? void 0 : _namespace.length) !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    } // Compute hash of namespace and value, Per 4.3
+    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
+    // hashfunc([...namespace, ... value])`
+
+
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
+      }
+
+      return buf;
+    }
+
+    return (0, _stringify.unsafeStringify)(bytes);
+  } // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name; // eslint-disable-next-line no-empty
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+}
+
+/***/ }),
+
+/***/ 6001:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _native = _interopRequireDefault(__nccwpck_require__(4672));
+
+var _rng = _interopRequireDefault(__nccwpck_require__(8136));
+
+var _stringify = __nccwpck_require__(9618);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function v4(options, buf, offset) {
+  if (_native.default.randomUUID && !buf && !options) {
+    return _native.default.randomUUID();
+  }
+
+  options = options || {};
+
+  const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return (0, _stringify.unsafeStringify)(rnds);
+}
+
+var _default = v4;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8310:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(2568));
+
+var _sha = _interopRequireDefault(__nccwpck_require__(6679));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v5 = (0, _v.default)('v5', 0x50, _sha.default);
+var _default = v5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6992:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _regex = _interopRequireDefault(__nccwpck_require__(3194));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(uuid) {
+  return typeof uuid === 'string' && _regex.default.test(uuid);
+}
+
+var _default = validate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 7780:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6992));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function version(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  return parseInt(uuid.slice(14, 15), 16);
+}
+
+var _default = version;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ 1238:
 /***/ ((module) => {
 
@@ -30719,6 +30216,11 @@ var deserializerMiddleware = /* @__PURE__ */ __name((options, deserializer) => (
     if (!("$metadata" in error)) {
       const hint = `Deserialization error: to see the raw response, inspect the hidden field {error}.$response on this object.`;
       error.message += "\n  " + hint;
+      if (typeof error.$responseBodyText !== "undefined") {
+        if (error.$response) {
+          error.$response.body = error.$responseBodyText;
+        }
+      }
     }
     throw error;
   }
@@ -31320,11 +30822,22 @@ __name(writeRequestBody, "writeRequestBody");
 function writeBody(httpRequest, body) {
   if (body instanceof import_stream.Readable) {
     body.pipe(httpRequest);
-  } else if (body) {
-    httpRequest.end(Buffer.from(body));
-  } else {
-    httpRequest.end();
+    return;
   }
+  if (body) {
+    if (Buffer.isBuffer(body) || typeof body === "string") {
+      httpRequest.end(body);
+      return;
+    }
+    const uint8 = body;
+    if (typeof uint8 === "object" && uint8.buffer && typeof uint8.byteOffset === "number" && typeof uint8.byteLength === "number") {
+      httpRequest.end(Buffer.from(uint8.buffer, uint8.byteOffset, uint8.byteLength));
+      return;
+    }
+    httpRequest.end(Buffer.from(body));
+    return;
+  }
+  httpRequest.end();
 }
 __name(writeBody, "writeBody");
 
@@ -31332,6 +30845,7 @@ __name(writeBody, "writeBody");
 var DEFAULT_REQUEST_TIMEOUT = 0;
 var _NodeHttpHandler = class _NodeHttpHandler {
   constructor(options) {
+    this.socketWarningTimestamp = 0;
     // Node http handler is hard-coded to http/1.1: https://github.com/nodejs/node/blob/ff5664b83b89c55e4ab5d5f60068fb457f1f5872/lib/_http_server.js#L286
     this.metadata = { handlerProtocol: "http/1.1" };
     this.configProvider = new Promise((resolve, reject) => {
@@ -31354,6 +30868,39 @@ var _NodeHttpHandler = class _NodeHttpHandler {
     }
     return new _NodeHttpHandler(instanceOrOptions);
   }
+  /**
+   * @internal
+   *
+   * @param agent - http(s) agent in use by the NodeHttpHandler instance.
+   * @returns timestamp of last emitted warning.
+   */
+  static checkSocketUsage(agent, socketWarningTimestamp) {
+    var _a, _b;
+    const { sockets, requests, maxSockets } = agent;
+    if (typeof maxSockets !== "number" || maxSockets === Infinity) {
+      return socketWarningTimestamp;
+    }
+    const interval = 15e3;
+    if (Date.now() - interval < socketWarningTimestamp) {
+      return socketWarningTimestamp;
+    }
+    if (sockets && requests) {
+      for (const origin in sockets) {
+        const socketsInUse = ((_a = sockets[origin]) == null ? void 0 : _a.length) ?? 0;
+        const requestsEnqueued = ((_b = requests[origin]) == null ? void 0 : _b.length) ?? 0;
+        if (socketsInUse >= maxSockets && requestsEnqueued >= 2 * maxSockets) {
+          console.warn(
+            "@smithy/node-http-handler:WARN",
+            `socket usage at capacity=${socketsInUse} and ${requestsEnqueued} additional requests are enqueued.`,
+            "See https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/node-configuring-maxsockets.html",
+            "or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler config."
+          );
+          return Date.now();
+        }
+      }
+    }
+    return socketWarningTimestamp;
+  }
   resolveDefaultConfig(options) {
     const { requestTimeout, connectionTimeout, socketTimeout, httpAgent, httpsAgent } = options || {};
     const keepAlive = true;
@@ -31361,8 +30908,18 @@ var _NodeHttpHandler = class _NodeHttpHandler {
     return {
       connectionTimeout,
       requestTimeout: requestTimeout ?? socketTimeout,
-      httpAgent: httpAgent || new import_http.Agent({ keepAlive, maxSockets }),
-      httpsAgent: httpsAgent || new import_https.Agent({ keepAlive, maxSockets })
+      httpAgent: (() => {
+        if (httpAgent instanceof import_http.Agent || typeof (httpAgent == null ? void 0 : httpAgent.destroy) === "function") {
+          return httpAgent;
+        }
+        return new import_http.Agent({ keepAlive, maxSockets, ...httpAgent });
+      })(),
+      httpsAgent: (() => {
+        if (httpsAgent instanceof import_https.Agent || typeof (httpsAgent == null ? void 0 : httpsAgent.destroy) === "function") {
+          return httpsAgent;
+        }
+        return new import_https.Agent({ keepAlive, maxSockets, ...httpsAgent });
+      })()
     };
   }
   destroy() {
@@ -31374,10 +30931,12 @@ var _NodeHttpHandler = class _NodeHttpHandler {
     if (!this.config) {
       this.config = await this.configProvider;
     }
+    let socketCheckTimeoutId;
     return new Promise((_resolve, _reject) => {
       let writeRequestBodyPromise = void 0;
       const resolve = /* @__PURE__ */ __name(async (arg) => {
         await writeRequestBodyPromise;
+        clearTimeout(socketCheckTimeoutId);
         _resolve(arg);
       }, "resolve");
       const reject = /* @__PURE__ */ __name(async (arg) => {
@@ -31394,6 +30953,10 @@ var _NodeHttpHandler = class _NodeHttpHandler {
         return;
       }
       const isSSL = request.protocol === "https:";
+      const agent = isSSL ? this.config.httpsAgent : this.config.httpAgent;
+      socketCheckTimeoutId = setTimeout(() => {
+        this.socketWarningTimestamp = _NodeHttpHandler.checkSocketUsage(agent, this.socketWarningTimestamp);
+      }, this.config.socketAcquisitionWarningTimeout ?? (this.config.requestTimeout ?? 2e3) + (this.config.connectionTimeout ?? 1e3));
       const queryString = (0, import_querystring_builder.buildQueryString)(request.query || {});
       let auth = void 0;
       if (request.username != null || request.password != null) {
@@ -31414,7 +30977,7 @@ var _NodeHttpHandler = class _NodeHttpHandler {
         method: request.method,
         path,
         port: request.port,
-        agent: isSSL ? this.config.httpsAgent : this.config.httpAgent,
+        agent,
         auth
       };
       const requestFunc = isSSL ? import_https.request : import_http.request;
@@ -32337,6 +31900,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  isClockSkewCorrectedError: () => isClockSkewCorrectedError,
   isClockSkewError: () => isClockSkewError,
   isRetryableByTrait: () => isRetryableByTrait,
   isServerError: () => isServerError,
@@ -32378,13 +31942,17 @@ var NODEJS_TIMEOUT_ERROR_CODES = ["ECONNRESET", "ECONNREFUSED", "EPIPE", "ETIMED
 // src/index.ts
 var isRetryableByTrait = /* @__PURE__ */ __name((error) => error.$retryable !== void 0, "isRetryableByTrait");
 var isClockSkewError = /* @__PURE__ */ __name((error) => CLOCK_SKEW_ERROR_CODES.includes(error.name), "isClockSkewError");
+var isClockSkewCorrectedError = /* @__PURE__ */ __name((error) => {
+  var _a;
+  return (_a = error.$metadata) == null ? void 0 : _a.clockSkewCorrected;
+}, "isClockSkewCorrectedError");
 var isThrottlingError = /* @__PURE__ */ __name((error) => {
   var _a, _b;
   return ((_a = error.$metadata) == null ? void 0 : _a.httpStatusCode) === 429 || THROTTLING_ERROR_CODES.includes(error.name) || ((_b = error.$retryable) == null ? void 0 : _b.throttling) == true;
 }, "isThrottlingError");
 var isTransientError = /* @__PURE__ */ __name((error) => {
   var _a;
-  return TRANSIENT_ERROR_CODES.includes(error.name) || NODEJS_TIMEOUT_ERROR_CODES.includes((error == null ? void 0 : error.code) || "") || TRANSIENT_ERROR_STATUS_CODES.includes(((_a = error.$metadata) == null ? void 0 : _a.httpStatusCode) || 0);
+  return isClockSkewCorrectedError(error) || TRANSIENT_ERROR_CODES.includes(error.name) || NODEJS_TIMEOUT_ERROR_CODES.includes((error == null ? void 0 : error.code) || "") || TRANSIENT_ERROR_STATUS_CODES.includes(((_a = error.$metadata) == null ? void 0 : _a.httpStatusCode) || 0);
 }, "isTransientError");
 var isServerError = /* @__PURE__ */ __name((error) => {
   var _a;
@@ -32630,7 +32198,7 @@ var loadSharedConfigFiles = /* @__PURE__ */ __name(async (init = {}) => {
 
 // src/getSsoSessionData.ts
 
-var getSsoSessionData = /* @__PURE__ */ __name((data) => Object.entries(data).filter(([key]) => key.startsWith(import_types.IniSectionType.SSO_SESSION + CONFIG_PREFIX_SEPARATOR)).reduce((acc, [key, value]) => ({ ...acc, [key.split(CONFIG_PREFIX_SEPARATOR)[1]]: value }), {}), "getSsoSessionData");
+var getSsoSessionData = /* @__PURE__ */ __name((data) => Object.entries(data).filter(([key]) => key.startsWith(import_types.IniSectionType.SSO_SESSION + CONFIG_PREFIX_SEPARATOR)).reduce((acc, [key, value]) => ({ ...acc, [key.substring(key.indexOf(CONFIG_PREFIX_SEPARATOR) + 1)]: value }), {}), "getSsoSessionData");
 
 // src/loadSsoSessionData.ts
 var import_slurpFile2 = __nccwpck_require__(9155);
@@ -32724,10 +32292,9 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 
 // src/SignatureV4.ts
-var import_eventstream_codec = __nccwpck_require__(6459);
 
 var import_util_middleware = __nccwpck_require__(2390);
-var import_util_utf83 = __nccwpck_require__(1895);
+var import_util_utf84 = __nccwpck_require__(1895);
 
 // src/constants.ts
 var ALGORITHM_QUERY_PARAM = "X-Amz-Algorithm";
@@ -32865,6 +32432,128 @@ var getPayloadHash = /* @__PURE__ */ __name(async ({ headers, body }, hashConstr
   return UNSIGNED_PAYLOAD;
 }, "getPayloadHash");
 
+// src/HeaderFormatter.ts
+
+var import_util_utf83 = __nccwpck_require__(1895);
+var _HeaderFormatter = class _HeaderFormatter {
+  format(headers) {
+    const chunks = [];
+    for (const headerName of Object.keys(headers)) {
+      const bytes = (0, import_util_utf83.fromUtf8)(headerName);
+      chunks.push(Uint8Array.from([bytes.byteLength]), bytes, this.formatHeaderValue(headers[headerName]));
+    }
+    const out = new Uint8Array(chunks.reduce((carry, bytes) => carry + bytes.byteLength, 0));
+    let position = 0;
+    for (const chunk of chunks) {
+      out.set(chunk, position);
+      position += chunk.byteLength;
+    }
+    return out;
+  }
+  formatHeaderValue(header) {
+    switch (header.type) {
+      case "boolean":
+        return Uint8Array.from([header.value ? 0 /* boolTrue */ : 1 /* boolFalse */]);
+      case "byte":
+        return Uint8Array.from([2 /* byte */, header.value]);
+      case "short":
+        const shortView = new DataView(new ArrayBuffer(3));
+        shortView.setUint8(0, 3 /* short */);
+        shortView.setInt16(1, header.value, false);
+        return new Uint8Array(shortView.buffer);
+      case "integer":
+        const intView = new DataView(new ArrayBuffer(5));
+        intView.setUint8(0, 4 /* integer */);
+        intView.setInt32(1, header.value, false);
+        return new Uint8Array(intView.buffer);
+      case "long":
+        const longBytes = new Uint8Array(9);
+        longBytes[0] = 5 /* long */;
+        longBytes.set(header.value.bytes, 1);
+        return longBytes;
+      case "binary":
+        const binView = new DataView(new ArrayBuffer(3 + header.value.byteLength));
+        binView.setUint8(0, 6 /* byteArray */);
+        binView.setUint16(1, header.value.byteLength, false);
+        const binBytes = new Uint8Array(binView.buffer);
+        binBytes.set(header.value, 3);
+        return binBytes;
+      case "string":
+        const utf8Bytes = (0, import_util_utf83.fromUtf8)(header.value);
+        const strView = new DataView(new ArrayBuffer(3 + utf8Bytes.byteLength));
+        strView.setUint8(0, 7 /* string */);
+        strView.setUint16(1, utf8Bytes.byteLength, false);
+        const strBytes = new Uint8Array(strView.buffer);
+        strBytes.set(utf8Bytes, 3);
+        return strBytes;
+      case "timestamp":
+        const tsBytes = new Uint8Array(9);
+        tsBytes[0] = 8 /* timestamp */;
+        tsBytes.set(Int64.fromNumber(header.value.valueOf()).bytes, 1);
+        return tsBytes;
+      case "uuid":
+        if (!UUID_PATTERN.test(header.value)) {
+          throw new Error(`Invalid UUID received: ${header.value}`);
+        }
+        const uuidBytes = new Uint8Array(17);
+        uuidBytes[0] = 9 /* uuid */;
+        uuidBytes.set((0, import_util_hex_encoding.fromHex)(header.value.replace(/\-/g, "")), 1);
+        return uuidBytes;
+    }
+  }
+};
+__name(_HeaderFormatter, "HeaderFormatter");
+var HeaderFormatter = _HeaderFormatter;
+var UUID_PATTERN = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+var _Int64 = class _Int64 {
+  constructor(bytes) {
+    this.bytes = bytes;
+    if (bytes.byteLength !== 8) {
+      throw new Error("Int64 buffers must be exactly 8 bytes");
+    }
+  }
+  static fromNumber(number) {
+    if (number > 9223372036854776e3 || number < -9223372036854776e3) {
+      throw new Error(`${number} is too large (or, if negative, too small) to represent as an Int64`);
+    }
+    const bytes = new Uint8Array(8);
+    for (let i = 7, remaining = Math.abs(Math.round(number)); i > -1 && remaining > 0; i--, remaining /= 256) {
+      bytes[i] = remaining;
+    }
+    if (number < 0) {
+      negate(bytes);
+    }
+    return new _Int64(bytes);
+  }
+  /**
+   * Called implicitly by infix arithmetic operators.
+   */
+  valueOf() {
+    const bytes = this.bytes.slice(0);
+    const negative = bytes[0] & 128;
+    if (negative) {
+      negate(bytes);
+    }
+    return parseInt((0, import_util_hex_encoding.toHex)(bytes), 16) * (negative ? -1 : 1);
+  }
+  toString() {
+    return String(this.valueOf());
+  }
+};
+__name(_Int64, "Int64");
+var Int64 = _Int64;
+function negate(bytes) {
+  for (let i = 0; i < 8; i++) {
+    bytes[i] ^= 255;
+  }
+  for (let i = 7; i > -1; i--) {
+    bytes[i]++;
+    if (bytes[i] !== 0)
+      break;
+  }
+}
+__name(negate, "negate");
+
 // src/headerUtil.ts
 var hasHeader = /* @__PURE__ */ __name((soughtHeader, headers) => {
   soughtHeader = soughtHeader.toLowerCase();
@@ -32944,7 +32633,7 @@ var _SignatureV4 = class _SignatureV4 {
     sha256,
     uriEscapePath = true
   }) {
-    this.headerMarshaller = new import_eventstream_codec.HeaderMarshaller(import_util_utf83.toUtf8, import_util_utf83.fromUtf8);
+    this.headerFormatter = new HeaderFormatter();
     this.service = service;
     this.sha256 = sha256;
     this.uriEscapePath = uriEscapePath;
@@ -33022,7 +32711,7 @@ var _SignatureV4 = class _SignatureV4 {
   async signMessage(signableMessage, { signingDate = /* @__PURE__ */ new Date(), signingRegion, signingService }) {
     const promise = this.signEvent(
       {
-        headers: this.headerMarshaller.format(signableMessage.message.headers),
+        headers: this.headerFormatter.format(signableMessage.message.headers),
         payload: signableMessage.message.body
       },
       {
@@ -33042,7 +32731,7 @@ var _SignatureV4 = class _SignatureV4 {
     const region = signingRegion ?? await this.regionProvider();
     const { shortDate } = formatDate(signingDate);
     const hash = new this.sha256(await this.getSigningKey(credentials, region, shortDate, signingService));
-    hash.update((0, import_util_utf83.toUint8Array)(stringToSign));
+    hash.update((0, import_util_utf84.toUint8Array)(stringToSign));
     return (0, import_util_hex_encoding.toHex)(await hash.digest());
   }
   async signRequest(requestToSign, {
@@ -33088,7 +32777,7 @@ ${payloadHash}`;
   }
   async createStringToSign(longDate, credentialScope, canonicalRequest) {
     const hash = new this.sha256();
-    hash.update((0, import_util_utf83.toUint8Array)(canonicalRequest));
+    hash.update((0, import_util_utf84.toUint8Array)(canonicalRequest));
     const hashedRequest = await hash.digest();
     return `${ALGORITHM_IDENTIFIER}
 ${longDate}
@@ -33118,7 +32807,7 @@ ${(0, import_util_hex_encoding.toHex)(hashedRequest)}`;
   async getSignature(longDate, credentialScope, keyPromise, canonicalRequest) {
     const stringToSign = await this.createStringToSign(longDate, credentialScope, canonicalRequest);
     const hash = new this.sha256(await keyPromise);
-    hash.update((0, import_util_utf83.toUint8Array)(stringToSign));
+    hash.update((0, import_util_utf84.toUint8Array)(stringToSign));
     return (0, import_util_hex_encoding.toHex)(await hash.digest());
   }
   getSigningKey(credentials, region, shortDate, service) {
@@ -33444,9 +33133,8 @@ var _ClassBuilder = class _ClassBuilder {
       /**
        * @public
        */
-      constructor(input) {
+      constructor(...[input]) {
         super();
-        this.input = input;
         /**
          * @internal
          */
@@ -33457,6 +33145,7 @@ var _ClassBuilder = class _ClassBuilder {
          */
         // @ts-ignore used in middlewareFn closure.
         this.deserialize = closure._deserializer;
+        this.input = input ?? {};
         closure._init(this);
       }
       /**
@@ -34616,7 +34305,20 @@ __reExport(src_exports, __nccwpck_require__(4730), module.exports);
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.toBase64 = void 0;
 const util_buffer_from_1 = __nccwpck_require__(1381);
-const toBase64 = (input) => (0, util_buffer_from_1.fromArrayBuffer)(input.buffer, input.byteOffset, input.byteLength).toString("base64");
+const util_utf8_1 = __nccwpck_require__(1895);
+const toBase64 = (_input) => {
+    let input;
+    if (typeof _input === "string") {
+        input = (0, util_utf8_1.fromUtf8)(_input);
+    }
+    else {
+        input = _input;
+    }
+    if (typeof input !== "object" || typeof input.byteOffset !== "number" || typeof input.byteLength !== "number") {
+        throw new Error("@smithy/util-base64: toBase64 encoder function only accepts string | Uint8Array.");
+    }
+    return (0, util_buffer_from_1.fromArrayBuffer)(input.buffer, input.byteOffset, input.byteLength).toString("base64");
+};
 exports.toBase64 = toBase64;
 
 
@@ -34658,7 +34360,7 @@ var calculateBodyLength = /* @__PURE__ */ __name((body) => {
     return 0;
   }
   if (typeof body === "string") {
-    return Buffer.from(body).length;
+    return Buffer.byteLength(body);
   } else if (typeof body.byteLength === "number") {
     return body.byteLength;
   } else if (typeof body.size === "number") {
@@ -36150,7 +35852,15 @@ var toUint8Array = /* @__PURE__ */ __name((data) => {
 
 // src/toUtf8.ts
 
-var toUtf8 = /* @__PURE__ */ __name((input) => (0, import_util_buffer_from.fromArrayBuffer)(input.buffer, input.byteOffset, input.byteLength).toString("utf8"), "toUtf8");
+var toUtf8 = /* @__PURE__ */ __name((input) => {
+  if (typeof input === "string") {
+    return input;
+  }
+  if (typeof input !== "object" || typeof input.byteOffset !== "number" || typeof input.byteLength !== "number") {
+    throw new Error("@smithy/util-utf8: toUtf8 encoder function only accepts string | Uint8Array.");
+  }
+  return (0, import_util_buffer_from.fromArrayBuffer)(input.buffer, input.byteOffset, input.byteLength).toString("utf8");
+}, "toUtf8");
 // Annotate the CommonJS export names for ESM import in node:
 
 0 && (0);
@@ -38485,52 +38195,6 @@ module.exports = XmlNode;
 
 /***/ }),
 
-/***/ 3287:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(o) {
-  return Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (ctor === undefined) return true;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-exports.isPlainObject = isPlainObject;
-
-
-/***/ }),
-
 /***/ 7426:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -39655,6 +39319,7 @@ const MockAgent = __nccwpck_require__(6771)
 const MockPool = __nccwpck_require__(6193)
 const mockErrors = __nccwpck_require__(888)
 const ProxyAgent = __nccwpck_require__(7858)
+const RetryHandler = __nccwpck_require__(2286)
 const { getGlobalDispatcher, setGlobalDispatcher } = __nccwpck_require__(1892)
 const DecoratorHandler = __nccwpck_require__(6930)
 const RedirectHandler = __nccwpck_require__(2860)
@@ -39676,6 +39341,7 @@ module.exports.Pool = Pool
 module.exports.BalancedPool = BalancedPool
 module.exports.Agent = Agent
 module.exports.ProxyAgent = ProxyAgent
+module.exports.RetryHandler = RetryHandler
 
 module.exports.DecoratorHandler = DecoratorHandler
 module.exports.RedirectHandler = RedirectHandler
@@ -40576,6 +40242,7 @@ function request (opts, callback) {
 }
 
 module.exports = request
+module.exports.RequestHandler = RequestHandler
 
 
 /***/ }),
@@ -40690,6 +40357,10 @@ class StreamHandler extends AsyncResource {
         { callback, body: res, contentType, statusCode, statusMessage, headers }
       )
     } else {
+      if (factory === null) {
+        return
+      }
+
       res = this.runInAsyncScope(factory, null, {
         statusCode,
         headers,
@@ -40738,13 +40409,17 @@ class StreamHandler extends AsyncResource {
   onData (chunk) {
     const { res } = this
 
-    return res.write(chunk)
+    return res ? res.write(chunk) : true
   }
 
   onComplete (trailers) {
     const { res } = this
 
     removeSignal(this)
+
+    if (!res) {
+      return
+    }
 
     this.trailers = util.parseHeaders(trailers)
 
@@ -40950,6 +40625,8 @@ const kBody = Symbol('kBody')
 const kAbort = Symbol('abort')
 const kContentType = Symbol('kContentType')
 
+const noop = () => {}
+
 module.exports = class BodyReadable extends Readable {
   constructor ({
     resume,
@@ -41083,37 +40760,50 @@ module.exports = class BodyReadable extends Readable {
     return this[kBody]
   }
 
-  async dump (opts) {
+  dump (opts) {
     let limit = opts && Number.isFinite(opts.limit) ? opts.limit : 262144
     const signal = opts && opts.signal
-    const abortFn = () => {
-      this.destroy()
-    }
-    let signalListenerCleanup
+
     if (signal) {
-      if (typeof signal !== 'object' || !('aborted' in signal)) {
-        throw new InvalidArgumentError('signal must be an AbortSignal')
-      }
-      util.throwIfAborted(signal)
-      signalListenerCleanup = util.addAbortListener(signal, abortFn)
-    }
-    try {
-      for await (const chunk of this) {
-        util.throwIfAborted(signal)
-        limit -= Buffer.byteLength(chunk)
-        if (limit < 0) {
-          return
+      try {
+        if (typeof signal !== 'object' || !('aborted' in signal)) {
+          throw new InvalidArgumentError('signal must be an AbortSignal')
         }
-      }
-    } catch {
-      util.throwIfAborted(signal)
-    } finally {
-      if (typeof signalListenerCleanup === 'function') {
-        signalListenerCleanup()
-      } else if (signalListenerCleanup) {
-        signalListenerCleanup[Symbol.dispose]()
+        util.throwIfAborted(signal)
+      } catch (err) {
+        return Promise.reject(err)
       }
     }
+
+    if (this.closed) {
+      return Promise.resolve(null)
+    }
+
+    return new Promise((resolve, reject) => {
+      const signalListenerCleanup = signal
+        ? util.addAbortListener(signal, () => {
+          this.destroy()
+        })
+        : noop
+
+      this
+        .on('close', function () {
+          signalListenerCleanup()
+          if (signal && signal.aborted) {
+            reject(signal.reason || Object.assign(new Error('The operation was aborted'), { name: 'AbortError' }))
+          } else {
+            resolve(null)
+          }
+        })
+        .on('error', noop)
+        .on('data', function (chunk) {
+          limit -= chunk.length
+          if (limit <= 0) {
+            this.destroy()
+          }
+        })
+        .resume()
+    })
   }
 }
 
@@ -41202,7 +40892,7 @@ function consumeEnd (consume) {
         pos += buf.byteLength
       }
 
-      resolve(dst)
+      resolve(dst.buffer)
     } else if (type === 'blob') {
       if (!Blob) {
         Blob = (__nccwpck_require__(4300).Blob)
@@ -42493,13 +42183,13 @@ module.exports = {
 /***/ }),
 
 /***/ 9174:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
 module.exports = {
-  kConstruct: Symbol('constructable')
+  kConstruct: (__nccwpck_require__(2785).kConstruct)
 }
 
 
@@ -43485,11 +43175,9 @@ class Parser {
       socket[kReset] = true
     }
 
-    let pause
-    try {
-      pause = request.onHeaders(statusCode, headers, this.resume, statusText) === false
-    } catch (err) {
-      util.destroy(socket, err)
+    const pause = request.onHeaders(statusCode, headers, this.resume, statusText) === false
+
+    if (request.aborted) {
       return -1
     }
 
@@ -43536,13 +43224,8 @@ class Parser {
 
     this.bytesRead += buf.length
 
-    try {
-      if (request.onData(buf) === false) {
-        return constants.ERROR.PAUSED
-      }
-    } catch (err) {
-      util.destroy(socket, err)
-      return -1
+    if (request.onData(buf) === false) {
+      return constants.ERROR.PAUSED
     }
   }
 
@@ -43583,11 +43266,7 @@ class Parser {
       return -1
     }
 
-    try {
-      request.onComplete(headers)
-    } catch (err) {
-      errorRequest(client, request, err)
-    }
+    request.onComplete(headers)
 
     client[kQueue][client[kRunningIdx]++] = null
 
@@ -43638,7 +43317,9 @@ function onParserTimeout (parser) {
 
 function onSocketReadable () {
   const { [kParser]: parser } = this
-  parser.readMore()
+  if (parser) {
+    parser.readMore()
+  }
 }
 
 function onSocketError (err) {
@@ -43749,7 +43430,7 @@ async function connect (client) {
     const idx = hostname.indexOf(']')
 
     assert(idx !== -1)
-    const ip = hostname.substr(1, idx - 1)
+    const ip = hostname.substring(1, idx)
 
     assert(net.isIP(ip))
     hostname = ip
@@ -44028,23 +43709,7 @@ function _resume (client, sync) {
       return
     }
 
-    if (util.isStream(request.body) && util.bodyLength(request.body) === 0) {
-      request.body
-        .on('data', /* istanbul ignore next */ function () {
-          /* istanbul ignore next */
-          assert(false)
-        })
-        .on('error', function (err) {
-          errorRequest(client, request, err)
-        })
-        .on('end', function () {
-          util.destroy(this)
-        })
-
-      request.body = null
-    }
-
-    if (client[kRunning] > 0 &&
+    if (client[kRunning] > 0 && util.bodyLength(request.body) !== 0 &&
       (util.isStream(request.body) || util.isAsyncIterable(request.body))) {
       // Request with stream or iterator body can error while other requests
       // are inflight and indirectly error those as well.
@@ -44063,6 +43728,11 @@ function _resume (client, sync) {
       client[kQueue].splice(client[kPendingIdx], 1)
     }
   }
+}
+
+// https://www.rfc-editor.org/rfc/rfc7230#section-3.3.2
+function shouldSendContentLength (method) {
+  return method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS' && method !== 'TRACE' && method !== 'CONNECT'
 }
 
 function write (client, request) {
@@ -44093,7 +43763,9 @@ function write (client, request) {
     body.read(0)
   }
 
-  let contentLength = util.bodyLength(body)
+  const bodyLength = util.bodyLength(body)
+
+  let contentLength = bodyLength
 
   if (contentLength === null) {
     contentLength = request.contentLength
@@ -44108,7 +43780,9 @@ function write (client, request) {
     contentLength = null
   }
 
-  if (request.contentLength !== null && request.contentLength !== contentLength) {
+  // https://github.com/nodejs/undici/issues/2046
+  // A user agent may send a Content-Length header with 0 value, this should be allowed.
+  if (shouldSendContentLength(method) && contentLength > 0 && request.contentLength !== null && request.contentLength !== contentLength) {
     if (client[kStrictContentLength]) {
       errorRequest(client, request, new RequestContentLengthMismatchError())
       return false
@@ -44189,7 +43863,7 @@ function write (client, request) {
   }
 
   /* istanbul ignore else: assertion */
-  if (!body) {
+  if (!body || bodyLength === 0) {
     if (contentLength === 0) {
       socket.write(`${header}content-length: 0\r\n\r\n`, 'latin1')
     } else {
@@ -44255,6 +43929,7 @@ function writeH2 (client, session, request) {
     return false
   }
 
+  /** @type {import('node:http2').ClientHttp2Stream} */
   let stream
   const h2State = client[kHTTP2SessionState]
 
@@ -44329,7 +44004,9 @@ function writeH2 (client, session, request) {
     contentLength = null
   }
 
-  if (request.contentLength != null && request.contentLength !== contentLength) {
+  // https://github.com/nodejs/undici/issues/2046
+  // A user agent may send a Content-Length header with 0 value, this should be allowed.
+  if (shouldSendContentLength(method) && contentLength > 0 && request.contentLength != null && request.contentLength !== contentLength) {
     if (client[kStrictContentLength]) {
       errorRequest(client, request, new RequestContentLengthMismatchError())
       return false
@@ -44348,14 +44025,10 @@ function writeH2 (client, session, request) {
   const shouldEndStream = method === 'GET' || method === 'HEAD'
   if (expectContinue) {
     headers[HTTP2_HEADER_EXPECT] = '100-continue'
-    /**
-     * @type {import('node:http2').ClientHttp2Stream}
-     */
     stream = session.request(headers, { endStream: shouldEndStream, signal })
 
     stream.once('continue', writeBodyH2)
   } else {
-    /** @type {import('node:http2').ClientHttp2Stream} */
     stream = session.request(headers, {
       endStream: shouldEndStream,
       signal
@@ -44367,7 +44040,9 @@ function writeH2 (client, session, request) {
   ++h2State.openStreams
 
   stream.once('response', headers => {
-    if (request.onHeaders(Number(headers[HTTP2_HEADER_STATUS]), headers, stream.resume.bind(stream), '') === false) {
+    const { [HTTP2_HEADER_STATUS]: statusCode, ...realHeaders } = headers
+
+    if (request.onHeaders(Number(statusCode), realHeaders, stream.resume.bind(stream), '') === false) {
       stream.pause()
     }
   })
@@ -44377,13 +44052,17 @@ function writeH2 (client, session, request) {
   })
 
   stream.on('data', (chunk) => {
-    if (request.onData(chunk) === false) stream.pause()
+    if (request.onData(chunk) === false) {
+      stream.pause()
+    }
   })
 
   stream.once('close', () => {
     h2State.openStreams -= 1
     // TODO(HTTP/2): unref only if current streams count is 0
-    if (h2State.openStreams === 0) session.unref()
+    if (h2State.openStreams === 0) {
+      session.unref()
+    }
   })
 
   stream.once('error', function (err) {
@@ -44543,7 +44222,11 @@ function writeStream ({ h2stream, body, client, request, socket, contentLength, 
     }
   }
   const onAbort = function () {
-    onFinished(new RequestAbortedError())
+    if (finished) {
+      return
+    }
+    const err = new RequestAbortedError()
+    queueMicrotask(() => onFinished(err))
   }
   const onFinished = function (err) {
     if (finished) {
@@ -45949,6 +45632,132 @@ module.exports = buildConnector
 
 /***/ }),
 
+/***/ 4462:
+/***/ ((module) => {
+
+"use strict";
+
+
+/** @type {Record<string, string | undefined>} */
+const headerNameLowerCasedRecord = {}
+
+// https://developer.mozilla.org/docs/Web/HTTP/Headers
+const wellknownHeaderNames = [
+  'Accept',
+  'Accept-Encoding',
+  'Accept-Language',
+  'Accept-Ranges',
+  'Access-Control-Allow-Credentials',
+  'Access-Control-Allow-Headers',
+  'Access-Control-Allow-Methods',
+  'Access-Control-Allow-Origin',
+  'Access-Control-Expose-Headers',
+  'Access-Control-Max-Age',
+  'Access-Control-Request-Headers',
+  'Access-Control-Request-Method',
+  'Age',
+  'Allow',
+  'Alt-Svc',
+  'Alt-Used',
+  'Authorization',
+  'Cache-Control',
+  'Clear-Site-Data',
+  'Connection',
+  'Content-Disposition',
+  'Content-Encoding',
+  'Content-Language',
+  'Content-Length',
+  'Content-Location',
+  'Content-Range',
+  'Content-Security-Policy',
+  'Content-Security-Policy-Report-Only',
+  'Content-Type',
+  'Cookie',
+  'Cross-Origin-Embedder-Policy',
+  'Cross-Origin-Opener-Policy',
+  'Cross-Origin-Resource-Policy',
+  'Date',
+  'Device-Memory',
+  'Downlink',
+  'ECT',
+  'ETag',
+  'Expect',
+  'Expect-CT',
+  'Expires',
+  'Forwarded',
+  'From',
+  'Host',
+  'If-Match',
+  'If-Modified-Since',
+  'If-None-Match',
+  'If-Range',
+  'If-Unmodified-Since',
+  'Keep-Alive',
+  'Last-Modified',
+  'Link',
+  'Location',
+  'Max-Forwards',
+  'Origin',
+  'Permissions-Policy',
+  'Pragma',
+  'Proxy-Authenticate',
+  'Proxy-Authorization',
+  'RTT',
+  'Range',
+  'Referer',
+  'Referrer-Policy',
+  'Refresh',
+  'Retry-After',
+  'Sec-WebSocket-Accept',
+  'Sec-WebSocket-Extensions',
+  'Sec-WebSocket-Key',
+  'Sec-WebSocket-Protocol',
+  'Sec-WebSocket-Version',
+  'Server',
+  'Server-Timing',
+  'Service-Worker-Allowed',
+  'Service-Worker-Navigation-Preload',
+  'Set-Cookie',
+  'SourceMap',
+  'Strict-Transport-Security',
+  'Supports-Loading-Mode',
+  'TE',
+  'Timing-Allow-Origin',
+  'Trailer',
+  'Transfer-Encoding',
+  'Upgrade',
+  'Upgrade-Insecure-Requests',
+  'User-Agent',
+  'Vary',
+  'Via',
+  'WWW-Authenticate',
+  'X-Content-Type-Options',
+  'X-DNS-Prefetch-Control',
+  'X-Frame-Options',
+  'X-Permitted-Cross-Domain-Policies',
+  'X-Powered-By',
+  'X-Requested-With',
+  'X-XSS-Protection'
+]
+
+for (let i = 0; i < wellknownHeaderNames.length; ++i) {
+  const key = wellknownHeaderNames[i]
+  const lowerCasedKey = key.toLowerCase()
+  headerNameLowerCasedRecord[key] = headerNameLowerCasedRecord[lowerCasedKey] =
+    lowerCasedKey
+}
+
+// Note: object prototypes should not be able to be referenced. e.g. `Object#hasOwnProperty`.
+Object.setPrototypeOf(headerNameLowerCasedRecord, null)
+
+module.exports = {
+  wellknownHeaderNames,
+  headerNameLowerCasedRecord
+}
+
+
+/***/ }),
+
 /***/ 8045:
 /***/ ((module) => {
 
@@ -46148,6 +45957,19 @@ class ResponseExceededMaxSizeError extends UndiciError {
   }
 }
 
+class RequestRetryError extends UndiciError {
+  constructor (message, code, { headers, data }) {
+    super(message)
+    Error.captureStackTrace(this, RequestRetryError)
+    this.name = 'RequestRetryError'
+    this.message = message || 'Request retry error'
+    this.code = 'UND_ERR_REQ_RETRY'
+    this.statusCode = code
+    this.data = data
+    this.headers = headers
+  }
+}
+
 module.exports = {
   HTTPParserError,
   UndiciError,
@@ -46167,7 +45989,8 @@ module.exports = {
   NotSupportedError,
   ResponseContentLengthMismatchError,
   BalancedPoolMissingUpstreamError,
-  ResponseExceededMaxSizeError
+  ResponseExceededMaxSizeError,
+  RequestRetryError
 }
 
 
@@ -46291,10 +46114,29 @@ class Request {
 
     this.method = method
 
+    this.abort = null
+
     if (body == null) {
       this.body = null
     } else if (util.isStream(body)) {
       this.body = body
+
+      const rState = this.body._readableState
+      if (!rState || !rState.autoDestroy) {
+        this.endHandler = function autoDestroy () {
+          util.destroy(this)
+        }
+        this.body.on('end', this.endHandler)
+      }
+
+      this.errorHandler = err => {
+        if (this.abort) {
+          this.abort(err)
+        } else {
+          this.error = err
+        }
+      }
+      this.body.on('error', this.errorHandler)
     } else if (util.isBuffer(body)) {
       this.body = body.byteLength ? body : null
     } else if (ArrayBuffer.isView(body)) {
@@ -46390,9 +46232,9 @@ class Request {
   onBodySent (chunk) {
     if (this[kHandler].onBodySent) {
       try {
-        this[kHandler].onBodySent(chunk)
+        return this[kHandler].onBodySent(chunk)
       } catch (err) {
-        this.onError(err)
+        this.abort(err)
       }
     }
   }
@@ -46401,13 +46243,26 @@ class Request {
     if (channels.bodySent.hasSubscribers) {
       channels.bodySent.publish({ request: this })
     }
+
+    if (this[kHandler].onRequestSent) {
+      try {
+        return this[kHandler].onRequestSent()
+      } catch (err) {
+        this.abort(err)
+      }
+    }
   }
 
   onConnect (abort) {
     assert(!this.aborted)
     assert(!this.completed)
 
-    return this[kHandler].onConnect(abort)
+    if (this.error) {
+      abort(this.error)
+    } else {
+      this.abort = abort
+      return this[kHandler].onConnect(abort)
+    }
   }
 
   onHeaders (statusCode, headers, resume, statusText) {
@@ -46418,14 +46273,23 @@ class Request {
       channels.headers.publish({ request: this, response: { statusCode, headers, statusText } })
     }
 
-    return this[kHandler].onHeaders(statusCode, headers, resume, statusText)
+    try {
+      return this[kHandler].onHeaders(statusCode, headers, resume, statusText)
+    } catch (err) {
+      this.abort(err)
+    }
   }
 
   onData (chunk) {
     assert(!this.aborted)
     assert(!this.completed)
 
-    return this[kHandler].onData(chunk)
+    try {
+      return this[kHandler].onData(chunk)
+    } catch (err) {
+      this.abort(err)
+      return false
+    }
   }
 
   onUpgrade (statusCode, headers, socket) {
@@ -46436,16 +46300,26 @@ class Request {
   }
 
   onComplete (trailers) {
+    this.onFinally()
+
     assert(!this.aborted)
 
     this.completed = true
     if (channels.trailers.hasSubscribers) {
       channels.trailers.publish({ request: this, trailers })
     }
-    return this[kHandler].onComplete(trailers)
+
+    try {
+      return this[kHandler].onComplete(trailers)
+    } catch (err) {
+      // TODO (fix): This might be a bad idea?
+      this.onError(err)
+    }
   }
 
   onError (error) {
+    this.onFinally()
+
     if (channels.error.hasSubscribers) {
       channels.error.publish({ request: this, error })
     }
@@ -46454,7 +46328,20 @@ class Request {
       return
     }
     this.aborted = true
+
     return this[kHandler].onError(error)
+  }
+
+  onFinally () {
+    if (this.errorHandler) {
+      this.body.off('error', this.errorHandler)
+      this.errorHandler = null
+    }
+
+    if (this.endHandler) {
+      this.body.off('end', this.endHandler)
+      this.endHandler = null
+    }
   }
 
   // TODO: adjust to support H2
@@ -46678,7 +46565,9 @@ module.exports = {
   kHTTP2BuildRequest: Symbol('http2 build request'),
   kHTTP1BuildRequest: Symbol('http1 build request'),
   kHTTP2CopyHeaders: Symbol('http2 copy headers'),
-  kHTTPConnVersion: Symbol('http connection version')
+  kHTTPConnVersion: Symbol('http connection version'),
+  kRetryHandlerDefaultRetry: Symbol('retry agent default retry'),
+  kConstruct: Symbol('constructable')
 }
 
 
@@ -46699,6 +46588,7 @@ const { InvalidArgumentError } = __nccwpck_require__(8045)
 const { Blob } = __nccwpck_require__(4300)
 const nodeUtil = __nccwpck_require__(3837)
 const { stringify } = __nccwpck_require__(3477)
+const { headerNameLowerCasedRecord } = __nccwpck_require__(4462)
 
 const [nodeMajor, nodeMinor] = process.versions.node.split('.').map(v => Number(v))
 
@@ -46815,13 +46705,13 @@ function getHostname (host) {
     const idx = host.indexOf(']')
 
     assert(idx !== -1)
-    return host.substr(1, idx - 1)
+    return host.substring(1, idx)
   }
 
   const idx = host.indexOf(':')
   if (idx === -1) return host
 
-  return host.substr(0, idx)
+  return host.substring(0, idx)
 }
 
 // IP addresses are not valid server names per RFC6066
@@ -46880,7 +46770,7 @@ function isReadableAborted (stream) {
 }
 
 function destroy (stream, err) {
-  if (!isStream(stream) || isDestroyed(stream)) {
+  if (stream == null || !isStream(stream) || isDestroyed(stream)) {
     return
   }
 
@@ -46908,6 +46798,15 @@ function parseKeepAliveTimeout (val) {
   return m ? parseInt(m[1], 10) * 1000 : null
 }
 
+/**
+ * Retrieves a header name and returns its lowercase value.
+ * @param {string | Buffer} value Header name
+ * @returns {string}
+ */
+function headerNameToString (value) {
+  return headerNameLowerCasedRecord[value] || value.toLowerCase()
+}
+
 function parseHeaders (headers, obj = {}) {
   // For H2 support
   if (!Array.isArray(headers)) return headers
@@ -46918,7 +46817,7 @@ function parseHeaders (headers, obj = {}) {
 
     if (!val) {
       if (Array.isArray(headers[i + 1])) {
-        obj[key] = headers[i + 1]
+        obj[key] = headers[i + 1].map(x => x.toString('utf8'))
       } else {
         obj[key] = headers[i + 1].toString('utf8')
       }
@@ -47121,16 +47020,7 @@ function throwIfAborted (signal) {
   }
 }
 
-let events
 function addAbortListener (signal, listener) {
-  if (typeof Symbol.dispose === 'symbol') {
-    if (!events) {
-      events = __nccwpck_require__(2361)
-    }
-    if (typeof events.addAbortListener === 'function' && 'aborted' in signal) {
-      return events.addAbortListener(signal, listener)
-    }
-  }
   if ('addEventListener' in signal) {
     signal.addEventListener('abort', listener, { once: true })
     return () => signal.removeEventListener('abort', listener)
@@ -47154,6 +47044,21 @@ function toUSVString (val) {
   return `${val}`
 }
 
+// Parsed accordingly to RFC 9110
+// https://www.rfc-editor.org/rfc/rfc9110#field.content-range
+function parseRangeHeader (range) {
+  if (range == null || range === '') return { start: 0, end: null, size: null }
+
+  const m = range ? range.match(/^bytes (\d+)-(\d+)\/(\d+)?$/) : null
+  return m
+    ? {
+        start: parseInt(m[1]),
+        end: m[2] ? parseInt(m[2]) : null,
+        size: m[3] ? parseInt(m[3]) : null
+      }
+    : null
+}
+
 const kEnumerableProperty = Object.create(null)
 kEnumerableProperty.enumerable = true
 
@@ -47173,6 +47078,7 @@ module.exports = {
   isIterable,
   isAsyncIterable,
   isDestroyed,
+  headerNameToString,
   parseRawHeaders,
   parseHeaders,
   parseKeepAliveTimeout,
@@ -47187,9 +47093,11 @@ module.exports = {
   buildURL,
   throwIfAborted,
   addAbortListener,
+  parseRangeHeader,
   nodeMajor,
   nodeMinor,
-  nodeHasAutoSelectFamily: nodeMajor > 18 || (nodeMajor === 18 && nodeMinor >= 13)
+  nodeHasAutoSelectFamily: nodeMajor > 18 || (nodeMajor === 18 && nodeMinor >= 13),
+  safeHTTPMethods: ['GET', 'HEAD', 'OPTIONS', 'TRACE']
 }
 
 
@@ -47428,7 +47336,7 @@ module.exports = Dispatcher
 "use strict";
 
 
-const Busboy = __nccwpck_require__(3438)
+const Busboy = __nccwpck_require__(727)
 const util = __nccwpck_require__(3983)
 const {
   ReadableStreamFrom,
@@ -47454,6 +47362,8 @@ let ReadableStream = globalThis.ReadableStream
 
 /** @type {globalThis['File']} */
 const File = NativeFile ?? UndiciFile
+const textEncoder = new TextEncoder()
+const textDecoder = new TextDecoder()
 
 // https://fetch.spec.whatwg.org/#concept-bodyinit-extract
 function extractBody (object, keepalive = false) {
@@ -47477,7 +47387,7 @@ function extractBody (object, keepalive = false) {
     stream = new ReadableStream({
       async pull (controller) {
         controller.enqueue(
-          typeof source === 'string' ? new TextEncoder().encode(source) : source
+          typeof source === 'string' ? textEncoder.encode(source) : source
         )
         queueMicrotask(() => readableStreamClose(controller))
       },
@@ -47547,7 +47457,6 @@ function extractBody (object, keepalive = false) {
     // - That the content-length is calculated in advance.
     // - And that all parts are pre-encoded and ready to be sent.
 
-    const enc = new TextEncoder()
     const blobParts = []
     const rn = new Uint8Array([13, 10]) // '\r\n'
     length = 0
@@ -47555,13 +47464,13 @@ function extractBody (object, keepalive = false) {
 
     for (const [name, value] of object) {
       if (typeof value === 'string') {
-        const chunk = enc.encode(prefix +
+        const chunk = textEncoder.encode(prefix +
           `; name="${escape(normalizeLinefeeds(name))}"` +
           `\r\n\r\n${normalizeLinefeeds(value)}\r\n`)
         blobParts.push(chunk)
         length += chunk.byteLength
       } else {
-        const chunk = enc.encode(`${prefix}; name="${escape(normalizeLinefeeds(name))}"` +
+        const chunk = textEncoder.encode(`${prefix}; name="${escape(normalizeLinefeeds(name))}"` +
           (value.name ? `; filename="${escape(value.name)}"` : '') + '\r\n' +
           `Content-Type: ${
             value.type || 'application/octet-stream'
@@ -47575,7 +47484,7 @@ function extractBody (object, keepalive = false) {
       }
     }
 
-    const chunk = enc.encode(`--${boundary}--`)
+    const chunk = textEncoder.encode(`--${boundary}--`)
     blobParts.push(chunk)
     length += chunk.byteLength
     if (hasUnknownSizeValue) {
@@ -47871,14 +47780,16 @@ function bodyMixinMethods (instance) {
           let text = ''
           // application/x-www-form-urlencoded parser will keep the BOM.
           // https://url.spec.whatwg.org/#concept-urlencoded-parser
-          const textDecoder = new TextDecoder('utf-8', { ignoreBOM: true })
+          // Note that streaming decoder is stateful and cannot be reused
+          const streamingDecoder = new TextDecoder('utf-8', { ignoreBOM: true })
+
           for await (const chunk of consumeBody(this[kState].body)) {
             if (!isUint8Array(chunk)) {
               throw new TypeError('Expected Uint8Array chunk')
             }
-            text += textDecoder.decode(chunk, { stream: true })
+            text += streamingDecoder.decode(chunk, { stream: true })
           }
-          text += textDecoder.decode()
+          text += streamingDecoder.decode()
           entries = new URLSearchParams(text)
         } catch (err) {
           // istanbul ignore next: Unclear when new URLSearchParams can fail on a string.
@@ -47993,7 +47904,7 @@ function utf8DecodeBytes (buffer) {
 
   // 3. Process a queue with an instance of UTF-8’s
   //    decoder, ioQueue, output, and "replacement".
-  const output = new TextDecoder().decode(buffer)
+  const output = textDecoder.decode(buffer)
 
   // 4. Return output.
   return output
@@ -48041,10 +47952,12 @@ module.exports = {
 const { MessageChannel, receiveMessageOnPort } = __nccwpck_require__(1267)
 
 const corsSafeListedMethods = ['GET', 'HEAD', 'POST']
+const corsSafeListedMethodsSet = new Set(corsSafeListedMethods)
 
 const nullBodyStatus = [101, 204, 205, 304]
 
 const redirectStatus = [301, 302, 303, 307, 308]
+const redirectStatusSet = new Set(redirectStatus)
 
 // https://fetch.spec.whatwg.org/#block-bad-port
 const badPorts = [
@@ -48055,6 +47968,8 @@ const badPorts = [
   '2049', '3659', '4045', '5060', '5061', '6000', '6566', '6665', '6666', '6667', '6668', '6669', '6697',
   '10080'
 ]
+
+const badPortsSet = new Set(badPorts)
 
 // https://w3c.github.io/webappsec-referrer-policy/#referrer-policies
 const referrerPolicy = [
@@ -48068,10 +47983,12 @@ const referrerPolicy = [
   'strict-origin-when-cross-origin',
   'unsafe-url'
 ]
+const referrerPolicySet = new Set(referrerPolicy)
 
 const requestRedirect = ['follow', 'manual', 'error']
 
 const safeMethods = ['GET', 'HEAD', 'OPTIONS', 'TRACE']
+const safeMethodsSet = new Set(safeMethods)
 
 const requestMode = ['navigate', 'same-origin', 'no-cors', 'cors']
 
@@ -48106,6 +48023,7 @@ const requestDuplex = [
 
 // http://fetch.spec.whatwg.org/#forbidden-method
 const forbiddenMethods = ['CONNECT', 'TRACE', 'TRACK']
+const forbiddenMethodsSet = new Set(forbiddenMethods)
 
 const subresource = [
   'audio',
@@ -48121,6 +48039,7 @@ const subresource = [
   'xslt',
   ''
 ]
+const subresourceSet = new Set(subresource)
 
 /** @type {globalThis['DOMException']} */
 const DOMException = globalThis.DOMException ?? (() => {
@@ -48170,7 +48089,14 @@ module.exports = {
   nullBodyStatus,
   safeMethods,
   badPorts,
-  requestDuplex
+  requestDuplex,
+  subresourceSet,
+  badPortsSet,
+  redirectStatusSet,
+  corsSafeListedMethodsSet,
+  safeMethodsSet,
+  forbiddenMethodsSet,
+  referrerPolicySet
 }
 
 
@@ -48300,17 +48226,14 @@ function dataURLProcessor (dataURL) {
  * @param {boolean} excludeFragment
  */
 function URLSerializer (url, excludeFragment = false) {
-  const href = url.href
-
   if (!excludeFragment) {
-    return href
+    return url.href
   }
 
-  const hash = href.lastIndexOf('#')
-  if (hash === -1) {
-    return href
-  }
-  return href.slice(0, hash)
+  const href = url.href
+  const hashLength = url.hash.length
+
+  return hashLength === 0 ? href : href.substring(0, href.length - hashLength)
 }
 
 // https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points
@@ -48826,6 +48749,7 @@ const { isBlobLike } = __nccwpck_require__(2538)
 const { webidl } = __nccwpck_require__(1744)
 const { parseMIMEType, serializeAMimeType } = __nccwpck_require__(685)
 const { kEnumerableProperty } = __nccwpck_require__(3983)
+const encoder = new TextEncoder()
 
 class File extends Blob {
   constructor (fileBits, fileName, options = {}) {
@@ -49099,7 +49023,7 @@ function processBlobParts (parts, options) {
       }
 
       // 3. Append the result of UTF-8 encoding s to bytes.
-      bytes.push(new TextEncoder().encode(s))
+      bytes.push(encoder.encode(s))
     } else if (
       types.isAnyArrayBuffer(element) ||
       types.isTypedArray(element)
@@ -49493,7 +49417,7 @@ module.exports = {
 
 
 
-const { kHeadersList } = __nccwpck_require__(2785)
+const { kHeadersList, kConstruct } = __nccwpck_require__(2785)
 const { kGuard } = __nccwpck_require__(5861)
 const { kEnumerableProperty } = __nccwpck_require__(3983)
 const {
@@ -49508,6 +49432,13 @@ const kHeadersMap = Symbol('headers map')
 const kHeadersSortedMap = Symbol('headers map sorted')
 
 /**
+ * @param {number} code
+ */
+function isHTTPWhiteSpaceCharCode (code) {
+  return code === 0x00a || code === 0x00d || code === 0x009 || code === 0x020
+}
+
+/**
  * @see https://fetch.spec.whatwg.org/#concept-header-value-normalize
  * @param {string} potentialValue
  */
@@ -49515,12 +49446,12 @@ function headerValueNormalize (potentialValue) {
   //  To normalize a byte sequence potentialValue, remove
   //  any leading and trailing HTTP whitespace bytes from
   //  potentialValue.
+  let i = 0; let j = potentialValue.length
 
-  // Trimming the end with `.replace()` and a RegExp is typically subject to
-  // ReDoS. This is safer and faster.
-  let i = potentialValue.length
-  while (/[\r\n\t ]/.test(potentialValue.charAt(--i)));
-  return potentialValue.slice(0, i + 1).replace(/^[\r\n\t ]+/, '')
+  while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(j - 1))) --j
+  while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(i))) ++i
+
+  return i === 0 && j === potentialValue.length ? potentialValue : potentialValue.substring(i, j)
 }
 
 function fill (headers, object) {
@@ -49529,7 +49460,8 @@ function fill (headers, object) {
   // 1. If object is a sequence, then for each header in object:
   // Note: webidl conversion to array has already been done.
   if (Array.isArray(object)) {
-    for (const header of object) {
+    for (let i = 0; i < object.length; ++i) {
+      const header = object[i]
       // 1. If header does not contain exactly two items, then throw a TypeError.
       if (header.length !== 2) {
         throw webidl.errors.exception({
@@ -49539,15 +49471,16 @@ function fill (headers, object) {
       }
 
       // 2. Append (header’s first item, header’s second item) to headers.
-      headers.append(header[0], header[1])
+      appendHeader(headers, header[0], header[1])
     }
   } else if (typeof object === 'object' && object !== null) {
     // Note: null should throw
 
     // 2. Otherwise, object is a record, then for each key → value in object,
     //    append (key, value) to headers
-    for (const [key, value] of Object.entries(object)) {
-      headers.append(key, value)
+    const keys = Object.keys(object)
+    for (let i = 0; i < keys.length; ++i) {
+      appendHeader(headers, keys[i], object[keys[i]])
     }
   } else {
     throw webidl.errors.conversionFailed({
@@ -49558,6 +49491,50 @@ function fill (headers, object) {
   }
 }
 
+/**
+ * @see https://fetch.spec.whatwg.org/#concept-headers-append
+ */
+function appendHeader (headers, name, value) {
+  // 1. Normalize value.
+  value = headerValueNormalize(value)
+
+  // 2. If name is not a header name or value is not a
+  //    header value, then throw a TypeError.
+  if (!isValidHeaderName(name)) {
+    throw webidl.errors.invalidArgument({
+      prefix: 'Headers.append',
+      value: name,
+      type: 'header name'
+    })
+  } else if (!isValidHeaderValue(value)) {
+    throw webidl.errors.invalidArgument({
+      prefix: 'Headers.append',
+      value,
+      type: 'header value'
+    })
+  }
+
+  // 3. If headers’s guard is "immutable", then throw a TypeError.
+  // 4. Otherwise, if headers’s guard is "request" and name is a
+  //    forbidden header name, return.
+  // Note: undici does not implement forbidden header names
+  if (headers[kGuard] === 'immutable') {
+    throw new TypeError('immutable')
+  } else if (headers[kGuard] === 'request-no-cors') {
+    // 5. Otherwise, if headers’s guard is "request-no-cors":
+    // TODO
+  }
+
+  // 6. Otherwise, if headers’s guard is "response" and name is a
+  //    forbidden response-header name, return.
+
+  // 7. Append (name, value) to headers’s header list.
+  return headers[kHeadersList].append(name, value)
+
+  // 8. If headers’s guard is "request-no-cors", then remove
+  //    privileged no-CORS request headers from headers
+}
+
 class HeadersList {
   /** @type {[string, string][]|null} */
   cookies = null
@@ -49566,7 +49543,7 @@ class HeadersList {
     if (init instanceof HeadersList) {
       this[kHeadersMap] = new Map(init[kHeadersMap])
       this[kHeadersSortedMap] = init[kHeadersSortedMap]
-      this.cookies = init.cookies
+      this.cookies = init.cookies === null ? null : [...init.cookies]
     } else {
       this[kHeadersMap] = new Map(init)
       this[kHeadersSortedMap] = null
@@ -49628,7 +49605,7 @@ class HeadersList {
     //    the first such header to value and remove the
     //    others.
     // 2. Otherwise, append header (name, value) to list.
-    return this[kHeadersMap].set(lowercaseName, { name, value })
+    this[kHeadersMap].set(lowercaseName, { name, value })
   }
 
   // https://fetch.spec.whatwg.org/#concept-header-list-delete
@@ -49641,20 +49618,18 @@ class HeadersList {
       this.cookies = null
     }
 
-    return this[kHeadersMap].delete(name)
+    this[kHeadersMap].delete(name)
   }
 
   // https://fetch.spec.whatwg.org/#concept-header-list-get
   get (name) {
-    // 1. If list does not contain name, then return null.
-    if (!this.contains(name)) {
-      return null
-    }
+    const value = this[kHeadersMap].get(name.toLowerCase())
 
+    // 1. If list does not contain name, then return null.
     // 2. Return the values of all headers in list whose name
     //    is a byte-case-insensitive match for name,
     //    separated from each other by 0x2C 0x20, in order.
-    return this[kHeadersMap].get(name.toLowerCase())?.value ?? null
+    return value === undefined ? null : value.value
   }
 
   * [Symbol.iterator] () {
@@ -49680,6 +49655,9 @@ class HeadersList {
 // https://fetch.spec.whatwg.org/#headers-class
 class Headers {
   constructor (init = undefined) {
+    if (init === kConstruct) {
+      return
+    }
     this[kHeadersList] = new HeadersList()
 
     // The new Headers(init) constructor steps are:
@@ -49703,43 +49681,7 @@ class Headers {
     name = webidl.converters.ByteString(name)
     value = webidl.converters.ByteString(value)
 
-    // 1. Normalize value.
-    value = headerValueNormalize(value)
-
-    // 2. If name is not a header name or value is not a
-    //    header value, then throw a TypeError.
-    if (!isValidHeaderName(name)) {
-      throw webidl.errors.invalidArgument({
-        prefix: 'Headers.append',
-        value: name,
-        type: 'header name'
-      })
-    } else if (!isValidHeaderValue(value)) {
-      throw webidl.errors.invalidArgument({
-        prefix: 'Headers.append',
-        value,
-        type: 'header value'
-      })
-    }
-
-    // 3. If headers’s guard is "immutable", then throw a TypeError.
-    // 4. Otherwise, if headers’s guard is "request" and name is a
-    //    forbidden header name, return.
-    // Note: undici does not implement forbidden header names
-    if (this[kGuard] === 'immutable') {
-      throw new TypeError('immutable')
-    } else if (this[kGuard] === 'request-no-cors') {
-      // 5. Otherwise, if headers’s guard is "request-no-cors":
-      // TODO
-    }
-
-    // 6. Otherwise, if headers’s guard is "response" and name is a
-    //    forbidden response-header name, return.
-
-    // 7. Append (name, value) to headers’s header list.
-    // 8. If headers’s guard is "request-no-cors", then remove
-    //    privileged no-CORS request headers from headers
-    return this[kHeadersList].append(name, value)
+    return appendHeader(this, name, value)
   }
 
   // https://fetch.spec.whatwg.org/#dom-headers-delete
@@ -49784,7 +49726,7 @@ class Headers {
     // 7. Delete name from this’s header list.
     // 8. If this’s guard is "request-no-cors", then remove
     //    privileged no-CORS request headers from this.
-    return this[kHeadersList].delete(name)
+    this[kHeadersList].delete(name)
   }
 
   // https://fetch.spec.whatwg.org/#dom-headers-get
@@ -49877,7 +49819,7 @@ class Headers {
     // 7. Set (name, value) in this’s header list.
     // 8. If this’s guard is "request-no-cors", then remove
     //    privileged no-CORS request headers from this
-    return this[kHeadersList].set(name, value)
+    this[kHeadersList].set(name, value)
   }
 
   // https://fetch.spec.whatwg.org/#dom-headers-getsetcookie
@@ -49913,7 +49855,8 @@ class Headers {
     const cookies = this[kHeadersList].cookies
 
     // 3. For each name of names:
-    for (const [name, value] of names) {
+    for (let i = 0; i < names.length; ++i) {
+      const [name, value] = names[i]
       // 1. If name is `set-cookie`, then:
       if (name === 'set-cookie') {
         // 1. Let values be a list of all values of headers in list whose name
@@ -49921,8 +49864,8 @@ class Headers {
 
         // 2. For each value of values:
         // 1. Append (name, value) to headers.
-        for (const value of cookies) {
-          headers.push([name, value])
+        for (let j = 0; j < cookies.length; ++j) {
+          headers.push([name, cookies[j]])
         }
       } else {
         // 2. Otherwise:
@@ -49946,6 +49889,12 @@ class Headers {
   keys () {
     webidl.brandCheck(this, Headers)
 
+    if (this[kGuard] === 'immutable') {
+      const value = this[kHeadersSortedMap]
+      return makeIterator(() => value, 'Headers',
+        'key')
+    }
+
     return makeIterator(
       () => [...this[kHeadersSortedMap].values()],
       'Headers',
@@ -49956,6 +49905,12 @@ class Headers {
   values () {
     webidl.brandCheck(this, Headers)
 
+    if (this[kGuard] === 'immutable') {
+      const value = this[kHeadersSortedMap]
+      return makeIterator(() => value, 'Headers',
+        'value')
+    }
+
     return makeIterator(
       () => [...this[kHeadersSortedMap].values()],
       'Headers',
@@ -49965,6 +49920,12 @@ class Headers {
 
   entries () {
     webidl.brandCheck(this, Headers)
+
+    if (this[kGuard] === 'immutable') {
+      const value = this[kHeadersSortedMap]
+      return makeIterator(() => value, 'Headers',
+        'key+value')
+    }
 
     return makeIterator(
       () => [...this[kHeadersSortedMap].values()],
@@ -50097,11 +50058,11 @@ const { kState, kHeaders, kGuard, kRealm } = __nccwpck_require__(5861)
 const assert = __nccwpck_require__(9491)
 const { safelyExtractBody } = __nccwpck_require__(1472)
 const {
-  redirectStatus,
+  redirectStatusSet,
   nullBodyStatus,
-  safeMethods,
+  safeMethodsSet,
   requestBodyHeader,
-  subresource,
+  subresourceSet,
   DOMException
 } = __nccwpck_require__(1037)
 const { kHeadersList } = __nccwpck_require__(2785)
@@ -50113,6 +50074,7 @@ const { TransformStream } = __nccwpck_require__(5356)
 const { getGlobalDispatcher } = __nccwpck_require__(1892)
 const { webidl } = __nccwpck_require__(1744)
 const { STATUS_CODES } = __nccwpck_require__(3685)
+const GET_OR_HEAD = ['GET', 'HEAD']
 
 /** @type {import('buffer').resolveObjectURL} */
 let resolveObjectURL
@@ -50172,7 +50134,7 @@ class Fetch extends EE {
 }
 
 // https://fetch.spec.whatwg.org/#fetch-method
-async function fetch (input, init = {}) {
+function fetch (input, init = {}) {
   webidl.argumentLengthCheck(arguments, 1, { header: 'globalThis.fetch' })
 
   // 1. Let p be a new promise.
@@ -50255,7 +50217,7 @@ async function fetch (input, init = {}) {
   const processResponse = (response) => {
     // 1. If locallyAborted is true, terminate these substeps.
     if (locallyAborted) {
-      return
+      return Promise.resolve()
     }
 
     // 2. If response’s aborted flag is set, then:
@@ -50268,7 +50230,7 @@ async function fetch (input, init = {}) {
       //    deserializedError.
 
       abortFetch(p, request, responseObject, controller.serializedAbortReason)
-      return
+      return Promise.resolve()
     }
 
     // 3. If response is a network error, then reject p with a TypeError
@@ -50277,7 +50239,7 @@ async function fetch (input, init = {}) {
       p.reject(
         Object.assign(new TypeError('fetch failed'), { cause: response.error })
       )
-      return
+      return Promise.resolve()
     }
 
     // 4. Set responseObject to the result of creating a Response object,
@@ -50336,7 +50298,7 @@ function finalizeAndReportTiming (response, initiatorType = 'other') {
   }
 
   // 8. If response’s timing allow passed flag is not set, then:
-  if (!timingInfo.timingAllowPassed) {
+  if (!response.timingAllowPassed) {
     //  1. Set timingInfo to a the result of creating an opaque timing info for timingInfo.
     timingInfo = createOpaqueTimingInfo({
       startTime: timingInfo.startTime
@@ -50560,7 +50522,7 @@ function fetching ({
   }
 
   // 15. If request is a subresource request, then:
-  if (subresource.includes(request.destination)) {
+  if (subresourceSet.has(request.destination)) {
     // TODO
   }
 
@@ -50827,13 +50789,13 @@ async function mainFetch (fetchParams, recursive = false) {
 
 // https://fetch.spec.whatwg.org/#concept-scheme-fetch
 // given a fetch params fetchParams
-async function schemeFetch (fetchParams) {
+function schemeFetch (fetchParams) {
   // Note: since the connection is destroyed on redirect, which sets fetchParams to a
   // cancelled state, we do not want this condition to trigger *unless* there have been
   // no redirects. See https://github.com/nodejs/undici/issues/1776
   // 1. If fetchParams is canceled, then return the appropriate network error for fetchParams.
   if (isCancelled(fetchParams) && fetchParams.request.redirectCount === 0) {
-    return makeAppropriateNetworkError(fetchParams)
+    return Promise.resolve(makeAppropriateNetworkError(fetchParams))
   }
 
   // 2. Let request be fetchParams’s request.
@@ -50849,7 +50811,7 @@ async function schemeFetch (fetchParams) {
       // and body is the empty byte sequence as a body.
 
       // Otherwise, return a network error.
-      return makeNetworkError('about scheme is not supported')
+      return Promise.resolve(makeNetworkError('about scheme is not supported'))
     }
     case 'blob:': {
       if (!resolveObjectURL) {
@@ -50862,7 +50824,7 @@ async function schemeFetch (fetchParams) {
       // https://github.com/web-platform-tests/wpt/blob/7b0ebaccc62b566a1965396e5be7bb2bc06f841f/FileAPI/url/resources/fetch-tests.js#L52-L56
       // Buffer.resolveObjectURL does not ignore URL queries.
       if (blobURLEntry.search.length !== 0) {
-        return makeNetworkError('NetworkError when attempting to fetch resource.')
+        return Promise.resolve(makeNetworkError('NetworkError when attempting to fetch resource.'))
       }
 
       const blobURLEntryObject = resolveObjectURL(blobURLEntry.toString())
@@ -50870,7 +50832,7 @@ async function schemeFetch (fetchParams) {
       // 2. If request’s method is not `GET`, blobURLEntry is null, or blobURLEntry’s
       //    object is not a Blob object, then return a network error.
       if (request.method !== 'GET' || !isBlobLike(blobURLEntryObject)) {
-        return makeNetworkError('invalid method')
+        return Promise.resolve(makeNetworkError('invalid method'))
       }
 
       // 3. Let bodyWithType be the result of safely extracting blobURLEntry’s object.
@@ -50897,7 +50859,7 @@ async function schemeFetch (fetchParams) {
 
       response.body = body
 
-      return response
+      return Promise.resolve(response)
     }
     case 'data:': {
       // 1. Let dataURLStruct be the result of running the
@@ -50908,7 +50870,7 @@ async function schemeFetch (fetchParams) {
       // 2. If dataURLStruct is failure, then return a
       //    network error.
       if (dataURLStruct === 'failure') {
-        return makeNetworkError('failed to fetch the data URL')
+        return Promise.resolve(makeNetworkError('failed to fetch the data URL'))
       }
 
       // 3. Let mimeType be dataURLStruct’s MIME type, serialized.
@@ -50917,28 +50879,28 @@ async function schemeFetch (fetchParams) {
       // 4. Return a response whose status message is `OK`,
       //    header list is « (`Content-Type`, mimeType) »,
       //    and body is dataURLStruct’s body as a body.
-      return makeResponse({
+      return Promise.resolve(makeResponse({
         statusText: 'OK',
         headersList: [
           ['content-type', { name: 'Content-Type', value: mimeType }]
         ],
         body: safelyExtractBody(dataURLStruct.body)[0]
-      })
+      }))
     }
     case 'file:': {
       // For now, unfortunate as it is, file URLs are left as an exercise for the reader.
       // When in doubt, return a network error.
-      return makeNetworkError('not implemented... yet...')
+      return Promise.resolve(makeNetworkError('not implemented... yet...'))
     }
     case 'http:':
     case 'https:': {
       // Return the result of running HTTP fetch given fetchParams.
 
-      return await httpFetch(fetchParams)
+      return httpFetch(fetchParams)
         .catch((err) => makeNetworkError(err))
     }
     default: {
-      return makeNetworkError('unknown scheme')
+      return Promise.resolve(makeNetworkError('unknown scheme'))
     }
   }
 }
@@ -50957,7 +50919,7 @@ function finalizeResponse (fetchParams, response) {
 }
 
 // https://fetch.spec.whatwg.org/#fetch-finale
-async function fetchFinale (fetchParams, response) {
+function fetchFinale (fetchParams, response) {
   // 1. If response is a network error, then:
   if (response.type === 'error') {
     // 1. Set response’s URL list to « fetchParams’s request’s URL list[0] ».
@@ -51041,8 +51003,9 @@ async function fetchFinale (fetchParams, response) {
     } else {
       // 4. Otherwise, fully read response’s body given processBody, processBodyError,
       // and fetchParams’s task destination.
-      await fullyReadBody(response.body, processBody, processBodyError)
+      return fullyReadBody(response.body, processBody, processBodyError)
     }
+    return Promise.resolve()
   }
 }
 
@@ -51113,7 +51076,7 @@ async function httpFetch (fetchParams) {
   }
 
   // 8. If actualResponse’s status is a redirect status, then:
-  if (redirectStatus.includes(actualResponse.status)) {
+  if (redirectStatusSet.has(actualResponse.status)) {
     // 1. If actualResponse’s status is not 303, request’s body is not null,
     // and the connection uses HTTP/2, then user agents may, and are even
     // encouraged to, transmit an RST_STREAM frame.
@@ -51150,7 +51113,7 @@ async function httpFetch (fetchParams) {
 }
 
 // https://fetch.spec.whatwg.org/#http-redirect-fetch
-async function httpRedirectFetch (fetchParams, response) {
+function httpRedirectFetch (fetchParams, response) {
   // 1. Let request be fetchParams’s request.
   const request = fetchParams.request
 
@@ -51176,18 +51139,18 @@ async function httpRedirectFetch (fetchParams, response) {
     }
   } catch (err) {
     // 5. If locationURL is failure, then return a network error.
-    return makeNetworkError(err)
+    return Promise.resolve(makeNetworkError(err))
   }
 
   // 6. If locationURL’s scheme is not an HTTP(S) scheme, then return a network
   // error.
   if (!urlIsHttpHttpsScheme(locationURL)) {
-    return makeNetworkError('URL scheme must be a HTTP(S) scheme')
+    return Promise.resolve(makeNetworkError('URL scheme must be a HTTP(S) scheme'))
   }
 
   // 7. If request’s redirect count is 20, then return a network error.
   if (request.redirectCount === 20) {
-    return makeNetworkError('redirect count exceeded')
+    return Promise.resolve(makeNetworkError('redirect count exceeded'))
   }
 
   // 8. Increase request’s redirect count by 1.
@@ -51201,7 +51164,7 @@ async function httpRedirectFetch (fetchParams, response) {
     (locationURL.username || locationURL.password) &&
     !sameOrigin(request, locationURL)
   ) {
-    return makeNetworkError('cross origin not allowed for request mode "cors"')
+    return Promise.resolve(makeNetworkError('cross origin not allowed for request mode "cors"'))
   }
 
   // 10. If request’s response tainting is "cors" and locationURL includes
@@ -51210,9 +51173,9 @@ async function httpRedirectFetch (fetchParams, response) {
     request.responseTainting === 'cors' &&
     (locationURL.username || locationURL.password)
   ) {
-    return makeNetworkError(
+    return Promise.resolve(makeNetworkError(
       'URL cannot contain credentials for request mode "cors"'
-    )
+    ))
   }
 
   // 11. If actualResponse’s status is not 303, request’s body is non-null,
@@ -51222,7 +51185,7 @@ async function httpRedirectFetch (fetchParams, response) {
     request.body != null &&
     request.body.source == null
   ) {
-    return makeNetworkError()
+    return Promise.resolve(makeNetworkError())
   }
 
   // 12. If one of the following is true
@@ -51231,7 +51194,7 @@ async function httpRedirectFetch (fetchParams, response) {
   if (
     ([301, 302].includes(actualResponse.status) && request.method === 'POST') ||
     (actualResponse.status === 303 &&
-      !['GET', 'HEAD'].includes(request.method))
+      !GET_OR_HEAD.includes(request.method))
   ) {
     // then:
     // 1. Set request’s method to `GET` and request’s body to null.
@@ -51251,6 +51214,9 @@ async function httpRedirectFetch (fetchParams, response) {
   if (!sameOrigin(requestCurrentURL(request), locationURL)) {
     // https://fetch.spec.whatwg.org/#cors-non-wildcard-request-header-name
     request.headersList.delete('authorization')
+
+    // https://fetch.spec.whatwg.org/#authentication-entries
+    request.headersList.delete('proxy-authorization', true)
 
     // "Cookie" and "Host" are forbidden request-headers, which undici doesn't implement.
     request.headersList.delete('cookie')
@@ -51515,7 +51481,7 @@ async function httpNetworkOrCacheFetch (
     // responses in httpCache, as per the "Invalidation" chapter of HTTP
     // Caching, and set storedResponse to null. [HTTP-CACHING]
     if (
-      !safeMethods.includes(httpRequest.method) &&
+      !safeMethodsSet.has(httpRequest.method) &&
       forwardResponse.status >= 200 &&
       forwardResponse.status <= 399
     ) {
@@ -52006,7 +51972,7 @@ async function httpNetworkFetch (
         path: url.pathname + url.search,
         origin: url.origin,
         method: request.method,
-        body: fetchParams.controller.dispatcher.isMockActive ? request.body && request.body.source : body,
+        body: fetchParams.controller.dispatcher.isMockActive ? request.body && (request.body.source || request.body.stream) : body,
         headers: request.headersList.entries,
         maxRedirections: 0,
         upgrade: request.mode === 'websocket' ? 'websocket' : undefined
@@ -52051,7 +52017,7 @@ async function httpNetworkFetch (
                 location = val
               }
 
-              headers.append(key, val)
+              headers[kHeadersList].append(key, val)
             }
           } else {
             const keys = Object.keys(headersList)
@@ -52065,7 +52031,7 @@ async function httpNetworkFetch (
                 location = val
               }
 
-              headers.append(key, val)
+              headers[kHeadersList].append(key, val)
             }
           }
 
@@ -52075,7 +52041,7 @@ async function httpNetworkFetch (
 
           const willFollow = request.redirect === 'follow' &&
             location &&
-            redirectStatus.includes(status)
+            redirectStatusSet.has(status)
 
           // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
           if (request.method !== 'HEAD' && request.method !== 'CONNECT' && !nullBodyStatus.includes(status) && !willFollow) {
@@ -52169,7 +52135,7 @@ async function httpNetworkFetch (
             const key = headersList[n + 0].toString('latin1')
             const val = headersList[n + 1].toString('latin1')
 
-            headers.append(key, val)
+            headers[kHeadersList].append(key, val)
           }
 
           resolve({
@@ -52212,11 +52178,12 @@ const {
   isValidHTTPToken,
   sameOrigin,
   normalizeMethod,
-  makePolicyContainer
+  makePolicyContainer,
+  normalizeMethodRecord
 } = __nccwpck_require__(2538)
 const {
-  forbiddenMethods,
-  corsSafeListedMethods,
+  forbiddenMethodsSet,
+  corsSafeListedMethodsSet,
   referrerPolicy,
   requestRedirect,
   requestMode,
@@ -52229,13 +52196,12 @@ const { kHeaders, kSignal, kState, kGuard, kRealm } = __nccwpck_require__(5861)
 const { webidl } = __nccwpck_require__(1744)
 const { getGlobalOrigin } = __nccwpck_require__(1246)
 const { URLSerializer } = __nccwpck_require__(685)
-const { kHeadersList } = __nccwpck_require__(2785)
+const { kHeadersList, kConstruct } = __nccwpck_require__(2785)
 const assert = __nccwpck_require__(9491)
 const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = __nccwpck_require__(2361)
 
 let TransformStream = globalThis.TransformStream
 
-const kInit = Symbol('init')
 const kAbortController = Symbol('abortController')
 
 const requestFinalizer = new FinalizationRegistry(({ signal, abort }) => {
@@ -52246,7 +52212,7 @@ const requestFinalizer = new FinalizationRegistry(({ signal, abort }) => {
 class Request {
   // https://fetch.spec.whatwg.org/#dom-request
   constructor (input, init = {}) {
-    if (input === kInit) {
+    if (input === kConstruct) {
       return
     }
 
@@ -52385,8 +52351,10 @@ class Request {
       urlList: [...request.urlList]
     })
 
+    const initHasKey = Object.keys(init).length !== 0
+
     // 13. If init is not empty, then:
-    if (Object.keys(init).length > 0) {
+    if (initHasKey) {
       // 1. If request’s mode is "navigate", then set it to "same-origin".
       if (request.mode === 'navigate') {
         request.mode = 'same-origin'
@@ -52501,7 +52469,7 @@ class Request {
     }
 
     // 23. If init["integrity"] exists, then set request’s integrity metadata to it.
-    if (init.integrity !== undefined && init.integrity != null) {
+    if (init.integrity != null) {
       request.integrity = String(init.integrity)
     }
 
@@ -52517,16 +52485,16 @@ class Request {
 
       // 2. If method is not a method or method is a forbidden method, then
       // throw a TypeError.
-      if (!isValidHTTPToken(init.method)) {
-        throw TypeError(`'${init.method}' is not a valid HTTP method.`)
+      if (!isValidHTTPToken(method)) {
+        throw new TypeError(`'${method}' is not a valid HTTP method.`)
       }
 
-      if (forbiddenMethods.indexOf(method.toUpperCase()) !== -1) {
-        throw TypeError(`'${init.method}' HTTP method is unsupported.`)
+      if (forbiddenMethodsSet.has(method.toUpperCase())) {
+        throw new TypeError(`'${method}' HTTP method is unsupported.`)
       }
 
       // 3. Normalize method.
-      method = normalizeMethod(init.method)
+      method = normalizeMethodRecord[method] ?? normalizeMethod(method)
 
       // 4. Set request’s method to method.
       request.method = method
@@ -52597,7 +52565,7 @@ class Request {
     // 30. Set this’s headers to a new Headers object with this’s relevant
     // Realm, whose header list is request’s header list and guard is
     // "request".
-    this[kHeaders] = new Headers()
+    this[kHeaders] = new Headers(kConstruct)
     this[kHeaders][kHeadersList] = request.headersList
     this[kHeaders][kGuard] = 'request'
     this[kHeaders][kRealm] = this[kRealm]
@@ -52606,7 +52574,7 @@ class Request {
     if (mode === 'no-cors') {
       // 1. If this’s request’s method is not a CORS-safelisted method,
       // then throw a TypeError.
-      if (!corsSafeListedMethods.includes(request.method)) {
+      if (!corsSafeListedMethodsSet.has(request.method)) {
         throw new TypeError(
           `'${request.method} is unsupported in no-cors mode.`
         )
@@ -52617,25 +52585,25 @@ class Request {
     }
 
     // 32. If init is not empty, then:
-    if (Object.keys(init).length !== 0) {
+    if (initHasKey) {
+      /** @type {HeadersList} */
+      const headersList = this[kHeaders][kHeadersList]
       // 1. Let headers be a copy of this’s headers and its associated header
       // list.
-      let headers = new Headers(this[kHeaders])
-
       // 2. If init["headers"] exists, then set headers to init["headers"].
-      if (init.headers !== undefined) {
-        headers = init.headers
-      }
+      const headers = init.headers !== undefined ? init.headers : new HeadersList(headersList)
 
       // 3. Empty this’s headers’s header list.
-      this[kHeaders][kHeadersList].clear()
+      headersList.clear()
 
       // 4. If headers is a Headers object, then for each header in its header
       // list, append header’s name/header’s value to this’s headers.
-      if (headers.constructor.name === 'Headers') {
+      if (headers instanceof HeadersList) {
         for (const [key, val] of headers) {
-          this[kHeaders].append(key, val)
+          headersList.append(key, val)
         }
+        // Note: Copy the `set-cookie` meta-data.
+        headersList.cookies = headers.cookies
       } else {
         // 5. Otherwise, fill this’s headers with headers.
         fillHeaders(this[kHeaders], headers)
@@ -52924,10 +52892,10 @@ class Request {
 
     // 3. Let clonedRequestObject be the result of creating a Request object,
     // given clonedRequest, this’s headers’s guard, and this’s relevant Realm.
-    const clonedRequestObject = new Request(kInit)
+    const clonedRequestObject = new Request(kConstruct)
     clonedRequestObject[kState] = clonedRequest
     clonedRequestObject[kRealm] = this[kRealm]
-    clonedRequestObject[kHeaders] = new Headers()
+    clonedRequestObject[kHeaders] = new Headers(kConstruct)
     clonedRequestObject[kHeaders][kHeadersList] = clonedRequest.headersList
     clonedRequestObject[kHeaders][kGuard] = this[kHeaders][kGuard]
     clonedRequestObject[kHeaders][kRealm] = this[kHeaders][kRealm]
@@ -53168,7 +53136,7 @@ const {
   isomorphicEncode
 } = __nccwpck_require__(2538)
 const {
-  redirectStatus,
+  redirectStatusSet,
   nullBodyStatus,
   DOMException
 } = __nccwpck_require__(1037)
@@ -53177,11 +53145,12 @@ const { webidl } = __nccwpck_require__(1744)
 const { FormData } = __nccwpck_require__(2015)
 const { getGlobalOrigin } = __nccwpck_require__(1246)
 const { URLSerializer } = __nccwpck_require__(685)
-const { kHeadersList } = __nccwpck_require__(2785)
+const { kHeadersList, kConstruct } = __nccwpck_require__(2785)
 const assert = __nccwpck_require__(9491)
 const { types } = __nccwpck_require__(3837)
 
 const ReadableStream = globalThis.ReadableStream || (__nccwpck_require__(5356).ReadableStream)
+const textEncoder = new TextEncoder('utf-8')
 
 // https://fetch.spec.whatwg.org/#response-class
 class Response {
@@ -53211,7 +53180,7 @@ class Response {
     }
 
     // 1. Let bytes the result of running serialize a JavaScript value to JSON bytes on data.
-    const bytes = new TextEncoder('utf-8').encode(
+    const bytes = textEncoder.encode(
       serializeJavascriptValueToJSONString(data)
     )
 
@@ -53256,7 +53225,7 @@ class Response {
     }
 
     // 3. If status is not a redirect status, then throw a RangeError.
-    if (!redirectStatus.includes(status)) {
+    if (!redirectStatusSet.has(status)) {
       throw new RangeError('Invalid status code ' + status)
     }
 
@@ -53297,7 +53266,7 @@ class Response {
     // 2. Set this’s headers to a new Headers object with this’s relevant
     // Realm, whose header list is this’s response’s header list and guard
     // is "response".
-    this[kHeaders] = new Headers()
+    this[kHeaders] = new Headers(kConstruct)
     this[kHeaders][kGuard] = 'response'
     this[kHeaders][kHeadersList] = this[kState].headersList
     this[kHeaders][kRealm] = this[kRealm]
@@ -53667,11 +53636,7 @@ webidl.converters.XMLHttpRequestBodyInit = function (V) {
     return webidl.converters.Blob(V, { strict: false })
   }
 
-  if (
-    types.isAnyArrayBuffer(V) ||
-    types.isTypedArray(V) ||
-    types.isDataView(V)
-  ) {
+  if (types.isArrayBuffer(V) || types.isTypedArray(V) || types.isDataView(V)) {
     return webidl.converters.BufferSource(V)
   }
 
@@ -53754,12 +53719,14 @@ module.exports = {
 "use strict";
 
 
-const { redirectStatus, badPorts, referrerPolicy: referrerPolicyTokens } = __nccwpck_require__(1037)
+const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = __nccwpck_require__(1037)
 const { getGlobalOrigin } = __nccwpck_require__(1246)
 const { performance } = __nccwpck_require__(4074)
 const { isBlobLike, toUSVString, ReadableStreamFrom } = __nccwpck_require__(3983)
 const assert = __nccwpck_require__(9491)
 const { isUint8Array } = __nccwpck_require__(9830)
+
+let supportedHashes = []
 
 // https://nodejs.org/api/crypto.html#determining-if-crypto-support-is-unavailable
 /** @type {import('crypto')|undefined} */
@@ -53767,8 +53734,10 @@ let crypto
 
 try {
   crypto = __nccwpck_require__(6113)
+  const possibleRelevantHashes = ['sha256', 'sha384', 'sha512']
+  supportedHashes = crypto.getHashes().filter((hash) => possibleRelevantHashes.includes(hash))
+/* c8 ignore next 3 */
 } catch {
-
 }
 
 function responseURL (response) {
@@ -53783,7 +53752,7 @@ function responseURL (response) {
 // https://fetch.spec.whatwg.org/#concept-response-location-url
 function responseLocationURL (response, requestFragment) {
   // 1. If response’s status is not a redirect status, then return null.
-  if (!redirectStatus.includes(response.status)) {
+  if (!redirectStatusSet.has(response.status)) {
     return null
   }
 
@@ -53818,7 +53787,7 @@ function requestBadPort (request) {
 
   // 2. If url’s scheme is an HTTP(S) scheme and url’s port is a bad port,
   // then return blocked.
-  if (urlIsHttpHttpsScheme(url) && badPorts.includes(url.port)) {
+  if (urlIsHttpHttpsScheme(url) && badPortsSet.has(url.port)) {
     return 'blocked'
   }
 
@@ -53857,52 +53826,57 @@ function isValidReasonPhrase (statusText) {
   return true
 }
 
-function isTokenChar (c) {
-  return !(
-    c >= 0x7f ||
-    c <= 0x20 ||
-    c === '(' ||
-    c === ')' ||
-    c === '<' ||
-    c === '>' ||
-    c === '@' ||
-    c === ',' ||
-    c === ';' ||
-    c === ':' ||
-    c === '\\' ||
-    c === '"' ||
-    c === '/' ||
-    c === '[' ||
-    c === ']' ||
-    c === '?' ||
-    c === '=' ||
-    c === '{' ||
-    c === '}'
-  )
+/**
+ * @see https://tools.ietf.org/html/rfc7230#section-3.2.6
+ * @param {number} c
+ */
+function isTokenCharCode (c) {
+  switch (c) {
+    case 0x22:
+    case 0x28:
+    case 0x29:
+    case 0x2c:
+    case 0x2f:
+    case 0x3a:
+    case 0x3b:
+    case 0x3c:
+    case 0x3d:
+    case 0x3e:
+    case 0x3f:
+    case 0x40:
+    case 0x5b:
+    case 0x5c:
+    case 0x5d:
+    case 0x7b:
+    case 0x7d:
+      // DQUOTE and "(),/:;<=>?@[\]{}"
+      return false
+    default:
+      // VCHAR %x21-7E
+      return c >= 0x21 && c <= 0x7e
+  }
 }
 
-// See RFC 7230, Section 3.2.6.
-// https://github.com/chromium/chromium/blob/d7da0240cae77824d1eda25745c4022757499131/third_party/blink/renderer/platform/network/http_parsers.cc#L321
+/**
+ * @param {string} characters
+ */
 function isValidHTTPToken (characters) {
-  if (!characters || typeof characters !== 'string') {
+  if (characters.length === 0) {
     return false
   }
   for (let i = 0; i < characters.length; ++i) {
-    const c = characters.charCodeAt(i)
-    if (c > 0x7f || !isTokenChar(c)) {
+    if (!isTokenCharCode(characters.charCodeAt(i))) {
       return false
     }
   }
   return true
 }
 
-// https://fetch.spec.whatwg.org/#header-name
-// https://github.com/chromium/chromium/blob/b3d37e6f94f87d59e44662d6078f6a12de845d17/net/http/http_util.cc#L342
+/**
+ * @see https://fetch.spec.whatwg.org/#header-name
+ * @param {string} potentialValue
+ */
 function isValidHeaderName (potentialValue) {
-  if (potentialValue.length === 0) {
-    return false
-  }
-
   return isValidHTTPToken(potentialValue)
 }
 
@@ -53960,7 +53934,7 @@ function setRequestReferrerPolicyOnRedirect (request, actualResponse) {
     // The left-most policy is the fallback.
     for (let i = policyHeader.length; i !== 0; i--) {
       const token = policyHeader[i - 1].trim()
-      if (referrerPolicyTokens.includes(token)) {
+      if (referrerPolicyTokens.has(token)) {
         policy = token
         break
       }
@@ -54291,66 +54265,56 @@ function bytesMatch (bytes, metadataList) {
     return true
   }
 
-  // 3. If parsedMetadata is the empty set, return true.
+  // 3. If response is not eligible for integrity validation, return false.
+  // TODO
+
+  // 4. If parsedMetadata is the empty set, return true.
   if (parsedMetadata.length === 0) {
     return true
   }
 
-  // 4. Let metadata be the result of getting the strongest
+  // 5. Let metadata be the result of getting the strongest
   //    metadata from parsedMetadata.
-  const list = parsedMetadata.sort((c, d) => d.algo.localeCompare(c.algo))
-  // get the strongest algorithm
-  const strongest = list[0].algo
-  // get all entries that use the strongest algorithm; ignore weaker
-  const metadata = list.filter((item) => item.algo === strongest)
+  const strongest = getStrongestMetadata(parsedMetadata)
+  const metadata = filterMetadataListByAlgorithm(parsedMetadata, strongest)
 
-  // 5. For each item in metadata:
+  // 6. For each item in metadata:
   for (const item of metadata) {
     // 1. Let algorithm be the alg component of item.
     const algorithm = item.algo
 
     // 2. Let expectedValue be the val component of item.
-    let expectedValue = item.hash
+    const expectedValue = item.hash
 
     // See https://github.com/web-platform-tests/wpt/commit/e4c5cc7a5e48093220528dfdd1c4012dc3837a0e
     // "be liberal with padding". This is annoying, and it's not even in the spec.
 
-    if (expectedValue.endsWith('==')) {
-      expectedValue = expectedValue.slice(0, -2)
-    }
-
     // 3. Let actualValue be the result of applying algorithm to bytes.
     let actualValue = crypto.createHash(algorithm).update(bytes).digest('base64')
 
-    if (actualValue.endsWith('==')) {
-      actualValue = actualValue.slice(0, -2)
+    if (actualValue[actualValue.length - 1] === '=') {
+      if (actualValue[actualValue.length - 2] === '=') {
+        actualValue = actualValue.slice(0, -2)
+      } else {
+        actualValue = actualValue.slice(0, -1)
+      }
     }
 
     // 4. If actualValue is a case-sensitive match for expectedValue,
     //    return true.
-    if (actualValue === expectedValue) {
-      return true
-    }
-
-    let actualBase64URL = crypto.createHash(algorithm).update(bytes).digest('base64url')
-
-    if (actualBase64URL.endsWith('==')) {
-      actualBase64URL = actualBase64URL.slice(0, -2)
-    }
-
-    if (actualBase64URL === expectedValue) {
+    if (compareBase64Mixed(actualValue, expectedValue)) {
       return true
     }
   }
 
-  // 6. Return false.
+  // 7. Return false.
   return false
 }
 
 // https://w3c.github.io/webappsec-subresource-integrity/#grammardef-hash-with-options
 // https://www.w3.org/TR/CSP2/#source-list-syntax
 // https://www.rfc-editor.org/rfc/rfc5234#appendix-B.1
-const parseHashWithOptions = /((?<algo>sha256|sha384|sha512)-(?<hash>[A-z0-9+/]{1}.*={0,2}))( +[\x21-\x7e]?)?/i
+const parseHashWithOptions = /(?<algo>sha256|sha384|sha512)-((?<hash>[A-Za-z0-9+/]+|[A-Za-z0-9_-]+)={0,2}(?:\s|$)( +[!-~]*)?)?/i
 
 /**
  * @see https://w3c.github.io/webappsec-subresource-integrity/#parse-metadata
@@ -54364,8 +54328,6 @@ function parseMetadata (metadata) {
   // 2. Let empty be equal to true.
   let empty = true
 
-  const supportedHashes = crypto.getHashes()
-
   // 3. For each token returned by splitting metadata on spaces:
   for (const token of metadata.split(' ')) {
     // 1. Set empty to false.
@@ -54375,7 +54337,11 @@ function parseMetadata (metadata) {
     const parsedToken = parseHashWithOptions.exec(token)
 
     // 3. If token does not parse, continue to the next token.
-    if (parsedToken === null || parsedToken.groups === undefined) {
+    if (
+      parsedToken === null ||
+      parsedToken.groups === undefined ||
+      parsedToken.groups.algo === undefined
+    ) {
       // Note: Chromium blocks the request at this point, but Firefox
       // gives a warning that an invalid integrity was given. The
       // correct behavior is to ignore these, and subsequently not
@@ -54384,11 +54350,11 @@ function parseMetadata (metadata) {
     }
 
     // 4. Let algorithm be the hash-algo component of token.
-    const algorithm = parsedToken.groups.algo
+    const algorithm = parsedToken.groups.algo.toLowerCase()
 
     // 5. If algorithm is a hash function recognized by the user
     //    agent, add the parsed token to result.
-    if (supportedHashes.includes(algorithm.toLowerCase())) {
+    if (supportedHashes.includes(algorithm)) {
       result.push(parsedToken.groups)
     }
   }
@@ -54399,6 +54365,82 @@ function parseMetadata (metadata) {
   }
 
   return result
+}
+
+/**
+ * @param {{ algo: 'sha256' | 'sha384' | 'sha512' }[]} metadataList
+ */
+function getStrongestMetadata (metadataList) {
+  // Let algorithm be the algo component of the first item in metadataList.
+  // Can be sha256
+  let algorithm = metadataList[0].algo
+  // If the algorithm is sha512, then it is the strongest
+  // and we can return immediately
+  if (algorithm[3] === '5') {
+    return algorithm
+  }
+
+  for (let i = 1; i < metadataList.length; ++i) {
+    const metadata = metadataList[i]
+    // If the algorithm is sha512, then it is the strongest
+    // and we can break the loop immediately
+    if (metadata.algo[3] === '5') {
+      algorithm = 'sha512'
+      break
+    // If the algorithm is sha384, then a potential sha256 or sha384 is ignored
+    } else if (algorithm[3] === '3') {
+      continue
+    // algorithm is sha256, check if algorithm is sha384 and if so, set it as
+    // the strongest
+    } else if (metadata.algo[3] === '3') {
+      algorithm = 'sha384'
+    }
+  }
+  return algorithm
+}
+
+function filterMetadataListByAlgorithm (metadataList, algorithm) {
+  if (metadataList.length === 1) {
+    return metadataList
+  }
+
+  let pos = 0
+  for (let i = 0; i < metadataList.length; ++i) {
+    if (metadataList[i].algo === algorithm) {
+      metadataList[pos++] = metadataList[i]
+    }
+  }
+
+  metadataList.length = pos
+
+  return metadataList
+}
+
+/**
+ * Compares two base64 strings, allowing for base64url
+ * in the second string.
+ *
+* @param {string} actualValue always base64
+ * @param {string} expectedValue base64 or base64url
+ * @returns {boolean}
+ */
+function compareBase64Mixed (actualValue, expectedValue) {
+  if (actualValue.length !== expectedValue.length) {
+    return false
+  }
+  for (let i = 0; i < actualValue.length; ++i) {
+    if (actualValue[i] !== expectedValue[i]) {
+      if (
+        (actualValue[i] === '+' && expectedValue[i] === '-') ||
+        (actualValue[i] === '/' && expectedValue[i] === '_')
+      ) {
+        continue
+      }
+      return false
+    }
+  }
+
+  return true
 }
 
 // https://w3c.github.io/webappsec-upgrade-insecure-requests/#upgrade-request
@@ -54447,11 +54489,30 @@ function isCancelled (fetchParams) {
     fetchParams.controller.state === 'terminated'
 }
 
-// https://fetch.spec.whatwg.org/#concept-method-normalize
+const normalizeMethodRecord = {
+  delete: 'DELETE',
+  DELETE: 'DELETE',
+  get: 'GET',
+  GET: 'GET',
+  head: 'HEAD',
+  HEAD: 'HEAD',
+  options: 'OPTIONS',
+  OPTIONS: 'OPTIONS',
+  post: 'POST',
+  POST: 'POST',
+  put: 'PUT',
+  PUT: 'PUT'
+}
+
+// Note: object prototypes should not be able to be referenced. e.g. `Object#hasOwnProperty`.
+Object.setPrototypeOf(normalizeMethodRecord, null)
+
+/**
+ * @see https://fetch.spec.whatwg.org/#concept-method-normalize
+ * @param {string} method
+ */
 function normalizeMethod (method) {
-  return /^(DELETE|GET|HEAD|OPTIONS|POST|PUT)$/i.test(method)
-    ? method.toUpperCase()
-    : method
+  return normalizeMethodRecord[method.toLowerCase()] ?? method
 }
 
 // https://infra.spec.whatwg.org/#serialize-a-javascript-value-to-a-json-string
@@ -54796,7 +54857,9 @@ module.exports = {
   urlIsLocal,
   urlHasHttpsScheme,
   urlIsHttpHttpsScheme,
-  readAllBytes
+  readAllBytes,
+  normalizeMethodRecord,
+  parseMetadata
 }
 
 
@@ -55235,12 +55298,10 @@ webidl.converters.ByteString = function (V) {
   // 2. If the value of any element of x is greater than
   //    255, then throw a TypeError.
   for (let index = 0; index < x.length; index++) {
-    const charCode = x.charCodeAt(index)
-
-    if (charCode > 255) {
+    if (x.charCodeAt(index) > 255) {
       throw new TypeError(
         'Cannot convert argument to a ByteString because the character at ' +
-        `index ${index} has a value of ${charCode} which is greater than 255.`
+        `index ${index} has a value of ${x.charCodeAt(index)} which is greater than 255.`
       )
     }
   }
@@ -56885,12 +56946,17 @@ function parseLocation (statusCode, headers) {
 
 // https://tools.ietf.org/html/rfc7231#section-6.4.4
 function shouldRemoveHeader (header, removeContent, unknownOrigin) {
-  return (
-    (header.length === 4 && header.toString().toLowerCase() === 'host') ||
-    (removeContent && header.toString().toLowerCase().indexOf('content-') === 0) ||
-    (unknownOrigin && header.length === 13 && header.toString().toLowerCase() === 'authorization') ||
-    (unknownOrigin && header.length === 6 && header.toString().toLowerCase() === 'cookie')
-  )
+  if (header.length === 4) {
+    return util.headerNameToString(header) === 'host'
+  }
+  if (removeContent && util.headerNameToString(header).startsWith('content-')) {
+    return true
+  }
+  if (unknownOrigin && (header.length === 13 || header.length === 6 || header.length === 19)) {
+    const name = util.headerNameToString(header)
+    return name === 'authorization' || name === 'cookie' || name === 'proxy-authorization'
+  }
+  return false
 }
 
 // https://tools.ietf.org/html/rfc7231#section-6.4
@@ -56915,6 +56981,349 @@ function cleanRequestHeaders (headers, removeContent, unknownOrigin) {
 }
 
 module.exports = RedirectHandler
+
+
+/***/ }),
+
+/***/ 2286:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const assert = __nccwpck_require__(9491)
+
+const { kRetryHandlerDefaultRetry } = __nccwpck_require__(2785)
+const { RequestRetryError } = __nccwpck_require__(8045)
+const { isDisturbed, parseHeaders, parseRangeHeader } = __nccwpck_require__(3983)
+
+function calculateRetryAfterHeader (retryAfter) {
+  const current = Date.now()
+  const diff = new Date(retryAfter).getTime() - current
+
+  return diff
+}
+
+class RetryHandler {
+  constructor (opts, handlers) {
+    const { retryOptions, ...dispatchOpts } = opts
+    const {
+      // Retry scoped
+      retry: retryFn,
+      maxRetries,
+      maxTimeout,
+      minTimeout,
+      timeoutFactor,
+      // Response scoped
+      methods,
+      errorCodes,
+      retryAfter,
+      statusCodes
+    } = retryOptions ?? {}
+
+    this.dispatch = handlers.dispatch
+    this.handler = handlers.handler
+    this.opts = dispatchOpts
+    this.abort = null
+    this.aborted = false
+    this.retryOpts = {
+      retry: retryFn ?? RetryHandler[kRetryHandlerDefaultRetry],
+      retryAfter: retryAfter ?? true,
+      maxTimeout: maxTimeout ?? 30 * 1000, // 30s,
+      timeout: minTimeout ?? 500, // .5s
+      timeoutFactor: timeoutFactor ?? 2,
+      maxRetries: maxRetries ?? 5,
+      // What errors we should retry
+      methods: methods ?? ['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE'],
+      // Indicates which errors to retry
+      statusCodes: statusCodes ?? [500, 502, 503, 504, 429],
+      // List of errors to retry
+      errorCodes: errorCodes ?? [
+        'ECONNRESET',
+        'ECONNREFUSED',
+        'ENOTFOUND',
+        'ENETDOWN',
+        'ENETUNREACH',
+        'EHOSTDOWN',
+        'EHOSTUNREACH',
+        'EPIPE'
+      ]
+    }
+
+    this.retryCount = 0
+    this.start = 0
+    this.end = null
+    this.etag = null
+    this.resume = null
+
+    // Handle possible onConnect duplication
+    this.handler.onConnect(reason => {
+      this.aborted = true
+      if (this.abort) {
+        this.abort(reason)
+      } else {
+        this.reason = reason
+      }
+    })
+  }
+
+  onRequestSent () {
+    if (this.handler.onRequestSent) {
+      this.handler.onRequestSent()
+    }
+  }
+
+  onUpgrade (statusCode, headers, socket) {
+    if (this.handler.onUpgrade) {
+      this.handler.onUpgrade(statusCode, headers, socket)
+    }
+  }
+
+  onConnect (abort) {
+    if (this.aborted) {
+      abort(this.reason)
+    } else {
+      this.abort = abort
+    }
+  }
+
+  onBodySent (chunk) {
+    if (this.handler.onBodySent) return this.handler.onBodySent(chunk)
+  }
+
+  static [kRetryHandlerDefaultRetry] (err, { state, opts }, cb) {
+    const { statusCode, code, headers } = err
+    const { method, retryOptions } = opts
+    const {
+      maxRetries,
+      timeout,
+      maxTimeout,
+      timeoutFactor,
+      statusCodes,
+      errorCodes,
+      methods
+    } = retryOptions
+    let { counter, currentTimeout } = state
+
+    currentTimeout =
+      currentTimeout != null && currentTimeout > 0 ? currentTimeout : timeout
+
+    // Any code that is not a Undici's originated and allowed to retry
+    if (
+      code &&
+      code !== 'UND_ERR_REQ_RETRY' &&
+      code !== 'UND_ERR_SOCKET' &&
+      !errorCodes.includes(code)
+    ) {
+      cb(err)
+      return
+    }
+
+    // If a set of method are provided and the current method is not in the list
+    if (Array.isArray(methods) && !methods.includes(method)) {
+      cb(err)
+      return
+    }
+
+    // If a set of status code are provided and the current status code is not in the list
+    if (
+      statusCode != null &&
+      Array.isArray(statusCodes) &&
+      !statusCodes.includes(statusCode)
+    ) {
+      cb(err)
+      return
+    }
+
+    // If we reached the max number of retries
+    if (counter > maxRetries) {
+      cb(err)
+      return
+    }
+
+    let retryAfterHeader = headers != null && headers['retry-after']
+    if (retryAfterHeader) {
+      retryAfterHeader = Number(retryAfterHeader)
+      retryAfterHeader = isNaN(retryAfterHeader)
+        ? calculateRetryAfterHeader(retryAfterHeader)
+        : retryAfterHeader * 1e3 // Retry-After is in seconds
+    }
+
+    const retryTimeout =
+      retryAfterHeader > 0
+        ? Math.min(retryAfterHeader, maxTimeout)
+        : Math.min(currentTimeout * timeoutFactor ** counter, maxTimeout)
+
+    state.currentTimeout = retryTimeout
+
+    setTimeout(() => cb(null), retryTimeout)
+  }
+
+  onHeaders (statusCode, rawHeaders, resume, statusMessage) {
+    const headers = parseHeaders(rawHeaders)
+
+    this.retryCount += 1
+
+    if (statusCode >= 300) {
+      this.abort(
+        new RequestRetryError('Request failed', statusCode, {
+          headers,
+          count: this.retryCount
+        })
+      )
+      return false
+    }
+
+    // Checkpoint for resume from where we left it
+    if (this.resume != null) {
+      this.resume = null
+
+      if (statusCode !== 206) {
+        return true
+      }
+
+      const contentRange = parseRangeHeader(headers['content-range'])
+      // If no content range
+      if (!contentRange) {
+        this.abort(
+          new RequestRetryError('Content-Range mismatch', statusCode, {
+            headers,
+            count: this.retryCount
+          })
+        )
+        return false
+      }
+
+      // Let's start with a weak etag check
+      if (this.etag != null && this.etag !== headers.etag) {
+        this.abort(
+          new RequestRetryError('ETag mismatch', statusCode, {
+            headers,
+            count: this.retryCount
+          })
+        )
+        return false
+      }
+
+      const { start, size, end = size } = contentRange
+
+      assert(this.start === start, 'content-range mismatch')
+      assert(this.end == null || this.end === end, 'content-range mismatch')
+
+      this.resume = resume
+      return true
+    }
+
+    if (this.end == null) {
+      if (statusCode === 206) {
+        // First time we receive 206
+        const range = parseRangeHeader(headers['content-range'])
+
+        if (range == null) {
+          return this.handler.onHeaders(
+            statusCode,
+            rawHeaders,
+            resume,
+            statusMessage
+          )
+        }
+
+        const { start, size, end = size } = range
+
+        assert(
+          start != null && Number.isFinite(start) && this.start !== start,
+          'content-range mismatch'
+        )
+        assert(Number.isFinite(start))
+        assert(
+          end != null && Number.isFinite(end) && this.end !== end,
+          'invalid content-length'
+        )
+
+        this.start = start
+        this.end = end
+      }
+
+      // We make our best to checkpoint the body for further range headers
+      if (this.end == null) {
+        const contentLength = headers['content-length']
+        this.end = contentLength != null ? Number(contentLength) : null
+      }
+
+      assert(Number.isFinite(this.start))
+      assert(
+        this.end == null || Number.isFinite(this.end),
+        'invalid content-length'
+      )
+
+      this.resume = resume
+      this.etag = headers.etag != null ? headers.etag : null
+
+      return this.handler.onHeaders(
+        statusCode,
+        rawHeaders,
+        resume,
+        statusMessage
+      )
+    }
+
+    const err = new RequestRetryError('Request failed', statusCode, {
+      headers,
+      count: this.retryCount
+    })
+
+    this.abort(err)
+
+    return false
+  }
+
+  onData (chunk) {
+    this.start += chunk.length
+
+    return this.handler.onData(chunk)
+  }
+
+  onComplete (rawTrailers) {
+    this.retryCount = 0
+    return this.handler.onComplete(rawTrailers)
+  }
+
+  onError (err) {
+    if (this.aborted || isDisturbed(this.opts.body)) {
+      return this.handler.onError(err)
+    }
+
+    this.retryOpts.retry(
+      err,
+      {
+        state: { counter: this.retryCount++, currentTimeout: this.retryAfter },
+        opts: { retryOptions: this.retryOpts, ...this.opts }
+      },
+      onRetry.bind(this)
+    )
+
+    function onRetry (err) {
+      if (err != null || this.aborted || isDisturbed(this.opts.body)) {
+        return this.handler.onError(err)
+      }
+
+      if (this.start !== 0) {
+        this.opts = {
+          ...this.opts,
+          headers: {
+            ...this.opts.headers,
+            range: `bytes=${this.start}-${this.end ?? ''}`
+          }
+        }
+      }
+
+      try {
+        this.dispatch(this.opts, this)
+      } catch (err) {
+        this.handler.onError(err)
+      }
+    }
+  }
+}
+
+module.exports = RetryHandler
 
 
 /***/ }),
@@ -58729,7 +59138,7 @@ class Pool extends PoolBase {
         maxCachedSessions,
         allowH2,
         socketPath,
-        timeout: connectTimeout == null ? 10e3 : connectTimeout,
+        timeout: connectTimeout,
         ...(util.nodeHasAutoSelectFamily && autoSelectFamily ? { autoSelectFamily, autoSelectFamilyAttemptTimeout } : undefined),
         ...connect
       })
@@ -58839,6 +59248,9 @@ class ProxyAgent extends DispatcherBase {
     this[kProxyTls] = opts.proxyTls
     this[kProxyHeaders] = opts.headers || {}
 
+    const resolvedUrl = new URL(opts.uri)
+    const { origin, port, host, username, password } = resolvedUrl
+
     if (opts.auth && opts.token) {
       throw new InvalidArgumentError('opts.auth cannot be used in combination with opts.token')
     } else if (opts.auth) {
@@ -58846,10 +59258,9 @@ class ProxyAgent extends DispatcherBase {
       this[kProxyHeaders]['proxy-authorization'] = `Basic ${opts.auth}`
     } else if (opts.token) {
       this[kProxyHeaders]['proxy-authorization'] = opts.token
+    } else if (username && password) {
+      this[kProxyHeaders]['proxy-authorization'] = `Basic ${Buffer.from(`${decodeURIComponent(username)}:${decodeURIComponent(password)}`).toString('base64')}`
     }
-
-    const resolvedUrl = new URL(opts.uri)
-    const { origin, port, host } = resolvedUrl
 
     const connect = buildConnector({ ...opts.proxyTls })
     this[kConnectEndpoint] = buildConnector({ ...opts.requestTls })
@@ -58874,7 +59285,7 @@ class ProxyAgent extends DispatcherBase {
           })
           if (statusCode !== 200) {
             socket.on('error', () => {}).destroy()
-            callback(new RequestAbortedError('Proxy response !== 200 when HTTP Tunneling'))
+            callback(new RequestAbortedError(`Proxy response (${statusCode}) !== 200 when HTTP Tunneling`))
           }
           if (opts.protocol !== 'https:') {
             callback(null, socket)
@@ -61060,7 +61471,7 @@ function getUserAgent() {
     return navigator.userAgent;
   }
 
-  if (typeof process === "object" && "version" in process) {
+  if (typeof process === "object" && process.version !== undefined) {
     return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
   }
 
@@ -62585,11 +62996,1636 @@ module.exports = require("zlib");
 
 /***/ }),
 
+/***/ 2960:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const WritableStream = (__nccwpck_require__(4492).Writable)
+const inherits = (__nccwpck_require__(7261).inherits)
+
+const StreamSearch = __nccwpck_require__(1142)
+
+const PartStream = __nccwpck_require__(1620)
+const HeaderParser = __nccwpck_require__(2032)
+
+const DASH = 45
+const B_ONEDASH = Buffer.from('-')
+const B_CRLF = Buffer.from('\r\n')
+const EMPTY_FN = function () {}
+
+function Dicer (cfg) {
+  if (!(this instanceof Dicer)) { return new Dicer(cfg) }
+  WritableStream.call(this, cfg)
+
+  if (!cfg || (!cfg.headerFirst && typeof cfg.boundary !== 'string')) { throw new TypeError('Boundary required') }
+
+  if (typeof cfg.boundary === 'string') { this.setBoundary(cfg.boundary) } else { this._bparser = undefined }
+
+  this._headerFirst = cfg.headerFirst
+
+  this._dashes = 0
+  this._parts = 0
+  this._finished = false
+  this._realFinish = false
+  this._isPreamble = true
+  this._justMatched = false
+  this._firstWrite = true
+  this._inHeader = true
+  this._part = undefined
+  this._cb = undefined
+  this._ignoreData = false
+  this._partOpts = { highWaterMark: cfg.partHwm }
+  this._pause = false
+
+  const self = this
+  this._hparser = new HeaderParser(cfg)
+  this._hparser.on('header', function (header) {
+    self._inHeader = false
+    self._part.emit('header', header)
+  })
+}
+inherits(Dicer, WritableStream)
+
+Dicer.prototype.emit = function (ev) {
+  if (ev === 'finish' && !this._realFinish) {
+    if (!this._finished) {
+      const self = this
+      process.nextTick(function () {
+        self.emit('error', new Error('Unexpected end of multipart data'))
+        if (self._part && !self._ignoreData) {
+          const type = (self._isPreamble ? 'Preamble' : 'Part')
+          self._part.emit('error', new Error(type + ' terminated early due to unexpected end of multipart data'))
+          self._part.push(null)
+          process.nextTick(function () {
+            self._realFinish = true
+            self.emit('finish')
+            self._realFinish = false
+          })
+          return
+        }
+        self._realFinish = true
+        self.emit('finish')
+        self._realFinish = false
+      })
+    }
+  } else { WritableStream.prototype.emit.apply(this, arguments) }
+}
+
+Dicer.prototype._write = function (data, encoding, cb) {
+  // ignore unexpected data (e.g. extra trailer data after finished)
+  if (!this._hparser && !this._bparser) { return cb() }
+
+  if (this._headerFirst && this._isPreamble) {
+    if (!this._part) {
+      this._part = new PartStream(this._partOpts)
+      if (this.listenerCount('preamble') !== 0) { this.emit('preamble', this._part) } else { this._ignore() }
+    }
+    const r = this._hparser.push(data)
+    if (!this._inHeader && r !== undefined && r < data.length) { data = data.slice(r) } else { return cb() }
+  }
+
+  // allows for "easier" testing
+  if (this._firstWrite) {
+    this._bparser.push(B_CRLF)
+    this._firstWrite = false
+  }
+
+  this._bparser.push(data)
+
+  if (this._pause) { this._cb = cb } else { cb() }
+}
+
+Dicer.prototype.reset = function () {
+  this._part = undefined
+  this._bparser = undefined
+  this._hparser = undefined
+}
+
+Dicer.prototype.setBoundary = function (boundary) {
+  const self = this
+  this._bparser = new StreamSearch('\r\n--' + boundary)
+  this._bparser.on('info', function (isMatch, data, start, end) {
+    self._oninfo(isMatch, data, start, end)
+  })
+}
+
+Dicer.prototype._ignore = function () {
+  if (this._part && !this._ignoreData) {
+    this._ignoreData = true
+    this._part.on('error', EMPTY_FN)
+    // we must perform some kind of read on the stream even though we are
+    // ignoring the data, otherwise node's Readable stream will not emit 'end'
+    // after pushing null to the stream
+    this._part.resume()
+  }
+}
+
+Dicer.prototype._oninfo = function (isMatch, data, start, end) {
+  let buf; const self = this; let i = 0; let r; let shouldWriteMore = true
+
+  if (!this._part && this._justMatched && data) {
+    while (this._dashes < 2 && (start + i) < end) {
+      if (data[start + i] === DASH) {
+        ++i
+        ++this._dashes
+      } else {
+        if (this._dashes) { buf = B_ONEDASH }
+        this._dashes = 0
+        break
+      }
+    }
+    if (this._dashes === 2) {
+      if ((start + i) < end && this.listenerCount('trailer') !== 0) { this.emit('trailer', data.slice(start + i, end)) }
+      this.reset()
+      this._finished = true
+      // no more parts will be added
+      if (self._parts === 0) {
+        self._realFinish = true
+        self.emit('finish')
+        self._realFinish = false
+      }
+    }
+    if (this._dashes) { return }
+  }
+  if (this._justMatched) { this._justMatched = false }
+  if (!this._part) {
+    this._part = new PartStream(this._partOpts)
+    this._part._read = function (n) {
+      self._unpause()
+    }
+    if (this._isPreamble && this.listenerCount('preamble') !== 0) {
+      this.emit('preamble', this._part)
+    } else if (this._isPreamble !== true && this.listenerCount('part') !== 0) {
+      this.emit('part', this._part)
+    } else {
+      this._ignore()
+    }
+    if (!this._isPreamble) { this._inHeader = true }
+  }
+  if (data && start < end && !this._ignoreData) {
+    if (this._isPreamble || !this._inHeader) {
+      if (buf) { shouldWriteMore = this._part.push(buf) }
+      shouldWriteMore = this._part.push(data.slice(start, end))
+      if (!shouldWriteMore) { this._pause = true }
+    } else if (!this._isPreamble && this._inHeader) {
+      if (buf) { this._hparser.push(buf) }
+      r = this._hparser.push(data.slice(start, end))
+      if (!this._inHeader && r !== undefined && r < end) { this._oninfo(false, data, start + r, end) }
+    }
+  }
+  if (isMatch) {
+    this._hparser.reset()
+    if (this._isPreamble) { this._isPreamble = false } else {
+      if (start !== end) {
+        ++this._parts
+        this._part.on('end', function () {
+          if (--self._parts === 0) {
+            if (self._finished) {
+              self._realFinish = true
+              self.emit('finish')
+              self._realFinish = false
+            } else {
+              self._unpause()
+            }
+          }
+        })
+      }
+    }
+    this._part.push(null)
+    this._part = undefined
+    this._ignoreData = false
+    this._justMatched = true
+    this._dashes = 0
+  }
+}
+
+Dicer.prototype._unpause = function () {
+  if (!this._pause) { return }
+
+  this._pause = false
+  if (this._cb) {
+    const cb = this._cb
+    this._cb = undefined
+    cb()
+  }
+}
+
+module.exports = Dicer
+
+
+/***/ }),
+
+/***/ 2032:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const EventEmitter = (__nccwpck_require__(5673).EventEmitter)
+const inherits = (__nccwpck_require__(7261).inherits)
+const getLimit = __nccwpck_require__(1467)
+
+const StreamSearch = __nccwpck_require__(1142)
+
+const B_DCRLF = Buffer.from('\r\n\r\n')
+const RE_CRLF = /\r\n/g
+const RE_HDR = /^([^:]+):[ \t]?([\x00-\xFF]+)?$/ // eslint-disable-line no-control-regex
+
+function HeaderParser (cfg) {
+  EventEmitter.call(this)
+
+  cfg = cfg || {}
+  const self = this
+  this.nread = 0
+  this.maxed = false
+  this.npairs = 0
+  this.maxHeaderPairs = getLimit(cfg, 'maxHeaderPairs', 2000)
+  this.maxHeaderSize = getLimit(cfg, 'maxHeaderSize', 80 * 1024)
+  this.buffer = ''
+  this.header = {}
+  this.finished = false
+  this.ss = new StreamSearch(B_DCRLF)
+  this.ss.on('info', function (isMatch, data, start, end) {
+    if (data && !self.maxed) {
+      if (self.nread + end - start >= self.maxHeaderSize) {
+        end = self.maxHeaderSize - self.nread + start
+        self.nread = self.maxHeaderSize
+        self.maxed = true
+      } else { self.nread += (end - start) }
+
+      self.buffer += data.toString('binary', start, end)
+    }
+    if (isMatch) { self._finish() }
+  })
+}
+inherits(HeaderParser, EventEmitter)
+
+HeaderParser.prototype.push = function (data) {
+  const r = this.ss.push(data)
+  if (this.finished) { return r }
+}
+
+HeaderParser.prototype.reset = function () {
+  this.finished = false
+  this.buffer = ''
+  this.header = {}
+  this.ss.reset()
+}
+
+HeaderParser.prototype._finish = function () {
+  if (this.buffer) { this._parseHeader() }
+  this.ss.matches = this.ss.maxMatches
+  const header = this.header
+  this.header = {}
+  this.buffer = ''
+  this.finished = true
+  this.nread = this.npairs = 0
+  this.maxed = false
+  this.emit('header', header)
+}
+
+HeaderParser.prototype._parseHeader = function () {
+  if (this.npairs === this.maxHeaderPairs) { return }
+
+  const lines = this.buffer.split(RE_CRLF)
+  const len = lines.length
+  let m, h
+
+  for (var i = 0; i < len; ++i) { // eslint-disable-line no-var
+    if (lines[i].length === 0) { continue }
+    if (lines[i][0] === '\t' || lines[i][0] === ' ') {
+      // folded header content
+      // RFC2822 says to just remove the CRLF and not the whitespace following
+      // it, so we follow the RFC and include the leading whitespace ...
+      if (h) {
+        this.header[h][this.header[h].length - 1] += lines[i]
+        continue
+      }
+    }
+
+    const posColon = lines[i].indexOf(':')
+    if (
+      posColon === -1 ||
+      posColon === 0
+    ) {
+      return
+    }
+    m = RE_HDR.exec(lines[i])
+    h = m[1].toLowerCase()
+    this.header[h] = this.header[h] || []
+    this.header[h].push((m[2] || ''))
+    if (++this.npairs === this.maxHeaderPairs) { break }
+  }
+}
+
+module.exports = HeaderParser
+
+
+/***/ }),
+
+/***/ 1620:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const inherits = (__nccwpck_require__(7261).inherits)
+const ReadableStream = (__nccwpck_require__(4492).Readable)
+
+function PartStream (opts) {
+  ReadableStream.call(this, opts)
+}
+inherits(PartStream, ReadableStream)
+
+PartStream.prototype._read = function (n) {}
+
+module.exports = PartStream
+
+
+/***/ }),
+
+/***/ 1142:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+/**
+ * Copyright Brian White. All rights reserved.
+ *
+ * @see https://github.com/mscdex/streamsearch
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ * Based heavily on the Streaming Boyer-Moore-Horspool C++ implementation
+ * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
+ */
+const EventEmitter = (__nccwpck_require__(5673).EventEmitter)
+const inherits = (__nccwpck_require__(7261).inherits)
+
+function SBMH (needle) {
+  if (typeof needle === 'string') {
+    needle = Buffer.from(needle)
+  }
+
+  if (!Buffer.isBuffer(needle)) {
+    throw new TypeError('The needle has to be a String or a Buffer.')
+  }
+
+  const needleLength = needle.length
+
+  if (needleLength === 0) {
+    throw new Error('The needle cannot be an empty String/Buffer.')
+  }
+
+  if (needleLength > 256) {
+    throw new Error('The needle cannot have a length bigger than 256.')
+  }
+
+  this.maxMatches = Infinity
+  this.matches = 0
+
+  this._occ = new Array(256)
+    .fill(needleLength) // Initialize occurrence table.
+  this._lookbehind_size = 0
+  this._needle = needle
+  this._bufpos = 0
+
+  this._lookbehind = Buffer.alloc(needleLength)
+
+  // Populate occurrence table with analysis of the needle,
+  // ignoring last letter.
+  for (var i = 0; i < needleLength - 1; ++i) { // eslint-disable-line no-var
+    this._occ[needle[i]] = needleLength - 1 - i
+  }
+}
+inherits(SBMH, EventEmitter)
+
+SBMH.prototype.reset = function () {
+  this._lookbehind_size = 0
+  this.matches = 0
+  this._bufpos = 0
+}
+
+SBMH.prototype.push = function (chunk, pos) {
+  if (!Buffer.isBuffer(chunk)) {
+    chunk = Buffer.from(chunk, 'binary')
+  }
+  const chlen = chunk.length
+  this._bufpos = pos || 0
+  let r
+  while (r !== chlen && this.matches < this.maxMatches) { r = this._sbmh_feed(chunk) }
+  return r
+}
+
+SBMH.prototype._sbmh_feed = function (data) {
+  const len = data.length
+  const needle = this._needle
+  const needleLength = needle.length
+  const lastNeedleChar = needle[needleLength - 1]
+
+  // Positive: points to a position in `data`
+  //           pos == 3 points to data[3]
+  // Negative: points to a position in the lookbehind buffer
+  //           pos == -2 points to lookbehind[lookbehind_size - 2]
+  let pos = -this._lookbehind_size
+  let ch
+
+  if (pos < 0) {
+    // Lookbehind buffer is not empty. Perform Boyer-Moore-Horspool
+    // search with character lookup code that considers both the
+    // lookbehind buffer and the current round's haystack data.
+    //
+    // Loop until
+    //   there is a match.
+    // or until
+    //   we've moved past the position that requires the
+    //   lookbehind buffer. In this case we switch to the
+    //   optimized loop.
+    // or until
+    //   the character to look at lies outside the haystack.
+    while (pos < 0 && pos <= len - needleLength) {
+      ch = this._sbmh_lookup_char(data, pos + needleLength - 1)
+
+      if (
+        ch === lastNeedleChar &&
+        this._sbmh_memcmp(data, pos, needleLength - 1)
+      ) {
+        this._lookbehind_size = 0
+        ++this.matches
+        this.emit('info', true)
+
+        return (this._bufpos = pos + needleLength)
+      }
+      pos += this._occ[ch]
+    }
+
+    // No match.
+
+    if (pos < 0) {
+      // There's too few data for Boyer-Moore-Horspool to run,
+      // so let's use a different algorithm to skip as much as
+      // we can.
+      // Forward pos until
+      //   the trailing part of lookbehind + data
+      //   looks like the beginning of the needle
+      // or until
+      //   pos == 0
+      while (pos < 0 && !this._sbmh_memcmp(data, pos, len - pos)) { ++pos }
+    }
+
+    if (pos >= 0) {
+      // Discard lookbehind buffer.
+      this.emit('info', false, this._lookbehind, 0, this._lookbehind_size)
+      this._lookbehind_size = 0
+    } else {
+      // Cut off part of the lookbehind buffer that has
+      // been processed and append the entire haystack
+      // into it.
+      const bytesToCutOff = this._lookbehind_size + pos
+      if (bytesToCutOff > 0) {
+        // The cut off data is guaranteed not to contain the needle.
+        this.emit('info', false, this._lookbehind, 0, bytesToCutOff)
+      }
+
+      this._lookbehind.copy(this._lookbehind, 0, bytesToCutOff,
+        this._lookbehind_size - bytesToCutOff)
+      this._lookbehind_size -= bytesToCutOff
+
+      data.copy(this._lookbehind, this._lookbehind_size)
+      this._lookbehind_size += len
+
+      this._bufpos = len
+      return len
+    }
+  }
+
+  pos += (pos >= 0) * this._bufpos
+
+  // Lookbehind buffer is now empty. We only need to check if the
+  // needle is in the haystack.
+  if (data.indexOf(needle, pos) !== -1) {
+    pos = data.indexOf(needle, pos)
+    ++this.matches
+    if (pos > 0) { this.emit('info', true, data, this._bufpos, pos) } else { this.emit('info', true) }
+
+    return (this._bufpos = pos + needleLength)
+  } else {
+    pos = len - needleLength
+  }
+
+  // There was no match. If there's trailing haystack data that we cannot
+  // match yet using the Boyer-Moore-Horspool algorithm (because the trailing
+  // data is less than the needle size) then match using a modified
+  // algorithm that starts matching from the beginning instead of the end.
+  // Whatever trailing data is left after running this algorithm is added to
+  // the lookbehind buffer.
+  while (
+    pos < len &&
+    (
+      data[pos] !== needle[0] ||
+      (
+        (Buffer.compare(
+          data.subarray(pos, pos + len - pos),
+          needle.subarray(0, len - pos)
+        ) !== 0)
+      )
+    )
+  ) {
+    ++pos
+  }
+  if (pos < len) {
+    data.copy(this._lookbehind, 0, pos, pos + (len - pos))
+    this._lookbehind_size = len - pos
+  }
+
+  // Everything until pos is guaranteed not to contain needle data.
+  if (pos > 0) { this.emit('info', false, data, this._bufpos, pos < len ? pos : len) }
+
+  this._bufpos = len
+  return len
+}
+
+SBMH.prototype._sbmh_lookup_char = function (data, pos) {
+  return (pos < 0)
+    ? this._lookbehind[this._lookbehind_size + pos]
+    : data[pos]
+}
+
+SBMH.prototype._sbmh_memcmp = function (data, pos, len) {
+  for (var i = 0; i < len; ++i) { // eslint-disable-line no-var
+    if (this._sbmh_lookup_char(data, pos + i) !== this._needle[i]) { return false }
+  }
+  return true
+}
+
+module.exports = SBMH
+
+
+/***/ }),
+
+/***/ 727:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const WritableStream = (__nccwpck_require__(4492).Writable)
+const { inherits } = __nccwpck_require__(7261)
+const Dicer = __nccwpck_require__(2960)
+
+const MultipartParser = __nccwpck_require__(2183)
+const UrlencodedParser = __nccwpck_require__(8306)
+const parseParams = __nccwpck_require__(1854)
+
+function Busboy (opts) {
+  if (!(this instanceof Busboy)) { return new Busboy(opts) }
+
+  if (typeof opts !== 'object') {
+    throw new TypeError('Busboy expected an options-Object.')
+  }
+  if (typeof opts.headers !== 'object') {
+    throw new TypeError('Busboy expected an options-Object with headers-attribute.')
+  }
+  if (typeof opts.headers['content-type'] !== 'string') {
+    throw new TypeError('Missing Content-Type-header.')
+  }
+
+  const {
+    headers,
+    ...streamOptions
+  } = opts
+
+  this.opts = {
+    autoDestroy: false,
+    ...streamOptions
+  }
+  WritableStream.call(this, this.opts)
+
+  this._done = false
+  this._parser = this.getParserByHeaders(headers)
+  this._finished = false
+}
+inherits(Busboy, WritableStream)
+
+Busboy.prototype.emit = function (ev) {
+  if (ev === 'finish') {
+    if (!this._done) {
+      this._parser?.end()
+      return
+    } else if (this._finished) {
+      return
+    }
+    this._finished = true
+  }
+  WritableStream.prototype.emit.apply(this, arguments)
+}
+
+Busboy.prototype.getParserByHeaders = function (headers) {
+  const parsed = parseParams(headers['content-type'])
+
+  const cfg = {
+    defCharset: this.opts.defCharset,
+    fileHwm: this.opts.fileHwm,
+    headers,
+    highWaterMark: this.opts.highWaterMark,
+    isPartAFile: this.opts.isPartAFile,
+    limits: this.opts.limits,
+    parsedConType: parsed,
+    preservePath: this.opts.preservePath
+  }
+
+  if (MultipartParser.detect.test(parsed[0])) {
+    return new MultipartParser(this, cfg)
+  }
+  if (UrlencodedParser.detect.test(parsed[0])) {
+    return new UrlencodedParser(this, cfg)
+  }
+  throw new Error('Unsupported Content-Type.')
+}
+
+Busboy.prototype._write = function (chunk, encoding, cb) {
+  this._parser.write(chunk, cb)
+}
+
+module.exports = Busboy
+module.exports["default"] = Busboy
+module.exports.Busboy = Busboy
+
+module.exports.Dicer = Dicer
+
+
+/***/ }),
+
+/***/ 2183:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+// TODO:
+//  * support 1 nested multipart level
+//    (see second multipart example here:
+//     http://www.w3.org/TR/html401/interact/forms.html#didx-multipartform-data)
+//  * support limits.fieldNameSize
+//     -- this will require modifications to utils.parseParams
+
+const { Readable } = __nccwpck_require__(4492)
+const { inherits } = __nccwpck_require__(7261)
+
+const Dicer = __nccwpck_require__(2960)
+
+const parseParams = __nccwpck_require__(1854)
+const decodeText = __nccwpck_require__(4619)
+const basename = __nccwpck_require__(8647)
+const getLimit = __nccwpck_require__(1467)
+
+const RE_BOUNDARY = /^boundary$/i
+const RE_FIELD = /^form-data$/i
+const RE_CHARSET = /^charset$/i
+const RE_FILENAME = /^filename$/i
+const RE_NAME = /^name$/i
+
+Multipart.detect = /^multipart\/form-data/i
+function Multipart (boy, cfg) {
+  let i
+  let len
+  const self = this
+  let boundary
+  const limits = cfg.limits
+  const isPartAFile = cfg.isPartAFile || ((fieldName, contentType, fileName) => (contentType === 'application/octet-stream' || fileName !== undefined))
+  const parsedConType = cfg.parsedConType || []
+  const defCharset = cfg.defCharset || 'utf8'
+  const preservePath = cfg.preservePath
+  const fileOpts = { highWaterMark: cfg.fileHwm }
+
+  for (i = 0, len = parsedConType.length; i < len; ++i) {
+    if (Array.isArray(parsedConType[i]) &&
+      RE_BOUNDARY.test(parsedConType[i][0])) {
+      boundary = parsedConType[i][1]
+      break
+    }
+  }
+
+  function checkFinished () {
+    if (nends === 0 && finished && !boy._done) {
+      finished = false
+      self.end()
+    }
+  }
+
+  if (typeof boundary !== 'string') { throw new Error('Multipart: Boundary not found') }
+
+  const fieldSizeLimit = getLimit(limits, 'fieldSize', 1 * 1024 * 1024)
+  const fileSizeLimit = getLimit(limits, 'fileSize', Infinity)
+  const filesLimit = getLimit(limits, 'files', Infinity)
+  const fieldsLimit = getLimit(limits, 'fields', Infinity)
+  const partsLimit = getLimit(limits, 'parts', Infinity)
+  const headerPairsLimit = getLimit(limits, 'headerPairs', 2000)
+  const headerSizeLimit = getLimit(limits, 'headerSize', 80 * 1024)
+
+  let nfiles = 0
+  let nfields = 0
+  let nends = 0
+  let curFile
+  let curField
+  let finished = false
+
+  this._needDrain = false
+  this._pause = false
+  this._cb = undefined
+  this._nparts = 0
+  this._boy = boy
+
+  const parserCfg = {
+    boundary,
+    maxHeaderPairs: headerPairsLimit,
+    maxHeaderSize: headerSizeLimit,
+    partHwm: fileOpts.highWaterMark,
+    highWaterMark: cfg.highWaterMark
+  }
+
+  this.parser = new Dicer(parserCfg)
+  this.parser.on('drain', function () {
+    self._needDrain = false
+    if (self._cb && !self._pause) {
+      const cb = self._cb
+      self._cb = undefined
+      cb()
+    }
+  }).on('part', function onPart (part) {
+    if (++self._nparts > partsLimit) {
+      self.parser.removeListener('part', onPart)
+      self.parser.on('part', skipPart)
+      boy.hitPartsLimit = true
+      boy.emit('partsLimit')
+      return skipPart(part)
+    }
+
+    // hack because streams2 _always_ doesn't emit 'end' until nextTick, so let
+    // us emit 'end' early since we know the part has ended if we are already
+    // seeing the next part
+    if (curField) {
+      const field = curField
+      field.emit('end')
+      field.removeAllListeners('end')
+    }
+
+    part.on('header', function (header) {
+      let contype
+      let fieldname
+      let parsed
+      let charset
+      let encoding
+      let filename
+      let nsize = 0
+
+      if (header['content-type']) {
+        parsed = parseParams(header['content-type'][0])
+        if (parsed[0]) {
+          contype = parsed[0].toLowerCase()
+          for (i = 0, len = parsed.length; i < len; ++i) {
+            if (RE_CHARSET.test(parsed[i][0])) {
+              charset = parsed[i][1].toLowerCase()
+              break
+            }
+          }
+        }
+      }
+
+      if (contype === undefined) { contype = 'text/plain' }
+      if (charset === undefined) { charset = defCharset }
+
+      if (header['content-disposition']) {
+        parsed = parseParams(header['content-disposition'][0])
+        if (!RE_FIELD.test(parsed[0])) { return skipPart(part) }
+        for (i = 0, len = parsed.length; i < len; ++i) {
+          if (RE_NAME.test(parsed[i][0])) {
+            fieldname = parsed[i][1]
+          } else if (RE_FILENAME.test(parsed[i][0])) {
+            filename = parsed[i][1]
+            if (!preservePath) { filename = basename(filename) }
+          }
+        }
+      } else { return skipPart(part) }
+
+      if (header['content-transfer-encoding']) { encoding = header['content-transfer-encoding'][0].toLowerCase() } else { encoding = '7bit' }
+
+      let onData,
+        onEnd
+
+      if (isPartAFile(fieldname, contype, filename)) {
+        // file/binary field
+        if (nfiles === filesLimit) {
+          if (!boy.hitFilesLimit) {
+            boy.hitFilesLimit = true
+            boy.emit('filesLimit')
+          }
+          return skipPart(part)
+        }
+
+        ++nfiles
+
+        if (boy.listenerCount('file') === 0) {
+          self.parser._ignore()
+          return
+        }
+
+        ++nends
+        const file = new FileStream(fileOpts)
+        curFile = file
+        file.on('end', function () {
+          --nends
+          self._pause = false
+          checkFinished()
+          if (self._cb && !self._needDrain) {
+            const cb = self._cb
+            self._cb = undefined
+            cb()
+          }
+        })
+        file._read = function (n) {
+          if (!self._pause) { return }
+          self._pause = false
+          if (self._cb && !self._needDrain) {
+            const cb = self._cb
+            self._cb = undefined
+            cb()
+          }
+        }
+        boy.emit('file', fieldname, file, filename, encoding, contype)
+
+        onData = function (data) {
+          if ((nsize += data.length) > fileSizeLimit) {
+            const extralen = fileSizeLimit - nsize + data.length
+            if (extralen > 0) { file.push(data.slice(0, extralen)) }
+            file.truncated = true
+            file.bytesRead = fileSizeLimit
+            part.removeAllListeners('data')
+            file.emit('limit')
+            return
+          } else if (!file.push(data)) { self._pause = true }
+
+          file.bytesRead = nsize
+        }
+
+        onEnd = function () {
+          curFile = undefined
+          file.push(null)
+        }
+      } else {
+        // non-file field
+        if (nfields === fieldsLimit) {
+          if (!boy.hitFieldsLimit) {
+            boy.hitFieldsLimit = true
+            boy.emit('fieldsLimit')
+          }
+          return skipPart(part)
+        }
+
+        ++nfields
+        ++nends
+        let buffer = ''
+        let truncated = false
+        curField = part
+
+        onData = function (data) {
+          if ((nsize += data.length) > fieldSizeLimit) {
+            const extralen = (fieldSizeLimit - (nsize - data.length))
+            buffer += data.toString('binary', 0, extralen)
+            truncated = true
+            part.removeAllListeners('data')
+          } else { buffer += data.toString('binary') }
+        }
+
+        onEnd = function () {
+          curField = undefined
+          if (buffer.length) { buffer = decodeText(buffer, 'binary', charset) }
+          boy.emit('field', fieldname, buffer, false, truncated, encoding, contype)
+          --nends
+          checkFinished()
+        }
+      }
+
+      /* As of node@2efe4ab761666 (v0.10.29+/v0.11.14+), busboy had become
+         broken. Streams2/streams3 is a huge black box of confusion, but
+         somehow overriding the sync state seems to fix things again (and still
+         seems to work for previous node versions).
+      */
+      part._readableState.sync = false
+
+      part.on('data', onData)
+      part.on('end', onEnd)
+    }).on('error', function (err) {
+      if (curFile) { curFile.emit('error', err) }
+    })
+  }).on('error', function (err) {
+    boy.emit('error', err)
+  }).on('finish', function () {
+    finished = true
+    checkFinished()
+  })
+}
+
+Multipart.prototype.write = function (chunk, cb) {
+  const r = this.parser.write(chunk)
+  if (r && !this._pause) {
+    cb()
+  } else {
+    this._needDrain = !r
+    this._cb = cb
+  }
+}
+
+Multipart.prototype.end = function () {
+  const self = this
+
+  if (self.parser.writable) {
+    self.parser.end()
+  } else if (!self._boy._done) {
+    process.nextTick(function () {
+      self._boy._done = true
+      self._boy.emit('finish')
+    })
+  }
+}
+
+function skipPart (part) {
+  part.resume()
+}
+
+function FileStream (opts) {
+  Readable.call(this, opts)
+
+  this.bytesRead = 0
+
+  this.truncated = false
+}
+
+inherits(FileStream, Readable)
+
+FileStream.prototype._read = function (n) {}
+
+module.exports = Multipart
+
+
+/***/ }),
+
+/***/ 8306:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const Decoder = __nccwpck_require__(7100)
+const decodeText = __nccwpck_require__(4619)
+const getLimit = __nccwpck_require__(1467)
+
+const RE_CHARSET = /^charset$/i
+
+UrlEncoded.detect = /^application\/x-www-form-urlencoded/i
+function UrlEncoded (boy, cfg) {
+  const limits = cfg.limits
+  const parsedConType = cfg.parsedConType
+  this.boy = boy
+
+  this.fieldSizeLimit = getLimit(limits, 'fieldSize', 1 * 1024 * 1024)
+  this.fieldNameSizeLimit = getLimit(limits, 'fieldNameSize', 100)
+  this.fieldsLimit = getLimit(limits, 'fields', Infinity)
+
+  let charset
+  for (var i = 0, len = parsedConType.length; i < len; ++i) { // eslint-disable-line no-var
+    if (Array.isArray(parsedConType[i]) &&
+        RE_CHARSET.test(parsedConType[i][0])) {
+      charset = parsedConType[i][1].toLowerCase()
+      break
+    }
+  }
+
+  if (charset === undefined) { charset = cfg.defCharset || 'utf8' }
+
+  this.decoder = new Decoder()
+  this.charset = charset
+  this._fields = 0
+  this._state = 'key'
+  this._checkingBytes = true
+  this._bytesKey = 0
+  this._bytesVal = 0
+  this._key = ''
+  this._val = ''
+  this._keyTrunc = false
+  this._valTrunc = false
+  this._hitLimit = false
+}
+
+UrlEncoded.prototype.write = function (data, cb) {
+  if (this._fields === this.fieldsLimit) {
+    if (!this.boy.hitFieldsLimit) {
+      this.boy.hitFieldsLimit = true
+      this.boy.emit('fieldsLimit')
+    }
+    return cb()
+  }
+
+  let idxeq; let idxamp; let i; let p = 0; const len = data.length
+
+  while (p < len) {
+    if (this._state === 'key') {
+      idxeq = idxamp = undefined
+      for (i = p; i < len; ++i) {
+        if (!this._checkingBytes) { ++p }
+        if (data[i] === 0x3D/* = */) {
+          idxeq = i
+          break
+        } else if (data[i] === 0x26/* & */) {
+          idxamp = i
+          break
+        }
+        if (this._checkingBytes && this._bytesKey === this.fieldNameSizeLimit) {
+          this._hitLimit = true
+          break
+        } else if (this._checkingBytes) { ++this._bytesKey }
+      }
+
+      if (idxeq !== undefined) {
+        // key with assignment
+        if (idxeq > p) { this._key += this.decoder.write(data.toString('binary', p, idxeq)) }
+        this._state = 'val'
+
+        this._hitLimit = false
+        this._checkingBytes = true
+        this._val = ''
+        this._bytesVal = 0
+        this._valTrunc = false
+        this.decoder.reset()
+
+        p = idxeq + 1
+      } else if (idxamp !== undefined) {
+        // key with no assignment
+        ++this._fields
+        let key; const keyTrunc = this._keyTrunc
+        if (idxamp > p) { key = (this._key += this.decoder.write(data.toString('binary', p, idxamp))) } else { key = this._key }
+
+        this._hitLimit = false
+        this._checkingBytes = true
+        this._key = ''
+        this._bytesKey = 0
+        this._keyTrunc = false
+        this.decoder.reset()
+
+        if (key.length) {
+          this.boy.emit('field', decodeText(key, 'binary', this.charset),
+            '',
+            keyTrunc,
+            false)
+        }
+
+        p = idxamp + 1
+        if (this._fields === this.fieldsLimit) { return cb() }
+      } else if (this._hitLimit) {
+        // we may not have hit the actual limit if there are encoded bytes...
+        if (i > p) { this._key += this.decoder.write(data.toString('binary', p, i)) }
+        p = i
+        if ((this._bytesKey = this._key.length) === this.fieldNameSizeLimit) {
+          // yep, we actually did hit the limit
+          this._checkingBytes = false
+          this._keyTrunc = true
+        }
+      } else {
+        if (p < len) { this._key += this.decoder.write(data.toString('binary', p)) }
+        p = len
+      }
+    } else {
+      idxamp = undefined
+      for (i = p; i < len; ++i) {
+        if (!this._checkingBytes) { ++p }
+        if (data[i] === 0x26/* & */) {
+          idxamp = i
+          break
+        }
+        if (this._checkingBytes && this._bytesVal === this.fieldSizeLimit) {
+          this._hitLimit = true
+          break
+        } else if (this._checkingBytes) { ++this._bytesVal }
+      }
+
+      if (idxamp !== undefined) {
+        ++this._fields
+        if (idxamp > p) { this._val += this.decoder.write(data.toString('binary', p, idxamp)) }
+        this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
+          decodeText(this._val, 'binary', this.charset),
+          this._keyTrunc,
+          this._valTrunc)
+        this._state = 'key'
+
+        this._hitLimit = false
+        this._checkingBytes = true
+        this._key = ''
+        this._bytesKey = 0
+        this._keyTrunc = false
+        this.decoder.reset()
+
+        p = idxamp + 1
+        if (this._fields === this.fieldsLimit) { return cb() }
+      } else if (this._hitLimit) {
+        // we may not have hit the actual limit if there are encoded bytes...
+        if (i > p) { this._val += this.decoder.write(data.toString('binary', p, i)) }
+        p = i
+        if ((this._val === '' && this.fieldSizeLimit === 0) ||
+            (this._bytesVal = this._val.length) === this.fieldSizeLimit) {
+          // yep, we actually did hit the limit
+          this._checkingBytes = false
+          this._valTrunc = true
+        }
+      } else {
+        if (p < len) { this._val += this.decoder.write(data.toString('binary', p)) }
+        p = len
+      }
+    }
+  }
+  cb()
+}
+
+UrlEncoded.prototype.end = function () {
+  if (this.boy._done) { return }
+
+  if (this._state === 'key' && this._key.length > 0) {
+    this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
+      '',
+      this._keyTrunc,
+      false)
+  } else if (this._state === 'val') {
+    this.boy.emit('field', decodeText(this._key, 'binary', this.charset),
+      decodeText(this._val, 'binary', this.charset),
+      this._keyTrunc,
+      this._valTrunc)
+  }
+  this.boy._done = true
+  this.boy.emit('finish')
+}
+
+module.exports = UrlEncoded
+
+
+/***/ }),
+
+/***/ 7100:
+/***/ ((module) => {
+
+"use strict";
+
+
+const RE_PLUS = /\+/g
+
+const HEX = [
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+]
+
+function Decoder () {
+  this.buffer = undefined
+}
+Decoder.prototype.write = function (str) {
+  // Replace '+' with ' ' before decoding
+  str = str.replace(RE_PLUS, ' ')
+  let res = ''
+  let i = 0; let p = 0; const len = str.length
+  for (; i < len; ++i) {
+    if (this.buffer !== undefined) {
+      if (!HEX[str.charCodeAt(i)]) {
+        res += '%' + this.buffer
+        this.buffer = undefined
+        --i // retry character
+      } else {
+        this.buffer += str[i]
+        ++p
+        if (this.buffer.length === 2) {
+          res += String.fromCharCode(parseInt(this.buffer, 16))
+          this.buffer = undefined
+        }
+      }
+    } else if (str[i] === '%') {
+      if (i > p) {
+        res += str.substring(p, i)
+        p = i
+      }
+      this.buffer = ''
+      ++p
+    }
+  }
+  if (p < len && this.buffer === undefined) { res += str.substring(p) }
+  return res
+}
+Decoder.prototype.reset = function () {
+  this.buffer = undefined
+}
+
+module.exports = Decoder
+
+
+/***/ }),
+
+/***/ 8647:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function basename (path) {
+  if (typeof path !== 'string') { return '' }
+  for (var i = path.length - 1; i >= 0; --i) { // eslint-disable-line no-var
+    switch (path.charCodeAt(i)) {
+      case 0x2F: // '/'
+      case 0x5C: // '\'
+        path = path.slice(i + 1)
+        return (path === '..' || path === '.' ? '' : path)
+    }
+  }
+  return (path === '..' || path === '.' ? '' : path)
+}
+
+
+/***/ }),
+
+/***/ 4619:
+/***/ (function(module) {
+
+"use strict";
+
+
+// Node has always utf-8
+const utf8Decoder = new TextDecoder('utf-8')
+const textDecoders = new Map([
+  ['utf-8', utf8Decoder],
+  ['utf8', utf8Decoder]
+])
+
+function getDecoder (charset) {
+  let lc
+  while (true) {
+    switch (charset) {
+      case 'utf-8':
+      case 'utf8':
+        return decoders.utf8
+      case 'latin1':
+      case 'ascii': // TODO: Make these a separate, strict decoder?
+      case 'us-ascii':
+      case 'iso-8859-1':
+      case 'iso8859-1':
+      case 'iso88591':
+      case 'iso_8859-1':
+      case 'windows-1252':
+      case 'iso_8859-1:1987':
+      case 'cp1252':
+      case 'x-cp1252':
+        return decoders.latin1
+      case 'utf16le':
+      case 'utf-16le':
+      case 'ucs2':
+      case 'ucs-2':
+        return decoders.utf16le
+      case 'base64':
+        return decoders.base64
+      default:
+        if (lc === undefined) {
+          lc = true
+          charset = charset.toLowerCase()
+          continue
+        }
+        return decoders.other.bind(charset)
+    }
+  }
+}
+
+const decoders = {
+  utf8: (data, sourceEncoding) => {
+    if (data.length === 0) {
+      return ''
+    }
+    if (typeof data === 'string') {
+      data = Buffer.from(data, sourceEncoding)
+    }
+    return data.utf8Slice(0, data.length)
+  },
+
+  latin1: (data, sourceEncoding) => {
+    if (data.length === 0) {
+      return ''
+    }
+    if (typeof data === 'string') {
+      return data
+    }
+    return data.latin1Slice(0, data.length)
+  },
+
+  utf16le: (data, sourceEncoding) => {
+    if (data.length === 0) {
+      return ''
+    }
+    if (typeof data === 'string') {
+      data = Buffer.from(data, sourceEncoding)
+    }
+    return data.ucs2Slice(0, data.length)
+  },
+
+  base64: (data, sourceEncoding) => {
+    if (data.length === 0) {
+      return ''
+    }
+    if (typeof data === 'string') {
+      data = Buffer.from(data, sourceEncoding)
+    }
+    return data.base64Slice(0, data.length)
+  },
+
+  other: (data, sourceEncoding) => {
+    if (data.length === 0) {
+      return ''
+    }
+    if (typeof data === 'string') {
+      data = Buffer.from(data, sourceEncoding)
+    }
+
+    if (textDecoders.has(this.toString())) {
+      try {
+        return textDecoders.get(this).decode(data)
+      } catch {}
+    }
+    return typeof data === 'string'
+      ? data
+      : data.toString()
+  }
+}
+
+function decodeText (text, sourceEncoding, destEncoding) {
+  if (text) {
+    return getDecoder(destEncoding)(text, sourceEncoding)
+  }
+  return text
+}
+
+module.exports = decodeText
+
+
+/***/ }),
+
+/***/ 1467:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function getLimit (limits, name, defaultLimit) {
+  if (
+    !limits ||
+    limits[name] === undefined ||
+    limits[name] === null
+  ) { return defaultLimit }
+
+  if (
+    typeof limits[name] !== 'number' ||
+    isNaN(limits[name])
+  ) { throw new TypeError('Limit ' + name + ' is not a valid number') }
+
+  return limits[name]
+}
+
+
+/***/ }),
+
+/***/ 1854:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+/* eslint-disable object-property-newline */
+
+
+const decodeText = __nccwpck_require__(4619)
+
+const RE_ENCODED = /%[a-fA-F0-9][a-fA-F0-9]/g
+
+const EncodedLookup = {
+  '%00': '\x00', '%01': '\x01', '%02': '\x02', '%03': '\x03', '%04': '\x04',
+  '%05': '\x05', '%06': '\x06', '%07': '\x07', '%08': '\x08', '%09': '\x09',
+  '%0a': '\x0a', '%0A': '\x0a', '%0b': '\x0b', '%0B': '\x0b', '%0c': '\x0c',
+  '%0C': '\x0c', '%0d': '\x0d', '%0D': '\x0d', '%0e': '\x0e', '%0E': '\x0e',
+  '%0f': '\x0f', '%0F': '\x0f', '%10': '\x10', '%11': '\x11', '%12': '\x12',
+  '%13': '\x13', '%14': '\x14', '%15': '\x15', '%16': '\x16', '%17': '\x17',
+  '%18': '\x18', '%19': '\x19', '%1a': '\x1a', '%1A': '\x1a', '%1b': '\x1b',
+  '%1B': '\x1b', '%1c': '\x1c', '%1C': '\x1c', '%1d': '\x1d', '%1D': '\x1d',
+  '%1e': '\x1e', '%1E': '\x1e', '%1f': '\x1f', '%1F': '\x1f', '%20': '\x20',
+  '%21': '\x21', '%22': '\x22', '%23': '\x23', '%24': '\x24', '%25': '\x25',
+  '%26': '\x26', '%27': '\x27', '%28': '\x28', '%29': '\x29', '%2a': '\x2a',
+  '%2A': '\x2a', '%2b': '\x2b', '%2B': '\x2b', '%2c': '\x2c', '%2C': '\x2c',
+  '%2d': '\x2d', '%2D': '\x2d', '%2e': '\x2e', '%2E': '\x2e', '%2f': '\x2f',
+  '%2F': '\x2f', '%30': '\x30', '%31': '\x31', '%32': '\x32', '%33': '\x33',
+  '%34': '\x34', '%35': '\x35', '%36': '\x36', '%37': '\x37', '%38': '\x38',
+  '%39': '\x39', '%3a': '\x3a', '%3A': '\x3a', '%3b': '\x3b', '%3B': '\x3b',
+  '%3c': '\x3c', '%3C': '\x3c', '%3d': '\x3d', '%3D': '\x3d', '%3e': '\x3e',
+  '%3E': '\x3e', '%3f': '\x3f', '%3F': '\x3f', '%40': '\x40', '%41': '\x41',
+  '%42': '\x42', '%43': '\x43', '%44': '\x44', '%45': '\x45', '%46': '\x46',
+  '%47': '\x47', '%48': '\x48', '%49': '\x49', '%4a': '\x4a', '%4A': '\x4a',
+  '%4b': '\x4b', '%4B': '\x4b', '%4c': '\x4c', '%4C': '\x4c', '%4d': '\x4d',
+  '%4D': '\x4d', '%4e': '\x4e', '%4E': '\x4e', '%4f': '\x4f', '%4F': '\x4f',
+  '%50': '\x50', '%51': '\x51', '%52': '\x52', '%53': '\x53', '%54': '\x54',
+  '%55': '\x55', '%56': '\x56', '%57': '\x57', '%58': '\x58', '%59': '\x59',
+  '%5a': '\x5a', '%5A': '\x5a', '%5b': '\x5b', '%5B': '\x5b', '%5c': '\x5c',
+  '%5C': '\x5c', '%5d': '\x5d', '%5D': '\x5d', '%5e': '\x5e', '%5E': '\x5e',
+  '%5f': '\x5f', '%5F': '\x5f', '%60': '\x60', '%61': '\x61', '%62': '\x62',
+  '%63': '\x63', '%64': '\x64', '%65': '\x65', '%66': '\x66', '%67': '\x67',
+  '%68': '\x68', '%69': '\x69', '%6a': '\x6a', '%6A': '\x6a', '%6b': '\x6b',
+  '%6B': '\x6b', '%6c': '\x6c', '%6C': '\x6c', '%6d': '\x6d', '%6D': '\x6d',
+  '%6e': '\x6e', '%6E': '\x6e', '%6f': '\x6f', '%6F': '\x6f', '%70': '\x70',
+  '%71': '\x71', '%72': '\x72', '%73': '\x73', '%74': '\x74', '%75': '\x75',
+  '%76': '\x76', '%77': '\x77', '%78': '\x78', '%79': '\x79', '%7a': '\x7a',
+  '%7A': '\x7a', '%7b': '\x7b', '%7B': '\x7b', '%7c': '\x7c', '%7C': '\x7c',
+  '%7d': '\x7d', '%7D': '\x7d', '%7e': '\x7e', '%7E': '\x7e', '%7f': '\x7f',
+  '%7F': '\x7f', '%80': '\x80', '%81': '\x81', '%82': '\x82', '%83': '\x83',
+  '%84': '\x84', '%85': '\x85', '%86': '\x86', '%87': '\x87', '%88': '\x88',
+  '%89': '\x89', '%8a': '\x8a', '%8A': '\x8a', '%8b': '\x8b', '%8B': '\x8b',
+  '%8c': '\x8c', '%8C': '\x8c', '%8d': '\x8d', '%8D': '\x8d', '%8e': '\x8e',
+  '%8E': '\x8e', '%8f': '\x8f', '%8F': '\x8f', '%90': '\x90', '%91': '\x91',
+  '%92': '\x92', '%93': '\x93', '%94': '\x94', '%95': '\x95', '%96': '\x96',
+  '%97': '\x97', '%98': '\x98', '%99': '\x99', '%9a': '\x9a', '%9A': '\x9a',
+  '%9b': '\x9b', '%9B': '\x9b', '%9c': '\x9c', '%9C': '\x9c', '%9d': '\x9d',
+  '%9D': '\x9d', '%9e': '\x9e', '%9E': '\x9e', '%9f': '\x9f', '%9F': '\x9f',
+  '%a0': '\xa0', '%A0': '\xa0', '%a1': '\xa1', '%A1': '\xa1', '%a2': '\xa2',
+  '%A2': '\xa2', '%a3': '\xa3', '%A3': '\xa3', '%a4': '\xa4', '%A4': '\xa4',
+  '%a5': '\xa5', '%A5': '\xa5', '%a6': '\xa6', '%A6': '\xa6', '%a7': '\xa7',
+  '%A7': '\xa7', '%a8': '\xa8', '%A8': '\xa8', '%a9': '\xa9', '%A9': '\xa9',
+  '%aa': '\xaa', '%Aa': '\xaa', '%aA': '\xaa', '%AA': '\xaa', '%ab': '\xab',
+  '%Ab': '\xab', '%aB': '\xab', '%AB': '\xab', '%ac': '\xac', '%Ac': '\xac',
+  '%aC': '\xac', '%AC': '\xac', '%ad': '\xad', '%Ad': '\xad', '%aD': '\xad',
+  '%AD': '\xad', '%ae': '\xae', '%Ae': '\xae', '%aE': '\xae', '%AE': '\xae',
+  '%af': '\xaf', '%Af': '\xaf', '%aF': '\xaf', '%AF': '\xaf', '%b0': '\xb0',
+  '%B0': '\xb0', '%b1': '\xb1', '%B1': '\xb1', '%b2': '\xb2', '%B2': '\xb2',
+  '%b3': '\xb3', '%B3': '\xb3', '%b4': '\xb4', '%B4': '\xb4', '%b5': '\xb5',
+  '%B5': '\xb5', '%b6': '\xb6', '%B6': '\xb6', '%b7': '\xb7', '%B7': '\xb7',
+  '%b8': '\xb8', '%B8': '\xb8', '%b9': '\xb9', '%B9': '\xb9', '%ba': '\xba',
+  '%Ba': '\xba', '%bA': '\xba', '%BA': '\xba', '%bb': '\xbb', '%Bb': '\xbb',
+  '%bB': '\xbb', '%BB': '\xbb', '%bc': '\xbc', '%Bc': '\xbc', '%bC': '\xbc',
+  '%BC': '\xbc', '%bd': '\xbd', '%Bd': '\xbd', '%bD': '\xbd', '%BD': '\xbd',
+  '%be': '\xbe', '%Be': '\xbe', '%bE': '\xbe', '%BE': '\xbe', '%bf': '\xbf',
+  '%Bf': '\xbf', '%bF': '\xbf', '%BF': '\xbf', '%c0': '\xc0', '%C0': '\xc0',
+  '%c1': '\xc1', '%C1': '\xc1', '%c2': '\xc2', '%C2': '\xc2', '%c3': '\xc3',
+  '%C3': '\xc3', '%c4': '\xc4', '%C4': '\xc4', '%c5': '\xc5', '%C5': '\xc5',
+  '%c6': '\xc6', '%C6': '\xc6', '%c7': '\xc7', '%C7': '\xc7', '%c8': '\xc8',
+  '%C8': '\xc8', '%c9': '\xc9', '%C9': '\xc9', '%ca': '\xca', '%Ca': '\xca',
+  '%cA': '\xca', '%CA': '\xca', '%cb': '\xcb', '%Cb': '\xcb', '%cB': '\xcb',
+  '%CB': '\xcb', '%cc': '\xcc', '%Cc': '\xcc', '%cC': '\xcc', '%CC': '\xcc',
+  '%cd': '\xcd', '%Cd': '\xcd', '%cD': '\xcd', '%CD': '\xcd', '%ce': '\xce',
+  '%Ce': '\xce', '%cE': '\xce', '%CE': '\xce', '%cf': '\xcf', '%Cf': '\xcf',
+  '%cF': '\xcf', '%CF': '\xcf', '%d0': '\xd0', '%D0': '\xd0', '%d1': '\xd1',
+  '%D1': '\xd1', '%d2': '\xd2', '%D2': '\xd2', '%d3': '\xd3', '%D3': '\xd3',
+  '%d4': '\xd4', '%D4': '\xd4', '%d5': '\xd5', '%D5': '\xd5', '%d6': '\xd6',
+  '%D6': '\xd6', '%d7': '\xd7', '%D7': '\xd7', '%d8': '\xd8', '%D8': '\xd8',
+  '%d9': '\xd9', '%D9': '\xd9', '%da': '\xda', '%Da': '\xda', '%dA': '\xda',
+  '%DA': '\xda', '%db': '\xdb', '%Db': '\xdb', '%dB': '\xdb', '%DB': '\xdb',
+  '%dc': '\xdc', '%Dc': '\xdc', '%dC': '\xdc', '%DC': '\xdc', '%dd': '\xdd',
+  '%Dd': '\xdd', '%dD': '\xdd', '%DD': '\xdd', '%de': '\xde', '%De': '\xde',
+  '%dE': '\xde', '%DE': '\xde', '%df': '\xdf', '%Df': '\xdf', '%dF': '\xdf',
+  '%DF': '\xdf', '%e0': '\xe0', '%E0': '\xe0', '%e1': '\xe1', '%E1': '\xe1',
+  '%e2': '\xe2', '%E2': '\xe2', '%e3': '\xe3', '%E3': '\xe3', '%e4': '\xe4',
+  '%E4': '\xe4', '%e5': '\xe5', '%E5': '\xe5', '%e6': '\xe6', '%E6': '\xe6',
+  '%e7': '\xe7', '%E7': '\xe7', '%e8': '\xe8', '%E8': '\xe8', '%e9': '\xe9',
+  '%E9': '\xe9', '%ea': '\xea', '%Ea': '\xea', '%eA': '\xea', '%EA': '\xea',
+  '%eb': '\xeb', '%Eb': '\xeb', '%eB': '\xeb', '%EB': '\xeb', '%ec': '\xec',
+  '%Ec': '\xec', '%eC': '\xec', '%EC': '\xec', '%ed': '\xed', '%Ed': '\xed',
+  '%eD': '\xed', '%ED': '\xed', '%ee': '\xee', '%Ee': '\xee', '%eE': '\xee',
+  '%EE': '\xee', '%ef': '\xef', '%Ef': '\xef', '%eF': '\xef', '%EF': '\xef',
+  '%f0': '\xf0', '%F0': '\xf0', '%f1': '\xf1', '%F1': '\xf1', '%f2': '\xf2',
+  '%F2': '\xf2', '%f3': '\xf3', '%F3': '\xf3', '%f4': '\xf4', '%F4': '\xf4',
+  '%f5': '\xf5', '%F5': '\xf5', '%f6': '\xf6', '%F6': '\xf6', '%f7': '\xf7',
+  '%F7': '\xf7', '%f8': '\xf8', '%F8': '\xf8', '%f9': '\xf9', '%F9': '\xf9',
+  '%fa': '\xfa', '%Fa': '\xfa', '%fA': '\xfa', '%FA': '\xfa', '%fb': '\xfb',
+  '%Fb': '\xfb', '%fB': '\xfb', '%FB': '\xfb', '%fc': '\xfc', '%Fc': '\xfc',
+  '%fC': '\xfc', '%FC': '\xfc', '%fd': '\xfd', '%Fd': '\xfd', '%fD': '\xfd',
+  '%FD': '\xfd', '%fe': '\xfe', '%Fe': '\xfe', '%fE': '\xfe', '%FE': '\xfe',
+  '%ff': '\xff', '%Ff': '\xff', '%fF': '\xff', '%FF': '\xff'
+}
+
+function encodedReplacer (match) {
+  return EncodedLookup[match]
+}
+
+const STATE_KEY = 0
+const STATE_VALUE = 1
+const STATE_CHARSET = 2
+const STATE_LANG = 3
+
+function parseParams (str) {
+  const res = []
+  let state = STATE_KEY
+  let charset = ''
+  let inquote = false
+  let escaping = false
+  let p = 0
+  let tmp = ''
+  const len = str.length
+
+  for (var i = 0; i < len; ++i) { // eslint-disable-line no-var
+    const char = str[i]
+    if (char === '\\' && inquote) {
+      if (escaping) { escaping = false } else {
+        escaping = true
+        continue
+      }
+    } else if (char === '"') {
+      if (!escaping) {
+        if (inquote) {
+          inquote = false
+          state = STATE_KEY
+        } else { inquote = true }
+        continue
+      } else { escaping = false }
+    } else {
+      if (escaping && inquote) { tmp += '\\' }
+      escaping = false
+      if ((state === STATE_CHARSET || state === STATE_LANG) && char === "'") {
+        if (state === STATE_CHARSET) {
+          state = STATE_LANG
+          charset = tmp.substring(1)
+        } else { state = STATE_VALUE }
+        tmp = ''
+        continue
+      } else if (state === STATE_KEY &&
+        (char === '*' || char === '=') &&
+        res.length) {
+        state = char === '*'
+          ? STATE_CHARSET
+          : STATE_VALUE
+        res[p] = [tmp, undefined]
+        tmp = ''
+        continue
+      } else if (!inquote && char === ';') {
+        state = STATE_KEY
+        if (charset) {
+          if (tmp.length) {
+            tmp = decodeText(tmp.replace(RE_ENCODED, encodedReplacer),
+              'binary',
+              charset)
+          }
+          charset = ''
+        } else if (tmp.length) {
+          tmp = decodeText(tmp, 'binary', 'utf8')
+        }
+        if (res[p] === undefined) { res[p] = tmp } else { res[p][1] = tmp }
+        tmp = ''
+        ++p
+        continue
+      } else if (!inquote && (char === ' ' || char === '\t')) { continue }
+    }
+    tmp += char
+  }
+  if (charset && tmp.length) {
+    tmp = decodeText(tmp.replace(RE_ENCODED, encodedReplacer),
+      'binary',
+      charset)
+  } else if (tmp) {
+    tmp = decodeText(tmp, 'binary', 'utf8')
+  }
+
+  if (res[p] === undefined) {
+    if (tmp) { res[p] = tmp }
+  } else { res[p][1] = tmp }
+
+  return res
+}
+
+module.exports = parseParams
+
+
+/***/ }),
+
 /***/ 677:
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.515.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn test:unit","test:e2e":"yarn test:e2e:node && yarn test:e2e:browser","test:e2e:browser":"ts-mocha test/**/*.browser.ispec.ts && karma start karma.conf.js","test:e2e:node":"jest --c jest.config.e2e.js","test:unit":"ts-mocha test/unit/**/*.spec.ts"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"3.0.0","@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.515.0","@aws-sdk/core":"3.513.0","@aws-sdk/credential-provider-node":"3.515.0","@aws-sdk/middleware-bucket-endpoint":"3.515.0","@aws-sdk/middleware-expect-continue":"3.515.0","@aws-sdk/middleware-flexible-checksums":"3.515.0","@aws-sdk/middleware-host-header":"3.515.0","@aws-sdk/middleware-location-constraint":"3.515.0","@aws-sdk/middleware-logger":"3.515.0","@aws-sdk/middleware-recursion-detection":"3.515.0","@aws-sdk/middleware-sdk-s3":"3.515.0","@aws-sdk/middleware-signing":"3.515.0","@aws-sdk/middleware-ssec":"3.515.0","@aws-sdk/middleware-user-agent":"3.515.0","@aws-sdk/region-config-resolver":"3.515.0","@aws-sdk/signature-v4-multi-region":"3.515.0","@aws-sdk/types":"3.515.0","@aws-sdk/util-endpoints":"3.515.0","@aws-sdk/util-user-agent-browser":"3.515.0","@aws-sdk/util-user-agent-node":"3.515.0","@aws-sdk/xml-builder":"3.496.0","@smithy/config-resolver":"^2.1.1","@smithy/core":"^1.3.2","@smithy/eventstream-serde-browser":"^2.1.1","@smithy/eventstream-serde-config-resolver":"^2.1.1","@smithy/eventstream-serde-node":"^2.1.1","@smithy/fetch-http-handler":"^2.4.1","@smithy/hash-blob-browser":"^2.1.1","@smithy/hash-node":"^2.1.1","@smithy/hash-stream-node":"^2.1.1","@smithy/invalid-dependency":"^2.1.1","@smithy/md5-js":"^2.1.1","@smithy/middleware-content-length":"^2.1.1","@smithy/middleware-endpoint":"^2.4.1","@smithy/middleware-retry":"^2.1.1","@smithy/middleware-serde":"^2.1.1","@smithy/middleware-stack":"^2.1.1","@smithy/node-config-provider":"^2.2.1","@smithy/node-http-handler":"^2.3.1","@smithy/protocol-http":"^3.1.1","@smithy/smithy-client":"^2.3.1","@smithy/types":"^2.9.1","@smithy/url-parser":"^2.1.1","@smithy/util-base64":"^2.1.1","@smithy/util-body-length-browser":"^2.1.1","@smithy/util-body-length-node":"^2.2.1","@smithy/util-defaults-mode-browser":"^2.1.1","@smithy/util-defaults-mode-node":"^2.2.0","@smithy/util-endpoints":"^1.1.1","@smithy/util-retry":"^2.1.1","@smithy/util-stream":"^2.1.1","@smithy/util-utf8":"^2.1.1","@smithy/util-waiter":"^2.1.1","fast-xml-parser":"4.2.5","tslib":"^2.5.0"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.515.0","@smithy/service-client-documentation-generator":"^2.1.1","@tsconfig/node14":"1.0.3","@types/chai":"^4.2.11","@types/mocha":"^8.0.4","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.550.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn test:unit","test:e2e":"yarn test:e2e:node && yarn test:e2e:browser","test:e2e:browser":"ts-mocha test/**/*.browser.ispec.ts && karma start karma.conf.js","test:e2e:node":"jest --c jest.config.e2e.js","test:unit":"ts-mocha test/unit/**/*.spec.ts"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"3.0.0","@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.549.0","@aws-sdk/core":"3.549.0","@aws-sdk/credential-provider-node":"3.549.0","@aws-sdk/middleware-bucket-endpoint":"3.535.0","@aws-sdk/middleware-expect-continue":"3.535.0","@aws-sdk/middleware-flexible-checksums":"3.535.0","@aws-sdk/middleware-host-header":"3.535.0","@aws-sdk/middleware-location-constraint":"3.535.0","@aws-sdk/middleware-logger":"3.535.0","@aws-sdk/middleware-recursion-detection":"3.535.0","@aws-sdk/middleware-sdk-s3":"3.535.0","@aws-sdk/middleware-signing":"3.535.0","@aws-sdk/middleware-ssec":"3.537.0","@aws-sdk/middleware-user-agent":"3.540.0","@aws-sdk/region-config-resolver":"3.535.0","@aws-sdk/signature-v4-multi-region":"3.535.0","@aws-sdk/types":"3.535.0","@aws-sdk/util-endpoints":"3.540.0","@aws-sdk/util-user-agent-browser":"3.535.0","@aws-sdk/util-user-agent-node":"3.535.0","@aws-sdk/xml-builder":"3.535.0","@smithy/config-resolver":"^2.2.0","@smithy/core":"^1.4.1","@smithy/eventstream-serde-browser":"^2.2.0","@smithy/eventstream-serde-config-resolver":"^2.2.0","@smithy/eventstream-serde-node":"^2.2.0","@smithy/fetch-http-handler":"^2.5.0","@smithy/hash-blob-browser":"^2.2.0","@smithy/hash-node":"^2.2.0","@smithy/hash-stream-node":"^2.2.0","@smithy/invalid-dependency":"^2.2.0","@smithy/md5-js":"^2.2.0","@smithy/middleware-content-length":"^2.2.0","@smithy/middleware-endpoint":"^2.5.0","@smithy/middleware-retry":"^2.3.0","@smithy/middleware-serde":"^2.3.0","@smithy/middleware-stack":"^2.2.0","@smithy/node-config-provider":"^2.3.0","@smithy/node-http-handler":"^2.5.0","@smithy/protocol-http":"^3.3.0","@smithy/smithy-client":"^2.5.0","@smithy/types":"^2.12.0","@smithy/url-parser":"^2.2.0","@smithy/util-base64":"^2.3.0","@smithy/util-body-length-browser":"^2.2.0","@smithy/util-body-length-node":"^2.3.0","@smithy/util-defaults-mode-browser":"^2.2.0","@smithy/util-defaults-mode-node":"^2.3.0","@smithy/util-endpoints":"^1.2.0","@smithy/util-retry":"^2.2.0","@smithy/util-stream":"^2.2.0","@smithy/util-utf8":"^2.3.0","@smithy/util-waiter":"^2.2.0","tslib":"^2.6.2"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.535.0","@smithy/service-client-documentation-generator":"^2.2.0","@tsconfig/node14":"1.0.3","@types/chai":"^4.2.11","@types/mocha":"^8.0.4","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
 
 /***/ }),
 
@@ -62597,7 +64633,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"AWS SDK for JavaScript Sso Oidc Client for Node.js, Browser and React Native","version":"3.515.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sso-oidc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso-oidc"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.515.0","@aws-sdk/core":"3.513.0","@aws-sdk/middleware-host-header":"3.515.0","@aws-sdk/middleware-logger":"3.515.0","@aws-sdk/middleware-recursion-detection":"3.515.0","@aws-sdk/middleware-user-agent":"3.515.0","@aws-sdk/region-config-resolver":"3.515.0","@aws-sdk/types":"3.515.0","@aws-sdk/util-endpoints":"3.515.0","@aws-sdk/util-user-agent-browser":"3.515.0","@aws-sdk/util-user-agent-node":"3.515.0","@smithy/config-resolver":"^2.1.1","@smithy/core":"^1.3.2","@smithy/fetch-http-handler":"^2.4.1","@smithy/hash-node":"^2.1.1","@smithy/invalid-dependency":"^2.1.1","@smithy/middleware-content-length":"^2.1.1","@smithy/middleware-endpoint":"^2.4.1","@smithy/middleware-retry":"^2.1.1","@smithy/middleware-serde":"^2.1.1","@smithy/middleware-stack":"^2.1.1","@smithy/node-config-provider":"^2.2.1","@smithy/node-http-handler":"^2.3.1","@smithy/protocol-http":"^3.1.1","@smithy/smithy-client":"^2.3.1","@smithy/types":"^2.9.1","@smithy/url-parser":"^2.1.1","@smithy/util-base64":"^2.1.1","@smithy/util-body-length-browser":"^2.1.1","@smithy/util-body-length-node":"^2.2.1","@smithy/util-defaults-mode-browser":"^2.1.1","@smithy/util-defaults-mode-node":"^2.2.0","@smithy/util-endpoints":"^1.1.1","@smithy/util-middleware":"^2.1.1","@smithy/util-retry":"^2.1.1","@smithy/util-utf8":"^2.1.1","tslib":"^2.5.0"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.1.1","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","peerDependencies":{"@aws-sdk/credential-provider-node":"^3.515.0"},"browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso-oidc","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso-oidc"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"AWS SDK for JavaScript Sso Oidc Client for Node.js, Browser and React Native","version":"3.549.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sso-oidc","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso-oidc"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/client-sts":"3.549.0","@aws-sdk/core":"3.549.0","@aws-sdk/middleware-host-header":"3.535.0","@aws-sdk/middleware-logger":"3.535.0","@aws-sdk/middleware-recursion-detection":"3.535.0","@aws-sdk/middleware-user-agent":"3.540.0","@aws-sdk/region-config-resolver":"3.535.0","@aws-sdk/types":"3.535.0","@aws-sdk/util-endpoints":"3.540.0","@aws-sdk/util-user-agent-browser":"3.535.0","@aws-sdk/util-user-agent-node":"3.535.0","@smithy/config-resolver":"^2.2.0","@smithy/core":"^1.4.1","@smithy/fetch-http-handler":"^2.5.0","@smithy/hash-node":"^2.2.0","@smithy/invalid-dependency":"^2.2.0","@smithy/middleware-content-length":"^2.2.0","@smithy/middleware-endpoint":"^2.5.0","@smithy/middleware-retry":"^2.3.0","@smithy/middleware-serde":"^2.3.0","@smithy/middleware-stack":"^2.2.0","@smithy/node-config-provider":"^2.3.0","@smithy/node-http-handler":"^2.5.0","@smithy/protocol-http":"^3.3.0","@smithy/smithy-client":"^2.5.0","@smithy/types":"^2.12.0","@smithy/url-parser":"^2.2.0","@smithy/util-base64":"^2.3.0","@smithy/util-body-length-browser":"^2.2.0","@smithy/util-body-length-node":"^2.3.0","@smithy/util-defaults-mode-browser":"^2.2.0","@smithy/util-defaults-mode-node":"^2.3.0","@smithy/util-endpoints":"^1.2.0","@smithy/util-middleware":"^2.2.0","@smithy/util-retry":"^2.2.0","@smithy/util-utf8":"^2.3.0","tslib":"^2.6.2"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.2.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","peerDependencies":{"@aws-sdk/credential-provider-node":"^3.549.0"},"browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso-oidc","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso-oidc"}}');
 
 /***/ }),
 
@@ -62605,7 +64641,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-sso-oidc","description":"A
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SDK for JavaScript Sso Client for Node.js, Browser and React Native","version":"3.515.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sso","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/core":"3.513.0","@aws-sdk/middleware-host-header":"3.515.0","@aws-sdk/middleware-logger":"3.515.0","@aws-sdk/middleware-recursion-detection":"3.515.0","@aws-sdk/middleware-user-agent":"3.515.0","@aws-sdk/region-config-resolver":"3.515.0","@aws-sdk/types":"3.515.0","@aws-sdk/util-endpoints":"3.515.0","@aws-sdk/util-user-agent-browser":"3.515.0","@aws-sdk/util-user-agent-node":"3.515.0","@smithy/config-resolver":"^2.1.1","@smithy/core":"^1.3.2","@smithy/fetch-http-handler":"^2.4.1","@smithy/hash-node":"^2.1.1","@smithy/invalid-dependency":"^2.1.1","@smithy/middleware-content-length":"^2.1.1","@smithy/middleware-endpoint":"^2.4.1","@smithy/middleware-retry":"^2.1.1","@smithy/middleware-serde":"^2.1.1","@smithy/middleware-stack":"^2.1.1","@smithy/node-config-provider":"^2.2.1","@smithy/node-http-handler":"^2.3.1","@smithy/protocol-http":"^3.1.1","@smithy/smithy-client":"^2.3.1","@smithy/types":"^2.9.1","@smithy/url-parser":"^2.1.1","@smithy/util-base64":"^2.1.1","@smithy/util-body-length-browser":"^2.1.1","@smithy/util-body-length-node":"^2.2.1","@smithy/util-defaults-mode-browser":"^2.1.1","@smithy/util-defaults-mode-node":"^2.2.0","@smithy/util-endpoints":"^1.1.1","@smithy/util-middleware":"^2.1.1","@smithy/util-retry":"^2.1.1","@smithy/util-utf8":"^2.1.1","tslib":"^2.5.0"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.1.1","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SDK for JavaScript Sso Client for Node.js, Browser and React Native","version":"3.549.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sso","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sso"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/core":"3.549.0","@aws-sdk/middleware-host-header":"3.535.0","@aws-sdk/middleware-logger":"3.535.0","@aws-sdk/middleware-recursion-detection":"3.535.0","@aws-sdk/middleware-user-agent":"3.540.0","@aws-sdk/region-config-resolver":"3.535.0","@aws-sdk/types":"3.535.0","@aws-sdk/util-endpoints":"3.540.0","@aws-sdk/util-user-agent-browser":"3.535.0","@aws-sdk/util-user-agent-node":"3.535.0","@smithy/config-resolver":"^2.2.0","@smithy/core":"^1.4.1","@smithy/fetch-http-handler":"^2.5.0","@smithy/hash-node":"^2.2.0","@smithy/invalid-dependency":"^2.2.0","@smithy/middleware-content-length":"^2.2.0","@smithy/middleware-endpoint":"^2.5.0","@smithy/middleware-retry":"^2.3.0","@smithy/middleware-serde":"^2.3.0","@smithy/middleware-stack":"^2.2.0","@smithy/node-config-provider":"^2.3.0","@smithy/node-http-handler":"^2.5.0","@smithy/protocol-http":"^3.3.0","@smithy/smithy-client":"^2.5.0","@smithy/types":"^2.12.0","@smithy/url-parser":"^2.2.0","@smithy/util-base64":"^2.3.0","@smithy/util-body-length-browser":"^2.2.0","@smithy/util-body-length-node":"^2.3.0","@smithy/util-defaults-mode-browser":"^2.2.0","@smithy/util-defaults-mode-node":"^2.3.0","@smithy/util-endpoints":"^1.2.0","@smithy/util-middleware":"^2.2.0","@smithy/util-retry":"^2.2.0","@smithy/util-utf8":"^2.3.0","tslib":"^2.6.2"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.2.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sso","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sso"}}');
 
 /***/ }),
 
@@ -62613,7 +64649,7 @@ module.exports = JSON.parse('{"name":"@aws-sdk/client-sso","description":"AWS SD
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@aws-sdk/client-sts","description":"AWS SDK for JavaScript Sts Client for Node.js, Browser and React Native","version":"3.515.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sts","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"rimraf ./dist-types tsconfig.types.tsbuildinfo && tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sts","test":"yarn test:unit","test:unit":"jest"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/core":"3.513.0","@aws-sdk/middleware-host-header":"3.515.0","@aws-sdk/middleware-logger":"3.515.0","@aws-sdk/middleware-recursion-detection":"3.515.0","@aws-sdk/middleware-user-agent":"3.515.0","@aws-sdk/region-config-resolver":"3.515.0","@aws-sdk/types":"3.515.0","@aws-sdk/util-endpoints":"3.515.0","@aws-sdk/util-user-agent-browser":"3.515.0","@aws-sdk/util-user-agent-node":"3.515.0","@smithy/config-resolver":"^2.1.1","@smithy/core":"^1.3.2","@smithy/fetch-http-handler":"^2.4.1","@smithy/hash-node":"^2.1.1","@smithy/invalid-dependency":"^2.1.1","@smithy/middleware-content-length":"^2.1.1","@smithy/middleware-endpoint":"^2.4.1","@smithy/middleware-retry":"^2.1.1","@smithy/middleware-serde":"^2.1.1","@smithy/middleware-stack":"^2.1.1","@smithy/node-config-provider":"^2.2.1","@smithy/node-http-handler":"^2.3.1","@smithy/protocol-http":"^3.1.1","@smithy/smithy-client":"^2.3.1","@smithy/types":"^2.9.1","@smithy/url-parser":"^2.1.1","@smithy/util-base64":"^2.1.1","@smithy/util-body-length-browser":"^2.1.1","@smithy/util-body-length-node":"^2.2.1","@smithy/util-defaults-mode-browser":"^2.1.1","@smithy/util-defaults-mode-node":"^2.2.0","@smithy/util-endpoints":"^1.1.1","@smithy/util-middleware":"^2.1.1","@smithy/util-retry":"^2.1.1","@smithy/util-utf8":"^2.1.1","fast-xml-parser":"4.2.5","tslib":"^2.5.0"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.1.1","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","peerDependencies":{"@aws-sdk/credential-provider-node":"^3.515.0"},"browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sts","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sts"}}');
+module.exports = JSON.parse('{"name":"@aws-sdk/client-sts","description":"AWS SDK for JavaScript Sts Client for Node.js, Browser and React Native","version":"3.549.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-sts","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"rimraf ./dist-types tsconfig.types.tsbuildinfo && tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo sts","test":"yarn test:unit","test:unit":"jest"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha256-browser":"3.0.0","@aws-crypto/sha256-js":"3.0.0","@aws-sdk/core":"3.549.0","@aws-sdk/middleware-host-header":"3.535.0","@aws-sdk/middleware-logger":"3.535.0","@aws-sdk/middleware-recursion-detection":"3.535.0","@aws-sdk/middleware-user-agent":"3.540.0","@aws-sdk/region-config-resolver":"3.535.0","@aws-sdk/types":"3.535.0","@aws-sdk/util-endpoints":"3.540.0","@aws-sdk/util-user-agent-browser":"3.535.0","@aws-sdk/util-user-agent-node":"3.535.0","@smithy/config-resolver":"^2.2.0","@smithy/core":"^1.4.1","@smithy/fetch-http-handler":"^2.5.0","@smithy/hash-node":"^2.2.0","@smithy/invalid-dependency":"^2.2.0","@smithy/middleware-content-length":"^2.2.0","@smithy/middleware-endpoint":"^2.5.0","@smithy/middleware-retry":"^2.3.0","@smithy/middleware-serde":"^2.3.0","@smithy/middleware-stack":"^2.2.0","@smithy/node-config-provider":"^2.3.0","@smithy/node-http-handler":"^2.5.0","@smithy/protocol-http":"^3.3.0","@smithy/smithy-client":"^2.5.0","@smithy/types":"^2.12.0","@smithy/url-parser":"^2.2.0","@smithy/util-base64":"^2.3.0","@smithy/util-body-length-browser":"^2.2.0","@smithy/util-body-length-node":"^2.3.0","@smithy/util-defaults-mode-browser":"^2.2.0","@smithy/util-defaults-mode-node":"^2.3.0","@smithy/util-endpoints":"^1.2.0","@smithy/util-middleware":"^2.2.0","@smithy/util-retry":"^2.2.0","@smithy/util-utf8":"^2.3.0","tslib":"^2.6.2"},"devDependencies":{"@smithy/service-client-documentation-generator":"^2.2.0","@tsconfig/node14":"1.0.3","@types/node":"^14.14.31","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~4.9.5"},"engines":{"node":">=14.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","peerDependencies":{"@aws-sdk/credential-provider-node":"^3.549.0"},"browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-sts","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-sts"}}');
 
 /***/ }),
 
