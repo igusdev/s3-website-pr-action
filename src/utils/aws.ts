@@ -37,7 +37,7 @@ export const websiteEndpoint = {
 } as const satisfies Record<KnownRegion, string>;
 
 export const getAwsRegion = (): KnownRegion => {
-  const region = process.env.AWS_REGION as string;
+  const region = process.env.AWS_REGION!;
   if (!websiteEndpoint[region as keyof typeof websiteEndpoint]) {
     throw new Error(`Unknown region: ${region}`);
   }

@@ -27,7 +27,7 @@ export const checkBucketExists = async (bucketName: string) => {
   try {
     await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -163,7 +163,7 @@ export const uploadDirectory = async (
         const e = error as S3ServiceException;
         const message = `Failed to upload ${s3Key}: ${e.name} - ${e.message}`;
         console.log(message);
-        throw message;
+        throw new Error(message);
       }
     }),
   );

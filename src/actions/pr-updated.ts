@@ -1,5 +1,4 @@
 import { context } from '@actions/github';
-import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods';
 import { githubClient } from '../clients/github';
 import { getAwsRegion, websiteEndpoint } from '../utils/aws';
 import { validateEnvVars } from '../utils/env';
@@ -20,7 +19,8 @@ export const prUpdated = async (
   const region = getAwsRegion();
   const websiteUrl = `http://${bucketName}.${websiteEndpoint[region]}`;
   const { repo, payload } = context;
-  const branchName = payload.pull_request?.head?.ref;
+  const branchName = (payload.pull_request?.head as Record<string, string>)
+    ?.ref;
 
   console.log('PR Updated');
 
@@ -30,7 +30,7 @@ export const prUpdated = async (
   await deactivateDeployments(repo, environmentPrefix);
 
   try {
-    const deployment = (await githubClient.rest.repos.createDeployment({
+    const deployment = await githubClient.rest.repos.createDeployment({
       ...repo,
       ref: `refs/heads/${branchName}`,
       environment: `${environmentPrefix || 'pr-'}${
@@ -39,7 +39,7 @@ export const prUpdated = async (
       auto_merge: false,
       transient_environment: true,
       required_contexts: [],
-    })) as RestEndpointMethodTypes['repos']['createDeployment']['response'];
+    });
 
     if ('id' in deployment.data) {
       await githubClient.rest.repos.createDeploymentStatus({
