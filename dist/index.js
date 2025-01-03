@@ -64762,7 +64762,19 @@ exports.githubClient = github.getOctokit(GITHUB_TOKEN, {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.s3Client = void 0;
 const client_s3_1 = __nccwpck_require__(3711);
-exports.s3Client = new client_s3_1.S3Client({});
+const node_http_handler_1 = __nccwpck_require__(1279);
+const node_http_1 = __nccwpck_require__(7067);
+const node_https_1 = __nccwpck_require__(4708);
+const maxSockets = 500;
+const keepAlive = true;
+exports.s3Client = new client_s3_1.S3Client({
+    requestHandler: new node_http_handler_1.NodeHttpHandler({
+        connectionTimeout: 5000,
+        socketTimeout: 120000,
+        httpAgent: new node_http_1.Agent({ maxSockets, keepAlive }),
+        httpsAgent: new node_https_1.Agent({ maxSockets, keepAlive }),
+    }),
+});
 
 
 /***/ }),
@@ -65310,6 +65322,22 @@ module.exports = require("node:events");
 
 "use strict";
 module.exports = require("node:fs");
+
+/***/ }),
+
+/***/ 7067:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:http");
+
+/***/ }),
+
+/***/ 4708:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:https");
 
 /***/ }),
 

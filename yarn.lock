@@ -6512,6 +6512,7 @@ __metadata:
     "@actions/github": "npm:^6.0.0"
     "@aws-sdk/client-s3": "npm:^3.717.0"
     "@octokit/types": "npm:^13.6.2"
+    "@smithy/node-http-handler": "npm:^3.3.3"
     "@types/jest": "npm:^29.5.14"
     "@types/mime-types": "npm:^2.1.4"
     "@types/node": "npm:^22.10.3"
