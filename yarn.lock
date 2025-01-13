@@ -1770,6 +1770,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@smithy/abort-controller@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@smithy/abort-controller@npm:4.0.1"
+  dependencies:
+    "@smithy/types": "npm:^4.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/1ecd5c3454ced008463e6de826c294f31f6073ba91e22e443e0269ee0854d9376f73ea756b3acf77aa806a9a98e8b2568ce2e7f15ddf0a7816c99b7deefeef57
+  languageName: node
+  linkType: hard
+
 "@smithy/chunked-blob-reader-native@npm:^3.0.1":
   version: 3.0.1
   resolution: "@smithy/chunked-blob-reader-native@npm:3.0.1"
@@ -2062,6 +2072,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@smithy/node-http-handler@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "@smithy/node-http-handler@npm:4.0.1"
+  dependencies:
+    "@smithy/abort-controller": "npm:^4.0.1"
+    "@smithy/protocol-http": "npm:^5.0.1"
+    "@smithy/querystring-builder": "npm:^4.0.1"
+    "@smithy/types": "npm:^4.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/ab6181d6b4754f3c417abe5494807ac74a29fccd6a321d1240ba8ea9699df3d78ff204fa1a447d6415d8c523bf94ffa744d23e5f2608c63ae9cf827b6369c9d8
+  languageName: node
+  linkType: hard
+
 "@smithy/property-provider@npm:^3.1.11":
   version: 3.1.11
   resolution: "@smithy/property-provider@npm:3.1.11"
@@ -2082,6 +2105,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@smithy/protocol-http@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@smithy/protocol-http@npm:5.0.1"
+  dependencies:
+    "@smithy/types": "npm:^4.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/87b157cc86c23f7199acad237e5e0cc309b18a2a4162dfd8f99609f6cca403f832b645535e58173e2933b4d96ec71f2df16d04e1bdcf52b7b0fcbdbc0067de93
+  languageName: node
+  linkType: hard
+
 "@smithy/querystring-builder@npm:^3.0.11":
   version: 3.0.11
   resolution: "@smithy/querystring-builder@npm:3.0.11"
@@ -2090,6 +2123,17 @@ __metadata:
     "@smithy/util-uri-escape": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
   checksum: 10c0/77daf191c606178cc76f46739b4085660ed3036993a9c2274cb6b70a9ba29e000c33c3c093263a6a119e0a55f063d02a29806e1c90384e18f50a8c2bc0a1d7f0
+  languageName: node
+  linkType: hard
+
+"@smithy/querystring-builder@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@smithy/querystring-builder@npm:4.0.1"
+  dependencies:
+    "@smithy/types": "npm:^4.1.0"
+    "@smithy/util-uri-escape": "npm:^4.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/21f39e3a79458d343f3dec76b38598c49a34a3c4d1d3c23b6c8895eae2b610fb3c704f995a1730599ef7a881216ea064a25bb7dc8abe5bb1ee50dc6078ad97a4
   languageName: node
   linkType: hard
 
@@ -2159,6 +2203,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.6.2"
   checksum: 10c0/4bf4674c922c092f9c92b482b074163ceea199e82466ccd4414c4cd9651f67757456414f969e9997371250e112778b636115727b5af53324334300f328069293
+  languageName: node
+  linkType: hard
+
+"@smithy/types@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@smithy/types@npm:4.1.0"
+  dependencies:
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/d8817145ea043c5b29783df747ed47c3a1c584fd9d02bbdb609d38b7cb4dded1197ac214ae112744c86abe0537a314dae0edbc0e752bb639ef2d9fb84c67a9d9
   languageName: node
   linkType: hard
 
@@ -2322,6 +2375,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.6.2"
   checksum: 10c0/b8d831348412cfafd9300069e74a12e0075b5e786d7ef6a210ba4ab576001c2525653eec68b71dfe6d7aef71c52f547404c4f0345c0fb476a67277f9d44b1156
+  languageName: node
+  linkType: hard
+
+"@smithy/util-uri-escape@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@smithy/util-uri-escape@npm:4.0.0"
+  dependencies:
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/23984624060756adba8aa4ab1693fe6b387ee5064d8ec4dfd39bb5908c4ee8b9c3f2dc755da9b07505d8e3ce1338c1867abfa74158931e4728bf3cfcf2c05c3d
   languageName: node
   linkType: hard
 
@@ -6512,7 +6574,7 @@ __metadata:
     "@actions/github": "npm:^6.0.0"
     "@aws-sdk/client-s3": "npm:^3.717.0"
     "@octokit/types": "npm:^13.6.2"
-    "@smithy/node-http-handler": "npm:^3.3.3"
+    "@smithy/node-http-handler": "npm:^4.0.0"
     "@types/jest": "npm:^29.5.14"
     "@types/mime-types": "npm:^2.1.4"
     "@types/node": "npm:^22.10.3"
