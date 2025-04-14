@@ -1,6 +1,6 @@
 const tsEslint = require('typescript-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
-const eslintPluginUnicorn = require('eslint-plugin-unicorn');
+const { default: eslintPluginUnicorn } = require('eslint-plugin-unicorn');
 const globals = require('globals');
 
 module.exports = [
@@ -21,6 +21,17 @@ module.exports = [
     rules: {
       '@typescript-eslint/no-unused-vars': [2, { args: 'none' }],
       'unicorn/prefer-node-protocol': 'error',
+      '@typescript-eslint/prefer-nullish-coalescing': [
+        'error',
+        {
+          ignorePrimitives: {
+            string: true,
+            boolean: true,
+            number: true,
+            bigint: true,
+          },
+        },
+      ],
     },
     languageOptions: {
       parser: tsEslint.parser,

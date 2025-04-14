@@ -50,7 +50,5 @@ export const getAwsRegion = (): KnownRegion => {
 };
 
 export const setupAwsRegion = () => {
-  if (!process.env.AWS_REGION) {
-    process.env.AWS_REGION = 'us-east-1';
-  }
+  process.env.AWS_REGION ||= 'us-east-1';
 };
