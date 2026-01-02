@@ -22,36 +22,68 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.issue = exports.issueCommand = void 0;
+exports.issueCommand = issueCommand;
+exports.issue = issue;
 const os = __importStar(__nccwpck_require__(857));
 const utils_1 = __nccwpck_require__(302);
 /**
- * Commands
+ * Issues a command to the GitHub Actions runner
+ *
+ * @param command - The command name to issue
+ * @param properties - Additional properties for the command (key-value pairs)
+ * @param message - The message to include with the command
+ * @remarks
+ * This function outputs a specially formatted string to stdout that the Actions
+ * runner interprets as a command. These commands can control workflow behavior,
+ * set outputs, create annotations, mask values, and more.
  *
  * Command Format:
  *   ::name key=value,key=value::message
  *
- * Examples:
- *   ::warning::This is the message
- *   ::set-env name=MY_VAR::some value
+ * @example
+ * ```typescript
+ * // Issue a warning annotation
+ * issueCommand('warning', {}, 'This is a warning message');
+ * // Output: ::warning::This is a warning message
+ *
+ * // Set an environment variable
+ * issueCommand('set-env', { name: 'MY_VAR' }, 'some value');
+ * // Output: ::set-env name=MY_VAR::some value
+ *
+ * // Add a secret mask
+ * issueCommand('add-mask', {}, 'secretValue123');
+ * // Output: ::add-mask::secretValue123
+ * ```
+ *
+ * @internal
+ * This is an internal utility function that powers the public API functions
+ * such as setSecret, warning, error, and exportVariable.
  */
 function issueCommand(command, properties, message) {
     const cmd = new Command(command, properties, message);
     process.stdout.write(cmd.toString() + os.EOL);
 }
-exports.issueCommand = issueCommand;
 function issue(name, message = '') {
     issueCommand(name, {}, message);
 }
-exports.issue = issue;
 const CMD_STRING = '::';
 class Command {
     constructor(command, properties, message) {
@@ -125,13 +157,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -142,7 +184,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.ExitCode = void 0;
+exports.exportVariable = exportVariable;
+exports.setSecret = setSecret;
+exports.addPath = addPath;
+exports.getInput = getInput;
+exports.getMultilineInput = getMultilineInput;
+exports.getBooleanInput = getBooleanInput;
+exports.setOutput = setOutput;
+exports.setCommandEcho = setCommandEcho;
+exports.setFailed = setFailed;
+exports.isDebug = isDebug;
+exports.debug = debug;
+exports.error = error;
+exports.warning = warning;
+exports.notice = notice;
+exports.info = info;
+exports.startGroup = startGroup;
+exports.endGroup = endGroup;
+exports.group = group;
+exports.saveState = saveState;
+exports.getState = getState;
+exports.getIDToken = getIDToken;
 const command_1 = __nccwpck_require__(4914);
 const file_command_1 = __nccwpck_require__(4753);
 const utils_1 = __nccwpck_require__(302);
@@ -181,15 +244,38 @@ function exportVariable(name, val) {
     }
     (0, command_1.issueCommand)('set-env', { name }, convertedVal);
 }
-exports.exportVariable = exportVariable;
 /**
  * Registers a secret which will get masked from logs
- * @param secret value of the secret
+ *
+ * @param secret - Value of the secret to be masked
+ * @remarks
+ * This function instructs the Actions runner to mask the specified value in any
+ * logs produced during the workflow run. Once registered, the secret value will
+ * be replaced with asterisks (***) whenever it appears in console output, logs,
+ * or error messages.
+ *
+ * This is useful for protecting sensitive information such as:
+ * - API keys
+ * - Access tokens
+ * - Authentication credentials
+ * - URL parameters containing signatures (SAS tokens)
+ *
+ * Note that masking only affects future logs; any previous appearances of the
+ * secret in logs before calling this function will remain unmasked.
+ *
+ * @example
+ * ```typescript
+ * // Register an API token as a secret
+ * const apiToken = "abc123xyz456";
+ * setSecret(apiToken);
+ *
+ * // Now any logs containing this value will show *** instead
+ * console.log(`Using token: ${apiToken}`); // Outputs: "Using token: ***"
+ * ```
  */
 function setSecret(secret) {
     (0, command_1.issueCommand)('add-mask', {}, secret);
 }
-exports.setSecret = setSecret;
 /**
  * Prepends inputPath to the PATH (for this action and future actions)
  * @param inputPath
@@ -204,7 +290,6 @@ function addPath(inputPath) {
     }
     process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
 }
-exports.addPath = addPath;
 /**
  * Gets the value of an input.
  * Unless trimWhitespace is set to false in InputOptions, the value is also trimmed.
@@ -224,7 +309,6 @@ function getInput(name, options) {
     }
     return val.trim();
 }
-exports.getInput = getInput;
 /**
  * Gets the values of an multiline input.  Each value is also trimmed.
  *
@@ -242,7 +326,6 @@ function getMultilineInput(name, options) {
     }
     return inputs.map(input => input.trim());
 }
-exports.getMultilineInput = getMultilineInput;
 /**
  * Gets the input value of the boolean type in the YAML 1.2 "core schema" specification.
  * Support boolean input list: `true | True | TRUE | false | False | FALSE` .
@@ -264,7 +347,6 @@ function getBooleanInput(name, options) {
     throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}\n` +
         `Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 }
-exports.getBooleanInput = getBooleanInput;
 /**
  * Sets the value of an output.
  *
@@ -280,7 +362,6 @@ function setOutput(name, value) {
     process.stdout.write(os.EOL);
     (0, command_1.issueCommand)('set-output', { name }, (0, utils_1.toCommandValue)(value));
 }
-exports.setOutput = setOutput;
 /**
  * Enables or disables the echoing of commands into stdout for the rest of the step.
  * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
@@ -289,7 +370,6 @@ exports.setOutput = setOutput;
 function setCommandEcho(enabled) {
     (0, command_1.issue)('echo', enabled ? 'on' : 'off');
 }
-exports.setCommandEcho = setCommandEcho;
 //-----------------------------------------------------------------------
 // Results
 //-----------------------------------------------------------------------
@@ -302,7 +382,6 @@ function setFailed(message) {
     process.exitCode = ExitCode.Failure;
     error(message);
 }
-exports.setFailed = setFailed;
 //-----------------------------------------------------------------------
 // Logging Commands
 //-----------------------------------------------------------------------
@@ -312,7 +391,6 @@ exports.setFailed = setFailed;
 function isDebug() {
     return process.env['RUNNER_DEBUG'] === '1';
 }
-exports.isDebug = isDebug;
 /**
  * Writes debug message to user log
  * @param message debug message
@@ -320,7 +398,6 @@ exports.isDebug = isDebug;
 function debug(message) {
     (0, command_1.issueCommand)('debug', {}, message);
 }
-exports.debug = debug;
 /**
  * Adds an error issue
  * @param message error issue message. Errors will be converted to string via toString()
@@ -329,7 +406,6 @@ exports.debug = debug;
 function error(message, properties = {}) {
     (0, command_1.issueCommand)('error', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.error = error;
 /**
  * Adds a warning issue
  * @param message warning issue message. Errors will be converted to string via toString()
@@ -338,7 +414,6 @@ exports.error = error;
 function warning(message, properties = {}) {
     (0, command_1.issueCommand)('warning', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.warning = warning;
 /**
  * Adds a notice issue
  * @param message notice issue message. Errors will be converted to string via toString()
@@ -347,7 +422,6 @@ exports.warning = warning;
 function notice(message, properties = {}) {
     (0, command_1.issueCommand)('notice', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.notice = notice;
 /**
  * Writes info to log with console.log.
  * @param message info message
@@ -355,7 +429,6 @@ exports.notice = notice;
 function info(message) {
     process.stdout.write(message + os.EOL);
 }
-exports.info = info;
 /**
  * Begin an output group.
  *
@@ -366,14 +439,12 @@ exports.info = info;
 function startGroup(name) {
     (0, command_1.issue)('group', name);
 }
-exports.startGroup = startGroup;
 /**
  * End an output group.
  */
 function endGroup() {
     (0, command_1.issue)('endgroup');
 }
-exports.endGroup = endGroup;
 /**
  * Wrap an asynchronous function call in a group.
  *
@@ -395,7 +466,6 @@ function group(name, fn) {
         return result;
     });
 }
-exports.group = group;
 //-----------------------------------------------------------------------
 // Wrapper action state
 //-----------------------------------------------------------------------
@@ -413,7 +483,6 @@ function saveState(name, value) {
     }
     (0, command_1.issueCommand)('save-state', { name }, (0, utils_1.toCommandValue)(value));
 }
-exports.saveState = saveState;
 /**
  * Gets the value of an state set by this action's main execution.
  *
@@ -423,13 +492,11 @@ exports.saveState = saveState;
 function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
-exports.getState = getState;
 function getIDToken(aud) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield oidc_utils_1.OidcClient.getIDToken(aud);
     });
 }
-exports.getIDToken = getIDToken;
 /**
  * Summary exports
  */
@@ -477,15 +544,26 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
+exports.issueFileCommand = issueFileCommand;
+exports.prepareKeyValueMessage = prepareKeyValueMessage;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const crypto = __importStar(__nccwpck_require__(6982));
@@ -504,7 +582,6 @@ function issueFileCommand(command, message) {
         encoding: 'utf8'
     });
 }
-exports.issueFileCommand = issueFileCommand;
 function prepareKeyValueMessage(key, value) {
     const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
     const convertedValue = (0, utils_1.toCommandValue)(value);
@@ -519,7 +596,6 @@ function prepareKeyValueMessage(key, value) {
     }
     return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
 }
-exports.prepareKeyValueMessage = prepareKeyValueMessage;
 //# sourceMappingURL=file-command.js.map
 
 /***/ }),
@@ -566,8 +642,8 @@ class OidcClient {
         return runtimeUrl;
     }
     static getCall(id_token_url) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const httpclient = OidcClient.createHttpClient();
             const res = yield httpclient
                 .getJson(id_token_url)
@@ -629,15 +705,27 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = void 0;
+exports.toPosixPath = toPosixPath;
+exports.toWin32Path = toWin32Path;
+exports.toPlatformPath = toPlatformPath;
 const path = __importStar(__nccwpck_require__(6928));
 /**
  * toPosixPath converts the given path to the posix form. On Windows, \\ will be
@@ -649,7 +737,6 @@ const path = __importStar(__nccwpck_require__(6928));
 function toPosixPath(pth) {
     return pth.replace(/[\\]/g, '/');
 }
-exports.toPosixPath = toPosixPath;
 /**
  * toWin32Path converts the given path to the win32 form. On Linux, / will be
  * replaced with \\.
@@ -660,7 +747,6 @@ exports.toPosixPath = toPosixPath;
 function toWin32Path(pth) {
     return pth.replace(/[/]/g, '\\');
 }
-exports.toWin32Path = toWin32Path;
 /**
  * toPlatformPath converts the given path to a platform-specific path. It does
  * this by replacing instances of / and \ with the platform-specific path
@@ -672,7 +758,6 @@ exports.toWin32Path = toWin32Path;
 function toPlatformPath(pth) {
     return pth.replace(/[/\\]/g, path.sep);
 }
-exports.toPlatformPath = toPlatformPath;
 //# sourceMappingURL=path-utils.js.map
 
 /***/ }),
@@ -698,13 +783,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -718,7 +813,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+exports.getDetails = getDetails;
 const os_1 = __importDefault(__nccwpck_require__(857));
 const exec = __importStar(__nccwpck_require__(5236));
 const getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -773,7 +869,6 @@ function getDetails() {
             isLinux: exports.isLinux });
     });
 }
-exports.getDetails = getDetails;
 //# sourceMappingURL=platform.js.map
 
 /***/ }),
@@ -1076,7 +1171,8 @@ exports.summary = _summary;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toCommandProperties = exports.toCommandValue = void 0;
+exports.toCommandValue = toCommandValue;
+exports.toCommandProperties = toCommandProperties;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -1090,7 +1186,6 @@ function toCommandValue(input) {
     }
     return JSON.stringify(input);
 }
-exports.toCommandValue = toCommandValue;
 /**
  *
  * @param annotationProperties
@@ -1110,7 +1205,6 @@ function toCommandProperties(annotationProperties) {
         endColumn: annotationProperties.endColumn
     };
 }
-exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
@@ -1122,7 +1216,11 @@ exports.toCommandProperties = toCommandProperties;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1132,13 +1230,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1149,7 +1257,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getExecOutput = exports.exec = void 0;
+exports.exec = exec;
+exports.getExecOutput = getExecOutput;
 const string_decoder_1 = __nccwpck_require__(3193);
 const tr = __importStar(__nccwpck_require__(6665));
 /**
@@ -1175,7 +1284,6 @@ function exec(commandLine, args, options) {
         return runner.exec();
     });
 }
-exports.exec = exec;
 /**
  * Exec a command and get the output.
  * Output will be streamed to the live console.
@@ -1187,8 +1295,8 @@ exports.exec = exec;
  * @returns   Promise<ExecOutput>   exit code, stdout, and stderr
  */
 function getExecOutput(commandLine, args, options) {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         let stdout = '';
         let stderr = '';
         //Using string decoder covers the case where a mult-byte character is split
@@ -1220,7 +1328,6 @@ function getExecOutput(commandLine, args, options) {
         };
     });
 }
-exports.getExecOutput = getExecOutput;
 //# sourceMappingURL=exec.js.map
 
 /***/ }),
@@ -1232,7 +1339,11 @@ exports.getExecOutput = getExecOutput;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1242,13 +1353,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1259,7 +1380,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.argStringToArray = exports.ToolRunner = void 0;
+exports.ToolRunner = void 0;
+exports.argStringToArray = argStringToArray;
 const os = __importStar(__nccwpck_require__(857));
 const events = __importStar(__nccwpck_require__(4434));
 const child = __importStar(__nccwpck_require__(5317));
@@ -1491,10 +1613,7 @@ class ToolRunner extends events.EventEmitter {
             }
         }
         reverse += '"';
-        return reverse
-            .split('')
-            .reverse()
-            .join('');
+        return reverse.split('').reverse().join('');
     }
     _uvQuoteCmdArg(arg) {
         // Tool runner wraps child_process.spawn() and needs to apply the same quoting as
@@ -1570,10 +1689,7 @@ class ToolRunner extends events.EventEmitter {
             }
         }
         reverse += '"';
-        return reverse
-            .split('')
-            .reverse()
-            .join('');
+        return reverse.split('').reverse().join('');
     }
     _cloneExecOptions(options) {
         options = options || {};
@@ -1777,7 +1893,6 @@ function argStringToArray(argString) {
     }
     return args;
 }
-exports.argStringToArray = argStringToArray;
 class ExecState extends events.EventEmitter {
     constructor(options, toolPath) {
         super();
@@ -1806,7 +1921,7 @@ class ExecState extends events.EventEmitter {
             this._setResult();
         }
         else if (this.processExited) {
-            this.timeout = timers_1.setTimeout(ExecState.HandleTimeout, this.delay, this);
+            this.timeout = (0, timers_1.setTimeout)(ExecState.HandleTimeout, this.delay, this);
         }
     }
     _debug(message) {
@@ -1839,8 +1954,7 @@ class ExecState extends events.EventEmitter {
             return;
         }
         if (!state.processClosed && state.processExited) {
-            const message = `The STDIO streams did not close within ${state.delay /
-                1000} seconds of the exit event from process '${state.toolPath}'. This may indicate a child process inherited the STDIO streams and has not yet exited.`;
+            const message = `The STDIO streams did not close within ${state.delay / 1000} seconds of the exit event from process '${state.toolPath}'. This may indicate a child process inherited the STDIO streams and has not yet exited.`;
             state._debug(message);
         }
         state._setResult();
@@ -2000,7 +2114,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getApiBaseUrl = exports.getProxyFetch = exports.getProxyAgentDispatcher = exports.getProxyAgent = exports.getAuthString = void 0;
-const httpClient = __importStar(__nccwpck_require__(4844));
+const httpClient = __importStar(__nccwpck_require__(9659));
 const undici_1 = __nccwpck_require__(6752);
 function getAuthString(token, options) {
     if (!token && !options.auth) {
@@ -2104,95 +2218,7 @@ exports.getOctokitOptions = getOctokitOptions;
 
 /***/ }),
 
-/***/ 4552:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PersonalAccessTokenCredentialHandler = exports.BearerCredentialHandler = exports.BasicCredentialHandler = void 0;
-class BasicCredentialHandler {
-    constructor(username, password) {
-        this.username = username;
-        this.password = password;
-    }
-    prepareRequest(options) {
-        if (!options.headers) {
-            throw Error('The request has no headers');
-        }
-        options.headers['Authorization'] = `Basic ${Buffer.from(`${this.username}:${this.password}`).toString('base64')}`;
-    }
-    // This handler cannot handle 401
-    canHandleAuthentication() {
-        return false;
-    }
-    handleAuthentication() {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('not implemented');
-        });
-    }
-}
-exports.BasicCredentialHandler = BasicCredentialHandler;
-class BearerCredentialHandler {
-    constructor(token) {
-        this.token = token;
-    }
-    // currently implements pre-authorization
-    // TODO: support preAuth = false where it hooks on 401
-    prepareRequest(options) {
-        if (!options.headers) {
-            throw Error('The request has no headers');
-        }
-        options.headers['Authorization'] = `Bearer ${this.token}`;
-    }
-    // This handler cannot handle 401
-    canHandleAuthentication() {
-        return false;
-    }
-    handleAuthentication() {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('not implemented');
-        });
-    }
-}
-exports.BearerCredentialHandler = BearerCredentialHandler;
-class PersonalAccessTokenCredentialHandler {
-    constructor(token) {
-        this.token = token;
-    }
-    // currently implements pre-authorization
-    // TODO: support preAuth = false where it hooks on 401
-    prepareRequest(options) {
-        if (!options.headers) {
-            throw Error('The request has no headers');
-        }
-        options.headers['Authorization'] = `Basic ${Buffer.from(`PAT:${this.token}`).toString('base64')}`;
-    }
-    // This handler cannot handle 401
-    canHandleAuthentication() {
-        return false;
-    }
-    handleAuthentication() {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('not implemented');
-        });
-    }
-}
-exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
-//# sourceMappingURL=auth.js.map
-
-/***/ }),
-
-/***/ 4844:
+/***/ 9659:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -2234,7 +2260,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HttpClient = exports.isHttps = exports.HttpClientResponse = exports.HttpClientError = exports.getProxyUrl = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
 const http = __importStar(__nccwpck_require__(8611));
 const https = __importStar(__nccwpck_require__(5692));
-const pm = __importStar(__nccwpck_require__(4988));
+const pm = __importStar(__nccwpck_require__(3335));
 const tunnel = __importStar(__nccwpck_require__(770));
 const undici_1 = __nccwpck_require__(6752);
 var HttpCodes;
@@ -2851,7 +2877,7 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 
 /***/ }),
 
-/***/ 4988:
+/***/ 3335:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -2953,14 +2979,107 @@ class DecodedURL extends URL {
 
 /***/ }),
 
-/***/ 5207:
+/***/ 4552:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PersonalAccessTokenCredentialHandler = exports.BearerCredentialHandler = exports.BasicCredentialHandler = void 0;
+class BasicCredentialHandler {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
+    }
+    prepareRequest(options) {
+        if (!options.headers) {
+            throw Error('The request has no headers');
+        }
+        options.headers['Authorization'] = `Basic ${Buffer.from(`${this.username}:${this.password}`).toString('base64')}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+        return false;
+    }
+    handleAuthentication() {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('not implemented');
+        });
+    }
+}
+exports.BasicCredentialHandler = BasicCredentialHandler;
+class BearerCredentialHandler {
+    constructor(token) {
+        this.token = token;
+    }
+    // currently implements pre-authorization
+    // TODO: support preAuth = false where it hooks on 401
+    prepareRequest(options) {
+        if (!options.headers) {
+            throw Error('The request has no headers');
+        }
+        options.headers['Authorization'] = `Bearer ${this.token}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+        return false;
+    }
+    handleAuthentication() {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('not implemented');
+        });
+    }
+}
+exports.BearerCredentialHandler = BearerCredentialHandler;
+class PersonalAccessTokenCredentialHandler {
+    constructor(token) {
+        this.token = token;
+    }
+    // currently implements pre-authorization
+    // TODO: support preAuth = false where it hooks on 401
+    prepareRequest(options) {
+        if (!options.headers) {
+            throw Error('The request has no headers');
+        }
+        options.headers['Authorization'] = `Basic ${Buffer.from(`PAT:${this.token}`).toString('base64')}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+        return false;
+    }
+    handleAuthentication() {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('not implemented');
+        });
+    }
+}
+exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
+//# sourceMappingURL=auth.js.map
+
+/***/ }),
+
+/***/ 4844:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -2970,13 +3089,856 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HttpClient = exports.HttpClientResponse = exports.HttpClientError = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
+exports.getProxyUrl = getProxyUrl;
+exports.isHttps = isHttps;
+const http = __importStar(__nccwpck_require__(8611));
+const https = __importStar(__nccwpck_require__(5692));
+const pm = __importStar(__nccwpck_require__(4988));
+const tunnel = __importStar(__nccwpck_require__(770));
+const undici_1 = __nccwpck_require__(6752);
+var HttpCodes;
+(function (HttpCodes) {
+    HttpCodes[HttpCodes["OK"] = 200] = "OK";
+    HttpCodes[HttpCodes["MultipleChoices"] = 300] = "MultipleChoices";
+    HttpCodes[HttpCodes["MovedPermanently"] = 301] = "MovedPermanently";
+    HttpCodes[HttpCodes["ResourceMoved"] = 302] = "ResourceMoved";
+    HttpCodes[HttpCodes["SeeOther"] = 303] = "SeeOther";
+    HttpCodes[HttpCodes["NotModified"] = 304] = "NotModified";
+    HttpCodes[HttpCodes["UseProxy"] = 305] = "UseProxy";
+    HttpCodes[HttpCodes["SwitchProxy"] = 306] = "SwitchProxy";
+    HttpCodes[HttpCodes["TemporaryRedirect"] = 307] = "TemporaryRedirect";
+    HttpCodes[HttpCodes["PermanentRedirect"] = 308] = "PermanentRedirect";
+    HttpCodes[HttpCodes["BadRequest"] = 400] = "BadRequest";
+    HttpCodes[HttpCodes["Unauthorized"] = 401] = "Unauthorized";
+    HttpCodes[HttpCodes["PaymentRequired"] = 402] = "PaymentRequired";
+    HttpCodes[HttpCodes["Forbidden"] = 403] = "Forbidden";
+    HttpCodes[HttpCodes["NotFound"] = 404] = "NotFound";
+    HttpCodes[HttpCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+    HttpCodes[HttpCodes["NotAcceptable"] = 406] = "NotAcceptable";
+    HttpCodes[HttpCodes["ProxyAuthenticationRequired"] = 407] = "ProxyAuthenticationRequired";
+    HttpCodes[HttpCodes["RequestTimeout"] = 408] = "RequestTimeout";
+    HttpCodes[HttpCodes["Conflict"] = 409] = "Conflict";
+    HttpCodes[HttpCodes["Gone"] = 410] = "Gone";
+    HttpCodes[HttpCodes["TooManyRequests"] = 429] = "TooManyRequests";
+    HttpCodes[HttpCodes["InternalServerError"] = 500] = "InternalServerError";
+    HttpCodes[HttpCodes["NotImplemented"] = 501] = "NotImplemented";
+    HttpCodes[HttpCodes["BadGateway"] = 502] = "BadGateway";
+    HttpCodes[HttpCodes["ServiceUnavailable"] = 503] = "ServiceUnavailable";
+    HttpCodes[HttpCodes["GatewayTimeout"] = 504] = "GatewayTimeout";
+})(HttpCodes || (exports.HttpCodes = HttpCodes = {}));
+var Headers;
+(function (Headers) {
+    Headers["Accept"] = "accept";
+    Headers["ContentType"] = "content-type";
+})(Headers || (exports.Headers = Headers = {}));
+var MediaTypes;
+(function (MediaTypes) {
+    MediaTypes["ApplicationJson"] = "application/json";
+})(MediaTypes || (exports.MediaTypes = MediaTypes = {}));
+/**
+ * Returns the proxy URL, depending upon the supplied url and proxy environment variables.
+ * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+ */
+function getProxyUrl(serverUrl) {
+    const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
+    return proxyUrl ? proxyUrl.href : '';
+}
+const HttpRedirectCodes = [
+    HttpCodes.MovedPermanently,
+    HttpCodes.ResourceMoved,
+    HttpCodes.SeeOther,
+    HttpCodes.TemporaryRedirect,
+    HttpCodes.PermanentRedirect
+];
+const HttpResponseRetryCodes = [
+    HttpCodes.BadGateway,
+    HttpCodes.ServiceUnavailable,
+    HttpCodes.GatewayTimeout
+];
+const RetryableHttpVerbs = ['OPTIONS', 'GET', 'DELETE', 'HEAD'];
+const ExponentialBackoffCeiling = 10;
+const ExponentialBackoffTimeSlice = 5;
+class HttpClientError extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        this.name = 'HttpClientError';
+        this.statusCode = statusCode;
+        Object.setPrototypeOf(this, HttpClientError.prototype);
+    }
+}
+exports.HttpClientError = HttpClientError;
+class HttpClientResponse {
+    constructor(message) {
+        this.message = message;
+    }
+    readBody() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                let output = Buffer.alloc(0);
+                this.message.on('data', (chunk) => {
+                    output = Buffer.concat([output, chunk]);
+                });
+                this.message.on('end', () => {
+                    resolve(output.toString());
+                });
+            }));
+        });
+    }
+    readBodyBuffer() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                const chunks = [];
+                this.message.on('data', (chunk) => {
+                    chunks.push(chunk);
+                });
+                this.message.on('end', () => {
+                    resolve(Buffer.concat(chunks));
+                });
+            }));
+        });
+    }
+}
+exports.HttpClientResponse = HttpClientResponse;
+function isHttps(requestUrl) {
+    const parsedUrl = new URL(requestUrl);
+    return parsedUrl.protocol === 'https:';
+}
+class HttpClient {
+    constructor(userAgent, handlers, requestOptions) {
+        this._ignoreSslError = false;
+        this._allowRedirects = true;
+        this._allowRedirectDowngrade = false;
+        this._maxRedirects = 50;
+        this._allowRetries = false;
+        this._maxRetries = 1;
+        this._keepAlive = false;
+        this._disposed = false;
+        this.userAgent = userAgent;
+        this.handlers = handlers || [];
+        this.requestOptions = requestOptions;
+        if (requestOptions) {
+            if (requestOptions.ignoreSslError != null) {
+                this._ignoreSslError = requestOptions.ignoreSslError;
+            }
+            this._socketTimeout = requestOptions.socketTimeout;
+            if (requestOptions.allowRedirects != null) {
+                this._allowRedirects = requestOptions.allowRedirects;
+            }
+            if (requestOptions.allowRedirectDowngrade != null) {
+                this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
+            }
+            if (requestOptions.maxRedirects != null) {
+                this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
+            }
+            if (requestOptions.keepAlive != null) {
+                this._keepAlive = requestOptions.keepAlive;
+            }
+            if (requestOptions.allowRetries != null) {
+                this._allowRetries = requestOptions.allowRetries;
+            }
+            if (requestOptions.maxRetries != null) {
+                this._maxRetries = requestOptions.maxRetries;
+            }
+        }
+    }
+    options(requestUrl, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('OPTIONS', requestUrl, null, additionalHeaders || {});
+        });
+    }
+    get(requestUrl, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('GET', requestUrl, null, additionalHeaders || {});
+        });
+    }
+    del(requestUrl, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('DELETE', requestUrl, null, additionalHeaders || {});
+        });
+    }
+    post(requestUrl, data, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('POST', requestUrl, data, additionalHeaders || {});
+        });
+    }
+    patch(requestUrl, data, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('PATCH', requestUrl, data, additionalHeaders || {});
+        });
+    }
+    put(requestUrl, data, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('PUT', requestUrl, data, additionalHeaders || {});
+        });
+    }
+    head(requestUrl, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('HEAD', requestUrl, null, additionalHeaders || {});
+        });
+    }
+    sendStream(verb, requestUrl, stream, additionalHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request(verb, requestUrl, stream, additionalHeaders);
+        });
+    }
+    /**
+     * Gets a typed object from an endpoint
+     * Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
+     */
+    getJson(requestUrl_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
+            additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+            const res = yield this.get(requestUrl, additionalHeaders);
+            return this._processResponse(res, this.requestOptions);
+        });
+    }
+    postJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+            const data = JSON.stringify(obj, null, 2);
+            additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+            const res = yield this.post(requestUrl, data, additionalHeaders);
+            return this._processResponse(res, this.requestOptions);
+        });
+    }
+    putJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+            const data = JSON.stringify(obj, null, 2);
+            additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+            const res = yield this.put(requestUrl, data, additionalHeaders);
+            return this._processResponse(res, this.requestOptions);
+        });
+    }
+    patchJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+            const data = JSON.stringify(obj, null, 2);
+            additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+            const res = yield this.patch(requestUrl, data, additionalHeaders);
+            return this._processResponse(res, this.requestOptions);
+        });
+    }
+    /**
+     * Makes a raw http request.
+     * All other methods such as get, post, patch, and request ultimately call this.
+     * Prefer get, del, post and patch
+     */
+    request(verb, requestUrl, data, headers) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this._disposed) {
+                throw new Error('Client has already been disposed.');
+            }
+            const parsedUrl = new URL(requestUrl);
+            let info = this._prepareRequest(verb, parsedUrl, headers);
+            // Only perform retries on reads since writes may not be idempotent.
+            const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb)
+                ? this._maxRetries + 1
+                : 1;
+            let numTries = 0;
+            let response;
+            do {
+                response = yield this.requestRaw(info, data);
+                // Check if it's an authentication challenge
+                if (response &&
+                    response.message &&
+                    response.message.statusCode === HttpCodes.Unauthorized) {
+                    let authenticationHandler;
+                    for (const handler of this.handlers) {
+                        if (handler.canHandleAuthentication(response)) {
+                            authenticationHandler = handler;
+                            break;
+                        }
+                    }
+                    if (authenticationHandler) {
+                        return authenticationHandler.handleAuthentication(this, info, data);
+                    }
+                    else {
+                        // We have received an unauthorized response but have no handlers to handle it.
+                        // Let the response return to the caller.
+                        return response;
+                    }
+                }
+                let redirectsRemaining = this._maxRedirects;
+                while (response.message.statusCode &&
+                    HttpRedirectCodes.includes(response.message.statusCode) &&
+                    this._allowRedirects &&
+                    redirectsRemaining > 0) {
+                    const redirectUrl = response.message.headers['location'];
+                    if (!redirectUrl) {
+                        // if there's no location to redirect to, we won't
+                        break;
+                    }
+                    const parsedRedirectUrl = new URL(redirectUrl);
+                    if (parsedUrl.protocol === 'https:' &&
+                        parsedUrl.protocol !== parsedRedirectUrl.protocol &&
+                        !this._allowRedirectDowngrade) {
+                        throw new Error('Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.');
+                    }
+                    // we need to finish reading the response before reassigning response
+                    // which will leak the open socket.
+                    yield response.readBody();
+                    // strip authorization header if redirected to a different hostname
+                    if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
+                        for (const header in headers) {
+                            // header names are case insensitive
+                            if (header.toLowerCase() === 'authorization') {
+                                delete headers[header];
+                            }
+                        }
+                    }
+                    // let's make the request with the new redirectUrl
+                    info = this._prepareRequest(verb, parsedRedirectUrl, headers);
+                    response = yield this.requestRaw(info, data);
+                    redirectsRemaining--;
+                }
+                if (!response.message.statusCode ||
+                    !HttpResponseRetryCodes.includes(response.message.statusCode)) {
+                    // If not a retry code, return immediately instead of retrying
+                    return response;
+                }
+                numTries += 1;
+                if (numTries < maxTries) {
+                    yield response.readBody();
+                    yield this._performExponentialBackoff(numTries);
+                }
+            } while (numTries < maxTries);
+            return response;
+        });
+    }
+    /**
+     * Needs to be called if keepAlive is set to true in request options.
+     */
+    dispose() {
+        if (this._agent) {
+            this._agent.destroy();
+        }
+        this._disposed = true;
+    }
+    /**
+     * Raw request.
+     * @param info
+     * @param data
+     */
+    requestRaw(info, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                function callbackForResult(err, res) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else if (!res) {
+                        // If `err` is not passed, then `res` must be passed.
+                        reject(new Error('Unknown error'));
+                    }
+                    else {
+                        resolve(res);
+                    }
+                }
+                this.requestRawWithCallback(info, data, callbackForResult);
+            });
+        });
+    }
+    /**
+     * Raw request with callback.
+     * @param info
+     * @param data
+     * @param onResult
+     */
+    requestRawWithCallback(info, data, onResult) {
+        if (typeof data === 'string') {
+            if (!info.options.headers) {
+                info.options.headers = {};
+            }
+            info.options.headers['Content-Length'] = Buffer.byteLength(data, 'utf8');
+        }
+        let callbackCalled = false;
+        function handleResult(err, res) {
+            if (!callbackCalled) {
+                callbackCalled = true;
+                onResult(err, res);
+            }
+        }
+        const req = info.httpModule.request(info.options, (msg) => {
+            const res = new HttpClientResponse(msg);
+            handleResult(undefined, res);
+        });
+        let socket;
+        req.on('socket', sock => {
+            socket = sock;
+        });
+        // If we ever get disconnected, we want the socket to timeout eventually
+        req.setTimeout(this._socketTimeout || 3 * 60000, () => {
+            if (socket) {
+                socket.end();
+            }
+            handleResult(new Error(`Request timeout: ${info.options.path}`));
+        });
+        req.on('error', function (err) {
+            // err has statusCode property
+            // res should have headers
+            handleResult(err);
+        });
+        if (data && typeof data === 'string') {
+            req.write(data, 'utf8');
+        }
+        if (data && typeof data !== 'string') {
+            data.on('close', function () {
+                req.end();
+            });
+            data.pipe(req);
+        }
+        else {
+            req.end();
+        }
+    }
+    /**
+     * Gets an http agent. This function is useful when you need an http agent that handles
+     * routing through a proxy server - depending upon the url and proxy environment variables.
+     * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+     */
+    getAgent(serverUrl) {
+        const parsedUrl = new URL(serverUrl);
+        return this._getAgent(parsedUrl);
+    }
+    getAgentDispatcher(serverUrl) {
+        const parsedUrl = new URL(serverUrl);
+        const proxyUrl = pm.getProxyUrl(parsedUrl);
+        const useProxy = proxyUrl && proxyUrl.hostname;
+        if (!useProxy) {
+            return;
+        }
+        return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
+    }
+    _prepareRequest(method, requestUrl, headers) {
+        const info = {};
+        info.parsedUrl = requestUrl;
+        const usingSsl = info.parsedUrl.protocol === 'https:';
+        info.httpModule = usingSsl ? https : http;
+        const defaultPort = usingSsl ? 443 : 80;
+        info.options = {};
+        info.options.host = info.parsedUrl.hostname;
+        info.options.port = info.parsedUrl.port
+            ? parseInt(info.parsedUrl.port)
+            : defaultPort;
+        info.options.path =
+            (info.parsedUrl.pathname || '') + (info.parsedUrl.search || '');
+        info.options.method = method;
+        info.options.headers = this._mergeHeaders(headers);
+        if (this.userAgent != null) {
+            info.options.headers['user-agent'] = this.userAgent;
+        }
+        info.options.agent = this._getAgent(info.parsedUrl);
+        // gives handlers an opportunity to participate
+        if (this.handlers) {
+            for (const handler of this.handlers) {
+                handler.prepareRequest(info.options);
+            }
+        }
+        return info;
+    }
+    _mergeHeaders(headers) {
+        if (this.requestOptions && this.requestOptions.headers) {
+            return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers || {}));
+        }
+        return lowercaseKeys(headers || {});
+    }
+    /**
+     * Gets an existing header value or returns a default.
+     * Handles converting number header values to strings since HTTP headers must be strings.
+     * Note: This returns string | string[] since some headers can have multiple values.
+     * For headers that must always be a single string (like Content-Type), use the
+     * specialized _getExistingOrDefaultContentTypeHeader method instead.
+     */
+    _getExistingOrDefaultHeader(additionalHeaders, header, _default) {
+        let clientHeader;
+        if (this.requestOptions && this.requestOptions.headers) {
+            const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
+            if (headerValue) {
+                clientHeader =
+                    typeof headerValue === 'number' ? headerValue.toString() : headerValue;
+            }
+        }
+        const additionalValue = additionalHeaders[header];
+        if (additionalValue !== undefined) {
+            return typeof additionalValue === 'number'
+                ? additionalValue.toString()
+                : additionalValue;
+        }
+        if (clientHeader !== undefined) {
+            return clientHeader;
+        }
+        return _default;
+    }
+    /**
+     * Specialized version of _getExistingOrDefaultHeader for Content-Type header.
+     * Always returns a single string (not an array) since Content-Type should be a single value.
+     * Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
+     * This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
+     * that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
+     */
+    _getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
+        let clientHeader;
+        if (this.requestOptions && this.requestOptions.headers) {
+            const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
+            if (headerValue) {
+                if (typeof headerValue === 'number') {
+                    clientHeader = String(headerValue);
+                }
+                else if (Array.isArray(headerValue)) {
+                    clientHeader = headerValue.join(', ');
+                }
+                else {
+                    clientHeader = headerValue;
+                }
+            }
+        }
+        const additionalValue = additionalHeaders[Headers.ContentType];
+        // Return the first non-undefined value, converting numbers or arrays to strings if necessary
+        if (additionalValue !== undefined) {
+            if (typeof additionalValue === 'number') {
+                return String(additionalValue);
+            }
+            else if (Array.isArray(additionalValue)) {
+                return additionalValue.join(', ');
+            }
+            else {
+                return additionalValue;
+            }
+        }
+        if (clientHeader !== undefined) {
+            return clientHeader;
+        }
+        return _default;
+    }
+    _getAgent(parsedUrl) {
+        let agent;
+        const proxyUrl = pm.getProxyUrl(parsedUrl);
+        const useProxy = proxyUrl && proxyUrl.hostname;
+        if (this._keepAlive && useProxy) {
+            agent = this._proxyAgent;
+        }
+        if (!useProxy) {
+            agent = this._agent;
+        }
+        // if agent is already assigned use that agent.
+        if (agent) {
+            return agent;
+        }
+        const usingSsl = parsedUrl.protocol === 'https:';
+        let maxSockets = 100;
+        if (this.requestOptions) {
+            maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
+        }
+        // This is `useProxy` again, but we need to check `proxyURl` directly for TypeScripts's flow analysis.
+        if (proxyUrl && proxyUrl.hostname) {
+            const agentOptions = {
+                maxSockets,
+                keepAlive: this._keepAlive,
+                proxy: Object.assign(Object.assign({}, ((proxyUrl.username || proxyUrl.password) && {
+                    proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`
+                })), { host: proxyUrl.hostname, port: proxyUrl.port })
+            };
+            let tunnelAgent;
+            const overHttps = proxyUrl.protocol === 'https:';
+            if (usingSsl) {
+                tunnelAgent = overHttps ? tunnel.httpsOverHttps : tunnel.httpsOverHttp;
+            }
+            else {
+                tunnelAgent = overHttps ? tunnel.httpOverHttps : tunnel.httpOverHttp;
+            }
+            agent = tunnelAgent(agentOptions);
+            this._proxyAgent = agent;
+        }
+        // if tunneling agent isn't assigned create a new agent
+        if (!agent) {
+            const options = { keepAlive: this._keepAlive, maxSockets };
+            agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
+            this._agent = agent;
+        }
+        if (usingSsl && this._ignoreSslError) {
+            // we don't want to set NODE_TLS_REJECT_UNAUTHORIZED=0 since that will affect request for entire process
+            // http.RequestOptions doesn't expose a way to modify RequestOptions.agent.options
+            // we have to cast it to any and change it directly
+            agent.options = Object.assign(agent.options || {}, {
+                rejectUnauthorized: false
+            });
+        }
+        return agent;
+    }
+    _getProxyAgentDispatcher(parsedUrl, proxyUrl) {
+        let proxyAgent;
+        if (this._keepAlive) {
+            proxyAgent = this._proxyAgentDispatcher;
+        }
+        // if agent is already assigned use that agent.
+        if (proxyAgent) {
+            return proxyAgent;
+        }
+        const usingSsl = parsedUrl.protocol === 'https:';
+        proxyAgent = new undici_1.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, ((proxyUrl.username || proxyUrl.password) && {
+            token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString('base64')}`
+        })));
+        this._proxyAgentDispatcher = proxyAgent;
+        if (usingSsl && this._ignoreSslError) {
+            // we don't want to set NODE_TLS_REJECT_UNAUTHORIZED=0 since that will affect request for entire process
+            // http.RequestOptions doesn't expose a way to modify RequestOptions.agent.options
+            // we have to cast it to any and change it directly
+            proxyAgent.options = Object.assign(proxyAgent.options.requestTls || {}, {
+                rejectUnauthorized: false
+            });
+        }
+        return proxyAgent;
+    }
+    _performExponentialBackoff(retryNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
+            const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
+            return new Promise(resolve => setTimeout(() => resolve(), ms));
+        });
+    }
+    _processResponse(res, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                const statusCode = res.message.statusCode || 0;
+                const response = {
+                    statusCode,
+                    result: null,
+                    headers: {}
+                };
+                // not found leads to null obj returned
+                if (statusCode === HttpCodes.NotFound) {
+                    resolve(response);
+                }
+                // get the result from the body
+                function dateTimeDeserializer(key, value) {
+                    if (typeof value === 'string') {
+                        const a = new Date(value);
+                        if (!isNaN(a.valueOf())) {
+                            return a;
+                        }
+                    }
+                    return value;
+                }
+                let obj;
+                let contents;
+                try {
+                    contents = yield res.readBody();
+                    if (contents && contents.length > 0) {
+                        if (options && options.deserializeDates) {
+                            obj = JSON.parse(contents, dateTimeDeserializer);
+                        }
+                        else {
+                            obj = JSON.parse(contents);
+                        }
+                        response.result = obj;
+                    }
+                    response.headers = res.message.headers;
+                }
+                catch (err) {
+                    // Invalid resource (contents not json);  leaving result obj null
+                }
+                // note that 3xx redirects are handled by the http layer.
+                if (statusCode > 299) {
+                    let msg;
+                    // if exception/error in body, attempt to get better error
+                    if (obj && obj.message) {
+                        msg = obj.message;
+                    }
+                    else if (contents && contents.length > 0) {
+                        // it may be the case that the exception is in the body message as string
+                        msg = contents;
+                    }
+                    else {
+                        msg = `Failed request: (${statusCode})`;
+                    }
+                    const err = new HttpClientError(msg, statusCode);
+                    err.result = response.result;
+                    reject(err);
+                }
+                else {
+                    resolve(response);
+                }
+            }));
+        });
+    }
+}
+exports.HttpClient = HttpClient;
+const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 4988:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getProxyUrl = getProxyUrl;
+exports.checkBypass = checkBypass;
+function getProxyUrl(reqUrl) {
+    const usingSsl = reqUrl.protocol === 'https:';
+    if (checkBypass(reqUrl)) {
+        return undefined;
+    }
+    const proxyVar = (() => {
+        if (usingSsl) {
+            return process.env['https_proxy'] || process.env['HTTPS_PROXY'];
+        }
+        else {
+            return process.env['http_proxy'] || process.env['HTTP_PROXY'];
+        }
+    })();
+    if (proxyVar) {
+        try {
+            return new DecodedURL(proxyVar);
+        }
+        catch (_a) {
+            if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://'))
+                return new DecodedURL(`http://${proxyVar}`);
+        }
+    }
+    else {
+        return undefined;
+    }
+}
+function checkBypass(reqUrl) {
+    if (!reqUrl.hostname) {
+        return false;
+    }
+    const reqHost = reqUrl.hostname;
+    if (isLoopbackAddress(reqHost)) {
+        return true;
+    }
+    const noProxy = process.env['no_proxy'] || process.env['NO_PROXY'] || '';
+    if (!noProxy) {
+        return false;
+    }
+    // Determine the request port
+    let reqPort;
+    if (reqUrl.port) {
+        reqPort = Number(reqUrl.port);
+    }
+    else if (reqUrl.protocol === 'http:') {
+        reqPort = 80;
+    }
+    else if (reqUrl.protocol === 'https:') {
+        reqPort = 443;
+    }
+    // Format the request hostname and hostname with port
+    const upperReqHosts = [reqUrl.hostname.toUpperCase()];
+    if (typeof reqPort === 'number') {
+        upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
+    }
+    // Compare request host against noproxy
+    for (const upperNoProxyItem of noProxy
+        .split(',')
+        .map(x => x.trim().toUpperCase())
+        .filter(x => x)) {
+        if (upperNoProxyItem === '*' ||
+            upperReqHosts.some(x => x === upperNoProxyItem ||
+                x.endsWith(`.${upperNoProxyItem}`) ||
+                (upperNoProxyItem.startsWith('.') &&
+                    x.endsWith(`${upperNoProxyItem}`)))) {
+            return true;
+        }
+    }
+    return false;
+}
+function isLoopbackAddress(host) {
+    const hostLower = host.toLowerCase();
+    return (hostLower === 'localhost' ||
+        hostLower.startsWith('127.') ||
+        hostLower.startsWith('[::1]') ||
+        hostLower.startsWith('[0:0:0:0:0:0:0:1]'));
+}
+class DecodedURL extends URL {
+    constructor(url, base) {
+        super(url, base);
+        this._decodedUsername = decodeURIComponent(super.username);
+        this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+        return this._decodedUsername;
+    }
+    get password() {
+        return this._decodedPassword;
+    }
+}
+//# sourceMappingURL=proxy.js.map
+
+/***/ }),
+
+/***/ 5207:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2988,21 +3950,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.readlink = readlink;
+exports.exists = exists;
+exports.isDirectory = isDirectory;
+exports.isRooted = isRooted;
+exports.tryGetExecutablePath = tryGetExecutablePath;
+exports.getCmdPath = getCmdPath;
 const fs = __importStar(__nccwpck_require__(9896));
 const path = __importStar(__nccwpck_require__(6928));
 _a = fs.promises
 // export const {open} = 'fs'
-, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
+, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
 // export const {open} = 'fs'
 exports.IS_WINDOWS = process.platform === 'win32';
+/**
+ * Custom implementation of readlink to ensure Windows junctions
+ * maintain trailing backslash for backward compatibility with Node.js < 24
+ *
+ * In Node.js 20, Windows junctions (directory symlinks) always returned paths
+ * with trailing backslashes. Node.js 24 removed this behavior, which breaks
+ * code that relied on this format for path operations.
+ *
+ * This implementation restores the Node 20 behavior by adding a trailing
+ * backslash to all junction results on Windows.
+ */
+function readlink(fsPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield fs.promises.readlink(fsPath);
+        // On Windows, restore Node 20 behavior: add trailing backslash to all results
+        // since junctions on Windows are always directory links
+        if (exports.IS_WINDOWS && !result.endsWith('\\')) {
+            return `${result}\\`;
+        }
+        return result;
+    });
+}
 // See https://github.com/nodejs/node/blob/d0153aee367422d0858105abec186da4dff0a0c5/deps/uv/include/uv/win.h#L691
 exports.UV_FS_O_EXLOCK = 0x10000000;
 exports.READONLY = fs.constants.O_RDONLY;
 function exists(fsPath) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield exports.stat(fsPath);
+            yield (0, exports.stat)(fsPath);
         }
         catch (err) {
             if (err.code === 'ENOENT') {
@@ -3013,14 +4003,12 @@ function exists(fsPath) {
         return true;
     });
 }
-exports.exists = exists;
-function isDirectory(fsPath, useStat = false) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const stats = useStat ? yield exports.stat(fsPath) : yield exports.lstat(fsPath);
+function isDirectory(fsPath_1) {
+    return __awaiter(this, arguments, void 0, function* (fsPath, useStat = false) {
+        const stats = useStat ? yield (0, exports.stat)(fsPath) : yield (0, exports.lstat)(fsPath);
         return stats.isDirectory();
     });
 }
-exports.isDirectory = isDirectory;
 /**
  * On OSX/Linux, true if path starts with '/'. On Windows, true for paths like:
  * \, \hello, \\hello\share, C:, and C:\hello (and corresponding alternate separator cases).
@@ -3036,7 +4024,6 @@ function isRooted(p) {
     }
     return p.startsWith('/');
 }
-exports.isRooted = isRooted;
 /**
  * Best effort attempt to determine whether a file exists and is executable.
  * @param filePath    file path to check
@@ -3048,7 +4035,7 @@ function tryGetExecutablePath(filePath, extensions) {
         let stats = undefined;
         try {
             // test file exists
-            stats = yield exports.stat(filePath);
+            stats = yield (0, exports.stat)(filePath);
         }
         catch (err) {
             if (err.code !== 'ENOENT') {
@@ -3076,7 +4063,7 @@ function tryGetExecutablePath(filePath, extensions) {
             filePath = originalFilePath + extension;
             stats = undefined;
             try {
-                stats = yield exports.stat(filePath);
+                stats = yield (0, exports.stat)(filePath);
             }
             catch (err) {
                 if (err.code !== 'ENOENT') {
@@ -3090,7 +4077,7 @@ function tryGetExecutablePath(filePath, extensions) {
                     try {
                         const directory = path.dirname(filePath);
                         const upperName = path.basename(filePath).toUpperCase();
-                        for (const actualName of yield exports.readdir(directory)) {
+                        for (const actualName of yield (0, exports.readdir)(directory)) {
                             if (upperName === actualName.toUpperCase()) {
                                 filePath = path.join(directory, actualName);
                                 break;
@@ -3113,7 +4100,6 @@ function tryGetExecutablePath(filePath, extensions) {
         return '';
     });
 }
-exports.tryGetExecutablePath = tryGetExecutablePath;
 function normalizeSeparators(p) {
     p = p || '';
     if (exports.IS_WINDOWS) {
@@ -3130,15 +4116,18 @@ function normalizeSeparators(p) {
 //   256 128 64 32 16 8 4 2 1
 function isUnixExecutable(stats) {
     return ((stats.mode & 1) > 0 ||
-        ((stats.mode & 8) > 0 && stats.gid === process.getgid()) ||
-        ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
+        ((stats.mode & 8) > 0 &&
+            process.getgid !== undefined &&
+            stats.gid === process.getgid()) ||
+        ((stats.mode & 64) > 0 &&
+            process.getuid !== undefined &&
+            stats.uid === process.getuid()));
 }
 // Get the path of cmd.exe in windows
 function getCmdPath() {
     var _a;
     return (_a = process.env['COMSPEC']) !== null && _a !== void 0 ? _a : `cmd.exe`;
 }
-exports.getCmdPath = getCmdPath;
 //# sourceMappingURL=io-util.js.map
 
 /***/ }),
@@ -3150,7 +4139,11 @@ exports.getCmdPath = getCmdPath;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -3160,13 +4153,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3177,7 +4180,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.findInPath = exports.which = exports.mkdirP = exports.rmRF = exports.mv = exports.cp = void 0;
+exports.cp = cp;
+exports.mv = mv;
+exports.rmRF = rmRF;
+exports.mkdirP = mkdirP;
+exports.which = which;
+exports.findInPath = findInPath;
 const assert_1 = __nccwpck_require__(2613);
 const path = __importStar(__nccwpck_require__(6928));
 const ioUtil = __importStar(__nccwpck_require__(5207));
@@ -3189,8 +4197,8 @@ const ioUtil = __importStar(__nccwpck_require__(5207));
  * @param     dest      destination path
  * @param     options   optional. See CopyOptions.
  */
-function cp(source, dest, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
+function cp(source_1, dest_1) {
+    return __awaiter(this, arguments, void 0, function* (source, dest, options = {}) {
         const { force, recursive, copySourceDirectory } = readCopyOptions(options);
         const destStat = (yield ioUtil.exists(dest)) ? yield ioUtil.stat(dest) : null;
         // Dest is an existing file, but not forcing
@@ -3222,7 +4230,6 @@ function cp(source, dest, options = {}) {
         }
     });
 }
-exports.cp = cp;
 /**
  * Moves a path.
  *
@@ -3230,8 +4237,8 @@ exports.cp = cp;
  * @param     dest      destination path
  * @param     options   optional. See MoveOptions.
  */
-function mv(source, dest, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
+function mv(source_1, dest_1) {
+    return __awaiter(this, arguments, void 0, function* (source, dest, options = {}) {
         if (yield ioUtil.exists(dest)) {
             let destExists = true;
             if (yield ioUtil.isDirectory(dest)) {
@@ -3252,7 +4259,6 @@ function mv(source, dest, options = {}) {
         yield ioUtil.rename(source, dest);
     });
 }
-exports.mv = mv;
 /**
  * Remove a path recursively with force
  *
@@ -3281,7 +4287,6 @@ function rmRF(inputPath) {
         }
     });
 }
-exports.rmRF = rmRF;
 /**
  * Make a directory.  Creates the full path with folders in between
  * Will throw if it fails
@@ -3291,11 +4296,10 @@ exports.rmRF = rmRF;
  */
 function mkdirP(fsPath) {
     return __awaiter(this, void 0, void 0, function* () {
-        assert_1.ok(fsPath, 'a path argument must be provided');
+        (0, assert_1.ok)(fsPath, 'a path argument must be provided');
         yield ioUtil.mkdir(fsPath, { recursive: true });
     });
 }
-exports.mkdirP = mkdirP;
 /**
  * Returns path of a tool had the tool actually been invoked.  Resolves via paths.
  * If you check and the tool does not exist, it will throw.
@@ -3329,7 +4333,6 @@ function which(tool, check) {
         return '';
     });
 }
-exports.which = which;
 /**
  * Returns a list of all occurrences of the given tool on the system path.
  *
@@ -3386,7 +4389,6 @@ function findInPath(tool) {
         return matches;
     });
 }
-exports.findInPath = findInPath;
 function readCopyOptions(options) {
     const force = options.force == null ? true : options.force;
     const recursive = Boolean(options.recursive);
@@ -4016,13 +5018,13 @@ const util_middleware_1 = __nccwpck_require__(6324);
 const endpointResolver_1 = __nccwpck_require__(7526);
 const createEndpointRuleSetHttpAuthSchemeParametersProvider = (defaultHttpAuthSchemeParametersProvider) => async (config, context, input) => {
     if (!input) {
-        throw new Error(`Could not find \`input\` for \`defaultEndpointRuleSetHttpAuthSchemeParametersProvider\``);
+        throw new Error("Could not find `input` for `defaultEndpointRuleSetHttpAuthSchemeParametersProvider`");
     }
     const defaultParameters = await defaultHttpAuthSchemeParametersProvider(config, context, input);
     const instructionsFn = (0, util_middleware_1.getSmithyContext)(context)?.commandInstance?.constructor
         ?.getEndpointParameterInstructions;
     if (!instructionsFn) {
-        throw new Error(`getEndpointParameterInstructions() is not defined on \`${context.commandName}\``);
+        throw new Error(`getEndpointParameterInstructions() is not defined on '${context.commandName}'`);
     }
     const endpointParameters = await (0, middleware_endpoint_1.resolveParams)(input, { getEndpointParameterInstructions: instructionsFn }, config);
     return Object.assign(defaultParameters, endpointParameters);
@@ -4030,10 +5032,9 @@ const createEndpointRuleSetHttpAuthSchemeParametersProvider = (defaultHttpAuthSc
 const _defaultS3HttpAuthSchemeParametersProvider = async (config, context, input) => {
     return {
         operation: (0, util_middleware_1.getSmithyContext)(context).operation,
-        region: (await (0, util_middleware_1.normalizeProvider)(config.region)()) ||
-            (() => {
-                throw new Error("expected `region` to be configured for `aws.auth#sigv4`");
-            })(),
+        region: await (0, util_middleware_1.normalizeProvider)(config.region)() || (() => {
+            throw new Error("expected `region` to be configured for `aws.auth#sigv4`");
+        })(),
     };
 };
 exports.defaultS3HttpAuthSchemeParametersProvider = createEndpointRuleSetHttpAuthSchemeParametersProvider(_defaultS3HttpAuthSchemeParametersProvider);
@@ -4079,7 +5080,7 @@ const createEndpointRuleSetHttpAuthSchemeProvider = (defaultEndpointResolver, de
             const { name: resolvedName, properties = {}, ...rest } = scheme;
             const name = resolvedName.toLowerCase();
             if (resolvedName !== name) {
-                console.warn(`HttpAuthScheme has been normalized with lowercasing: \`${resolvedName}\` to \`${name}\``);
+                console.warn(`HttpAuthScheme has been normalized with lowercasing: '${resolvedName}' to '${name}'`);
             }
             let schemeId;
             if (name === "sigv4a") {
@@ -4096,11 +5097,11 @@ const createEndpointRuleSetHttpAuthSchemeProvider = (defaultEndpointResolver, de
                 schemeId = "aws.auth#sigv4";
             }
             else {
-                throw new Error(`Unknown HttpAuthScheme found in \`@smithy.rules#endpointRuleSet\`: \`${name}\``);
+                throw new Error(`Unknown HttpAuthScheme found in '@smithy.rules#endpointRuleSet': '${name}'`);
             }
             const createOption = createHttpAuthOptionFunctions[schemeId];
             if (!createOption) {
-                throw new Error(`Could not find HttpAuthOption create function for \`${schemeId}\``);
+                throw new Error(`Could not find HttpAuthOption create function for '${schemeId}'`);
             }
             const option = createOption(authParameters);
             option.schemeId = schemeId;
@@ -4187,7 +5188,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ruleSet = void 0;
 const cs = "required", ct = "type", cu = "rules", cv = "conditions", cw = "fn", cx = "argv", cy = "ref", cz = "assign", cA = "url", cB = "properties", cC = "backend", cD = "authSchemes", cE = "disableDoubleEncoding", cF = "signingName", cG = "signingRegion", cH = "headers", cI = "signingRegionSet";
 const a = 6, b = false, c = true, d = "isSet", e = "booleanEquals", f = "error", g = "aws.partition", h = "stringEquals", i = "getAttr", j = "name", k = "substring", l = "bucketSuffix", m = "parseURL", n = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "accessPointSuffix", t = "{url#scheme}://{url#authority}{url#path}", u = "hardwareType", v = "regionPrefix", w = "bucketAliasSuffix", x = "outpostId", y = "isValidHostLabel", z = "sigv4a", A = "s3-outposts", B = "s3", C = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", D = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", E = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", F = "aws.parseArn", G = "bucketArn", H = "arnType", I = "", J = "s3-object-lambda", K = "accesspoint", L = "accessPointName", M = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", N = "mrapPartition", O = "outpostType", P = "arnPrefix", Q = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", S = "https://s3.{partitionResult#dnsSuffix}", T = { [cs]: false, [ct]: "string" }, U = { [cs]: true, "default": false, [ct]: "boolean" }, V = { [cs]: false, [ct]: "boolean" }, W = { [cw]: e, [cx]: [{ [cy]: "Accelerate" }, true] }, X = { [cw]: e, [cx]: [{ [cy]: "UseFIPS" }, true] }, Y = { [cw]: e, [cx]: [{ [cy]: "UseDualStack" }, true] }, Z = { [cw]: d, [cx]: [{ [cy]: "Endpoint" }] }, aa = { [cw]: g, [cx]: [{ [cy]: "Region" }], [cz]: "partitionResult" }, ab = { [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "partitionResult" }, j] }, "aws-cn"] }, ac = { [cw]: d, [cx]: [{ [cy]: "Bucket" }] }, ad = { [cy]: "Bucket" }, ae = { [cv]: [W], [f]: "S3Express does not support S3 Accelerate.", [ct]: f }, af = { [cv]: [Z, { [cw]: m, [cx]: [{ [cy]: "Endpoint" }], [cz]: "url" }], [cu]: [{ [cv]: [{ [cw]: d, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }, true] }], [cu]: [{ [cv]: [{ [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }], [cu]: [{ [cv]: [{ [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }], [cu]: [{ [n]: { [cA]: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: p, [cx]: [ad, false] }], [cu]: [{ [n]: { [cA]: q, [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }, { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }], [cu]: [{ [cv]: [{ [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }], [cu]: [{ [n]: { [cA]: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: p, [cx]: [ad, false] }], [cu]: [{ [n]: { [cA]: q, [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }, { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }], [ct]: o }, ag = { [cw]: m, [cx]: [{ [cy]: "Endpoint" }], [cz]: "url" }, ah = { [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }, ai = { [cy]: "url" }, aj = { [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }, ak = { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, al = {}, am = { [cw]: p, [cx]: [ad, false] }, an = { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }, ao = { [cw]: d, [cx]: [{ [cy]: "UseS3ExpressControlEndpoint" }] }, ap = { [cw]: e, [cx]: [{ [cy]: "UseS3ExpressControlEndpoint" }, true] }, aq = { [cw]: r, [cx]: [Z] }, ar = { [cw]: e, [cx]: [{ [cy]: "UseDualStack" }, false] }, as = { [cw]: e, [cx]: [{ [cy]: "UseFIPS" }, false] }, at = { [f]: "Unrecognized S3Express bucket name format.", [ct]: f }, au = { [cw]: r, [cx]: [ac] }, av = { [cy]: u }, aw = { [cv]: [aq], [f]: "Expected a endpoint to be specified but no endpoint was found", [ct]: f }, ax = { [cD]: [{ [cE]: true, [j]: z, [cF]: A, [cI]: ["*"] }, { [cE]: true, [j]: "sigv4", [cF]: A, [cG]: "{Region}" }] }, ay = { [cw]: e, [cx]: [{ [cy]: "ForcePathStyle" }, false] }, az = { [cy]: "ForcePathStyle" }, aA = { [cw]: e, [cx]: [{ [cy]: "Accelerate" }, false] }, aB = { [cw]: h, [cx]: [{ [cy]: "Region" }, "aws-global"] }, aC = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "us-east-1" }] }, aD = { [cw]: r, [cx]: [aB] }, aE = { [cw]: e, [cx]: [{ [cy]: "UseGlobalEndpoint" }, true] }, aF = { [cA]: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{Region}" }] }, [cH]: {} }, aG = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{Region}" }] }, aH = { [cw]: e, [cx]: [{ [cy]: "UseGlobalEndpoint" }, false] }, aI = { [cA]: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aJ = { [cA]: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aK = { [cA]: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aL = { [cw]: e, [cx]: [{ [cw]: i, [cx]: [ai, "isIp"] }, false] }, aM = { [cA]: C, [cB]: aG, [cH]: {} }, aN = { [cA]: q, [cB]: aG, [cH]: {} }, aO = { [n]: aN, [ct]: n }, aP = { [cA]: D, [cB]: aG, [cH]: {} }, aQ = { [cA]: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aR = { [f]: "Invalid region: region was not a valid DNS name.", [ct]: f }, aS = { [cy]: G }, aT = { [cy]: H }, aU = { [cw]: i, [cx]: [aS, "service"] }, aV = { [cy]: L }, aW = { [cv]: [Y], [f]: "S3 Object Lambda does not support Dual-stack", [ct]: f }, aX = { [cv]: [W], [f]: "S3 Object Lambda does not support S3 Accelerate", [ct]: f }, aY = { [cv]: [{ [cw]: d, [cx]: [{ [cy]: "DisableAccessPoints" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableAccessPoints" }, true] }], [f]: "Access points are not supported for this operation", [ct]: f }, aZ = { [cv]: [{ [cw]: d, [cx]: [{ [cy]: "UseArnRegion" }] }, { [cw]: e, [cx]: [{ [cy]: "UseArnRegion" }, false] }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, "{Region}"] }] }], [f]: "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`", [ct]: f }, ba = { [cw]: i, [cx]: [{ [cy]: "bucketPartition" }, j] }, bb = { [cw]: i, [cx]: [aS, "accountId"] }, bc = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: J, [cG]: "{bucketArn#region}" }] }, bd = { [f]: "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`", [ct]: f }, be = { [f]: "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`", [ct]: f }, bf = { [f]: "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)", [ct]: f }, bg = { [f]: "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`", [ct]: f }, bh = { [f]: "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.", [ct]: f }, bi = { [f]: "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided", [ct]: f }, bj = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{bucketArn#region}" }] }, bk = { [cD]: [{ [cE]: true, [j]: z, [cF]: A, [cI]: ["*"] }, { [cE]: true, [j]: "sigv4", [cF]: A, [cG]: "{bucketArn#region}" }] }, bl = { [cw]: F, [cx]: [ad] }, bm = { [cA]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bn = { [cA]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bo = { [cA]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bp = { [cA]: Q, [cB]: aG, [cH]: {} }, bq = { [cA]: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, br = { [cy]: "UseObjectLambdaEndpoint" }, bs = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: J, [cG]: "{Region}" }] }, bt = { [cA]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bu = { [cA]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bv = { [cA]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bw = { [cA]: t, [cB]: aG, [cH]: {} }, bx = { [cA]: "https://s3.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, by = [{ [cy]: "Region" }], bz = [{ [cy]: "Endpoint" }], bA = [ad], bB = [W], bC = [Z, ag], bD = [{ [cw]: d, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }, true] }], bE = [aj], bF = [am], bG = [aa], bH = [X, Y], bI = [X, ar], bJ = [as, Y], bK = [as, ar], bL = [{ [cw]: k, [cx]: [ad, 6, 14, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 14, 16, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bM = [{ [cv]: [X, Y], [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bI, [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bJ, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bK, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }], bN = [{ [cw]: k, [cx]: [ad, 6, 15, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 15, 17, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bO = [{ [cw]: k, [cx]: [ad, 6, 19, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 19, 21, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bP = [{ [cw]: k, [cx]: [ad, 6, 20, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 20, 22, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bQ = [{ [cw]: k, [cx]: [ad, 6, 26, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 26, 28, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bR = [{ [cv]: [X, Y], [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bI, [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bJ, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bK, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], bS = [ad, 0, 7, true], bT = [{ [cw]: k, [cx]: [ad, 7, 15, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 15, 17, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bU = [{ [cw]: k, [cx]: [ad, 7, 16, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 16, 18, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bV = [{ [cw]: k, [cx]: [ad, 7, 20, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 20, 22, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bW = [{ [cw]: k, [cx]: [ad, 7, 21, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 21, 23, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bX = [{ [cw]: k, [cx]: [ad, 7, 27, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 27, 29, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bY = [ac], bZ = [{ [cw]: y, [cx]: [{ [cy]: x }, false] }], ca = [{ [cw]: h, [cx]: [{ [cy]: v }, "beta"] }], cb = ["*"], cc = [{ [cw]: y, [cx]: [{ [cy]: "Region" }, false] }], cd = [{ [cw]: h, [cx]: [{ [cy]: "Region" }, "us-east-1"] }], ce = [{ [cw]: h, [cx]: [aT, K] }], cf = [{ [cw]: i, [cx]: [aS, "resourceId[1]"], [cz]: L }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aV, I] }] }], cg = [aS, "resourceId[1]"], ch = [Y], ci = [{ [cw]: r, [cx]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, I] }] }], cj = [{ [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[2]"] }] }] }], ck = [aS, "resourceId[2]"], cl = [{ [cw]: g, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }], [cz]: "bucketPartition" }], cm = [{ [cw]: h, [cx]: [ba, { [cw]: i, [cx]: [{ [cy]: "partitionResult" }, j] }] }], cn = [{ [cw]: y, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, true] }], co = [{ [cw]: y, [cx]: [bb, false] }], cp = [{ [cw]: y, [cx]: [aV, false] }], cq = [X], cr = [{ [cw]: y, [cx]: [{ [cy]: "Region" }, true] }];
-const _data = { version: "1.0", parameters: { Bucket: T, Region: T, UseFIPS: U, UseDualStack: U, Endpoint: T, ForcePathStyle: U, Accelerate: U, UseGlobalEndpoint: U, UseObjectLambdaEndpoint: V, Key: T, Prefix: T, CopySource: T, DisableAccessPoints: V, DisableMultiRegionAccessPoints: U, UseArnRegion: V, UseS3ExpressControlEndpoint: V, DisableS3ExpressSessionAuth: V }, [cu]: [{ [cv]: [{ [cw]: d, [cx]: by }], [cu]: [{ [cv]: [W, X], error: "Accelerate cannot be used with FIPS", [ct]: f }, { [cv]: [Y, Z], error: "Cannot set dual-stack in combination with a custom endpoint.", [ct]: f }, { [cv]: [Z, X], error: "A custom endpoint cannot be combined with FIPS", [ct]: f }, { [cv]: [Z, W], error: "A custom endpoint cannot be combined with S3 Accelerate", [ct]: f }, { [cv]: [X, aa, ab], error: "Partition does not support FIPS", [ct]: f }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 0, a, c], [cz]: l }, { [cw]: h, [cx]: [{ [cy]: l }, "--x-s3"] }], [cu]: [ae, af, { [cv]: [ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aj, aq], [cu]: [{ [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bL, [cu]: bM, [ct]: o }, { [cv]: bN, [cu]: bM, [ct]: o }, { [cv]: bO, [cu]: bM, [ct]: o }, { [cv]: bP, [cu]: bM, [ct]: o }, { [cv]: bQ, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bL, [cu]: bR, [ct]: o }, { [cv]: bN, [cu]: bR, [ct]: o }, { [cv]: bO, [cu]: bR, [ct]: o }, { [cv]: bP, [cu]: bR, [ct]: o }, { [cv]: bQ, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: bS, [cz]: s }, { [cw]: h, [cx]: [{ [cy]: s }, "--xa-s3"] }], [cu]: [ae, af, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bT, [cu]: bM, [ct]: o }, { [cv]: bU, [cu]: bM, [ct]: o }, { [cv]: bV, [cu]: bM, [ct]: o }, { [cv]: bW, [cu]: bM, [ct]: o }, { [cv]: bX, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bT, [cu]: bR, [ct]: o }, { [cv]: bU, [cu]: bR, [ct]: o }, { [cv]: bV, [cu]: bR, [ct]: o }, { [cv]: bW, [cu]: bR, [ct]: o }, { [cv]: bX, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [au, ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bC, endpoint: { [cA]: t, [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 49, 50, c], [cz]: u }, { [cw]: k, [cx]: [ad, 8, 12, c], [cz]: v }, { [cw]: k, [cx]: bS, [cz]: w }, { [cw]: k, [cx]: [ad, 32, 49, c], [cz]: x }, { [cw]: g, [cx]: by, [cz]: "regionPartition" }, { [cw]: h, [cx]: [{ [cy]: w }, "--op-s3"] }], [cu]: [{ [cv]: bZ, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [av, "e"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.ec2.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [av, "o"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [ct]: f }], [ct]: o }, { [cv]: bY, [cu]: [{ [cv]: [Z, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: m, [cx]: bz }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [ct]: f }, { [cv]: [ay, am], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [{ [cv]: [W, ab], error: "S3 Accelerate cannot be used in this region", [ct]: f }, { [cv]: [Y, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, X, aA, aq, aD, aE], [cu]: [{ endpoint: aF, [ct]: n }], [ct]: o }, { [cv]: [Y, X, aA, aq, aD, aH], endpoint: aF, [ct]: n }, { [cv]: [ar, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, X, aA, aq, aD, aE], [cu]: [{ endpoint: aI, [ct]: n }], [ct]: o }, { [cv]: [ar, X, aA, aq, aD, aH], endpoint: aI, [ct]: n }, { [cv]: [Y, as, W, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, W, aq, aD, aE], [cu]: [{ endpoint: aJ, [ct]: n }], [ct]: o }, { [cv]: [Y, as, W, aq, aD, aH], endpoint: aJ, [ct]: n }, { [cv]: [Y, as, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, aA, aq, aD, aE], [cu]: [{ endpoint: aK, [ct]: n }], [ct]: o }, { [cv]: [Y, as, aA, aq, aD, aH], endpoint: aK, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aB], endpoint: { [cA]: C, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aB], endpoint: { [cA]: q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aE], [cu]: [{ [cv]: cd, endpoint: aM, [ct]: n }, { endpoint: aM, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aE], [cu]: [{ [cv]: cd, endpoint: aN, [ct]: n }, aO], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aH], endpoint: aM, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aH], endpoint: aN, [ct]: n }, { [cv]: [ar, as, W, aq, aB], endpoint: { [cA]: D, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, W, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: aP, [ct]: n }, { endpoint: aP, [ct]: n }], [ct]: o }, { [cv]: [ar, as, W, aq, aD, aH], endpoint: aP, [ct]: n }, { [cv]: [ar, as, aA, aq, aB], endpoint: { [cA]: E, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: E, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: aQ, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, aq, aD, aH], endpoint: aQ, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [Z, ag, { [cw]: h, [cx]: [{ [cw]: i, [cx]: [ai, "scheme"] }, "http"] }, { [cw]: p, [cx]: [ad, c] }, ay, as, ar, aA], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [aO], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [ay, { [cw]: F, [cx]: bA, [cz]: G }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[0]"], [cz]: H }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aT, I] }] }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, J] }], [cu]: [{ [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [aW, aX, { [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [bb, I] }], error: "Invalid ARN: Missing account id", [ct]: f }, { [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bC, endpoint: { [cA]: M, [cB]: bc, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [ct]: f }], [ct]: o }, bi], [ct]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [ct]: f }], [ct]: o }, { [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [{ [cv]: ci, [cu]: [{ [cv]: ce, [cu]: [{ [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [ba, "{partitionResult#name}"] }], [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, B] }], [cu]: [{ [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bB, error: "Access Points do not support S3 Accelerate", [ct]: f }, { [cv]: bH, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag], endpoint: { [cA]: M, [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [ct]: f }], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: y, [cx]: [aV, c] }], [cu]: [{ [cv]: ch, error: "S3 MRAP does not support dual-stack", [ct]: f }, { [cv]: cq, error: "S3 MRAP does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 MRAP does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [{ [cy]: "DisableMultiRegionAccessPoints" }, c] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [ct]: f }, { [cv]: [{ [cw]: g, [cx]: by, [cz]: N }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: N }, j] }, { [cw]: i, [cx]: [aS, "partition"] }] }], [cu]: [{ endpoint: { [cA]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [cB]: { [cD]: [{ [cE]: c, name: z, [cF]: B, [cI]: cb }] }, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [ct]: f }], [ct]: o }], [ct]: o }, { error: "Invalid Access Point Name", [ct]: f }], [ct]: o }, bi], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [aU, A] }], [cu]: [{ [cv]: ch, error: "S3 Outposts does not support Dual-stack", [ct]: f }, { [cv]: cq, error: "S3 Outposts does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 Outposts does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [ct]: f }, { [cv]: [{ [cw]: i, [cx]: cg, [cz]: x }], [cu]: [{ [cv]: bZ, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: co, [cu]: [{ [cv]: [{ [cw]: i, [cx]: ck, [cz]: O }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[3]"], [cz]: L }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cy]: O }, K] }], [cu]: [{ [cv]: bC, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [cB]: bk, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bk, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [ct]: f }], [ct]: o }, { error: "Invalid ARN: expected an access point name", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Expected a 4-component resource", [ct]: f }], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The Outpost Id was not set", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [ct]: f }], [ct]: o }, { error: "Invalid ARN: No ARN type specified", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: k, [cx]: [ad, 0, 4, b], [cz]: P }, { [cw]: h, [cx]: [{ [cy]: P }, "arn:"] }, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [bl] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [az, c] }, bl], error: "Path-style addressing cannot be used with ARN buckets", [ct]: f }, { [cv]: bE, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aA], [cu]: [{ [cv]: [Y, aq, X, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, X, aD, aE], [cu]: [{ endpoint: bm, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, X, aD, aH], endpoint: bm, [ct]: n }, { [cv]: [ar, aq, X, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, X, aD, aE], [cu]: [{ endpoint: bn, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, X, aD, aH], endpoint: bn, [ct]: n }, { [cv]: [Y, aq, as, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, as, aD, aE], [cu]: [{ endpoint: bo, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, as, aD, aH], endpoint: bo, [ct]: n }, { [cv]: [ar, Z, ag, as, aB], endpoint: { [cA]: Q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, Z, ag, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: bp, [ct]: n }, { endpoint: bp, [ct]: n }], [ct]: o }, { [cv]: [ar, Z, ag, as, aD, aH], endpoint: bp, [ct]: n }, { [cv]: [ar, aq, as, aB], endpoint: { [cA]: R, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: R, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bq, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, as, aD, aH], endpoint: bq, [ct]: n }], [ct]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [ct]: f }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: d, [cx]: [br] }, { [cw]: e, [cx]: [br, c] }], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [aW, aX, { [cv]: bC, endpoint: { [cA]: t, [cB]: bs, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [au], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [{ [cv]: [X, Y, aq, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, Y, aq, aD, aE], [cu]: [{ endpoint: bt, [ct]: n }], [ct]: o }, { [cv]: [X, Y, aq, aD, aH], endpoint: bt, [ct]: n }, { [cv]: [X, ar, aq, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, ar, aq, aD, aE], [cu]: [{ endpoint: bu, [ct]: n }], [ct]: o }, { [cv]: [X, ar, aq, aD, aH], endpoint: bu, [ct]: n }, { [cv]: [as, Y, aq, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, Y, aq, aD, aE], [cu]: [{ endpoint: bv, [ct]: n }], [ct]: o }, { [cv]: [as, Y, aq, aD, aH], endpoint: bv, [ct]: n }, { [cv]: [as, ar, Z, ag, aB], endpoint: { [cA]: t, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag, aD, aE], [cu]: [{ [cv]: cd, endpoint: bw, [ct]: n }, { endpoint: bw, [ct]: n }], [ct]: o }, { [cv]: [as, ar, Z, ag, aD, aH], endpoint: bw, [ct]: n }, { [cv]: [as, ar, aq, aB], endpoint: { [cA]: S, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: S, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bx, [ct]: n }], [ct]: o }, { [cv]: [as, ar, aq, aD, aH], endpoint: bx, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }], [ct]: o }, { error: "A region must be set when sending requests to S3.", [ct]: f }] };
+const _data = { version: "1.0", parameters: { Bucket: T, Region: T, UseFIPS: U, UseDualStack: U, Endpoint: T, ForcePathStyle: U, Accelerate: U, UseGlobalEndpoint: U, UseObjectLambdaEndpoint: V, Key: T, Prefix: T, CopySource: T, DisableAccessPoints: V, DisableMultiRegionAccessPoints: U, UseArnRegion: V, UseS3ExpressControlEndpoint: V, DisableS3ExpressSessionAuth: V }, [cu]: [{ [cv]: [{ [cw]: d, [cx]: by }], [cu]: [{ [cv]: [W, X], error: "Accelerate cannot be used with FIPS", [ct]: f }, { [cv]: [Y, Z], error: "Cannot set dual-stack in combination with a custom endpoint.", [ct]: f }, { [cv]: [Z, X], error: "A custom endpoint cannot be combined with FIPS", [ct]: f }, { [cv]: [Z, W], error: "A custom endpoint cannot be combined with S3 Accelerate", [ct]: f }, { [cv]: [X, aa, ab], error: "Partition does not support FIPS", [ct]: f }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 0, a, c], [cz]: l }, { [cw]: h, [cx]: [{ [cy]: l }, "--x-s3"] }], [cu]: [ae, af, { [cv]: [ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aj, aq], [cu]: [{ [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bL, [cu]: bM, [ct]: o }, { [cv]: bN, [cu]: bM, [ct]: o }, { [cv]: bO, [cu]: bM, [ct]: o }, { [cv]: bP, [cu]: bM, [ct]: o }, { [cv]: bQ, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bL, [cu]: bR, [ct]: o }, { [cv]: bN, [cu]: bR, [ct]: o }, { [cv]: bO, [cu]: bR, [ct]: o }, { [cv]: bP, [cu]: bR, [ct]: o }, { [cv]: bQ, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: bS, [cz]: s }, { [cw]: h, [cx]: [{ [cy]: s }, "--xa-s3"] }], [cu]: [ae, af, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bT, [cu]: bM, [ct]: o }, { [cv]: bU, [cu]: bM, [ct]: o }, { [cv]: bV, [cu]: bM, [ct]: o }, { [cv]: bW, [cu]: bM, [ct]: o }, { [cv]: bX, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bT, [cu]: bR, [ct]: o }, { [cv]: bU, [cu]: bR, [ct]: o }, { [cv]: bV, [cu]: bR, [ct]: o }, { [cv]: bW, [cu]: bR, [ct]: o }, { [cv]: bX, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [au, ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bC, endpoint: { [cA]: t, [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 49, 50, c], [cz]: u }, { [cw]: k, [cx]: [ad, 8, 12, c], [cz]: v }, { [cw]: k, [cx]: bS, [cz]: w }, { [cw]: k, [cx]: [ad, 32, 49, c], [cz]: x }, { [cw]: g, [cx]: by, [cz]: "regionPartition" }, { [cw]: h, [cx]: [{ [cy]: w }, "--op-s3"] }], [cu]: [{ [cv]: bZ, [cu]: [{ [cv]: bF, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [av, "e"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.ec2.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [av, "o"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [ct]: f }], [ct]: o }, { error: "Invalid Outposts Bucket alias - it must be a valid bucket name.", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [ct]: f }], [ct]: o }, { [cv]: bY, [cu]: [{ [cv]: [Z, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: m, [cx]: bz }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [ct]: f }, { [cv]: [ay, am], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [{ [cv]: [W, ab], error: "S3 Accelerate cannot be used in this region", [ct]: f }, { [cv]: [Y, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, X, aA, aq, aD, aE], [cu]: [{ endpoint: aF, [ct]: n }], [ct]: o }, { [cv]: [Y, X, aA, aq, aD, aH], endpoint: aF, [ct]: n }, { [cv]: [ar, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, X, aA, aq, aD, aE], [cu]: [{ endpoint: aI, [ct]: n }], [ct]: o }, { [cv]: [ar, X, aA, aq, aD, aH], endpoint: aI, [ct]: n }, { [cv]: [Y, as, W, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, W, aq, aD, aE], [cu]: [{ endpoint: aJ, [ct]: n }], [ct]: o }, { [cv]: [Y, as, W, aq, aD, aH], endpoint: aJ, [ct]: n }, { [cv]: [Y, as, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, aA, aq, aD, aE], [cu]: [{ endpoint: aK, [ct]: n }], [ct]: o }, { [cv]: [Y, as, aA, aq, aD, aH], endpoint: aK, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aB], endpoint: { [cA]: C, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aB], endpoint: { [cA]: q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aE], [cu]: [{ [cv]: cd, endpoint: aM, [ct]: n }, { endpoint: aM, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aE], [cu]: [{ [cv]: cd, endpoint: aN, [ct]: n }, aO], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aH], endpoint: aM, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aH], endpoint: aN, [ct]: n }, { [cv]: [ar, as, W, aq, aB], endpoint: { [cA]: D, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, W, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: aP, [ct]: n }, { endpoint: aP, [ct]: n }], [ct]: o }, { [cv]: [ar, as, W, aq, aD, aH], endpoint: aP, [ct]: n }, { [cv]: [ar, as, aA, aq, aB], endpoint: { [cA]: E, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: E, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: aQ, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, aq, aD, aH], endpoint: aQ, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [Z, ag, { [cw]: h, [cx]: [{ [cw]: i, [cx]: [ai, "scheme"] }, "http"] }, { [cw]: p, [cx]: [ad, c] }, ay, as, ar, aA], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [aO], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [ay, { [cw]: F, [cx]: bA, [cz]: G }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[0]"], [cz]: H }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aT, I] }] }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, J] }], [cu]: [{ [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [aW, aX, { [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [bb, I] }], error: "Invalid ARN: Missing account id", [ct]: f }, { [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bC, endpoint: { [cA]: M, [cB]: bc, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [ct]: f }], [ct]: o }, bi], [ct]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [ct]: f }], [ct]: o }, { [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [{ [cv]: ci, [cu]: [{ [cv]: ce, [cu]: [{ [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [ba, "{partitionResult#name}"] }], [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, B] }], [cu]: [{ [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bB, error: "Access Points do not support S3 Accelerate", [ct]: f }, { [cv]: bH, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag], endpoint: { [cA]: M, [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [ct]: f }], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: y, [cx]: [aV, c] }], [cu]: [{ [cv]: ch, error: "S3 MRAP does not support dual-stack", [ct]: f }, { [cv]: cq, error: "S3 MRAP does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 MRAP does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [{ [cy]: "DisableMultiRegionAccessPoints" }, c] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [ct]: f }, { [cv]: [{ [cw]: g, [cx]: by, [cz]: N }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: N }, j] }, { [cw]: i, [cx]: [aS, "partition"] }] }], [cu]: [{ endpoint: { [cA]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [cB]: { [cD]: [{ [cE]: c, name: z, [cF]: B, [cI]: cb }] }, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [ct]: f }], [ct]: o }], [ct]: o }, { error: "Invalid Access Point Name", [ct]: f }], [ct]: o }, bi], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [aU, A] }], [cu]: [{ [cv]: ch, error: "S3 Outposts does not support Dual-stack", [ct]: f }, { [cv]: cq, error: "S3 Outposts does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 Outposts does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [ct]: f }, { [cv]: [{ [cw]: i, [cx]: cg, [cz]: x }], [cu]: [{ [cv]: bZ, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: co, [cu]: [{ [cv]: [{ [cw]: i, [cx]: ck, [cz]: O }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[3]"], [cz]: L }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cy]: O }, K] }], [cu]: [{ [cv]: bC, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [cB]: bk, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bk, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [ct]: f }], [ct]: o }, { error: "Invalid ARN: expected an access point name", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Expected a 4-component resource", [ct]: f }], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The Outpost Id was not set", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [ct]: f }], [ct]: o }, { error: "Invalid ARN: No ARN type specified", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: k, [cx]: [ad, 0, 4, b], [cz]: P }, { [cw]: h, [cx]: [{ [cy]: P }, "arn:"] }, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [bl] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [az, c] }, bl], error: "Path-style addressing cannot be used with ARN buckets", [ct]: f }, { [cv]: bE, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aA], [cu]: [{ [cv]: [Y, aq, X, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, X, aD, aE], [cu]: [{ endpoint: bm, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, X, aD, aH], endpoint: bm, [ct]: n }, { [cv]: [ar, aq, X, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, X, aD, aE], [cu]: [{ endpoint: bn, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, X, aD, aH], endpoint: bn, [ct]: n }, { [cv]: [Y, aq, as, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, as, aD, aE], [cu]: [{ endpoint: bo, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, as, aD, aH], endpoint: bo, [ct]: n }, { [cv]: [ar, Z, ag, as, aB], endpoint: { [cA]: Q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, Z, ag, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: bp, [ct]: n }, { endpoint: bp, [ct]: n }], [ct]: o }, { [cv]: [ar, Z, ag, as, aD, aH], endpoint: bp, [ct]: n }, { [cv]: [ar, aq, as, aB], endpoint: { [cA]: R, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: R, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bq, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, as, aD, aH], endpoint: bq, [ct]: n }], [ct]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [ct]: f }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: d, [cx]: [br] }, { [cw]: e, [cx]: [br, c] }], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [aW, aX, { [cv]: bC, endpoint: { [cA]: t, [cB]: bs, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [au], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [{ [cv]: [X, Y, aq, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, Y, aq, aD, aE], [cu]: [{ endpoint: bt, [ct]: n }], [ct]: o }, { [cv]: [X, Y, aq, aD, aH], endpoint: bt, [ct]: n }, { [cv]: [X, ar, aq, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, ar, aq, aD, aE], [cu]: [{ endpoint: bu, [ct]: n }], [ct]: o }, { [cv]: [X, ar, aq, aD, aH], endpoint: bu, [ct]: n }, { [cv]: [as, Y, aq, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, Y, aq, aD, aE], [cu]: [{ endpoint: bv, [ct]: n }], [ct]: o }, { [cv]: [as, Y, aq, aD, aH], endpoint: bv, [ct]: n }, { [cv]: [as, ar, Z, ag, aB], endpoint: { [cA]: t, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag, aD, aE], [cu]: [{ [cv]: cd, endpoint: bw, [ct]: n }, { endpoint: bw, [ct]: n }], [ct]: o }, { [cv]: [as, ar, Z, ag, aD, aH], endpoint: bw, [ct]: n }, { [cv]: [as, ar, aq, aB], endpoint: { [cA]: S, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: S, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bx, [ct]: n }], [ct]: o }, { [cv]: [as, ar, aq, aD, aH], endpoint: bx, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }], [ct]: o }, { error: "A region must be set when sending requests to S3.", [ct]: f }] };
 exports.ruleSet = _data;
 
 
@@ -4208,19 +5209,16 @@ var middlewareSdkS3 = __nccwpck_require__(7445);
 var middlewareUserAgent = __nccwpck_require__(2959);
 var configResolver = __nccwpck_require__(9316);
 var core = __nccwpck_require__(402);
+var schema = __nccwpck_require__(6890);
 var eventstreamSerdeConfigResolver = __nccwpck_require__(6895);
 var middlewareContentLength = __nccwpck_require__(7212);
 var middlewareEndpoint = __nccwpck_require__(99);
 var middlewareRetry = __nccwpck_require__(9618);
 var smithyClient = __nccwpck_require__(1411);
 var httpAuthSchemeProvider = __nccwpck_require__(7168);
-var middlewareSerde = __nccwpck_require__(3255);
-var core$1 = __nccwpck_require__(8704);
-var xmlBuilder = __nccwpck_require__(4274);
-var protocolHttp = __nccwpck_require__(2356);
-var uuid = __nccwpck_require__(266);
 var runtimeConfig = __nccwpck_require__(5745);
 var regionConfigResolver = __nccwpck_require__(6463);
+var protocolHttp = __nccwpck_require__(2356);
 var middlewareSsec = __nccwpck_require__(5568);
 var middlewareLocationConstraint = __nccwpck_require__(3209);
 var utilWaiter = __nccwpck_require__(5290);
@@ -4234,6 +5232,7 @@ const resolveClientEndpointParameters = (options) => {
         useGlobalEndpoint: options.useGlobalEndpoint ?? false,
         disableMultiregionAccessPoints: options.disableMultiregionAccessPoints ?? false,
         defaultSigningName: "s3",
+        clientContextParams: options.clientContextParams ?? {},
     });
 };
 const commonParams = {
@@ -4256,12 +5255,6 @@ class S3ServiceException extends smithyClient.ServiceException {
     }
 }
 
-const RequestCharged = {
-    requester: "requester",
-};
-const RequestPayer = {
-    requester: "requester",
-};
 class NoSuchUpload extends S3ServiceException {
     name = "NoSuchUpload";
     $fault = "client";
@@ -4274,81 +5267,6 @@ class NoSuchUpload extends S3ServiceException {
         Object.setPrototypeOf(this, NoSuchUpload.prototype);
     }
 }
-const BucketAccelerateStatus = {
-    Enabled: "Enabled",
-    Suspended: "Suspended",
-};
-const Type = {
-    AmazonCustomerByEmail: "AmazonCustomerByEmail",
-    CanonicalUser: "CanonicalUser",
-    Group: "Group",
-};
-const Permission = {
-    FULL_CONTROL: "FULL_CONTROL",
-    READ: "READ",
-    READ_ACP: "READ_ACP",
-    WRITE: "WRITE",
-    WRITE_ACP: "WRITE_ACP",
-};
-const OwnerOverride = {
-    Destination: "Destination",
-};
-const ChecksumType = {
-    COMPOSITE: "COMPOSITE",
-    FULL_OBJECT: "FULL_OBJECT",
-};
-const ServerSideEncryption = {
-    AES256: "AES256",
-    aws_fsx: "aws:fsx",
-    aws_kms: "aws:kms",
-    aws_kms_dsse: "aws:kms:dsse",
-};
-const ObjectCannedACL = {
-    authenticated_read: "authenticated-read",
-    aws_exec_read: "aws-exec-read",
-    bucket_owner_full_control: "bucket-owner-full-control",
-    bucket_owner_read: "bucket-owner-read",
-    private: "private",
-    public_read: "public-read",
-    public_read_write: "public-read-write",
-};
-const ChecksumAlgorithm = {
-    CRC32: "CRC32",
-    CRC32C: "CRC32C",
-    CRC64NVME: "CRC64NVME",
-    SHA1: "SHA1",
-    SHA256: "SHA256",
-};
-const MetadataDirective = {
-    COPY: "COPY",
-    REPLACE: "REPLACE",
-};
-const ObjectLockLegalHoldStatus = {
-    OFF: "OFF",
-    ON: "ON",
-};
-const ObjectLockMode = {
-    COMPLIANCE: "COMPLIANCE",
-    GOVERNANCE: "GOVERNANCE",
-};
-const StorageClass = {
-    DEEP_ARCHIVE: "DEEP_ARCHIVE",
-    EXPRESS_ONEZONE: "EXPRESS_ONEZONE",
-    FSX_OPENZFS: "FSX_OPENZFS",
-    GLACIER: "GLACIER",
-    GLACIER_IR: "GLACIER_IR",
-    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
-    ONEZONE_IA: "ONEZONE_IA",
-    OUTPOSTS: "OUTPOSTS",
-    REDUCED_REDUNDANCY: "REDUCED_REDUNDANCY",
-    SNOW: "SNOW",
-    STANDARD: "STANDARD",
-    STANDARD_IA: "STANDARD_IA",
-};
-const TaggingDirective = {
-    COPY: "COPY",
-    REPLACE: "REPLACE",
-};
 class ObjectNotInActiveTierError extends S3ServiceException {
     name = "ObjectNotInActiveTierError";
     $fault = "client";
@@ -4385,79 +5303,6 @@ class BucketAlreadyOwnedByYou extends S3ServiceException {
         Object.setPrototypeOf(this, BucketAlreadyOwnedByYou.prototype);
     }
 }
-const BucketCannedACL = {
-    authenticated_read: "authenticated-read",
-    private: "private",
-    public_read: "public-read",
-    public_read_write: "public-read-write",
-};
-const DataRedundancy = {
-    SingleAvailabilityZone: "SingleAvailabilityZone",
-    SingleLocalZone: "SingleLocalZone",
-};
-const BucketType = {
-    Directory: "Directory",
-};
-const LocationType = {
-    AvailabilityZone: "AvailabilityZone",
-    LocalZone: "LocalZone",
-};
-const BucketLocationConstraint = {
-    EU: "EU",
-    af_south_1: "af-south-1",
-    ap_east_1: "ap-east-1",
-    ap_northeast_1: "ap-northeast-1",
-    ap_northeast_2: "ap-northeast-2",
-    ap_northeast_3: "ap-northeast-3",
-    ap_south_1: "ap-south-1",
-    ap_south_2: "ap-south-2",
-    ap_southeast_1: "ap-southeast-1",
-    ap_southeast_2: "ap-southeast-2",
-    ap_southeast_3: "ap-southeast-3",
-    ap_southeast_4: "ap-southeast-4",
-    ap_southeast_5: "ap-southeast-5",
-    ca_central_1: "ca-central-1",
-    cn_north_1: "cn-north-1",
-    cn_northwest_1: "cn-northwest-1",
-    eu_central_1: "eu-central-1",
-    eu_central_2: "eu-central-2",
-    eu_north_1: "eu-north-1",
-    eu_south_1: "eu-south-1",
-    eu_south_2: "eu-south-2",
-    eu_west_1: "eu-west-1",
-    eu_west_2: "eu-west-2",
-    eu_west_3: "eu-west-3",
-    il_central_1: "il-central-1",
-    me_central_1: "me-central-1",
-    me_south_1: "me-south-1",
-    sa_east_1: "sa-east-1",
-    us_east_2: "us-east-2",
-    us_gov_east_1: "us-gov-east-1",
-    us_gov_west_1: "us-gov-west-1",
-    us_west_1: "us-west-1",
-    us_west_2: "us-west-2",
-};
-const ObjectOwnership = {
-    BucketOwnerEnforced: "BucketOwnerEnforced",
-    BucketOwnerPreferred: "BucketOwnerPreferred",
-    ObjectWriter: "ObjectWriter",
-};
-const InventoryConfigurationState = {
-    DISABLED: "DISABLED",
-    ENABLED: "ENABLED",
-};
-const TableSseAlgorithm = {
-    AES256: "AES256",
-    aws_kms: "aws:kms",
-};
-const ExpirationState = {
-    DISABLED: "DISABLED",
-    ENABLED: "ENABLED",
-};
-const SessionMode = {
-    ReadOnly: "ReadOnly",
-    ReadWrite: "ReadWrite",
-};
 class NoSuchBucket extends S3ServiceException {
     name = "NoSuchBucket";
     $fault = "client";
@@ -4470,192 +5315,6 @@ class NoSuchBucket extends S3ServiceException {
         Object.setPrototypeOf(this, NoSuchBucket.prototype);
     }
 }
-exports.AnalyticsFilter = void 0;
-(function (AnalyticsFilter) {
-    AnalyticsFilter.visit = (value, visitor) => {
-        if (value.Prefix !== undefined)
-            return visitor.Prefix(value.Prefix);
-        if (value.Tag !== undefined)
-            return visitor.Tag(value.Tag);
-        if (value.And !== undefined)
-            return visitor.And(value.And);
-        return visitor._(value.$unknown[0], value.$unknown[1]);
-    };
-})(exports.AnalyticsFilter || (exports.AnalyticsFilter = {}));
-const AnalyticsS3ExportFileFormat = {
-    CSV: "CSV",
-};
-const StorageClassAnalysisSchemaVersion = {
-    V_1: "V_1",
-};
-const IntelligentTieringStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const IntelligentTieringAccessTier = {
-    ARCHIVE_ACCESS: "ARCHIVE_ACCESS",
-    DEEP_ARCHIVE_ACCESS: "DEEP_ARCHIVE_ACCESS",
-};
-const InventoryFormat = {
-    CSV: "CSV",
-    ORC: "ORC",
-    Parquet: "Parquet",
-};
-const InventoryIncludedObjectVersions = {
-    All: "All",
-    Current: "Current",
-};
-const InventoryOptionalField = {
-    BucketKeyStatus: "BucketKeyStatus",
-    ChecksumAlgorithm: "ChecksumAlgorithm",
-    ETag: "ETag",
-    EncryptionStatus: "EncryptionStatus",
-    IntelligentTieringAccessTier: "IntelligentTieringAccessTier",
-    IsMultipartUploaded: "IsMultipartUploaded",
-    LastModifiedDate: "LastModifiedDate",
-    ObjectAccessControlList: "ObjectAccessControlList",
-    ObjectLockLegalHoldStatus: "ObjectLockLegalHoldStatus",
-    ObjectLockMode: "ObjectLockMode",
-    ObjectLockRetainUntilDate: "ObjectLockRetainUntilDate",
-    ObjectOwner: "ObjectOwner",
-    ReplicationStatus: "ReplicationStatus",
-    Size: "Size",
-    StorageClass: "StorageClass",
-};
-const InventoryFrequency = {
-    Daily: "Daily",
-    Weekly: "Weekly",
-};
-const TransitionStorageClass = {
-    DEEP_ARCHIVE: "DEEP_ARCHIVE",
-    GLACIER: "GLACIER",
-    GLACIER_IR: "GLACIER_IR",
-    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
-    ONEZONE_IA: "ONEZONE_IA",
-    STANDARD_IA: "STANDARD_IA",
-};
-const ExpirationStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const TransitionDefaultMinimumObjectSize = {
-    all_storage_classes_128K: "all_storage_classes_128K",
-    varies_by_storage_class: "varies_by_storage_class",
-};
-const BucketLogsPermission = {
-    FULL_CONTROL: "FULL_CONTROL",
-    READ: "READ",
-    WRITE: "WRITE",
-};
-const PartitionDateSource = {
-    DeliveryTime: "DeliveryTime",
-    EventTime: "EventTime",
-};
-const S3TablesBucketType = {
-    aws: "aws",
-    customer: "customer",
-};
-exports.MetricsFilter = void 0;
-(function (MetricsFilter) {
-    MetricsFilter.visit = (value, visitor) => {
-        if (value.Prefix !== undefined)
-            return visitor.Prefix(value.Prefix);
-        if (value.Tag !== undefined)
-            return visitor.Tag(value.Tag);
-        if (value.AccessPointArn !== undefined)
-            return visitor.AccessPointArn(value.AccessPointArn);
-        if (value.And !== undefined)
-            return visitor.And(value.And);
-        return visitor._(value.$unknown[0], value.$unknown[1]);
-    };
-})(exports.MetricsFilter || (exports.MetricsFilter = {}));
-const Event = {
-    s3_IntelligentTiering: "s3:IntelligentTiering",
-    s3_LifecycleExpiration_: "s3:LifecycleExpiration:*",
-    s3_LifecycleExpiration_Delete: "s3:LifecycleExpiration:Delete",
-    s3_LifecycleExpiration_DeleteMarkerCreated: "s3:LifecycleExpiration:DeleteMarkerCreated",
-    s3_LifecycleTransition: "s3:LifecycleTransition",
-    s3_ObjectAcl_Put: "s3:ObjectAcl:Put",
-    s3_ObjectCreated_: "s3:ObjectCreated:*",
-    s3_ObjectCreated_CompleteMultipartUpload: "s3:ObjectCreated:CompleteMultipartUpload",
-    s3_ObjectCreated_Copy: "s3:ObjectCreated:Copy",
-    s3_ObjectCreated_Post: "s3:ObjectCreated:Post",
-    s3_ObjectCreated_Put: "s3:ObjectCreated:Put",
-    s3_ObjectRemoved_: "s3:ObjectRemoved:*",
-    s3_ObjectRemoved_Delete: "s3:ObjectRemoved:Delete",
-    s3_ObjectRemoved_DeleteMarkerCreated: "s3:ObjectRemoved:DeleteMarkerCreated",
-    s3_ObjectRestore_: "s3:ObjectRestore:*",
-    s3_ObjectRestore_Completed: "s3:ObjectRestore:Completed",
-    s3_ObjectRestore_Delete: "s3:ObjectRestore:Delete",
-    s3_ObjectRestore_Post: "s3:ObjectRestore:Post",
-    s3_ObjectTagging_: "s3:ObjectTagging:*",
-    s3_ObjectTagging_Delete: "s3:ObjectTagging:Delete",
-    s3_ObjectTagging_Put: "s3:ObjectTagging:Put",
-    s3_ReducedRedundancyLostObject: "s3:ReducedRedundancyLostObject",
-    s3_Replication_: "s3:Replication:*",
-    s3_Replication_OperationFailedReplication: "s3:Replication:OperationFailedReplication",
-    s3_Replication_OperationMissedThreshold: "s3:Replication:OperationMissedThreshold",
-    s3_Replication_OperationNotTracked: "s3:Replication:OperationNotTracked",
-    s3_Replication_OperationReplicatedAfterThreshold: "s3:Replication:OperationReplicatedAfterThreshold",
-};
-const FilterRuleName = {
-    prefix: "prefix",
-    suffix: "suffix",
-};
-const DeleteMarkerReplicationStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const MetricsStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const ReplicationTimeStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const ExistingObjectReplicationStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const ReplicaModificationsStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const SseKmsEncryptedObjectsStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const ReplicationRuleStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const Payer = {
-    BucketOwner: "BucketOwner",
-    Requester: "Requester",
-};
-const MFADeleteStatus = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
-const BucketVersioningStatus = {
-    Enabled: "Enabled",
-    Suspended: "Suspended",
-};
-const Protocol = {
-    http: "http",
-    https: "https",
-};
-const ReplicationStatus = {
-    COMPLETE: "COMPLETE",
-    COMPLETED: "COMPLETED",
-    FAILED: "FAILED",
-    PENDING: "PENDING",
-    REPLICA: "REPLICA",
-};
-const ChecksumMode = {
-    ENABLED: "ENABLED",
-};
 class InvalidObjectState extends S3ServiceException {
     name = "InvalidObjectState";
     $fault = "client";
@@ -4684,20 +5343,6 @@ class NoSuchKey extends S3ServiceException {
         Object.setPrototypeOf(this, NoSuchKey.prototype);
     }
 }
-const ObjectAttributes = {
-    CHECKSUM: "Checksum",
-    ETAG: "ETag",
-    OBJECT_PARTS: "ObjectParts",
-    OBJECT_SIZE: "ObjectSize",
-    STORAGE_CLASS: "StorageClass",
-};
-const ObjectLockEnabled = {
-    Enabled: "Enabled",
-};
-const ObjectLockRetentionMode = {
-    COMPLIANCE: "COMPLIANCE",
-    GOVERNANCE: "GOVERNANCE",
-};
 class NotFound extends S3ServiceException {
     name = "NotFound";
     $fault = "client";
@@ -4710,162 +5355,6 @@ class NotFound extends S3ServiceException {
         Object.setPrototypeOf(this, NotFound.prototype);
     }
 }
-const ArchiveStatus = {
-    ARCHIVE_ACCESS: "ARCHIVE_ACCESS",
-    DEEP_ARCHIVE_ACCESS: "DEEP_ARCHIVE_ACCESS",
-};
-const EncodingType = {
-    url: "url",
-};
-const CompleteMultipartUploadOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const CompleteMultipartUploadRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const CopyObjectOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const CopyObjectRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-    ...(obj.CopySourceSSECustomerKey && { CopySourceSSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const CreateMultipartUploadOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const CreateMultipartUploadRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const SessionCredentialsFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SecretAccessKey && { SecretAccessKey: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SessionToken && { SessionToken: smithyClient.SENSITIVE_STRING }),
-});
-const CreateSessionOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-    ...(obj.Credentials && { Credentials: SessionCredentialsFilterSensitiveLog(obj.Credentials) }),
-});
-const CreateSessionRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const ServerSideEncryptionByDefaultFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.KMSMasterKeyID && { KMSMasterKeyID: smithyClient.SENSITIVE_STRING }),
-});
-const ServerSideEncryptionRuleFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.ApplyServerSideEncryptionByDefault && {
-        ApplyServerSideEncryptionByDefault: ServerSideEncryptionByDefaultFilterSensitiveLog(obj.ApplyServerSideEncryptionByDefault),
-    }),
-});
-const ServerSideEncryptionConfigurationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.Rules && { Rules: obj.Rules.map((item) => ServerSideEncryptionRuleFilterSensitiveLog(item)) }),
-});
-const GetBucketEncryptionOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.ServerSideEncryptionConfiguration && {
-        ServerSideEncryptionConfiguration: ServerSideEncryptionConfigurationFilterSensitiveLog(obj.ServerSideEncryptionConfiguration),
-    }),
-});
-const SSEKMSFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.KeyId && { KeyId: smithyClient.SENSITIVE_STRING }),
-});
-const InventoryEncryptionFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMS && { SSEKMS: SSEKMSFilterSensitiveLog(obj.SSEKMS) }),
-});
-const InventoryS3BucketDestinationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.Encryption && { Encryption: InventoryEncryptionFilterSensitiveLog(obj.Encryption) }),
-});
-const InventoryDestinationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.S3BucketDestination && {
-        S3BucketDestination: InventoryS3BucketDestinationFilterSensitiveLog(obj.S3BucketDestination),
-    }),
-});
-const InventoryConfigurationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.Destination && { Destination: InventoryDestinationFilterSensitiveLog(obj.Destination) }),
-});
-const GetBucketInventoryConfigurationOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.InventoryConfiguration && {
-        InventoryConfiguration: InventoryConfigurationFilterSensitiveLog(obj.InventoryConfiguration),
-    }),
-});
-const GetObjectOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const GetObjectRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const GetObjectAttributesRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const GetObjectTorrentOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-});
-const HeadObjectOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const HeadObjectRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const ListBucketInventoryConfigurationsOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.InventoryConfigurationList && {
-        InventoryConfigurationList: obj.InventoryConfigurationList.map((item) => InventoryConfigurationFilterSensitiveLog(item)),
-    }),
-});
-
-const ObjectStorageClass = {
-    DEEP_ARCHIVE: "DEEP_ARCHIVE",
-    EXPRESS_ONEZONE: "EXPRESS_ONEZONE",
-    FSX_OPENZFS: "FSX_OPENZFS",
-    GLACIER: "GLACIER",
-    GLACIER_IR: "GLACIER_IR",
-    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
-    ONEZONE_IA: "ONEZONE_IA",
-    OUTPOSTS: "OUTPOSTS",
-    REDUCED_REDUNDANCY: "REDUCED_REDUNDANCY",
-    SNOW: "SNOW",
-    STANDARD: "STANDARD",
-    STANDARD_IA: "STANDARD_IA",
-};
-const OptionalObjectAttributes = {
-    RESTORE_STATUS: "RestoreStatus",
-};
-const ObjectVersionStorageClass = {
-    STANDARD: "STANDARD",
-};
-const MFADelete = {
-    Disabled: "Disabled",
-    Enabled: "Enabled",
-};
 class EncryptionTypeMismatch extends S3ServiceException {
     name = "EncryptionTypeMismatch";
     $fault = "client";
@@ -4938,7558 +5427,53 @@ class ObjectAlreadyInActiveTierError extends S3ServiceException {
         Object.setPrototypeOf(this, ObjectAlreadyInActiveTierError.prototype);
     }
 }
-const Tier = {
-    Bulk: "Bulk",
-    Expedited: "Expedited",
-    Standard: "Standard",
-};
-const ExpressionType = {
-    SQL: "SQL",
-};
-const CompressionType = {
-    BZIP2: "BZIP2",
-    GZIP: "GZIP",
-    NONE: "NONE",
-};
-const FileHeaderInfo = {
-    IGNORE: "IGNORE",
-    NONE: "NONE",
-    USE: "USE",
-};
-const JSONType = {
-    DOCUMENT: "DOCUMENT",
-    LINES: "LINES",
-};
-const QuoteFields = {
-    ALWAYS: "ALWAYS",
-    ASNEEDED: "ASNEEDED",
-};
-const RestoreRequestType = {
-    SELECT: "SELECT",
-};
-exports.SelectObjectContentEventStream = void 0;
-(function (SelectObjectContentEventStream) {
-    SelectObjectContentEventStream.visit = (value, visitor) => {
-        if (value.Records !== undefined)
-            return visitor.Records(value.Records);
-        if (value.Stats !== undefined)
-            return visitor.Stats(value.Stats);
-        if (value.Progress !== undefined)
-            return visitor.Progress(value.Progress);
-        if (value.Cont !== undefined)
-            return visitor.Cont(value.Cont);
-        if (value.End !== undefined)
-            return visitor.End(value.End);
-        return visitor._(value.$unknown[0], value.$unknown[1]);
-    };
-})(exports.SelectObjectContentEventStream || (exports.SelectObjectContentEventStream = {}));
-const ListPartsRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const PutBucketEncryptionRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.ServerSideEncryptionConfiguration && {
-        ServerSideEncryptionConfiguration: ServerSideEncryptionConfigurationFilterSensitiveLog(obj.ServerSideEncryptionConfiguration),
-    }),
-});
-const PutBucketInventoryConfigurationRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.InventoryConfiguration && {
-        InventoryConfiguration: InventoryConfigurationFilterSensitiveLog(obj.InventoryConfiguration),
-    }),
-});
-const PutObjectOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const PutObjectRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-    ...(obj.SSEKMSEncryptionContext && { SSEKMSEncryptionContext: smithyClient.SENSITIVE_STRING }),
-});
-const EncryptionFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.KMSKeyId && { KMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const S3LocationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.Encryption && { Encryption: EncryptionFilterSensitiveLog(obj.Encryption) }),
-});
-const OutputLocationFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.S3 && { S3: S3LocationFilterSensitiveLog(obj.S3) }),
-});
-const RestoreRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.OutputLocation && { OutputLocation: OutputLocationFilterSensitiveLog(obj.OutputLocation) }),
-});
-const RestoreObjectRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.RestoreRequest && { RestoreRequest: RestoreRequestFilterSensitiveLog(obj.RestoreRequest) }),
-});
-const SelectObjectContentEventStreamFilterSensitiveLog = (obj) => {
-    if (obj.Records !== undefined)
-        return { Records: obj.Records };
-    if (obj.Stats !== undefined)
-        return { Stats: obj.Stats };
-    if (obj.Progress !== undefined)
-        return { Progress: obj.Progress };
-    if (obj.Cont !== undefined)
-        return { Cont: obj.Cont };
-    if (obj.End !== undefined)
-        return { End: obj.End };
-    if (obj.$unknown !== undefined)
-        return { [obj.$unknown[0]]: "UNKNOWN" };
-};
-const SelectObjectContentOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.Payload && { Payload: "STREAMING_CONTENT" }),
-});
-const SelectObjectContentRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const UploadPartOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const UploadPartRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const UploadPartCopyOutputFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
-const UploadPartCopyRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSECustomerKey && { SSECustomerKey: smithyClient.SENSITIVE_STRING }),
-    ...(obj.CopySourceSSECustomerKey && { CopySourceSSECustomerKey: smithyClient.SENSITIVE_STRING }),
-});
-const WriteGetObjectResponseRequestFilterSensitiveLog = (obj) => ({
-    ...obj,
-    ...(obj.SSEKMSKeyId && { SSEKMSKeyId: smithyClient.SENSITIVE_STRING }),
-});
 
-const se_AbortMultipartUploadCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xaimit]: [() => smithyClient.isSerializableHeaderValue(input[_IMIT]), () => smithyClient.dateToUtcString(input[_IMIT]).toString()],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "AbortMultipartUpload"],
-        [_uI]: [, smithyClient.expectNonNull(input[_UI], `UploadId`)],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CompleteMultipartUploadCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xacc]: input[_CCRC],
-        [_xacc_]: input[_CCRCC],
-        [_xacc__]: input[_CCRCNVME],
-        [_xacs]: input[_CSHA],
-        [_xacs_]: input[_CSHAh],
-        [_xact]: input[_CT],
-        [_xamos]: [() => smithyClient.isSerializableHeaderValue(input[_MOS]), () => input[_MOS].toString()],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_im]: input[_IM],
-        [_inm]: input[_INM],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_uI]: [, smithyClient.expectNonNull(input[_UI], `UploadId`)],
-    });
-    let body;
-    let contents;
-    if (input.MultipartUpload !== undefined) {
-        contents = se_CompletedMultipartUpload(input.MultipartUpload);
-        contents = contents.n("CompleteMultipartUpload");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CopyObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        ...(input.Metadata !== undefined &&
-            Object.keys(input.Metadata).reduce((acc, suffix) => {
-                acc[`x-amz-meta-${suffix.toLowerCase()}`] = input.Metadata[suffix];
-                return acc;
-            }, {})),
-        [_xaa]: input[_ACL],
-        [_cc]: input[_CC],
-        [_xaca]: input[_CA],
-        [_cd]: input[_CD],
-        [_ce]: input[_CE],
-        [_cl]: input[_CL],
-        [_ct]: input[_CTo],
-        [_xacs__]: input[_CS],
-        [_xacsim]: input[_CSIM],
-        [_xacsims]: [() => smithyClient.isSerializableHeaderValue(input[_CSIMS]), () => smithyClient.dateToUtcString(input[_CSIMS]).toString()],
-        [_xacsinm]: input[_CSINM],
-        [_xacsius]: [() => smithyClient.isSerializableHeaderValue(input[_CSIUS]), () => smithyClient.dateToUtcString(input[_CSIUS]).toString()],
-        [_e]: [() => smithyClient.isSerializableHeaderValue(input[_E]), () => smithyClient.dateToUtcString(input[_E]).toString()],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagwa]: input[_GWACP],
-        [_im]: input[_IM],
-        [_inm]: input[_INM],
-        [_xamd]: input[_MD],
-        [_xatd]: input[_TD],
-        [_xasse]: input[_SSE],
-        [_xasc]: input[_SC],
-        [_xawrl]: input[_WRL],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xasseakki]: input[_SSEKMSKI],
-        [_xassec]: input[_SSEKMSEC],
-        [_xassebke]: [() => smithyClient.isSerializableHeaderValue(input[_BKE]), () => input[_BKE].toString()],
-        [_xacssseca]: input[_CSSSECA],
-        [_xacssseck]: input[_CSSSECK],
-        [_xacssseckm]: input[_CSSSECKMD],
-        [_xarp]: input[_RP],
-        [_xat]: input[_T],
-        [_xaolm]: input[_OLM],
-        [_xaolrud]: [() => smithyClient.isSerializableHeaderValue(input[_OLRUD]), () => smithyClient.serializeDateTime(input[_OLRUD]).toString()],
-        [_xaollh]: input[_OLLHS],
-        [_xaebo]: input[_EBO],
-        [_xasebo]: input[_ESBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "CopyObject"],
-    });
-    let body;
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CreateBucketCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaa]: input[_ACL],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagw]: input[_GW],
-        [_xagwa]: input[_GWACP],
-        [_xabole]: [() => smithyClient.isSerializableHeaderValue(input[_OLEFB]), () => input[_OLEFB].toString()],
-        [_xaoo]: input[_OO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    let body;
-    let contents;
-    if (input.CreateBucketConfiguration !== undefined) {
-        contents = se_CreateBucketConfiguration(input.CreateBucketConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).b(body);
-    return b.build();
-};
-const se_CreateBucketMetadataConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mC]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.MetadataConfiguration !== undefined) {
-        contents = se_MetadataConfiguration(input.MetadataConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CreateBucketMetadataTableConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mT]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.MetadataTableConfiguration !== undefined) {
-        contents = se_MetadataTableConfiguration(input.MetadataTableConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CreateMultipartUploadCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        ...(input.Metadata !== undefined &&
-            Object.keys(input.Metadata).reduce((acc, suffix) => {
-                acc[`x-amz-meta-${suffix.toLowerCase()}`] = input.Metadata[suffix];
-                return acc;
-            }, {})),
-        [_xaa]: input[_ACL],
-        [_cc]: input[_CC],
-        [_cd]: input[_CD],
-        [_ce]: input[_CE],
-        [_cl]: input[_CL],
-        [_ct]: input[_CTo],
-        [_e]: [() => smithyClient.isSerializableHeaderValue(input[_E]), () => smithyClient.dateToUtcString(input[_E]).toString()],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagwa]: input[_GWACP],
-        [_xasse]: input[_SSE],
-        [_xasc]: input[_SC],
-        [_xawrl]: input[_WRL],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xasseakki]: input[_SSEKMSKI],
-        [_xassec]: input[_SSEKMSEC],
-        [_xassebke]: [() => smithyClient.isSerializableHeaderValue(input[_BKE]), () => input[_BKE].toString()],
-        [_xarp]: input[_RP],
-        [_xat]: input[_T],
-        [_xaolm]: input[_OLM],
-        [_xaolrud]: [() => smithyClient.isSerializableHeaderValue(input[_OLRUD]), () => smithyClient.serializeDateTime(input[_OLRUD]).toString()],
-        [_xaollh]: input[_OLLHS],
-        [_xaebo]: input[_EBO],
-        [_xaca]: input[_CA],
-        [_xact]: input[_CT],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_u]: [, ""],
-    });
-    let body;
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_CreateSessionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xacsm]: input[_SM],
-        [_xasse]: input[_SSE],
-        [_xasseakki]: input[_SSEKMSKI],
-        [_xassec]: input[_SSEKMSEC],
-        [_xassebke]: [() => smithyClient.isSerializableHeaderValue(input[_BKE]), () => input[_BKE].toString()],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_s]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    let body;
-    b.m("DELETE").h(headers).b(body);
-    return b.build();
-};
-const se_DeleteBucketAnalyticsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_a]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketCorsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_c]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketEncryptionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_en]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketIntelligentTieringConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_it]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketInventoryConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_in]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketLifecycleCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_l]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketMetadataConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mC]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketMetadataTableConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mT]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketMetricsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_m]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketOwnershipControlsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_oC]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketPolicyCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_p]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketReplicationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_r]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteBucketWebsiteCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_w]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xam]: input[_MFA],
-        [_xarp]: input[_RP],
-        [_xabgr]: [() => smithyClient.isSerializableHeaderValue(input[_BGR]), () => input[_BGR].toString()],
-        [_xaebo]: input[_EBO],
-        [_im]: input[_IM],
-        [_xaimlmt]: [() => smithyClient.isSerializableHeaderValue(input[_IMLMT]), () => smithyClient.dateToUtcString(input[_IMLMT]).toString()],
-        [_xaims]: [() => smithyClient.isSerializableHeaderValue(input[_IMS]), () => input[_IMS].toString()],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "DeleteObject"],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteObjectsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xam]: input[_MFA],
-        [_xarp]: input[_RP],
-        [_xabgr]: [() => smithyClient.isSerializableHeaderValue(input[_BGR]), () => input[_BGR].toString()],
-        [_xaebo]: input[_EBO],
-        [_xasca]: input[_CA],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_d]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.Delete !== undefined) {
-        contents = se_Delete(input.Delete);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeleteObjectTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_DeletePublicAccessBlockCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_pAB]: [, ""],
-    });
-    let body;
-    b.m("DELETE").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketAccelerateConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-        [_xarp]: input[_RP],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_ac]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketAclCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_acl]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketAnalyticsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_a]: [, ""],
-        [_xi]: [, "GetBucketAnalyticsConfiguration"],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketCorsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_c]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketEncryptionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_en]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketIntelligentTieringConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_it]: [, ""],
-        [_xi]: [, "GetBucketIntelligentTieringConfiguration"],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketInventoryConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_in]: [, ""],
-        [_xi]: [, "GetBucketInventoryConfiguration"],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketLifecycleConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_l]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketLocationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_lo]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketLoggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_log]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketMetadataConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mC]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketMetadataTableConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mT]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketMetricsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_m]: [, ""],
-        [_xi]: [, "GetBucketMetricsConfiguration"],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketNotificationConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_n]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketOwnershipControlsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_oC]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketPolicyCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_p]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketPolicyStatusCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_pS]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketReplicationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_r]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketRequestPaymentCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_rP]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketVersioningCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_v]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetBucketWebsiteCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_w]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_im]: input[_IM],
-        [_ims]: [() => smithyClient.isSerializableHeaderValue(input[_IMSf]), () => smithyClient.dateToUtcString(input[_IMSf]).toString()],
-        [_inm]: input[_INM],
-        [_ius]: [() => smithyClient.isSerializableHeaderValue(input[_IUS]), () => smithyClient.dateToUtcString(input[_IUS]).toString()],
-        [_ra]: input[_R],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xacm]: input[_CM],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "GetObject"],
-        [_rcc]: [, input[_RCC]],
-        [_rcd]: [, input[_RCD]],
-        [_rce]: [, input[_RCE]],
-        [_rcl]: [, input[_RCL]],
-        [_rct]: [, input[_RCT]],
-        [_re]: [() => input.ResponseExpires !== void 0, () => smithyClient.dateToUtcString(input[_RE]).toString()],
-        [_vI]: [, input[_VI]],
-        [_pN]: [() => input.PartNumber !== void 0, () => input[_PN].toString()],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectAclCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_acl]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectAttributesCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xamp]: [() => smithyClient.isSerializableHeaderValue(input[_MP]), () => input[_MP].toString()],
-        [_xapnm]: input[_PNM],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xaoa]: [() => smithyClient.isSerializableHeaderValue(input[_OA]), () => (input[_OA] || []).map(smithyClient.quoteHeader).join(", ")],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_at]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectLegalHoldCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_lh]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectLockConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_ol]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectRetentionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_ret]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-        [_xarp]: input[_RP],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetObjectTorrentCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_to]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_GetPublicAccessBlockCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_pAB]: [, ""],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_HeadBucketCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    let body;
-    b.m("HEAD").h(headers).b(body);
-    return b.build();
-};
-const se_HeadObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_im]: input[_IM],
-        [_ims]: [() => smithyClient.isSerializableHeaderValue(input[_IMSf]), () => smithyClient.dateToUtcString(input[_IMSf]).toString()],
-        [_inm]: input[_INM],
-        [_ius]: [() => smithyClient.isSerializableHeaderValue(input[_IUS]), () => smithyClient.dateToUtcString(input[_IUS]).toString()],
-        [_ra]: input[_R],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xacm]: input[_CM],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_rcc]: [, input[_RCC]],
-        [_rcd]: [, input[_RCD]],
-        [_rce]: [, input[_RCE]],
-        [_rcl]: [, input[_RCL]],
-        [_rct]: [, input[_RCT]],
-        [_re]: [() => input.ResponseExpires !== void 0, () => smithyClient.dateToUtcString(input[_RE]).toString()],
-        [_vI]: [, input[_VI]],
-        [_pN]: [() => input.PartNumber !== void 0, () => input[_PN].toString()],
-    });
-    let body;
-    b.m("HEAD").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListBucketAnalyticsConfigurationsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_a]: [, ""],
-        [_xi]: [, "ListBucketAnalyticsConfigurations"],
-        [_ct_]: [, input[_CTon]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListBucketIntelligentTieringConfigurationsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_it]: [, ""],
-        [_xi]: [, "ListBucketIntelligentTieringConfigurations"],
-        [_ct_]: [, input[_CTon]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListBucketInventoryConfigurationsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_in]: [, ""],
-        [_xi]: [, "ListBucketInventoryConfigurations"],
-        [_ct_]: [, input[_CTon]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListBucketMetricsConfigurationsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_m]: [, ""],
-        [_xi]: [, "ListBucketMetricsConfigurations"],
-        [_ct_]: [, input[_CTon]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListBucketsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = {};
-    b.bp("/");
-    const query = smithyClient.map({
-        [_xi]: [, "ListBuckets"],
-        [_mb]: [() => input.MaxBuckets !== void 0, () => input[_MB].toString()],
-        [_ct_]: [, input[_CTon]],
-        [_pr]: [, input[_P]],
-        [_br]: [, input[_BR]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListDirectoryBucketsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = {};
-    b.bp("/");
-    const query = smithyClient.map({
-        [_xi]: [, "ListDirectoryBuckets"],
-        [_ct_]: [, input[_CTon]],
-        [_mdb]: [() => input.MaxDirectoryBuckets !== void 0, () => input[_MDB].toString()],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListMultipartUploadsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-        [_xarp]: input[_RP],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_u]: [, ""],
-        [_de]: [, input[_D]],
-        [_et]: [, input[_ET]],
-        [_km]: [, input[_KM]],
-        [_mu]: [() => input.MaxUploads !== void 0, () => input[_MU].toString()],
-        [_pr]: [, input[_P]],
-        [_uim]: [, input[_UIM]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListObjectsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xaooa]: [() => smithyClient.isSerializableHeaderValue(input[_OOA]), () => (input[_OOA] || []).map(smithyClient.quoteHeader).join(", ")],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_de]: [, input[_D]],
-        [_et]: [, input[_ET]],
-        [_ma]: [, input[_M]],
-        [_mk]: [() => input.MaxKeys !== void 0, () => input[_MK].toString()],
-        [_pr]: [, input[_P]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListObjectsV2Command = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xaooa]: [() => smithyClient.isSerializableHeaderValue(input[_OOA]), () => (input[_OOA] || []).map(smithyClient.quoteHeader).join(", ")],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_lt]: [, "2"],
-        [_de]: [, input[_D]],
-        [_et]: [, input[_ET]],
-        [_mk]: [() => input.MaxKeys !== void 0, () => input[_MK].toString()],
-        [_pr]: [, input[_P]],
-        [_ct_]: [, input[_CTon]],
-        [_fo]: [() => input.FetchOwner !== void 0, () => input[_FO].toString()],
-        [_sa]: [, input[_SA]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListObjectVersionsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xaebo]: input[_EBO],
-        [_xarp]: input[_RP],
-        [_xaooa]: [() => smithyClient.isSerializableHeaderValue(input[_OOA]), () => (input[_OOA] || []).map(smithyClient.quoteHeader).join(", ")],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_ver]: [, ""],
-        [_de]: [, input[_D]],
-        [_et]: [, input[_ET]],
-        [_km]: [, input[_KM]],
-        [_mk]: [() => input.MaxKeys !== void 0, () => input[_MK].toString()],
-        [_pr]: [, input[_P]],
-        [_vim]: [, input[_VIM]],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_ListPartsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "ListParts"],
-        [_mp]: [() => input.MaxParts !== void 0, () => input[_MP].toString()],
-        [_pnm]: [, input[_PNM]],
-        [_uI]: [, smithyClient.expectNonNull(input[_UI], `UploadId`)],
-    });
-    let body;
-    b.m("GET").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketAccelerateConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-        [_xasca]: input[_CA],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_ac]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.AccelerateConfiguration !== undefined) {
-        contents = se_AccelerateConfiguration(input.AccelerateConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketAclCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaa]: input[_ACL],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagw]: input[_GW],
-        [_xagwa]: input[_GWACP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_acl]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.AccessControlPolicy !== undefined) {
-        contents = se_AccessControlPolicy(input.AccessControlPolicy);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketAnalyticsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_a]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    let contents;
-    if (input.AnalyticsConfiguration !== undefined) {
-        contents = se_AnalyticsConfiguration(input.AnalyticsConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketCorsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_c]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.CORSConfiguration !== undefined) {
-        contents = se_CORSConfiguration(input.CORSConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketEncryptionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_en]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.ServerSideEncryptionConfiguration !== undefined) {
-        contents = se_ServerSideEncryptionConfiguration(input.ServerSideEncryptionConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketIntelligentTieringConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_it]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    let contents;
-    if (input.IntelligentTieringConfiguration !== undefined) {
-        contents = se_IntelligentTieringConfiguration(input.IntelligentTieringConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketInventoryConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_in]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    let contents;
-    if (input.InventoryConfiguration !== undefined) {
-        contents = se_InventoryConfiguration(input.InventoryConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketLifecycleConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-        [_xatdmos]: input[_TDMOS],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_l]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.LifecycleConfiguration !== undefined) {
-        contents = se_BucketLifecycleConfiguration(input.LifecycleConfiguration);
-        contents = contents.n("LifecycleConfiguration");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketLoggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_log]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.BucketLoggingStatus !== undefined) {
-        contents = se_BucketLoggingStatus(input.BucketLoggingStatus);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketMetricsConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_m]: [, ""],
-        [_i]: [, smithyClient.expectNonNull(input[_I], `Id`)],
-    });
-    let body;
-    let contents;
-    if (input.MetricsConfiguration !== undefined) {
-        contents = se_MetricsConfiguration(input.MetricsConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketNotificationConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaebo]: input[_EBO],
-        [_xasdv]: [() => smithyClient.isSerializableHeaderValue(input[_SDV]), () => input[_SDV].toString()],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_n]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.NotificationConfiguration !== undefined) {
-        contents = se_NotificationConfiguration(input.NotificationConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketOwnershipControlsCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xaebo]: input[_EBO],
-        [_xasca]: input[_CA],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_oC]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.OwnershipControls !== undefined) {
-        contents = se_OwnershipControls(input.OwnershipControls);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketPolicyCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "text/plain",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xacrsba]: [() => smithyClient.isSerializableHeaderValue(input[_CRSBA]), () => input[_CRSBA].toString()],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_p]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.Policy !== undefined) {
-        contents = input.Policy;
-        body = contents;
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketReplicationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xabolt]: input[_To],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_r]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.ReplicationConfiguration !== undefined) {
-        contents = se_ReplicationConfiguration(input.ReplicationConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketRequestPaymentCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_rP]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.RequestPaymentConfiguration !== undefined) {
-        contents = se_RequestPaymentConfiguration(input.RequestPaymentConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.Tagging !== undefined) {
-        contents = se_Tagging(input.Tagging);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketVersioningCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xam]: input[_MFA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_v]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.VersioningConfiguration !== undefined) {
-        contents = se_VersioningConfiguration(input.VersioningConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutBucketWebsiteCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_w]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.WebsiteConfiguration !== undefined) {
-        contents = se_WebsiteConfiguration(input.WebsiteConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        ...(input.Metadata !== undefined &&
-            Object.keys(input.Metadata).reduce((acc, suffix) => {
-                acc[`x-amz-meta-${suffix.toLowerCase()}`] = input.Metadata[suffix];
-                return acc;
-            }, {})),
-        [_ct]: input[_CTo] || "application/octet-stream",
-        [_xaa]: input[_ACL],
-        [_cc]: input[_CC],
-        [_cd]: input[_CD],
-        [_ce]: input[_CE],
-        [_cl]: input[_CL],
-        [_cl_]: [() => smithyClient.isSerializableHeaderValue(input[_CLo]), () => input[_CLo].toString()],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xacc]: input[_CCRC],
-        [_xacc_]: input[_CCRCC],
-        [_xacc__]: input[_CCRCNVME],
-        [_xacs]: input[_CSHA],
-        [_xacs_]: input[_CSHAh],
-        [_e]: [() => smithyClient.isSerializableHeaderValue(input[_E]), () => smithyClient.dateToUtcString(input[_E]).toString()],
-        [_im]: input[_IM],
-        [_inm]: input[_INM],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagwa]: input[_GWACP],
-        [_xawob]: [() => smithyClient.isSerializableHeaderValue(input[_WOB]), () => input[_WOB].toString()],
-        [_xasse]: input[_SSE],
-        [_xasc]: input[_SC],
-        [_xawrl]: input[_WRL],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xasseakki]: input[_SSEKMSKI],
-        [_xassec]: input[_SSEKMSEC],
-        [_xassebke]: [() => smithyClient.isSerializableHeaderValue(input[_BKE]), () => input[_BKE].toString()],
-        [_xarp]: input[_RP],
-        [_xat]: input[_T],
-        [_xaolm]: input[_OLM],
-        [_xaolrud]: [() => smithyClient.isSerializableHeaderValue(input[_OLRUD]), () => smithyClient.serializeDateTime(input[_OLRUD]).toString()],
-        [_xaollh]: input[_OLLHS],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "PutObject"],
-    });
-    let body;
-    let contents;
-    if (input.Body !== undefined) {
-        contents = input.Body;
-        body = contents;
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectAclCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xaa]: input[_ACL],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xagfc]: input[_GFC],
-        [_xagr]: input[_GR],
-        [_xagra]: input[_GRACP],
-        [_xagw]: input[_GW],
-        [_xagwa]: input[_GWACP],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_acl]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    let contents;
-    if (input.AccessControlPolicy !== undefined) {
-        contents = se_AccessControlPolicy(input.AccessControlPolicy);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectLegalHoldCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xarp]: input[_RP],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_lh]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    let contents;
-    if (input.LegalHold !== undefined) {
-        contents = se_ObjectLockLegalHold(input.LegalHold);
-        contents = contents.n("LegalHold");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectLockConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xarp]: input[_RP],
-        [_xabolt]: input[_To],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_ol]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.ObjectLockConfiguration !== undefined) {
-        contents = se_ObjectLockConfiguration(input.ObjectLockConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectRetentionCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xarp]: input[_RP],
-        [_xabgr]: [() => smithyClient.isSerializableHeaderValue(input[_BGR]), () => input[_BGR].toString()],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_ret]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    let contents;
-    if (input.Retention !== undefined) {
-        contents = se_ObjectLockRetention(input.Retention);
-        contents = contents.n("Retention");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutObjectTaggingCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-        [_xarp]: input[_RP],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_t]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    let contents;
-    if (input.Tagging !== undefined) {
-        contents = se_Tagging(input.Tagging);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_PutPublicAccessBlockCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_pAB]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.PublicAccessBlockConfiguration !== undefined) {
-        contents = se_PublicAccessBlockConfiguration(input.PublicAccessBlockConfiguration);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_RenameObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xars]: input[_RS],
-        [_im]: input[_DIM],
-        [_inm]: input[_DINM],
-        [_ims]: [() => smithyClient.isSerializableHeaderValue(input[_DIMS]), () => smithyClient.dateToUtcString(input[_DIMS]).toString()],
-        [_ius]: [() => smithyClient.isSerializableHeaderValue(input[_DIUS]), () => smithyClient.dateToUtcString(input[_DIUS]).toString()],
-        [_xarsim]: input[_SIM],
-        [_xarsinm]: input[_SINM],
-        [_xarsims]: [() => smithyClient.isSerializableHeaderValue(input[_SIMS]), () => smithyClient.dateToUtcString(input[_SIMS]).toString()],
-        [_xarsius]: [() => smithyClient.isSerializableHeaderValue(input[_SIUS]), () => smithyClient.dateToUtcString(input[_SIUS]).toString()],
-        [_xact_]: input[_CTl] ?? uuid.v4(),
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_rO]: [, ""],
-    });
-    let body;
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_RestoreObjectCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xarp]: input[_RP],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_res]: [, ""],
-        [_vI]: [, input[_VI]],
-    });
-    let body;
-    let contents;
-    if (input.RestoreRequest !== undefined) {
-        contents = se_RestoreRequest(input.RestoreRequest);
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_SelectObjectContentCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_se]: [, ""],
-        [_st]: [, "2"],
-    });
-    let body;
-    body = _ve;
-    const bn = new xmlBuilder.XmlNode(_SOCR);
-    bn.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-    bn.cc(input, _Ex);
-    bn.cc(input, _ETx);
-    if (input[_IS] != null) {
-        bn.c(se_InputSerialization(input[_IS]).n(_IS));
-    }
-    if (input[_OS] != null) {
-        bn.c(se_OutputSerialization(input[_OS]).n(_OS));
-    }
-    if (input[_RPe] != null) {
-        bn.c(se_RequestProgress(input[_RPe]).n(_RPe));
-    }
-    if (input[_SR] != null) {
-        bn.c(se_ScanRange(input[_SR]).n(_SR));
-    }
-    body += bn.toString();
-    b.m("POST").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_UpdateBucketMetadataInventoryTableConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mIT]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.InventoryTableConfiguration !== undefined) {
-        contents = se_InventoryTableConfigurationUpdates(input.InventoryTableConfiguration);
-        contents = contents.n("InventoryTableConfiguration");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_UpdateBucketMetadataJournalTableConfigurationCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/xml",
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    const query = smithyClient.map({
-        [_mJT]: [, ""],
-    });
-    let body;
-    let contents;
-    if (input.JournalTableConfiguration !== undefined) {
-        contents = se_JournalTableConfigurationUpdates(input.JournalTableConfiguration);
-        contents = contents.n("JournalTableConfiguration");
-        body = _ve;
-        contents.a("xmlns", "http://s3.amazonaws.com/doc/2006-03-01/");
-        body += contents.toString();
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_UploadPartCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "content-type": "application/octet-stream",
-        [_cl_]: [() => smithyClient.isSerializableHeaderValue(input[_CLo]), () => input[_CLo].toString()],
-        [_cm]: input[_CMD],
-        [_xasca]: input[_CA],
-        [_xacc]: input[_CCRC],
-        [_xacc_]: input[_CCRCC],
-        [_xacc__]: input[_CCRCNVME],
-        [_xacs]: input[_CSHA],
-        [_xacs_]: input[_CSHAh],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "UploadPart"],
-        [_pN]: [smithyClient.expectNonNull(input.PartNumber, `PartNumber`) != null, () => input[_PN].toString()],
-        [_uI]: [, smithyClient.expectNonNull(input[_UI], `UploadId`)],
-    });
-    let body;
-    let contents;
-    if (input.Body !== undefined) {
-        contents = input.Body;
-        body = contents;
-    }
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_UploadPartCopyCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        [_xacs__]: input[_CS],
-        [_xacsim]: input[_CSIM],
-        [_xacsims]: [() => smithyClient.isSerializableHeaderValue(input[_CSIMS]), () => smithyClient.dateToUtcString(input[_CSIMS]).toString()],
-        [_xacsinm]: input[_CSINM],
-        [_xacsius]: [() => smithyClient.isSerializableHeaderValue(input[_CSIUS]), () => smithyClient.dateToUtcString(input[_CSIUS]).toString()],
-        [_xacsr]: input[_CSR],
-        [_xasseca]: input[_SSECA],
-        [_xasseck]: input[_SSECK],
-        [_xasseckm]: input[_SSECKMD],
-        [_xacssseca]: input[_CSSSECA],
-        [_xacssseck]: input[_CSSSECK],
-        [_xacssseckm]: input[_CSSSECKMD],
-        [_xarp]: input[_RP],
-        [_xaebo]: input[_EBO],
-        [_xasebo]: input[_ESBO],
-    });
-    b.bp("/{Key+}");
-    b.p("Bucket", () => input.Bucket, "{Bucket}", false);
-    b.p("Key", () => input.Key, "{Key+}", true);
-    const query = smithyClient.map({
-        [_xi]: [, "UploadPartCopy"],
-        [_pN]: [smithyClient.expectNonNull(input.PartNumber, `PartNumber`) != null, () => input[_PN].toString()],
-        [_uI]: [, smithyClient.expectNonNull(input[_UI], `UploadId`)],
-    });
-    let body;
-    b.m("PUT").h(headers).q(query).b(body);
-    return b.build();
-};
-const se_WriteGetObjectResponseCommand = async (input, context) => {
-    const b = core.requestBuilder(input, context);
-    const headers = smithyClient.map({}, smithyClient.isSerializableHeaderValue, {
-        "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
-        ...(input.Metadata !== undefined &&
-            Object.keys(input.Metadata).reduce((acc, suffix) => {
-                acc[`x-amz-meta-${suffix.toLowerCase()}`] = input.Metadata[suffix];
-                return acc;
-            }, {})),
-        "content-type": "application/octet-stream",
-        [_xarr]: input[_RR],
-        [_xart]: input[_RT],
-        [_xafs]: [() => smithyClient.isSerializableHeaderValue(input[_SCt]), () => input[_SCt].toString()],
-        [_xafec]: input[_EC],
-        [_xafem]: input[_EM],
-        [_xafhar]: input[_AR],
-        [_xafhcc]: input[_CC],
-        [_xafhcd]: input[_CD],
-        [_xafhce]: input[_CE],
-        [_xafhcl]: input[_CL],
-        [_cl_]: [() => smithyClient.isSerializableHeaderValue(input[_CLo]), () => input[_CLo].toString()],
-        [_xafhcr]: input[_CR],
-        [_xafhct]: input[_CTo],
-        [_xafhxacc]: input[_CCRC],
-        [_xafhxacc_]: input[_CCRCC],
-        [_xafhxacc__]: input[_CCRCNVME],
-        [_xafhxacs]: input[_CSHA],
-        [_xafhxacs_]: input[_CSHAh],
-        [_xafhxadm]: [() => smithyClient.isSerializableHeaderValue(input[_DM]), () => input[_DM].toString()],
-        [_xafhe]: input[_ETa],
-        [_xafhe_]: [() => smithyClient.isSerializableHeaderValue(input[_E]), () => smithyClient.dateToUtcString(input[_E]).toString()],
-        [_xafhxae]: input[_Exp],
-        [_xafhlm]: [() => smithyClient.isSerializableHeaderValue(input[_LM]), () => smithyClient.dateToUtcString(input[_LM]).toString()],
-        [_xafhxamm]: [() => smithyClient.isSerializableHeaderValue(input[_MM]), () => input[_MM].toString()],
-        [_xafhxaolm]: input[_OLM],
-        [_xafhxaollh]: input[_OLLHS],
-        [_xafhxaolrud]: [
-            () => smithyClient.isSerializableHeaderValue(input[_OLRUD]),
-            () => smithyClient.serializeDateTime(input[_OLRUD]).toString(),
-        ],
-        [_xafhxampc]: [() => smithyClient.isSerializableHeaderValue(input[_PC]), () => input[_PC].toString()],
-        [_xafhxars]: input[_RSe],
-        [_xafhxarc]: input[_RC],
-        [_xafhxar]: input[_Re],
-        [_xafhxasse]: input[_SSE],
-        [_xafhxasseca]: input[_SSECA],
-        [_xafhxasseakki]: input[_SSEKMSKI],
-        [_xafhxasseckm]: input[_SSECKMD],
-        [_xafhxasc]: input[_SC],
-        [_xafhxatc]: [() => smithyClient.isSerializableHeaderValue(input[_TC]), () => input[_TC].toString()],
-        [_xafhxavi]: input[_VI],
-        [_xafhxassebke]: [() => smithyClient.isSerializableHeaderValue(input[_BKE]), () => input[_BKE].toString()],
-    });
-    b.bp("/WriteGetObjectResponse");
-    let body;
-    let contents;
-    if (input.Body !== undefined) {
-        contents = input.Body;
-        body = contents;
-    }
-    let { hostname: resolvedHostname } = await context.endpoint();
-    if (context.disableHostPrefix !== true) {
-        resolvedHostname = "{RequestRoute}." + resolvedHostname;
-        if (input.RequestRoute === undefined) {
-            throw new Error("Empty value provided for input host prefix: RequestRoute.");
-        }
-        resolvedHostname = resolvedHostname.replace("{RequestRoute}", input.RequestRoute);
-        if (!protocolHttp.isValidHostname(resolvedHostname)) {
-            throw new Error("ValidationError: prefixed hostname must be hostname compatible.");
-        }
-    }
-    b.hn(resolvedHostname);
-    b.m("POST").h(headers).b(body);
-    return b.build();
-};
-const de_AbortMultipartUploadCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_CompleteMultipartUploadCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_Exp]: [, output.headers[_xae]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_VI]: [, output.headers[_xavi]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_B] != null) {
-        contents[_B] = smithyClient.expectString(data[_B]);
-    }
-    if (data[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(data[_CCRC]);
-    }
-    if (data[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(data[_CCRCC]);
-    }
-    if (data[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(data[_CCRCNVME]);
-    }
-    if (data[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(data[_CSHA]);
-    }
-    if (data[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(data[_CSHAh]);
-    }
-    if (data[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(data[_CT]);
-    }
-    if (data[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(data[_ETa]);
-    }
-    if (data[_K] != null) {
-        contents[_K] = smithyClient.expectString(data[_K]);
-    }
-    if (data[_L] != null) {
-        contents[_L] = smithyClient.expectString(data[_L]);
-    }
-    return contents;
-};
-const de_CopyObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_Exp]: [, output.headers[_xae]],
-        [_CSVI]: [, output.headers[_xacsvi]],
-        [_VI]: [, output.headers[_xavi]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_SSEKMSEC]: [, output.headers[_xassec]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.CopyObjectResult = de_CopyObjectResult(data);
-    return contents;
-};
-const de_CreateBucketCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_L]: [, output.headers[_lo]],
-        [_BA]: [, output.headers[_xaba]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_CreateBucketMetadataConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_CreateBucketMetadataTableConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_CreateMultipartUploadCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_AD]: [
-            () => void 0 !== output.headers[_xaad],
-            () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_xaad])),
-        ],
-        [_ARI]: [, output.headers[_xaari]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_SSEKMSEC]: [, output.headers[_xassec]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_RC]: [, output.headers[_xarc]],
-        [_CA]: [, output.headers[_xaca]],
-        [_CT]: [, output.headers[_xact]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_B] != null) {
-        contents[_B] = smithyClient.expectString(data[_B]);
-    }
-    if (data[_K] != null) {
-        contents[_K] = smithyClient.expectString(data[_K]);
-    }
-    if (data[_UI] != null) {
-        contents[_UI] = smithyClient.expectString(data[_UI]);
-    }
-    return contents;
-};
-const de_CreateSessionCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_SSEKMSEC]: [, output.headers[_xassec]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_C] != null) {
-        contents[_C] = de_SessionCredentials(data[_C]);
-    }
-    return contents;
-};
-const de_DeleteBucketCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketAnalyticsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketCorsCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketEncryptionCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketIntelligentTieringConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketInventoryConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketLifecycleCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketMetadataConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketMetadataTableConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketMetricsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketOwnershipControlsCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketPolicyCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketReplicationCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteBucketWebsiteCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteObjectCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_DM]: [() => void 0 !== output.headers[_xadm], () => smithyClient.parseBoolean(output.headers[_xadm])],
-        [_VI]: [, output.headers[_xavi]],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeleteObjectsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.Deleted).trim() === "") {
-        contents[_De] = [];
-    }
-    else if (data[_De] != null) {
-        contents[_De] = de_DeletedObjects(smithyClient.getArrayIfSingleItem(data[_De]));
-    }
-    if (String(data.Error).trim() === "") {
-        contents[_Err] = [];
-    }
-    else if (data[_Er] != null) {
-        contents[_Err] = de_Errors(smithyClient.getArrayIfSingleItem(data[_Er]));
-    }
-    return contents;
-};
-const de_DeleteObjectTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_VI]: [, output.headers[_xavi]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_DeletePublicAccessBlockCommand = async (output, context) => {
-    if (output.statusCode !== 204 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_GetBucketAccelerateConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_S] != null) {
-        contents[_S] = smithyClient.expectString(data[_S]);
-    }
-    return contents;
-};
-const de_GetBucketAclCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.AccessControlList).trim() === "") {
-        contents[_Gr] = [];
-    }
-    else if (data[_ACLc] != null && data[_ACLc][_G] != null) {
-        contents[_Gr] = de_Grants(smithyClient.getArrayIfSingleItem(data[_ACLc][_G]));
-    }
-    if (data[_O] != null) {
-        contents[_O] = de_Owner(data[_O]);
-    }
-    return contents;
-};
-const de_GetBucketAnalyticsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.AnalyticsConfiguration = de_AnalyticsConfiguration(data);
-    return contents;
-};
-const de_GetBucketCorsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.CORSRule).trim() === "") {
-        contents[_CORSRu] = [];
-    }
-    else if (data[_CORSR] != null) {
-        contents[_CORSRu] = de_CORSRules(smithyClient.getArrayIfSingleItem(data[_CORSR]));
-    }
-    return contents;
-};
-const de_GetBucketEncryptionCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.ServerSideEncryptionConfiguration = de_ServerSideEncryptionConfiguration(data);
-    return contents;
-};
-const de_GetBucketIntelligentTieringConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.IntelligentTieringConfiguration = de_IntelligentTieringConfiguration(data);
-    return contents;
-};
-const de_GetBucketInventoryConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.InventoryConfiguration = de_InventoryConfiguration(data);
-    return contents;
-};
-const de_GetBucketLifecycleConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_TDMOS]: [, output.headers[_xatdmos]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.Rule).trim() === "") {
-        contents[_Rul] = [];
-    }
-    else if (data[_Ru] != null) {
-        contents[_Rul] = de_LifecycleRules(smithyClient.getArrayIfSingleItem(data[_Ru]));
-    }
-    return contents;
-};
-const de_GetBucketLocationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_LC] != null) {
-        contents[_LC] = smithyClient.expectString(data[_LC]);
-    }
-    return contents;
-};
-const de_GetBucketLoggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_LE] != null) {
-        contents[_LE] = de_LoggingEnabled(data[_LE]);
-    }
-    return contents;
-};
-const de_GetBucketMetadataConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.GetBucketMetadataConfigurationResult = de_GetBucketMetadataConfigurationResult(data);
-    return contents;
-};
-const de_GetBucketMetadataTableConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.GetBucketMetadataTableConfigurationResult = de_GetBucketMetadataTableConfigurationResult(data);
-    return contents;
-};
-const de_GetBucketMetricsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.MetricsConfiguration = de_MetricsConfiguration(data);
-    return contents;
-};
-const de_GetBucketNotificationConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_EBC] != null) {
-        contents[_EBC] = de_EventBridgeConfiguration(data[_EBC]);
-    }
-    if (String(data.CloudFunctionConfiguration).trim() === "") {
-        contents[_LFC] = [];
-    }
-    else if (data[_CFC] != null) {
-        contents[_LFC] = de_LambdaFunctionConfigurationList(smithyClient.getArrayIfSingleItem(data[_CFC]));
-    }
-    if (String(data.QueueConfiguration).trim() === "") {
-        contents[_QCu] = [];
-    }
-    else if (data[_QC] != null) {
-        contents[_QCu] = de_QueueConfigurationList(smithyClient.getArrayIfSingleItem(data[_QC]));
-    }
-    if (String(data.TopicConfiguration).trim() === "") {
-        contents[_TCop] = [];
-    }
-    else if (data[_TCo] != null) {
-        contents[_TCop] = de_TopicConfigurationList(smithyClient.getArrayIfSingleItem(data[_TCo]));
-    }
-    return contents;
-};
-const de_GetBucketOwnershipControlsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.OwnershipControls = de_OwnershipControls(data);
-    return contents;
-};
-const de_GetBucketPolicyCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = await collectBodyString(output.body, context);
-    contents.Policy = smithyClient.expectString(data);
-    return contents;
-};
-const de_GetBucketPolicyStatusCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.PolicyStatus = de_PolicyStatus(data);
-    return contents;
-};
-const de_GetBucketReplicationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.ReplicationConfiguration = de_ReplicationConfiguration(data);
-    return contents;
-};
-const de_GetBucketRequestPaymentCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_Pa] != null) {
-        contents[_Pa] = smithyClient.expectString(data[_Pa]);
-    }
-    return contents;
-};
-const de_GetBucketTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.TagSet).trim() === "") {
-        contents[_TS] = [];
-    }
-    else if (data[_TS] != null && data[_TS][_Ta] != null) {
-        contents[_TS] = de_TagSet(smithyClient.getArrayIfSingleItem(data[_TS][_Ta]));
-    }
-    return contents;
-};
-const de_GetBucketVersioningCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_MDf] != null) {
-        contents[_MFAD] = smithyClient.expectString(data[_MDf]);
-    }
-    if (data[_S] != null) {
-        contents[_S] = smithyClient.expectString(data[_S]);
-    }
-    return contents;
-};
-const de_GetBucketWebsiteCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_ED] != null) {
-        contents[_ED] = de_ErrorDocument(data[_ED]);
-    }
-    if (data[_ID] != null) {
-        contents[_ID] = de_IndexDocument(data[_ID]);
-    }
-    if (data[_RART] != null) {
-        contents[_RART] = de_RedirectAllRequestsTo(data[_RART]);
-    }
-    if (String(data.RoutingRules).trim() === "") {
-        contents[_RRo] = [];
-    }
-    else if (data[_RRo] != null && data[_RRo][_RRou] != null) {
-        contents[_RRo] = de_RoutingRules(smithyClient.getArrayIfSingleItem(data[_RRo][_RRou]));
-    }
-    return contents;
-};
-const de_GetObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_DM]: [() => void 0 !== output.headers[_xadm], () => smithyClient.parseBoolean(output.headers[_xadm])],
-        [_AR]: [, output.headers[_ar]],
-        [_Exp]: [, output.headers[_xae]],
-        [_Re]: [, output.headers[_xar]],
-        [_LM]: [() => void 0 !== output.headers[_lm], () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_lm]))],
-        [_CLo]: [() => void 0 !== output.headers[_cl_], () => smithyClient.strictParseLong(output.headers[_cl_])],
-        [_ETa]: [, output.headers[_eta]],
-        [_CCRC]: [, output.headers[_xacc]],
-        [_CCRCC]: [, output.headers[_xacc_]],
-        [_CCRCNVME]: [, output.headers[_xacc__]],
-        [_CSHA]: [, output.headers[_xacs]],
-        [_CSHAh]: [, output.headers[_xacs_]],
-        [_CT]: [, output.headers[_xact]],
-        [_MM]: [() => void 0 !== output.headers[_xamm], () => smithyClient.strictParseInt32(output.headers[_xamm])],
-        [_VI]: [, output.headers[_xavi]],
-        [_CC]: [, output.headers[_cc]],
-        [_CD]: [, output.headers[_cd]],
-        [_CE]: [, output.headers[_ce]],
-        [_CL]: [, output.headers[_cl]],
-        [_CR]: [, output.headers[_cr]],
-        [_CTo]: [, output.headers[_ct]],
-        [_E]: [() => void 0 !== output.headers[_e], () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_e]))],
-        [_ES]: [, output.headers[_ex]],
-        [_WRL]: [, output.headers[_xawrl]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_SC]: [, output.headers[_xasc]],
-        [_RC]: [, output.headers[_xarc]],
-        [_RSe]: [, output.headers[_xars_]],
-        [_PC]: [() => void 0 !== output.headers[_xampc], () => smithyClient.strictParseInt32(output.headers[_xampc])],
-        [_TC]: [() => void 0 !== output.headers[_xatc], () => smithyClient.strictParseInt32(output.headers[_xatc])],
-        [_OLM]: [, output.headers[_xaolm]],
-        [_OLRUD]: [
-            () => void 0 !== output.headers[_xaolrud],
-            () => smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output.headers[_xaolrud])),
-        ],
-        [_OLLHS]: [, output.headers[_xaollh]],
-        Metadata: [
-            ,
-            Object.keys(output.headers)
-                .filter((header) => header.startsWith("x-amz-meta-"))
-                .reduce((acc, header) => {
-                acc[header.substring(11)] = output.headers[header];
-                return acc;
-            }, {}),
-        ],
-    });
-    const data = output.body;
-    context.sdkStreamMixin(data);
-    contents.Body = data;
-    return contents;
-};
-const de_GetObjectAclCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.AccessControlList).trim() === "") {
-        contents[_Gr] = [];
-    }
-    else if (data[_ACLc] != null && data[_ACLc][_G] != null) {
-        contents[_Gr] = de_Grants(smithyClient.getArrayIfSingleItem(data[_ACLc][_G]));
-    }
-    if (data[_O] != null) {
-        contents[_O] = de_Owner(data[_O]);
-    }
-    return contents;
-};
-const de_GetObjectAttributesCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_DM]: [() => void 0 !== output.headers[_xadm], () => smithyClient.parseBoolean(output.headers[_xadm])],
-        [_LM]: [() => void 0 !== output.headers[_lm], () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_lm]))],
-        [_VI]: [, output.headers[_xavi]],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_Ch] != null) {
-        contents[_Ch] = de_Checksum(data[_Ch]);
-    }
-    if (data[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(data[_ETa]);
-    }
-    if (data[_OP] != null) {
-        contents[_OP] = de_GetObjectAttributesParts(data[_OP]);
-    }
-    if (data[_OSb] != null) {
-        contents[_OSb] = smithyClient.strictParseLong(data[_OSb]);
-    }
-    if (data[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(data[_SC]);
-    }
-    return contents;
-};
-const de_GetObjectLegalHoldCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.LegalHold = de_ObjectLockLegalHold(data);
-    return contents;
-};
-const de_GetObjectLockConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.ObjectLockConfiguration = de_ObjectLockConfiguration(data);
-    return contents;
-};
-const de_GetObjectRetentionCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.Retention = de_ObjectLockRetention(data);
-    return contents;
-};
-const de_GetObjectTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_VI]: [, output.headers[_xavi]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.TagSet).trim() === "") {
-        contents[_TS] = [];
-    }
-    else if (data[_TS] != null && data[_TS][_Ta] != null) {
-        contents[_TS] = de_TagSet(smithyClient.getArrayIfSingleItem(data[_TS][_Ta]));
-    }
-    return contents;
-};
-const de_GetObjectTorrentCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = output.body;
-    context.sdkStreamMixin(data);
-    contents.Body = data;
-    return contents;
-};
-const de_GetPublicAccessBlockCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.PublicAccessBlockConfiguration = de_PublicAccessBlockConfiguration(data);
-    return contents;
-};
-const de_HeadBucketCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_BA]: [, output.headers[_xaba]],
-        [_BLT]: [, output.headers[_xablt]],
-        [_BLN]: [, output.headers[_xabln]],
-        [_BR]: [, output.headers[_xabr]],
-        [_APA]: [() => void 0 !== output.headers[_xaapa], () => smithyClient.parseBoolean(output.headers[_xaapa])],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_HeadObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_DM]: [() => void 0 !== output.headers[_xadm], () => smithyClient.parseBoolean(output.headers[_xadm])],
-        [_AR]: [, output.headers[_ar]],
-        [_Exp]: [, output.headers[_xae]],
-        [_Re]: [, output.headers[_xar]],
-        [_AS]: [, output.headers[_xaas]],
-        [_LM]: [() => void 0 !== output.headers[_lm], () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_lm]))],
-        [_CLo]: [() => void 0 !== output.headers[_cl_], () => smithyClient.strictParseLong(output.headers[_cl_])],
-        [_CCRC]: [, output.headers[_xacc]],
-        [_CCRCC]: [, output.headers[_xacc_]],
-        [_CCRCNVME]: [, output.headers[_xacc__]],
-        [_CSHA]: [, output.headers[_xacs]],
-        [_CSHAh]: [, output.headers[_xacs_]],
-        [_CT]: [, output.headers[_xact]],
-        [_ETa]: [, output.headers[_eta]],
-        [_MM]: [() => void 0 !== output.headers[_xamm], () => smithyClient.strictParseInt32(output.headers[_xamm])],
-        [_VI]: [, output.headers[_xavi]],
-        [_CC]: [, output.headers[_cc]],
-        [_CD]: [, output.headers[_cd]],
-        [_CE]: [, output.headers[_ce]],
-        [_CL]: [, output.headers[_cl]],
-        [_CTo]: [, output.headers[_ct]],
-        [_CR]: [, output.headers[_cr]],
-        [_E]: [() => void 0 !== output.headers[_e], () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_e]))],
-        [_ES]: [, output.headers[_ex]],
-        [_WRL]: [, output.headers[_xawrl]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_SC]: [, output.headers[_xasc]],
-        [_RC]: [, output.headers[_xarc]],
-        [_RSe]: [, output.headers[_xars_]],
-        [_PC]: [() => void 0 !== output.headers[_xampc], () => smithyClient.strictParseInt32(output.headers[_xampc])],
-        [_TC]: [() => void 0 !== output.headers[_xatc], () => smithyClient.strictParseInt32(output.headers[_xatc])],
-        [_OLM]: [, output.headers[_xaolm]],
-        [_OLRUD]: [
-            () => void 0 !== output.headers[_xaolrud],
-            () => smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output.headers[_xaolrud])),
-        ],
-        [_OLLHS]: [, output.headers[_xaollh]],
-        Metadata: [
-            ,
-            Object.keys(output.headers)
-                .filter((header) => header.startsWith("x-amz-meta-"))
-                .reduce((acc, header) => {
-                acc[header.substring(11)] = output.headers[header];
-                return acc;
-            }, {}),
-        ],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_ListBucketAnalyticsConfigurationsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.AnalyticsConfiguration).trim() === "") {
-        contents[_ACLn] = [];
-    }
-    else if (data[_AC] != null) {
-        contents[_ACLn] = de_AnalyticsConfigurationList(smithyClient.getArrayIfSingleItem(data[_AC]));
-    }
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_NCT] != null) {
-        contents[_NCT] = smithyClient.expectString(data[_NCT]);
-    }
-    return contents;
-};
-const de_ListBucketIntelligentTieringConfigurationsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (String(data.IntelligentTieringConfiguration).trim() === "") {
-        contents[_ITCL] = [];
-    }
-    else if (data[_ITC] != null) {
-        contents[_ITCL] = de_IntelligentTieringConfigurationList(smithyClient.getArrayIfSingleItem(data[_ITC]));
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_NCT] != null) {
-        contents[_NCT] = smithyClient.expectString(data[_NCT]);
-    }
-    return contents;
-};
-const de_ListBucketInventoryConfigurationsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (String(data.InventoryConfiguration).trim() === "") {
-        contents[_ICL] = [];
-    }
-    else if (data[_IC] != null) {
-        contents[_ICL] = de_InventoryConfigurationList(smithyClient.getArrayIfSingleItem(data[_IC]));
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_NCT] != null) {
-        contents[_NCT] = smithyClient.expectString(data[_NCT]);
-    }
-    return contents;
-};
-const de_ListBucketMetricsConfigurationsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (String(data.MetricsConfiguration).trim() === "") {
-        contents[_MCL] = [];
-    }
-    else if (data[_MC] != null) {
-        contents[_MCL] = de_MetricsConfigurationList(smithyClient.getArrayIfSingleItem(data[_MC]));
-    }
-    if (data[_NCT] != null) {
-        contents[_NCT] = smithyClient.expectString(data[_NCT]);
-    }
-    return contents;
-};
-const de_ListBucketsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.Buckets).trim() === "") {
-        contents[_Bu] = [];
-    }
-    else if (data[_Bu] != null && data[_Bu][_B] != null) {
-        contents[_Bu] = de_Buckets(smithyClient.getArrayIfSingleItem(data[_Bu][_B]));
-    }
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (data[_O] != null) {
-        contents[_O] = de_Owner(data[_O]);
-    }
-    if (data[_P] != null) {
-        contents[_P] = smithyClient.expectString(data[_P]);
-    }
-    return contents;
-};
-const de_ListDirectoryBucketsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.Buckets).trim() === "") {
-        contents[_Bu] = [];
-    }
-    else if (data[_Bu] != null && data[_Bu][_B] != null) {
-        contents[_Bu] = de_Buckets(smithyClient.getArrayIfSingleItem(data[_Bu][_B]));
-    }
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    return contents;
-};
-const de_ListMultipartUploadsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_B] != null) {
-        contents[_B] = smithyClient.expectString(data[_B]);
-    }
-    if (String(data.CommonPrefixes).trim() === "") {
-        contents[_CP] = [];
-    }
-    else if (data[_CP] != null) {
-        contents[_CP] = de_CommonPrefixList(smithyClient.getArrayIfSingleItem(data[_CP]));
-    }
-    if (data[_D] != null) {
-        contents[_D] = smithyClient.expectString(data[_D]);
-    }
-    if (data[_ET] != null) {
-        contents[_ET] = smithyClient.expectString(data[_ET]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_KM] != null) {
-        contents[_KM] = smithyClient.expectString(data[_KM]);
-    }
-    if (data[_MU] != null) {
-        contents[_MU] = smithyClient.strictParseInt32(data[_MU]);
-    }
-    if (data[_NKM] != null) {
-        contents[_NKM] = smithyClient.expectString(data[_NKM]);
-    }
-    if (data[_NUIM] != null) {
-        contents[_NUIM] = smithyClient.expectString(data[_NUIM]);
-    }
-    if (data[_P] != null) {
-        contents[_P] = smithyClient.expectString(data[_P]);
-    }
-    if (data[_UIM] != null) {
-        contents[_UIM] = smithyClient.expectString(data[_UIM]);
-    }
-    if (String(data.Upload).trim() === "") {
-        contents[_Up] = [];
-    }
-    else if (data[_U] != null) {
-        contents[_Up] = de_MultipartUploadList(smithyClient.getArrayIfSingleItem(data[_U]));
-    }
-    return contents;
-};
-const de_ListObjectsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.CommonPrefixes).trim() === "") {
-        contents[_CP] = [];
-    }
-    else if (data[_CP] != null) {
-        contents[_CP] = de_CommonPrefixList(smithyClient.getArrayIfSingleItem(data[_CP]));
-    }
-    if (String(data.Contents).trim() === "") {
-        contents[_Co] = [];
-    }
-    else if (data[_Co] != null) {
-        contents[_Co] = de_ObjectList(smithyClient.getArrayIfSingleItem(data[_Co]));
-    }
-    if (data[_D] != null) {
-        contents[_D] = smithyClient.expectString(data[_D]);
-    }
-    if (data[_ET] != null) {
-        contents[_ET] = smithyClient.expectString(data[_ET]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_M] != null) {
-        contents[_M] = smithyClient.expectString(data[_M]);
-    }
-    if (data[_MK] != null) {
-        contents[_MK] = smithyClient.strictParseInt32(data[_MK]);
-    }
-    if (data[_N] != null) {
-        contents[_N] = smithyClient.expectString(data[_N]);
-    }
-    if (data[_NM] != null) {
-        contents[_NM] = smithyClient.expectString(data[_NM]);
-    }
-    if (data[_P] != null) {
-        contents[_P] = smithyClient.expectString(data[_P]);
-    }
-    return contents;
-};
-const de_ListObjectsV2Command = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.CommonPrefixes).trim() === "") {
-        contents[_CP] = [];
-    }
-    else if (data[_CP] != null) {
-        contents[_CP] = de_CommonPrefixList(smithyClient.getArrayIfSingleItem(data[_CP]));
-    }
-    if (String(data.Contents).trim() === "") {
-        contents[_Co] = [];
-    }
-    else if (data[_Co] != null) {
-        contents[_Co] = de_ObjectList(smithyClient.getArrayIfSingleItem(data[_Co]));
-    }
-    if (data[_CTon] != null) {
-        contents[_CTon] = smithyClient.expectString(data[_CTon]);
-    }
-    if (data[_D] != null) {
-        contents[_D] = smithyClient.expectString(data[_D]);
-    }
-    if (data[_ET] != null) {
-        contents[_ET] = smithyClient.expectString(data[_ET]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_KC] != null) {
-        contents[_KC] = smithyClient.strictParseInt32(data[_KC]);
-    }
-    if (data[_MK] != null) {
-        contents[_MK] = smithyClient.strictParseInt32(data[_MK]);
-    }
-    if (data[_N] != null) {
-        contents[_N] = smithyClient.expectString(data[_N]);
-    }
-    if (data[_NCT] != null) {
-        contents[_NCT] = smithyClient.expectString(data[_NCT]);
-    }
-    if (data[_P] != null) {
-        contents[_P] = smithyClient.expectString(data[_P]);
-    }
-    if (data[_SA] != null) {
-        contents[_SA] = smithyClient.expectString(data[_SA]);
-    }
-    return contents;
-};
-const de_ListObjectVersionsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (String(data.CommonPrefixes).trim() === "") {
-        contents[_CP] = [];
-    }
-    else if (data[_CP] != null) {
-        contents[_CP] = de_CommonPrefixList(smithyClient.getArrayIfSingleItem(data[_CP]));
-    }
-    if (String(data.DeleteMarker).trim() === "") {
-        contents[_DMe] = [];
-    }
-    else if (data[_DM] != null) {
-        contents[_DMe] = de_DeleteMarkers(smithyClient.getArrayIfSingleItem(data[_DM]));
-    }
-    if (data[_D] != null) {
-        contents[_D] = smithyClient.expectString(data[_D]);
-    }
-    if (data[_ET] != null) {
-        contents[_ET] = smithyClient.expectString(data[_ET]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_KM] != null) {
-        contents[_KM] = smithyClient.expectString(data[_KM]);
-    }
-    if (data[_MK] != null) {
-        contents[_MK] = smithyClient.strictParseInt32(data[_MK]);
-    }
-    if (data[_N] != null) {
-        contents[_N] = smithyClient.expectString(data[_N]);
-    }
-    if (data[_NKM] != null) {
-        contents[_NKM] = smithyClient.expectString(data[_NKM]);
-    }
-    if (data[_NVIM] != null) {
-        contents[_NVIM] = smithyClient.expectString(data[_NVIM]);
-    }
-    if (data[_P] != null) {
-        contents[_P] = smithyClient.expectString(data[_P]);
-    }
-    if (data[_VIM] != null) {
-        contents[_VIM] = smithyClient.expectString(data[_VIM]);
-    }
-    if (String(data.Version).trim() === "") {
-        contents[_Ve] = [];
-    }
-    else if (data[_V] != null) {
-        contents[_Ve] = de_ObjectVersionList(smithyClient.getArrayIfSingleItem(data[_V]));
-    }
-    return contents;
-};
-const de_ListPartsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_AD]: [
-            () => void 0 !== output.headers[_xaad],
-            () => smithyClient.expectNonNull(smithyClient.parseRfc7231DateTime(output.headers[_xaad])),
-        ],
-        [_ARI]: [, output.headers[_xaari]],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectNonNull(smithyClient.expectObject(await core$1.parseXmlBody(output.body, context)), "body");
-    if (data[_B] != null) {
-        contents[_B] = smithyClient.expectString(data[_B]);
-    }
-    if (data[_CA] != null) {
-        contents[_CA] = smithyClient.expectString(data[_CA]);
-    }
-    if (data[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(data[_CT]);
-    }
-    if (data[_In] != null) {
-        contents[_In] = de_Initiator(data[_In]);
-    }
-    if (data[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(data[_IT]);
-    }
-    if (data[_K] != null) {
-        contents[_K] = smithyClient.expectString(data[_K]);
-    }
-    if (data[_MP] != null) {
-        contents[_MP] = smithyClient.strictParseInt32(data[_MP]);
-    }
-    if (data[_NPNM] != null) {
-        contents[_NPNM] = smithyClient.expectString(data[_NPNM]);
-    }
-    if (data[_O] != null) {
-        contents[_O] = de_Owner(data[_O]);
-    }
-    if (data[_PNM] != null) {
-        contents[_PNM] = smithyClient.expectString(data[_PNM]);
-    }
-    if (String(data.Part).trim() === "") {
-        contents[_Part] = [];
-    }
-    else if (data[_Par] != null) {
-        contents[_Part] = de_Parts(smithyClient.getArrayIfSingleItem(data[_Par]));
-    }
-    if (data[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(data[_SC]);
-    }
-    if (data[_UI] != null) {
-        contents[_UI] = smithyClient.expectString(data[_UI]);
-    }
-    return contents;
-};
-const de_PutBucketAccelerateConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketAclCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketAnalyticsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketCorsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketEncryptionCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketIntelligentTieringConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketInventoryConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketLifecycleConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_TDMOS]: [, output.headers[_xatdmos]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketLoggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketMetricsConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketNotificationConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketOwnershipControlsCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketPolicyCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketReplicationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketRequestPaymentCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketVersioningCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutBucketWebsiteCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_Exp]: [, output.headers[_xae]],
-        [_ETa]: [, output.headers[_eta]],
-        [_CCRC]: [, output.headers[_xacc]],
-        [_CCRCC]: [, output.headers[_xacc_]],
-        [_CCRCNVME]: [, output.headers[_xacc__]],
-        [_CSHA]: [, output.headers[_xacs]],
-        [_CSHAh]: [, output.headers[_xacs_]],
-        [_CT]: [, output.headers[_xact]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_VI]: [, output.headers[_xavi]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_SSEKMSEC]: [, output.headers[_xassec]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_Si]: [() => void 0 !== output.headers[_xaos], () => smithyClient.strictParseLong(output.headers[_xaos])],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectAclCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectLegalHoldCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectLockConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectRetentionCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutObjectTaggingCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_VI]: [, output.headers[_xavi]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_PutPublicAccessBlockCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_RenameObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_RestoreObjectCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_RC]: [, output.headers[_xarc]],
-        [_ROP]: [, output.headers[_xarop]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_SelectObjectContentCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    const data = output.body;
-    contents.Payload = de_SelectObjectContentEventStream(data, context);
-    return contents;
-};
-const de_UpdateBucketMetadataInventoryTableConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_UpdateBucketMetadataJournalTableConfigurationCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_UploadPartCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_SSE]: [, output.headers[_xasse]],
-        [_ETa]: [, output.headers[_eta]],
-        [_CCRC]: [, output.headers[_xacc]],
-        [_CCRCC]: [, output.headers[_xacc_]],
-        [_CCRCNVME]: [, output.headers[_xacc__]],
-        [_CSHA]: [, output.headers[_xacs]],
-        [_CSHAh]: [, output.headers[_xacs_]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_UploadPartCopyCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-        [_CSVI]: [, output.headers[_xacsvi]],
-        [_SSE]: [, output.headers[_xasse]],
-        [_SSECA]: [, output.headers[_xasseca]],
-        [_SSECKMD]: [, output.headers[_xasseckm]],
-        [_SSEKMSKI]: [, output.headers[_xasseakki]],
-        [_BKE]: [() => void 0 !== output.headers[_xassebke], () => smithyClient.parseBoolean(output.headers[_xassebke])],
-        [_RC]: [, output.headers[_xarc]],
-    });
-    const data = smithyClient.expectObject(await core$1.parseXmlBody(output.body, context));
-    contents.CopyPartResult = de_CopyPartResult(data);
-    return contents;
-};
-const de_WriteGetObjectResponseCommand = async (output, context) => {
-    if (output.statusCode !== 200 && output.statusCode >= 300) {
-        return de_CommandError(output, context);
-    }
-    const contents = smithyClient.map({
-        $metadata: deserializeMetadata(output),
-    });
-    await smithyClient.collectBody(output.body, context);
-    return contents;
-};
-const de_CommandError = async (output, context) => {
-    const parsedOutput = {
-        ...output,
-        body: await core$1.parseXmlErrorBody(output.body, context),
-    };
-    const errorCode = core$1.loadRestXmlErrorCode(output, parsedOutput.body);
-    switch (errorCode) {
-        case "NoSuchUpload":
-        case "com.amazonaws.s3#NoSuchUpload":
-            throw await de_NoSuchUploadRes(parsedOutput);
-        case "ObjectNotInActiveTierError":
-        case "com.amazonaws.s3#ObjectNotInActiveTierError":
-            throw await de_ObjectNotInActiveTierErrorRes(parsedOutput);
-        case "BucketAlreadyExists":
-        case "com.amazonaws.s3#BucketAlreadyExists":
-            throw await de_BucketAlreadyExistsRes(parsedOutput);
-        case "BucketAlreadyOwnedByYou":
-        case "com.amazonaws.s3#BucketAlreadyOwnedByYou":
-            throw await de_BucketAlreadyOwnedByYouRes(parsedOutput);
-        case "NoSuchBucket":
-        case "com.amazonaws.s3#NoSuchBucket":
-            throw await de_NoSuchBucketRes(parsedOutput);
-        case "InvalidObjectState":
-        case "com.amazonaws.s3#InvalidObjectState":
-            throw await de_InvalidObjectStateRes(parsedOutput);
-        case "NoSuchKey":
-        case "com.amazonaws.s3#NoSuchKey":
-            throw await de_NoSuchKeyRes(parsedOutput);
-        case "NotFound":
-        case "com.amazonaws.s3#NotFound":
-            throw await de_NotFoundRes(parsedOutput);
-        case "EncryptionTypeMismatch":
-        case "com.amazonaws.s3#EncryptionTypeMismatch":
-            throw await de_EncryptionTypeMismatchRes(parsedOutput);
-        case "InvalidRequest":
-        case "com.amazonaws.s3#InvalidRequest":
-            throw await de_InvalidRequestRes(parsedOutput);
-        case "InvalidWriteOffset":
-        case "com.amazonaws.s3#InvalidWriteOffset":
-            throw await de_InvalidWriteOffsetRes(parsedOutput);
-        case "TooManyParts":
-        case "com.amazonaws.s3#TooManyParts":
-            throw await de_TooManyPartsRes(parsedOutput);
-        case "IdempotencyParameterMismatch":
-        case "com.amazonaws.s3#IdempotencyParameterMismatch":
-            throw await de_IdempotencyParameterMismatchRes(parsedOutput);
-        case "ObjectAlreadyInActiveTierError":
-        case "com.amazonaws.s3#ObjectAlreadyInActiveTierError":
-            throw await de_ObjectAlreadyInActiveTierErrorRes(parsedOutput);
-        default:
-            const parsedBody = parsedOutput.body;
-            return throwDefaultError({
-                output,
-                parsedBody,
-                errorCode,
-            });
-    }
-};
-const throwDefaultError = smithyClient.withBaseException(S3ServiceException);
-const de_BucketAlreadyExistsRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new BucketAlreadyExists({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_BucketAlreadyOwnedByYouRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new BucketAlreadyOwnedByYou({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_EncryptionTypeMismatchRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new EncryptionTypeMismatch({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_IdempotencyParameterMismatchRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new IdempotencyParameterMismatch({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_InvalidObjectStateRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    const data = parsedOutput.body;
-    if (data[_AT] != null) {
-        contents[_AT] = smithyClient.expectString(data[_AT]);
-    }
-    if (data[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(data[_SC]);
-    }
-    const exception = new InvalidObjectState({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_InvalidRequestRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new InvalidRequest({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_InvalidWriteOffsetRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new InvalidWriteOffset({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_NoSuchBucketRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new NoSuchBucket({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_NoSuchKeyRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new NoSuchKey({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_NoSuchUploadRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new NoSuchUpload({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_NotFoundRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new NotFound({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_ObjectAlreadyInActiveTierErrorRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new ObjectAlreadyInActiveTierError({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_ObjectNotInActiveTierErrorRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new ObjectNotInActiveTierError({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_TooManyPartsRes = async (parsedOutput, context) => {
-    const contents = smithyClient.map({});
-    parsedOutput.body;
-    const exception = new TooManyParts({
-        $metadata: deserializeMetadata(parsedOutput),
-        ...contents,
-    });
-    return smithyClient.decorateServiceException(exception, parsedOutput.body);
-};
-const de_SelectObjectContentEventStream = (output, context) => {
-    return context.eventStreamMarshaller.deserialize(output, async (event) => {
-        if (event["Records"] != null) {
-            return {
-                Records: await de_RecordsEvent_event(event["Records"]),
-            };
-        }
-        if (event["Stats"] != null) {
-            return {
-                Stats: await de_StatsEvent_event(event["Stats"], context),
-            };
-        }
-        if (event["Progress"] != null) {
-            return {
-                Progress: await de_ProgressEvent_event(event["Progress"], context),
-            };
-        }
-        if (event["Cont"] != null) {
-            return {
-                Cont: await de_ContinuationEvent_event(event["Cont"], context),
-            };
-        }
-        if (event["End"] != null) {
-            return {
-                End: await de_EndEvent_event(event["End"], context),
-            };
-        }
-        return { $unknown: event };
-    });
-};
-const de_ContinuationEvent_event = async (output, context) => {
-    const contents = {};
-    await core$1.parseXmlBody(output.body, context);
-    Object.assign(contents, de_ContinuationEvent());
-    return contents;
-};
-const de_EndEvent_event = async (output, context) => {
-    const contents = {};
-    await core$1.parseXmlBody(output.body, context);
-    Object.assign(contents, de_EndEvent());
-    return contents;
-};
-const de_ProgressEvent_event = async (output, context) => {
-    const contents = {};
-    const data = await core$1.parseXmlBody(output.body, context);
-    contents.Details = de_Progress(data);
-    return contents;
-};
-const de_RecordsEvent_event = async (output, context) => {
-    const contents = {};
-    contents.Payload = output.body;
-    return contents;
-};
-const de_StatsEvent_event = async (output, context) => {
-    const contents = {};
-    const data = await core$1.parseXmlBody(output.body, context);
-    contents.Details = de_Stats(data);
-    return contents;
-};
-const se_AbortIncompleteMultipartUpload = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_AIMU);
-    if (input[_DAI] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_DAI, String(input[_DAI])).n(_DAI));
-    }
-    return bn;
-};
-const se_AccelerateConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ACc);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BAS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_AccessControlPolicy = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ACP);
-    bn.lc(input, "Grants", "AccessControlList", () => se_Grants(input[_Gr]));
-    if (input[_O] != null) {
-        bn.c(se_Owner(input[_O]).n(_O));
-    }
-    return bn;
-};
-const se_AccessControlTranslation = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ACT);
-    if (input[_O] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OOw, input[_O]).n(_O));
-    }
-    return bn;
-};
-const se_AllowedHeaders = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_AH, entry);
-        return n.n(_me);
-    });
-};
-const se_AllowedMethods = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_AM, entry);
-        return n.n(_me);
-    });
-};
-const se_AllowedOrigins = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_AO, entry);
-        return n.n(_me);
-    });
-};
-const se_AnalyticsAndOperator = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_AAO);
-    bn.cc(input, _P);
-    bn.l(input, "Tags", "Tag", () => se_TagSet(input[_Tag]));
-    return bn;
-};
-const se_AnalyticsConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_AC);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_AI, input[_I]).n(_I));
-    }
-    if (input[_F] != null) {
-        bn.c(se_AnalyticsFilter(input[_F]).n(_F));
-    }
-    if (input[_SCA] != null) {
-        bn.c(se_StorageClassAnalysis(input[_SCA]).n(_SCA));
-    }
-    return bn;
-};
-const se_AnalyticsExportDestination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_AED);
-    if (input[_SBD] != null) {
-        bn.c(se_AnalyticsS3BucketDestination(input[_SBD]).n(_SBD));
-    }
-    return bn;
-};
-const se_AnalyticsFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_AF);
-    exports.AnalyticsFilter.visit(input, {
-        Prefix: (value) => {
-            if (input[_P] != null) {
-                bn.c(xmlBuilder.XmlNode.of(_P, value).n(_P));
-            }
-        },
-        Tag: (value) => {
-            if (input[_Ta] != null) {
-                bn.c(se_Tag(value).n(_Ta));
-            }
-        },
-        And: (value) => {
-            if (input[_A] != null) {
-                bn.c(se_AnalyticsAndOperator(value).n(_A));
-            }
-        },
-        _: (name, value) => {
-            if (!(value instanceof xmlBuilder.XmlNode || value instanceof xmlBuilder.XmlText)) {
-                throw new Error("Unable to serialize unknown union members in XML.");
-            }
-            bn.c(new xmlBuilder.XmlNode(name).c(value));
-        },
-    });
-    return bn;
-};
-const se_AnalyticsS3BucketDestination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ASBD);
-    if (input[_Fo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ASEFF, input[_Fo]).n(_Fo));
-    }
-    if (input[_BAI] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_AIc, input[_BAI]).n(_BAI));
-    }
-    if (input[_B] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BN, input[_B]).n(_B));
-    }
-    bn.cc(input, _P);
-    return bn;
-};
-const se_BucketInfo = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_BI);
-    bn.cc(input, _DR);
-    if (input[_Ty] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BT, input[_Ty]).n(_Ty));
-    }
-    return bn;
-};
-const se_BucketLifecycleConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_BLC);
-    bn.l(input, "Rules", "Rule", () => se_LifecycleRules(input[_Rul]));
-    return bn;
-};
-const se_BucketLoggingStatus = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_BLS);
-    if (input[_LE] != null) {
-        bn.c(se_LoggingEnabled(input[_LE]).n(_LE));
-    }
-    return bn;
-};
-const se_CompletedMultipartUpload = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CMU);
-    bn.l(input, "Parts", "Part", () => se_CompletedPartList(input[_Part]));
-    return bn;
-};
-const se_CompletedPart = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CPo);
-    bn.cc(input, _ETa);
-    bn.cc(input, _CCRC);
-    bn.cc(input, _CCRCC);
-    bn.cc(input, _CCRCNVME);
-    bn.cc(input, _CSHA);
-    bn.cc(input, _CSHAh);
-    if (input[_PN] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_PN, String(input[_PN])).n(_PN));
-    }
-    return bn;
-};
-const se_CompletedPartList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_CompletedPart(entry);
-        return n.n(_me);
-    });
-};
-const se_Condition = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Con);
-    bn.cc(input, _HECRE);
-    bn.cc(input, _KPE);
-    return bn;
-};
-const se_CORSConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CORSC);
-    bn.l(input, "CORSRules", "CORSRule", () => se_CORSRules(input[_CORSRu]));
-    return bn;
-};
-const se_CORSRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CORSR);
-    bn.cc(input, _ID_);
-    bn.l(input, "AllowedHeaders", "AllowedHeader", () => se_AllowedHeaders(input[_AHl]));
-    bn.l(input, "AllowedMethods", "AllowedMethod", () => se_AllowedMethods(input[_AMl]));
-    bn.l(input, "AllowedOrigins", "AllowedOrigin", () => se_AllowedOrigins(input[_AOl]));
-    bn.l(input, "ExposeHeaders", "ExposeHeader", () => se_ExposeHeaders(input[_EH]));
-    if (input[_MAS] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MAS, String(input[_MAS])).n(_MAS));
-    }
-    return bn;
-};
-const se_CORSRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_CORSRule(entry);
-        return n.n(_me);
-    });
-};
-const se_CreateBucketConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CBC);
-    if (input[_LC] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BLCu, input[_LC]).n(_LC));
-    }
-    if (input[_L] != null) {
-        bn.c(se_LocationInfo(input[_L]).n(_L));
-    }
-    if (input[_B] != null) {
-        bn.c(se_BucketInfo(input[_B]).n(_B));
-    }
-    bn.lc(input, "Tags", "Tags", () => se_TagSet(input[_Tag]));
-    return bn;
-};
-const se_CSVInput = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CSVIn);
-    bn.cc(input, _FHI);
-    bn.cc(input, _Com);
-    bn.cc(input, _QEC);
-    bn.cc(input, _RD);
-    bn.cc(input, _FD);
-    bn.cc(input, _QCuo);
-    if (input[_AQRD] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_AQRD, String(input[_AQRD])).n(_AQRD));
-    }
-    return bn;
-};
-const se_CSVOutput = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_CSVO);
-    bn.cc(input, _QF);
-    bn.cc(input, _QEC);
-    bn.cc(input, _RD);
-    bn.cc(input, _FD);
-    bn.cc(input, _QCuo);
-    return bn;
-};
-const se_DefaultRetention = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_DRe);
-    if (input[_Mo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OLRM, input[_Mo]).n(_Mo));
-    }
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_Da])).n(_Da));
-    }
-    if (input[_Y] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Y, String(input[_Y])).n(_Y));
-    }
-    return bn;
-};
-const se_Delete = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Del);
-    bn.l(input, "Objects", "Object", () => se_ObjectIdentifierList(input[_Ob]));
-    if (input[_Q] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Q, String(input[_Q])).n(_Q));
-    }
-    return bn;
-};
-const se_DeleteMarkerReplication = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_DMR);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_DMRS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_Destination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Des);
-    if (input[_B] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BN, input[_B]).n(_B));
-    }
-    if (input[_Ac] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_AIc, input[_Ac]).n(_Ac));
-    }
-    bn.cc(input, _SC);
-    if (input[_ACT] != null) {
-        bn.c(se_AccessControlTranslation(input[_ACT]).n(_ACT));
-    }
-    if (input[_ECn] != null) {
-        bn.c(se_EncryptionConfiguration(input[_ECn]).n(_ECn));
-    }
-    if (input[_RTe] != null) {
-        bn.c(se_ReplicationTime(input[_RTe]).n(_RTe));
-    }
-    if (input[_Me] != null) {
-        bn.c(se_Metrics(input[_Me]).n(_Me));
-    }
-    return bn;
-};
-const se_Encryption = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_En);
-    if (input[_ETn] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SSE, input[_ETn]).n(_ETn));
-    }
-    if (input[_KMSKI] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SSEKMSKI, input[_KMSKI]).n(_KMSKI));
-    }
-    bn.cc(input, _KMSC);
-    return bn;
-};
-const se_EncryptionConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ECn);
-    bn.cc(input, _RKKID);
-    return bn;
-};
-const se_ErrorDocument = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ED);
-    if (input[_K] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OK, input[_K]).n(_K));
-    }
-    return bn;
-};
-const se_EventBridgeConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_EBC);
-    return bn;
-};
-const se_EventList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_Ev, entry);
-        return n.n(_me);
-    });
-};
-const se_ExistingObjectReplication = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_EOR);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_EORS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_ExposeHeaders = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_EHx, entry);
-        return n.n(_me);
-    });
-};
-const se_FilterRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_FR);
-    if (input[_N] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_FRN, input[_N]).n(_N));
-    }
-    if (input[_Va] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_FRV, input[_Va]).n(_Va));
-    }
-    return bn;
-};
-const se_FilterRuleList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_FilterRule(entry);
-        return n.n(_me);
-    });
-};
-const se_GlacierJobParameters = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_GJP);
-    bn.cc(input, _Ti);
-    return bn;
-};
-const se_Grant = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_G);
-    if (input[_Gra] != null) {
-        const n = se_Grantee(input[_Gra]).n(_Gra);
-        n.a("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        bn.c(n);
-    }
-    bn.cc(input, _Pe);
-    return bn;
-};
-const se_Grantee = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Gra);
-    bn.cc(input, _DN);
-    bn.cc(input, _EA);
-    bn.cc(input, _ID_);
-    bn.cc(input, _URI);
-    bn.a("xsi:type", input[_Ty]);
-    return bn;
-};
-const se_Grants = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_Grant(entry);
-        return n.n(_G);
-    });
-};
-const se_IndexDocument = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ID);
-    bn.cc(input, _Su);
-    return bn;
-};
-const se_InputSerialization = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_IS);
-    if (input[_CSV] != null) {
-        bn.c(se_CSVInput(input[_CSV]).n(_CSV));
-    }
-    bn.cc(input, _CTom);
-    if (input[_JSON] != null) {
-        bn.c(se_JSONInput(input[_JSON]).n(_JSON));
-    }
-    if (input[_Parq] != null) {
-        bn.c(se_ParquetInput(input[_Parq]).n(_Parq));
-    }
-    return bn;
-};
-const se_IntelligentTieringAndOperator = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ITAO);
-    bn.cc(input, _P);
-    bn.l(input, "Tags", "Tag", () => se_TagSet(input[_Tag]));
-    return bn;
-};
-const se_IntelligentTieringConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ITC);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ITI, input[_I]).n(_I));
-    }
-    if (input[_F] != null) {
-        bn.c(se_IntelligentTieringFilter(input[_F]).n(_F));
-    }
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ITS, input[_S]).n(_S));
-    }
-    bn.l(input, "Tierings", "Tiering", () => se_TieringList(input[_Tie]));
-    return bn;
-};
-const se_IntelligentTieringFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ITF);
-    bn.cc(input, _P);
-    if (input[_Ta] != null) {
-        bn.c(se_Tag(input[_Ta]).n(_Ta));
-    }
-    if (input[_A] != null) {
-        bn.c(se_IntelligentTieringAndOperator(input[_A]).n(_A));
-    }
-    return bn;
-};
-const se_InventoryConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_IC);
-    if (input[_Des] != null) {
-        bn.c(se_InventoryDestination(input[_Des]).n(_Des));
-    }
-    if (input[_IE] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_IE, String(input[_IE])).n(_IE));
-    }
-    if (input[_F] != null) {
-        bn.c(se_InventoryFilter(input[_F]).n(_F));
-    }
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_II, input[_I]).n(_I));
-    }
-    if (input[_IOV] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_IIOV, input[_IOV]).n(_IOV));
-    }
-    bn.lc(input, "OptionalFields", "OptionalFields", () => se_InventoryOptionalFields(input[_OF]));
-    if (input[_Sc] != null) {
-        bn.c(se_InventorySchedule(input[_Sc]).n(_Sc));
-    }
-    return bn;
-};
-const se_InventoryDestination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_IDn);
-    if (input[_SBD] != null) {
-        bn.c(se_InventoryS3BucketDestination(input[_SBD]).n(_SBD));
-    }
-    return bn;
-};
-const se_InventoryEncryption = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_IEn);
-    if (input[_SSES] != null) {
-        bn.c(se_SSES3(input[_SSES]).n(_SS));
-    }
-    if (input[_SSEKMS] != null) {
-        bn.c(se_SSEKMS(input[_SSEKMS]).n(_SK));
-    }
-    return bn;
-};
-const se_InventoryFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_IF);
-    bn.cc(input, _P);
-    return bn;
-};
-const se_InventoryOptionalFields = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = xmlBuilder.XmlNode.of(_IOF, entry);
-        return n.n(_Fi);
-    });
-};
-const se_InventoryS3BucketDestination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ISBD);
-    bn.cc(input, _AIc);
-    if (input[_B] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BN, input[_B]).n(_B));
-    }
-    if (input[_Fo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_IFn, input[_Fo]).n(_Fo));
-    }
-    bn.cc(input, _P);
-    if (input[_En] != null) {
-        bn.c(se_InventoryEncryption(input[_En]).n(_En));
-    }
-    return bn;
-};
-const se_InventorySchedule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ISn);
-    if (input[_Fr] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_IFnv, input[_Fr]).n(_Fr));
-    }
-    return bn;
-};
-const se_InventoryTableConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ITCn);
-    if (input[_CSo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ICS, input[_CSo]).n(_CSo));
-    }
-    if (input[_ECn] != null) {
-        bn.c(se_MetadataTableEncryptionConfiguration(input[_ECn]).n(_ECn));
-    }
-    return bn;
-};
-const se_InventoryTableConfigurationUpdates = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ITCU);
-    if (input[_CSo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ICS, input[_CSo]).n(_CSo));
-    }
-    if (input[_ECn] != null) {
-        bn.c(se_MetadataTableEncryptionConfiguration(input[_ECn]).n(_ECn));
-    }
-    return bn;
-};
-const se_JournalTableConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_JTC);
-    if (input[_REe] != null) {
-        bn.c(se_RecordExpiration(input[_REe]).n(_REe));
-    }
-    if (input[_ECn] != null) {
-        bn.c(se_MetadataTableEncryptionConfiguration(input[_ECn]).n(_ECn));
-    }
-    return bn;
-};
-const se_JournalTableConfigurationUpdates = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_JTCU);
-    if (input[_REe] != null) {
-        bn.c(se_RecordExpiration(input[_REe]).n(_REe));
-    }
-    return bn;
-};
-const se_JSONInput = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_JSONI);
-    if (input[_Ty] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_JSONT, input[_Ty]).n(_Ty));
-    }
-    return bn;
-};
-const se_JSONOutput = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_JSONO);
-    bn.cc(input, _RD);
-    return bn;
-};
-const se_LambdaFunctionConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LFCa);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_NI, input[_I]).n(_I));
-    }
-    if (input[_LFA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_LFA, input[_LFA]).n(_CF));
-    }
-    bn.l(input, "Events", "Event", () => se_EventList(input[_Eve]));
-    if (input[_F] != null) {
-        bn.c(se_NotificationConfigurationFilter(input[_F]).n(_F));
-    }
-    return bn;
-};
-const se_LambdaFunctionConfigurationList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_LambdaFunctionConfiguration(entry);
-        return n.n(_me);
-    });
-};
-const se_LifecycleExpiration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LEi);
-    if (input[_Dat] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Dat, smithyClient.serializeDateTime(input[_Dat]).toString()).n(_Dat));
-    }
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_Da])).n(_Da));
-    }
-    if (input[_EODM] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_EODM, String(input[_EODM])).n(_EODM));
-    }
-    return bn;
-};
-const se_LifecycleRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LR);
-    if (input[_Exp] != null) {
-        bn.c(se_LifecycleExpiration(input[_Exp]).n(_Exp));
-    }
-    bn.cc(input, _ID_);
-    bn.cc(input, _P);
-    if (input[_F] != null) {
-        bn.c(se_LifecycleRuleFilter(input[_F]).n(_F));
-    }
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ESx, input[_S]).n(_S));
-    }
-    bn.l(input, "Transitions", "Transition", () => se_TransitionList(input[_Tr]));
-    bn.l(input, "NoncurrentVersionTransitions", "NoncurrentVersionTransition", () => se_NoncurrentVersionTransitionList(input[_NVT]));
-    if (input[_NVE] != null) {
-        bn.c(se_NoncurrentVersionExpiration(input[_NVE]).n(_NVE));
-    }
-    if (input[_AIMU] != null) {
-        bn.c(se_AbortIncompleteMultipartUpload(input[_AIMU]).n(_AIMU));
-    }
-    return bn;
-};
-const se_LifecycleRuleAndOperator = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LRAO);
-    bn.cc(input, _P);
-    bn.l(input, "Tags", "Tag", () => se_TagSet(input[_Tag]));
-    if (input[_OSGT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OSGTB, String(input[_OSGT])).n(_OSGT));
-    }
-    if (input[_OSLT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OSLTB, String(input[_OSLT])).n(_OSLT));
-    }
-    return bn;
-};
-const se_LifecycleRuleFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LRF);
-    bn.cc(input, _P);
-    if (input[_Ta] != null) {
-        bn.c(se_Tag(input[_Ta]).n(_Ta));
-    }
-    if (input[_OSGT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OSGTB, String(input[_OSGT])).n(_OSGT));
-    }
-    if (input[_OSLT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OSLTB, String(input[_OSLT])).n(_OSLT));
-    }
-    if (input[_A] != null) {
-        bn.c(se_LifecycleRuleAndOperator(input[_A]).n(_A));
-    }
-    return bn;
-};
-const se_LifecycleRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_LifecycleRule(entry);
-        return n.n(_me);
-    });
-};
-const se_LocationInfo = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LI);
-    if (input[_Ty] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_LT, input[_Ty]).n(_Ty));
-    }
-    if (input[_N] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_LNAS, input[_N]).n(_N));
-    }
-    return bn;
-};
-const se_LoggingEnabled = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_LE);
-    bn.cc(input, _TB);
-    bn.lc(input, "TargetGrants", "TargetGrants", () => se_TargetGrants(input[_TG]));
-    bn.cc(input, _TP);
-    if (input[_TOKF] != null) {
-        bn.c(se_TargetObjectKeyFormat(input[_TOKF]).n(_TOKF));
-    }
-    return bn;
-};
-const se_MetadataConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MCe);
-    if (input[_JTC] != null) {
-        bn.c(se_JournalTableConfiguration(input[_JTC]).n(_JTC));
-    }
-    if (input[_ITCn] != null) {
-        bn.c(se_InventoryTableConfiguration(input[_ITCn]).n(_ITCn));
-    }
-    return bn;
-};
-const se_MetadataEntry = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_ME);
-    if (input[_N] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MKe, input[_N]).n(_N));
-    }
-    if (input[_Va] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MV, input[_Va]).n(_Va));
-    }
-    return bn;
-};
-const se_MetadataTableConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MTC);
-    if (input[_STD] != null) {
-        bn.c(se_S3TablesDestination(input[_STD]).n(_STD));
-    }
-    return bn;
-};
-const se_MetadataTableEncryptionConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MTEC);
-    if (input[_SAs] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_TSA, input[_SAs]).n(_SAs));
-    }
-    bn.cc(input, _KKA);
-    return bn;
-};
-const se_Metrics = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Me);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MS, input[_S]).n(_S));
-    }
-    if (input[_ETv] != null) {
-        bn.c(se_ReplicationTimeValue(input[_ETv]).n(_ETv));
-    }
-    return bn;
-};
-const se_MetricsAndOperator = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MAO);
-    bn.cc(input, _P);
-    bn.l(input, "Tags", "Tag", () => se_TagSet(input[_Tag]));
-    bn.cc(input, _APAc);
-    return bn;
-};
-const se_MetricsConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MC);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MI, input[_I]).n(_I));
-    }
-    if (input[_F] != null) {
-        bn.c(se_MetricsFilter(input[_F]).n(_F));
-    }
-    return bn;
-};
-const se_MetricsFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_MF);
-    exports.MetricsFilter.visit(input, {
-        Prefix: (value) => {
-            if (input[_P] != null) {
-                bn.c(xmlBuilder.XmlNode.of(_P, value).n(_P));
-            }
-        },
-        Tag: (value) => {
-            if (input[_Ta] != null) {
-                bn.c(se_Tag(value).n(_Ta));
-            }
-        },
-        AccessPointArn: (value) => {
-            if (input[_APAc] != null) {
-                bn.c(xmlBuilder.XmlNode.of(_APAc, value).n(_APAc));
-            }
-        },
-        And: (value) => {
-            if (input[_A] != null) {
-                bn.c(se_MetricsAndOperator(value).n(_A));
-            }
-        },
-        _: (name, value) => {
-            if (!(value instanceof xmlBuilder.XmlNode || value instanceof xmlBuilder.XmlText)) {
-                throw new Error("Unable to serialize unknown union members in XML.");
-            }
-            bn.c(new xmlBuilder.XmlNode(name).c(value));
-        },
-    });
-    return bn;
-};
-const se_NoncurrentVersionExpiration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_NVE);
-    if (input[_ND] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_ND])).n(_ND));
-    }
-    if (input[_NNV] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_VC, String(input[_NNV])).n(_NNV));
-    }
-    return bn;
-};
-const se_NoncurrentVersionTransition = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_NVTo);
-    if (input[_ND] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_ND])).n(_ND));
-    }
-    if (input[_SC] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_TSC, input[_SC]).n(_SC));
-    }
-    if (input[_NNV] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_VC, String(input[_NNV])).n(_NNV));
-    }
-    return bn;
-};
-const se_NoncurrentVersionTransitionList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_NoncurrentVersionTransition(entry);
-        return n.n(_me);
-    });
-};
-const se_NotificationConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_NC);
-    bn.l(input, "TopicConfigurations", "TopicConfiguration", () => se_TopicConfigurationList(input[_TCop]));
-    bn.l(input, "QueueConfigurations", "QueueConfiguration", () => se_QueueConfigurationList(input[_QCu]));
-    bn.l(input, "LambdaFunctionConfigurations", "CloudFunctionConfiguration", () => se_LambdaFunctionConfigurationList(input[_LFC]));
-    if (input[_EBC] != null) {
-        bn.c(se_EventBridgeConfiguration(input[_EBC]).n(_EBC));
-    }
-    return bn;
-};
-const se_NotificationConfigurationFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_NCF);
-    if (input[_K] != null) {
-        bn.c(se_S3KeyFilter(input[_K]).n(_SKe));
-    }
-    return bn;
-};
-const se_ObjectIdentifier = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OI);
-    if (input[_K] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OK, input[_K]).n(_K));
-    }
-    if (input[_VI] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OVI, input[_VI]).n(_VI));
-    }
-    bn.cc(input, _ETa);
-    if (input[_LMT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_LMT, smithyClient.dateToUtcString(input[_LMT]).toString()).n(_LMT));
-    }
-    if (input[_Si] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Si, String(input[_Si])).n(_Si));
-    }
-    return bn;
-};
-const se_ObjectIdentifierList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_ObjectIdentifier(entry);
-        return n.n(_me);
-    });
-};
-const se_ObjectLockConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OLC);
-    bn.cc(input, _OLE);
-    if (input[_Ru] != null) {
-        bn.c(se_ObjectLockRule(input[_Ru]).n(_Ru));
-    }
-    return bn;
-};
-const se_ObjectLockLegalHold = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OLLH);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OLLHS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_ObjectLockRetention = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OLR);
-    if (input[_Mo] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OLRM, input[_Mo]).n(_Mo));
-    }
-    if (input[_RUD] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Dat, smithyClient.serializeDateTime(input[_RUD]).toString()).n(_RUD));
-    }
-    return bn;
-};
-const se_ObjectLockRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OLRb);
-    if (input[_DRe] != null) {
-        bn.c(se_DefaultRetention(input[_DRe]).n(_DRe));
-    }
-    return bn;
-};
-const se_OutputLocation = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OL);
-    if (input[_S_] != null) {
-        bn.c(se_S3Location(input[_S_]).n(_S_));
-    }
-    return bn;
-};
-const se_OutputSerialization = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OS);
-    if (input[_CSV] != null) {
-        bn.c(se_CSVOutput(input[_CSV]).n(_CSV));
-    }
-    if (input[_JSON] != null) {
-        bn.c(se_JSONOutput(input[_JSON]).n(_JSON));
-    }
-    return bn;
-};
-const se_Owner = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_O);
-    bn.cc(input, _DN);
-    bn.cc(input, _ID_);
-    return bn;
-};
-const se_OwnershipControls = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OC);
-    bn.l(input, "Rules", "Rule", () => se_OwnershipControlsRules(input[_Rul]));
-    return bn;
-};
-const se_OwnershipControlsRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_OCR);
-    bn.cc(input, _OO);
-    return bn;
-};
-const se_OwnershipControlsRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_OwnershipControlsRule(entry);
-        return n.n(_me);
-    });
-};
-const se_ParquetInput = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_PI);
-    return bn;
-};
-const se_PartitionedPrefix = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_PP);
-    bn.cc(input, _PDS);
-    return bn;
-};
-const se_PublicAccessBlockConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_PABC);
-    if (input[_BPA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Se, String(input[_BPA])).n(_BPA));
-    }
-    if (input[_IPA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Se, String(input[_IPA])).n(_IPA));
-    }
-    if (input[_BPP] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Se, String(input[_BPP])).n(_BPP));
-    }
-    if (input[_RPB] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Se, String(input[_RPB])).n(_RPB));
-    }
-    return bn;
-};
-const se_QueueConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_QC);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_NI, input[_I]).n(_I));
-    }
-    if (input[_QA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_QA, input[_QA]).n(_Qu));
-    }
-    bn.l(input, "Events", "Event", () => se_EventList(input[_Eve]));
-    if (input[_F] != null) {
-        bn.c(se_NotificationConfigurationFilter(input[_F]).n(_F));
-    }
-    return bn;
-};
-const se_QueueConfigurationList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_QueueConfiguration(entry);
-        return n.n(_me);
-    });
-};
-const se_RecordExpiration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_REe);
-    if (input[_Exp] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ESxp, input[_Exp]).n(_Exp));
-    }
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_RED, String(input[_Da])).n(_Da));
-    }
-    return bn;
-};
-const se_Redirect = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Red);
-    bn.cc(input, _HN);
-    bn.cc(input, _HRC);
-    bn.cc(input, _Pr);
-    bn.cc(input, _RKPW);
-    bn.cc(input, _RKW);
-    return bn;
-};
-const se_RedirectAllRequestsTo = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RART);
-    bn.cc(input, _HN);
-    bn.cc(input, _Pr);
-    return bn;
-};
-const se_ReplicaModifications = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RM);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_RMS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_ReplicationConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RCe);
-    bn.cc(input, _Ro);
-    bn.l(input, "Rules", "Rule", () => se_ReplicationRules(input[_Rul]));
-    return bn;
-};
-const se_ReplicationRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RRe);
-    bn.cc(input, _ID_);
-    if (input[_Pri] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Pri, String(input[_Pri])).n(_Pri));
-    }
-    bn.cc(input, _P);
-    if (input[_F] != null) {
-        bn.c(se_ReplicationRuleFilter(input[_F]).n(_F));
-    }
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_RRS, input[_S]).n(_S));
-    }
-    if (input[_SSC] != null) {
-        bn.c(se_SourceSelectionCriteria(input[_SSC]).n(_SSC));
-    }
-    if (input[_EOR] != null) {
-        bn.c(se_ExistingObjectReplication(input[_EOR]).n(_EOR));
-    }
-    if (input[_Des] != null) {
-        bn.c(se_Destination(input[_Des]).n(_Des));
-    }
-    if (input[_DMR] != null) {
-        bn.c(se_DeleteMarkerReplication(input[_DMR]).n(_DMR));
-    }
-    return bn;
-};
-const se_ReplicationRuleAndOperator = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RRAO);
-    bn.cc(input, _P);
-    bn.l(input, "Tags", "Tag", () => se_TagSet(input[_Tag]));
-    return bn;
-};
-const se_ReplicationRuleFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RRF);
-    bn.cc(input, _P);
-    if (input[_Ta] != null) {
-        bn.c(se_Tag(input[_Ta]).n(_Ta));
-    }
-    if (input[_A] != null) {
-        bn.c(se_ReplicationRuleAndOperator(input[_A]).n(_A));
-    }
-    return bn;
-};
-const se_ReplicationRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_ReplicationRule(entry);
-        return n.n(_me);
-    });
-};
-const se_ReplicationTime = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RTe);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_RTS, input[_S]).n(_S));
-    }
-    if (input[_Tim] != null) {
-        bn.c(se_ReplicationTimeValue(input[_Tim]).n(_Tim));
-    }
-    return bn;
-};
-const se_ReplicationTimeValue = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RTV);
-    if (input[_Mi] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Mi, String(input[_Mi])).n(_Mi));
-    }
-    return bn;
-};
-const se_RequestPaymentConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RPC);
-    bn.cc(input, _Pa);
-    return bn;
-};
-const se_RequestProgress = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RPe);
-    if (input[_Ena] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ERP, String(input[_Ena])).n(_Ena));
-    }
-    return bn;
-};
-const se_RestoreRequest = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RRes);
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_Da])).n(_Da));
-    }
-    if (input[_GJP] != null) {
-        bn.c(se_GlacierJobParameters(input[_GJP]).n(_GJP));
-    }
-    if (input[_Ty] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_RRT, input[_Ty]).n(_Ty));
-    }
-    bn.cc(input, _Ti);
-    bn.cc(input, _Desc);
-    if (input[_SP] != null) {
-        bn.c(se_SelectParameters(input[_SP]).n(_SP));
-    }
-    if (input[_OL] != null) {
-        bn.c(se_OutputLocation(input[_OL]).n(_OL));
-    }
-    return bn;
-};
-const se_RoutingRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_RRou);
-    if (input[_Con] != null) {
-        bn.c(se_Condition(input[_Con]).n(_Con));
-    }
-    if (input[_Red] != null) {
-        bn.c(se_Redirect(input[_Red]).n(_Red));
-    }
-    return bn;
-};
-const se_RoutingRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_RoutingRule(entry);
-        return n.n(_RRou);
-    });
-};
-const se_S3KeyFilter = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SKF);
-    bn.l(input, "FilterRules", "FilterRule", () => se_FilterRuleList(input[_FRi]));
-    return bn;
-};
-const se_S3Location = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SL);
-    bn.cc(input, _BN);
-    if (input[_P] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_LP, input[_P]).n(_P));
-    }
-    if (input[_En] != null) {
-        bn.c(se_Encryption(input[_En]).n(_En));
-    }
-    if (input[_CACL] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OCACL, input[_CACL]).n(_CACL));
-    }
-    bn.lc(input, "AccessControlList", "AccessControlList", () => se_Grants(input[_ACLc]));
-    if (input[_T] != null) {
-        bn.c(se_Tagging(input[_T]).n(_T));
-    }
-    bn.lc(input, "UserMetadata", "UserMetadata", () => se_UserMetadata(input[_UM]));
-    bn.cc(input, _SC);
-    return bn;
-};
-const se_S3TablesDestination = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_STD);
-    if (input[_TBA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_STBA, input[_TBA]).n(_TBA));
-    }
-    if (input[_TN] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_STN, input[_TN]).n(_TN));
-    }
-    return bn;
-};
-const se_ScanRange = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SR);
-    if (input[_St] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_St, String(input[_St])).n(_St));
-    }
-    if (input[_End] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_End, String(input[_End])).n(_End));
-    }
-    return bn;
-};
-const se_SelectParameters = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SP);
-    if (input[_IS] != null) {
-        bn.c(se_InputSerialization(input[_IS]).n(_IS));
-    }
-    bn.cc(input, _ETx);
-    bn.cc(input, _Ex);
-    if (input[_OS] != null) {
-        bn.c(se_OutputSerialization(input[_OS]).n(_OS));
-    }
-    return bn;
-};
-const se_ServerSideEncryptionByDefault = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SSEBD);
-    if (input[_SSEA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SSE, input[_SSEA]).n(_SSEA));
-    }
-    if (input[_KMSMKID] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SSEKMSKI, input[_KMSMKID]).n(_KMSMKID));
-    }
-    return bn;
-};
-const se_ServerSideEncryptionConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SSEC);
-    bn.l(input, "Rules", "Rule", () => se_ServerSideEncryptionRules(input[_Rul]));
-    return bn;
-};
-const se_ServerSideEncryptionRule = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SSER);
-    if (input[_ASSEBD] != null) {
-        bn.c(se_ServerSideEncryptionByDefault(input[_ASSEBD]).n(_ASSEBD));
-    }
-    if (input[_BKE] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BKE, String(input[_BKE])).n(_BKE));
-    }
-    return bn;
-};
-const se_ServerSideEncryptionRules = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_ServerSideEncryptionRule(entry);
-        return n.n(_me);
-    });
-};
-const se_SimplePrefix = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SPi);
-    return bn;
-};
-const se_SourceSelectionCriteria = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SSC);
-    if (input[_SKEO] != null) {
-        bn.c(se_SseKmsEncryptedObjects(input[_SKEO]).n(_SKEO));
-    }
-    if (input[_RM] != null) {
-        bn.c(se_ReplicaModifications(input[_RM]).n(_RM));
-    }
-    return bn;
-};
-const se_SSEKMS = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SK);
-    if (input[_KI] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SSEKMSKI, input[_KI]).n(_KI));
-    }
-    return bn;
-};
-const se_SseKmsEncryptedObjects = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SKEO);
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SKEOS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_SSES3 = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SS);
-    return bn;
-};
-const se_StorageClassAnalysis = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SCA);
-    if (input[_DE] != null) {
-        bn.c(se_StorageClassAnalysisDataExport(input[_DE]).n(_DE));
-    }
-    return bn;
-};
-const se_StorageClassAnalysisDataExport = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_SCADE);
-    if (input[_OSV] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_SCASV, input[_OSV]).n(_OSV));
-    }
-    if (input[_Des] != null) {
-        bn.c(se_AnalyticsExportDestination(input[_Des]).n(_Des));
-    }
-    return bn;
-};
-const se_Tag = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Ta);
-    if (input[_K] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_OK, input[_K]).n(_K));
-    }
-    bn.cc(input, _Va);
-    return bn;
-};
-const se_Tagging = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_T);
-    bn.lc(input, "TagSet", "TagSet", () => se_TagSet(input[_TS]));
-    return bn;
-};
-const se_TagSet = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_Tag(entry);
-        return n.n(_Ta);
-    });
-};
-const se_TargetGrant = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_TGa);
-    if (input[_Gra] != null) {
-        const n = se_Grantee(input[_Gra]).n(_Gra);
-        n.a("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        bn.c(n);
-    }
-    if (input[_Pe] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BLP, input[_Pe]).n(_Pe));
-    }
-    return bn;
-};
-const se_TargetGrants = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_TargetGrant(entry);
-        return n.n(_G);
-    });
-};
-const se_TargetObjectKeyFormat = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_TOKF);
-    if (input[_SPi] != null) {
-        bn.c(se_SimplePrefix(input[_SPi]).n(_SPi));
-    }
-    if (input[_PP] != null) {
-        bn.c(se_PartitionedPrefix(input[_PP]).n(_PP));
-    }
-    return bn;
-};
-const se_Tiering = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Tier);
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ITD, String(input[_Da])).n(_Da));
-    }
-    if (input[_AT] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_ITAT, input[_AT]).n(_AT));
-    }
-    return bn;
-};
-const se_TieringList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_Tiering(entry);
-        return n.n(_me);
-    });
-};
-const se_TopicConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_TCo);
-    if (input[_I] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_NI, input[_I]).n(_I));
-    }
-    if (input[_TA] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_TA, input[_TA]).n(_Top));
-    }
-    bn.l(input, "Events", "Event", () => se_EventList(input[_Eve]));
-    if (input[_F] != null) {
-        bn.c(se_NotificationConfigurationFilter(input[_F]).n(_F));
-    }
-    return bn;
-};
-const se_TopicConfigurationList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_TopicConfiguration(entry);
-        return n.n(_me);
-    });
-};
-const se_Transition = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_Tra);
-    if (input[_Dat] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Dat, smithyClient.serializeDateTime(input[_Dat]).toString()).n(_Dat));
-    }
-    if (input[_Da] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_Da, String(input[_Da])).n(_Da));
-    }
-    if (input[_SC] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_TSC, input[_SC]).n(_SC));
-    }
-    return bn;
-};
-const se_TransitionList = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_Transition(entry);
-        return n.n(_me);
-    });
-};
-const se_UserMetadata = (input, context) => {
-    return input
-        .filter((e) => e != null)
-        .map((entry) => {
-        const n = se_MetadataEntry(entry);
-        return n.n(_ME);
-    });
-};
-const se_VersioningConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_VCe);
-    if (input[_MFAD] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_MFAD, input[_MFAD]).n(_MDf));
-    }
-    if (input[_S] != null) {
-        bn.c(xmlBuilder.XmlNode.of(_BVS, input[_S]).n(_S));
-    }
-    return bn;
-};
-const se_WebsiteConfiguration = (input, context) => {
-    const bn = new xmlBuilder.XmlNode(_WC);
-    if (input[_ED] != null) {
-        bn.c(se_ErrorDocument(input[_ED]).n(_ED));
-    }
-    if (input[_ID] != null) {
-        bn.c(se_IndexDocument(input[_ID]).n(_ID));
-    }
-    if (input[_RART] != null) {
-        bn.c(se_RedirectAllRequestsTo(input[_RART]).n(_RART));
-    }
-    bn.lc(input, "RoutingRules", "RoutingRules", () => se_RoutingRules(input[_RRo]));
-    return bn;
-};
-const de_AbortIncompleteMultipartUpload = (output, context) => {
-    const contents = {};
-    if (output[_DAI] != null) {
-        contents[_DAI] = smithyClient.strictParseInt32(output[_DAI]);
-    }
-    return contents;
-};
-const de_AccessControlTranslation = (output, context) => {
-    const contents = {};
-    if (output[_O] != null) {
-        contents[_O] = smithyClient.expectString(output[_O]);
-    }
-    return contents;
-};
-const de_AllowedHeaders = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_AllowedMethods = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_AllowedOrigins = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_AnalyticsAndOperator = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (String(output.Tag).trim() === "") {
-        contents[_Tag] = [];
-    }
-    else if (output[_Ta] != null) {
-        contents[_Tag] = de_TagSet(smithyClient.getArrayIfSingleItem(output[_Ta]));
-    }
-    return contents;
-};
-const de_AnalyticsConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (String(output.Filter).trim() === "") ;
-    else if (output[_F] != null) {
-        contents[_F] = de_AnalyticsFilter(smithyClient.expectUnion(output[_F]));
-    }
-    if (output[_SCA] != null) {
-        contents[_SCA] = de_StorageClassAnalysis(output[_SCA]);
-    }
-    return contents;
-};
-const de_AnalyticsConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_AnalyticsConfiguration(entry);
-    });
-};
-const de_AnalyticsExportDestination = (output, context) => {
-    const contents = {};
-    if (output[_SBD] != null) {
-        contents[_SBD] = de_AnalyticsS3BucketDestination(output[_SBD]);
-    }
-    return contents;
-};
-const de_AnalyticsFilter = (output, context) => {
-    if (output[_P] != null) {
-        return {
-            Prefix: smithyClient.expectString(output[_P]),
-        };
-    }
-    if (output[_Ta] != null) {
-        return {
-            Tag: de_Tag(output[_Ta]),
-        };
-    }
-    if (output[_A] != null) {
-        return {
-            And: de_AnalyticsAndOperator(output[_A]),
-        };
-    }
-    return { $unknown: Object.entries(output)[0] };
-};
-const de_AnalyticsS3BucketDestination = (output, context) => {
-    const contents = {};
-    if (output[_Fo] != null) {
-        contents[_Fo] = smithyClient.expectString(output[_Fo]);
-    }
-    if (output[_BAI] != null) {
-        contents[_BAI] = smithyClient.expectString(output[_BAI]);
-    }
-    if (output[_B] != null) {
-        contents[_B] = smithyClient.expectString(output[_B]);
-    }
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    return contents;
-};
-const de_Bucket = (output, context) => {
-    const contents = {};
-    if (output[_N] != null) {
-        contents[_N] = smithyClient.expectString(output[_N]);
-    }
-    if (output[_CDr] != null) {
-        contents[_CDr] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_CDr]));
-    }
-    if (output[_BR] != null) {
-        contents[_BR] = smithyClient.expectString(output[_BR]);
-    }
-    if (output[_BA] != null) {
-        contents[_BA] = smithyClient.expectString(output[_BA]);
-    }
-    return contents;
-};
-const de_Buckets = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Bucket(entry);
-    });
-};
-const de_Checksum = (output, context) => {
-    const contents = {};
-    if (output[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(output[_CCRC]);
-    }
-    if (output[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(output[_CCRCC]);
-    }
-    if (output[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(output[_CCRCNVME]);
-    }
-    if (output[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(output[_CSHA]);
-    }
-    if (output[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(output[_CSHAh]);
-    }
-    if (output[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(output[_CT]);
-    }
-    return contents;
-};
-const de_ChecksumAlgorithmList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_CommonPrefix = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    return contents;
-};
-const de_CommonPrefixList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_CommonPrefix(entry);
-    });
-};
-const de_Condition = (output, context) => {
-    const contents = {};
-    if (output[_HECRE] != null) {
-        contents[_HECRE] = smithyClient.expectString(output[_HECRE]);
-    }
-    if (output[_KPE] != null) {
-        contents[_KPE] = smithyClient.expectString(output[_KPE]);
-    }
-    return contents;
-};
-const de_ContinuationEvent = (output, context) => {
-    const contents = {};
-    return contents;
-};
-const de_CopyObjectResult = (output, context) => {
-    const contents = {};
-    if (output[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(output[_ETa]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    if (output[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(output[_CT]);
-    }
-    if (output[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(output[_CCRC]);
-    }
-    if (output[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(output[_CCRCC]);
-    }
-    if (output[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(output[_CCRCNVME]);
-    }
-    if (output[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(output[_CSHA]);
-    }
-    if (output[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(output[_CSHAh]);
-    }
-    return contents;
-};
-const de_CopyPartResult = (output, context) => {
-    const contents = {};
-    if (output[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(output[_ETa]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    if (output[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(output[_CCRC]);
-    }
-    if (output[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(output[_CCRCC]);
-    }
-    if (output[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(output[_CCRCNVME]);
-    }
-    if (output[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(output[_CSHA]);
-    }
-    if (output[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(output[_CSHAh]);
-    }
-    return contents;
-};
-const de_CORSRule = (output, context) => {
-    const contents = {};
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    if (String(output.AllowedHeader).trim() === "") {
-        contents[_AHl] = [];
-    }
-    else if (output[_AH] != null) {
-        contents[_AHl] = de_AllowedHeaders(smithyClient.getArrayIfSingleItem(output[_AH]));
-    }
-    if (String(output.AllowedMethod).trim() === "") {
-        contents[_AMl] = [];
-    }
-    else if (output[_AM] != null) {
-        contents[_AMl] = de_AllowedMethods(smithyClient.getArrayIfSingleItem(output[_AM]));
-    }
-    if (String(output.AllowedOrigin).trim() === "") {
-        contents[_AOl] = [];
-    }
-    else if (output[_AO] != null) {
-        contents[_AOl] = de_AllowedOrigins(smithyClient.getArrayIfSingleItem(output[_AO]));
-    }
-    if (String(output.ExposeHeader).trim() === "") {
-        contents[_EH] = [];
-    }
-    else if (output[_EHx] != null) {
-        contents[_EH] = de_ExposeHeaders(smithyClient.getArrayIfSingleItem(output[_EHx]));
-    }
-    if (output[_MAS] != null) {
-        contents[_MAS] = smithyClient.strictParseInt32(output[_MAS]);
-    }
-    return contents;
-};
-const de_CORSRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_CORSRule(entry);
-    });
-};
-const de_DefaultRetention = (output, context) => {
-    const contents = {};
-    if (output[_Mo] != null) {
-        contents[_Mo] = smithyClient.expectString(output[_Mo]);
-    }
-    if (output[_Da] != null) {
-        contents[_Da] = smithyClient.strictParseInt32(output[_Da]);
-    }
-    if (output[_Y] != null) {
-        contents[_Y] = smithyClient.strictParseInt32(output[_Y]);
-    }
-    return contents;
-};
-const de_DeletedObject = (output, context) => {
-    const contents = {};
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_VI] != null) {
-        contents[_VI] = smithyClient.expectString(output[_VI]);
-    }
-    if (output[_DM] != null) {
-        contents[_DM] = smithyClient.parseBoolean(output[_DM]);
-    }
-    if (output[_DMVI] != null) {
-        contents[_DMVI] = smithyClient.expectString(output[_DMVI]);
-    }
-    return contents;
-};
-const de_DeletedObjects = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_DeletedObject(entry);
-    });
-};
-const de_DeleteMarkerEntry = (output, context) => {
-    const contents = {};
-    if (output[_O] != null) {
-        contents[_O] = de_Owner(output[_O]);
-    }
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_VI] != null) {
-        contents[_VI] = smithyClient.expectString(output[_VI]);
-    }
-    if (output[_IL] != null) {
-        contents[_IL] = smithyClient.parseBoolean(output[_IL]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    return contents;
-};
-const de_DeleteMarkerReplication = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    return contents;
-};
-const de_DeleteMarkers = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_DeleteMarkerEntry(entry);
-    });
-};
-const de_Destination = (output, context) => {
-    const contents = {};
-    if (output[_B] != null) {
-        contents[_B] = smithyClient.expectString(output[_B]);
-    }
-    if (output[_Ac] != null) {
-        contents[_Ac] = smithyClient.expectString(output[_Ac]);
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    if (output[_ACT] != null) {
-        contents[_ACT] = de_AccessControlTranslation(output[_ACT]);
-    }
-    if (output[_ECn] != null) {
-        contents[_ECn] = de_EncryptionConfiguration(output[_ECn]);
-    }
-    if (output[_RTe] != null) {
-        contents[_RTe] = de_ReplicationTime(output[_RTe]);
-    }
-    if (output[_Me] != null) {
-        contents[_Me] = de_Metrics(output[_Me]);
-    }
-    return contents;
-};
-const de_DestinationResult = (output, context) => {
-    const contents = {};
-    if (output[_TBT] != null) {
-        contents[_TBT] = smithyClient.expectString(output[_TBT]);
-    }
-    if (output[_TBA] != null) {
-        contents[_TBA] = smithyClient.expectString(output[_TBA]);
-    }
-    if (output[_TNa] != null) {
-        contents[_TNa] = smithyClient.expectString(output[_TNa]);
-    }
-    return contents;
-};
-const de_EncryptionConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_RKKID] != null) {
-        contents[_RKKID] = smithyClient.expectString(output[_RKKID]);
-    }
-    return contents;
-};
-const de_EndEvent = (output, context) => {
-    const contents = {};
-    return contents;
-};
-const de__Error = (output, context) => {
-    const contents = {};
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_VI] != null) {
-        contents[_VI] = smithyClient.expectString(output[_VI]);
-    }
-    if (output[_Cod] != null) {
-        contents[_Cod] = smithyClient.expectString(output[_Cod]);
-    }
-    if (output[_Mes] != null) {
-        contents[_Mes] = smithyClient.expectString(output[_Mes]);
-    }
-    return contents;
-};
-const de_ErrorDetails = (output, context) => {
-    const contents = {};
-    if (output[_EC] != null) {
-        contents[_EC] = smithyClient.expectString(output[_EC]);
-    }
-    if (output[_EM] != null) {
-        contents[_EM] = smithyClient.expectString(output[_EM]);
-    }
-    return contents;
-};
-const de_ErrorDocument = (output, context) => {
-    const contents = {};
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    return contents;
-};
-const de_Errors = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de__Error(entry);
-    });
-};
-const de_EventBridgeConfiguration = (output, context) => {
-    const contents = {};
-    return contents;
-};
-const de_EventList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_ExistingObjectReplication = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    return contents;
-};
-const de_ExposeHeaders = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_FilterRule = (output, context) => {
-    const contents = {};
-    if (output[_N] != null) {
-        contents[_N] = smithyClient.expectString(output[_N]);
-    }
-    if (output[_Va] != null) {
-        contents[_Va] = smithyClient.expectString(output[_Va]);
-    }
-    return contents;
-};
-const de_FilterRuleList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_FilterRule(entry);
-    });
-};
-const de_GetBucketMetadataConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_MCR] != null) {
-        contents[_MCR] = de_MetadataConfigurationResult(output[_MCR]);
-    }
-    return contents;
-};
-const de_GetBucketMetadataTableConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_MTCR] != null) {
-        contents[_MTCR] = de_MetadataTableConfigurationResult(output[_MTCR]);
-    }
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (output[_Er] != null) {
-        contents[_Er] = de_ErrorDetails(output[_Er]);
-    }
-    return contents;
-};
-const de_GetObjectAttributesParts = (output, context) => {
-    const contents = {};
-    if (output[_PC] != null) {
-        contents[_TPC] = smithyClient.strictParseInt32(output[_PC]);
-    }
-    if (output[_PNM] != null) {
-        contents[_PNM] = smithyClient.expectString(output[_PNM]);
-    }
-    if (output[_NPNM] != null) {
-        contents[_NPNM] = smithyClient.expectString(output[_NPNM]);
-    }
-    if (output[_MP] != null) {
-        contents[_MP] = smithyClient.strictParseInt32(output[_MP]);
-    }
-    if (output[_IT] != null) {
-        contents[_IT] = smithyClient.parseBoolean(output[_IT]);
-    }
-    if (String(output.Part).trim() === "") {
-        contents[_Part] = [];
-    }
-    else if (output[_Par] != null) {
-        contents[_Part] = de_PartsList(smithyClient.getArrayIfSingleItem(output[_Par]));
-    }
-    return contents;
-};
-const de_Grant = (output, context) => {
-    const contents = {};
-    if (output[_Gra] != null) {
-        contents[_Gra] = de_Grantee(output[_Gra]);
-    }
-    if (output[_Pe] != null) {
-        contents[_Pe] = smithyClient.expectString(output[_Pe]);
-    }
-    return contents;
-};
-const de_Grantee = (output, context) => {
-    const contents = {};
-    if (output[_DN] != null) {
-        contents[_DN] = smithyClient.expectString(output[_DN]);
-    }
-    if (output[_EA] != null) {
-        contents[_EA] = smithyClient.expectString(output[_EA]);
-    }
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    if (output[_URI] != null) {
-        contents[_URI] = smithyClient.expectString(output[_URI]);
-    }
-    if (output[_x] != null) {
-        contents[_Ty] = smithyClient.expectString(output[_x]);
-    }
-    return contents;
-};
-const de_Grants = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Grant(entry);
-    });
-};
-const de_IndexDocument = (output, context) => {
-    const contents = {};
-    if (output[_Su] != null) {
-        contents[_Su] = smithyClient.expectString(output[_Su]);
-    }
-    return contents;
-};
-const de_Initiator = (output, context) => {
-    const contents = {};
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    if (output[_DN] != null) {
-        contents[_DN] = smithyClient.expectString(output[_DN]);
-    }
-    return contents;
-};
-const de_IntelligentTieringAndOperator = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (String(output.Tag).trim() === "") {
-        contents[_Tag] = [];
-    }
-    else if (output[_Ta] != null) {
-        contents[_Tag] = de_TagSet(smithyClient.getArrayIfSingleItem(output[_Ta]));
-    }
-    return contents;
-};
-const de_IntelligentTieringConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_IntelligentTieringFilter(output[_F]);
-    }
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (String(output.Tiering).trim() === "") {
-        contents[_Tie] = [];
-    }
-    else if (output[_Tier] != null) {
-        contents[_Tie] = de_TieringList(smithyClient.getArrayIfSingleItem(output[_Tier]));
-    }
-    return contents;
-};
-const de_IntelligentTieringConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_IntelligentTieringConfiguration(entry);
-    });
-};
-const de_IntelligentTieringFilter = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_Ta] != null) {
-        contents[_Ta] = de_Tag(output[_Ta]);
-    }
-    if (output[_A] != null) {
-        contents[_A] = de_IntelligentTieringAndOperator(output[_A]);
-    }
-    return contents;
-};
-const de_InventoryConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_Des] != null) {
-        contents[_Des] = de_InventoryDestination(output[_Des]);
-    }
-    if (output[_IE] != null) {
-        contents[_IE] = smithyClient.parseBoolean(output[_IE]);
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_InventoryFilter(output[_F]);
-    }
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (output[_IOV] != null) {
-        contents[_IOV] = smithyClient.expectString(output[_IOV]);
-    }
-    if (String(output.OptionalFields).trim() === "") {
-        contents[_OF] = [];
-    }
-    else if (output[_OF] != null && output[_OF][_Fi] != null) {
-        contents[_OF] = de_InventoryOptionalFields(smithyClient.getArrayIfSingleItem(output[_OF][_Fi]));
-    }
-    if (output[_Sc] != null) {
-        contents[_Sc] = de_InventorySchedule(output[_Sc]);
-    }
-    return contents;
-};
-const de_InventoryConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_InventoryConfiguration(entry);
-    });
-};
-const de_InventoryDestination = (output, context) => {
-    const contents = {};
-    if (output[_SBD] != null) {
-        contents[_SBD] = de_InventoryS3BucketDestination(output[_SBD]);
-    }
-    return contents;
-};
-const de_InventoryEncryption = (output, context) => {
-    const contents = {};
-    if (output[_SS] != null) {
-        contents[_SSES] = de_SSES3(output[_SS]);
-    }
-    if (output[_SK] != null) {
-        contents[_SSEKMS] = de_SSEKMS(output[_SK]);
-    }
-    return contents;
-};
-const de_InventoryFilter = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    return contents;
-};
-const de_InventoryOptionalFields = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return smithyClient.expectString(entry);
-    });
-};
-const de_InventoryS3BucketDestination = (output, context) => {
-    const contents = {};
-    if (output[_AIc] != null) {
-        contents[_AIc] = smithyClient.expectString(output[_AIc]);
-    }
-    if (output[_B] != null) {
-        contents[_B] = smithyClient.expectString(output[_B]);
-    }
-    if (output[_Fo] != null) {
-        contents[_Fo] = smithyClient.expectString(output[_Fo]);
-    }
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_En] != null) {
-        contents[_En] = de_InventoryEncryption(output[_En]);
-    }
-    return contents;
-};
-const de_InventorySchedule = (output, context) => {
-    const contents = {};
-    if (output[_Fr] != null) {
-        contents[_Fr] = smithyClient.expectString(output[_Fr]);
-    }
-    return contents;
-};
-const de_InventoryTableConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_CSo] != null) {
-        contents[_CSo] = smithyClient.expectString(output[_CSo]);
-    }
-    if (output[_TSa] != null) {
-        contents[_TSa] = smithyClient.expectString(output[_TSa]);
-    }
-    if (output[_Er] != null) {
-        contents[_Er] = de_ErrorDetails(output[_Er]);
-    }
-    if (output[_TN] != null) {
-        contents[_TN] = smithyClient.expectString(output[_TN]);
-    }
-    if (output[_TAa] != null) {
-        contents[_TAa] = smithyClient.expectString(output[_TAa]);
-    }
-    return contents;
-};
-const de_JournalTableConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_TSa] != null) {
-        contents[_TSa] = smithyClient.expectString(output[_TSa]);
-    }
-    if (output[_Er] != null) {
-        contents[_Er] = de_ErrorDetails(output[_Er]);
-    }
-    if (output[_TN] != null) {
-        contents[_TN] = smithyClient.expectString(output[_TN]);
-    }
-    if (output[_TAa] != null) {
-        contents[_TAa] = smithyClient.expectString(output[_TAa]);
-    }
-    if (output[_REe] != null) {
-        contents[_REe] = de_RecordExpiration(output[_REe]);
-    }
-    return contents;
-};
-const de_LambdaFunctionConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (output[_CF] != null) {
-        contents[_LFA] = smithyClient.expectString(output[_CF]);
-    }
-    if (String(output.Event).trim() === "") {
-        contents[_Eve] = [];
-    }
-    else if (output[_Ev] != null) {
-        contents[_Eve] = de_EventList(smithyClient.getArrayIfSingleItem(output[_Ev]));
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_NotificationConfigurationFilter(output[_F]);
-    }
-    return contents;
-};
-const de_LambdaFunctionConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_LambdaFunctionConfiguration(entry);
-    });
-};
-const de_LifecycleExpiration = (output, context) => {
-    const contents = {};
-    if (output[_Dat] != null) {
-        contents[_Dat] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_Dat]));
-    }
-    if (output[_Da] != null) {
-        contents[_Da] = smithyClient.strictParseInt32(output[_Da]);
-    }
-    if (output[_EODM] != null) {
-        contents[_EODM] = smithyClient.parseBoolean(output[_EODM]);
-    }
-    return contents;
-};
-const de_LifecycleRule = (output, context) => {
-    const contents = {};
-    if (output[_Exp] != null) {
-        contents[_Exp] = de_LifecycleExpiration(output[_Exp]);
-    }
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_LifecycleRuleFilter(output[_F]);
-    }
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (String(output.Transition).trim() === "") {
-        contents[_Tr] = [];
-    }
-    else if (output[_Tra] != null) {
-        contents[_Tr] = de_TransitionList(smithyClient.getArrayIfSingleItem(output[_Tra]));
-    }
-    if (String(output.NoncurrentVersionTransition).trim() === "") {
-        contents[_NVT] = [];
-    }
-    else if (output[_NVTo] != null) {
-        contents[_NVT] = de_NoncurrentVersionTransitionList(smithyClient.getArrayIfSingleItem(output[_NVTo]));
-    }
-    if (output[_NVE] != null) {
-        contents[_NVE] = de_NoncurrentVersionExpiration(output[_NVE]);
-    }
-    if (output[_AIMU] != null) {
-        contents[_AIMU] = de_AbortIncompleteMultipartUpload(output[_AIMU]);
-    }
-    return contents;
-};
-const de_LifecycleRuleAndOperator = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (String(output.Tag).trim() === "") {
-        contents[_Tag] = [];
-    }
-    else if (output[_Ta] != null) {
-        contents[_Tag] = de_TagSet(smithyClient.getArrayIfSingleItem(output[_Ta]));
-    }
-    if (output[_OSGT] != null) {
-        contents[_OSGT] = smithyClient.strictParseLong(output[_OSGT]);
-    }
-    if (output[_OSLT] != null) {
-        contents[_OSLT] = smithyClient.strictParseLong(output[_OSLT]);
-    }
-    return contents;
-};
-const de_LifecycleRuleFilter = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_Ta] != null) {
-        contents[_Ta] = de_Tag(output[_Ta]);
-    }
-    if (output[_OSGT] != null) {
-        contents[_OSGT] = smithyClient.strictParseLong(output[_OSGT]);
-    }
-    if (output[_OSLT] != null) {
-        contents[_OSLT] = smithyClient.strictParseLong(output[_OSLT]);
-    }
-    if (output[_A] != null) {
-        contents[_A] = de_LifecycleRuleAndOperator(output[_A]);
-    }
-    return contents;
-};
-const de_LifecycleRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_LifecycleRule(entry);
-    });
-};
-const de_LoggingEnabled = (output, context) => {
-    const contents = {};
-    if (output[_TB] != null) {
-        contents[_TB] = smithyClient.expectString(output[_TB]);
-    }
-    if (String(output.TargetGrants).trim() === "") {
-        contents[_TG] = [];
-    }
-    else if (output[_TG] != null && output[_TG][_G] != null) {
-        contents[_TG] = de_TargetGrants(smithyClient.getArrayIfSingleItem(output[_TG][_G]));
-    }
-    if (output[_TP] != null) {
-        contents[_TP] = smithyClient.expectString(output[_TP]);
-    }
-    if (output[_TOKF] != null) {
-        contents[_TOKF] = de_TargetObjectKeyFormat(output[_TOKF]);
-    }
-    return contents;
-};
-const de_MetadataConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_DRes] != null) {
-        contents[_DRes] = de_DestinationResult(output[_DRes]);
-    }
-    if (output[_JTCR] != null) {
-        contents[_JTCR] = de_JournalTableConfigurationResult(output[_JTCR]);
-    }
-    if (output[_ITCR] != null) {
-        contents[_ITCR] = de_InventoryTableConfigurationResult(output[_ITCR]);
-    }
-    return contents;
-};
-const de_MetadataTableConfigurationResult = (output, context) => {
-    const contents = {};
-    if (output[_STDR] != null) {
-        contents[_STDR] = de_S3TablesDestinationResult(output[_STDR]);
-    }
-    return contents;
-};
-const de_Metrics = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (output[_ETv] != null) {
-        contents[_ETv] = de_ReplicationTimeValue(output[_ETv]);
-    }
-    return contents;
-};
-const de_MetricsAndOperator = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (String(output.Tag).trim() === "") {
-        contents[_Tag] = [];
-    }
-    else if (output[_Ta] != null) {
-        contents[_Tag] = de_TagSet(smithyClient.getArrayIfSingleItem(output[_Ta]));
-    }
-    if (output[_APAc] != null) {
-        contents[_APAc] = smithyClient.expectString(output[_APAc]);
-    }
-    return contents;
-};
-const de_MetricsConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (String(output.Filter).trim() === "") ;
-    else if (output[_F] != null) {
-        contents[_F] = de_MetricsFilter(smithyClient.expectUnion(output[_F]));
-    }
-    return contents;
-};
-const de_MetricsConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_MetricsConfiguration(entry);
-    });
-};
-const de_MetricsFilter = (output, context) => {
-    if (output[_P] != null) {
-        return {
-            Prefix: smithyClient.expectString(output[_P]),
-        };
-    }
-    if (output[_Ta] != null) {
-        return {
-            Tag: de_Tag(output[_Ta]),
-        };
-    }
-    if (output[_APAc] != null) {
-        return {
-            AccessPointArn: smithyClient.expectString(output[_APAc]),
-        };
-    }
-    if (output[_A] != null) {
-        return {
-            And: de_MetricsAndOperator(output[_A]),
-        };
-    }
-    return { $unknown: Object.entries(output)[0] };
-};
-const de_MultipartUpload = (output, context) => {
-    const contents = {};
-    if (output[_UI] != null) {
-        contents[_UI] = smithyClient.expectString(output[_UI]);
-    }
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_Ini] != null) {
-        contents[_Ini] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_Ini]));
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    if (output[_O] != null) {
-        contents[_O] = de_Owner(output[_O]);
-    }
-    if (output[_In] != null) {
-        contents[_In] = de_Initiator(output[_In]);
-    }
-    if (output[_CA] != null) {
-        contents[_CA] = smithyClient.expectString(output[_CA]);
-    }
-    if (output[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(output[_CT]);
-    }
-    return contents;
-};
-const de_MultipartUploadList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_MultipartUpload(entry);
-    });
-};
-const de_NoncurrentVersionExpiration = (output, context) => {
-    const contents = {};
-    if (output[_ND] != null) {
-        contents[_ND] = smithyClient.strictParseInt32(output[_ND]);
-    }
-    if (output[_NNV] != null) {
-        contents[_NNV] = smithyClient.strictParseInt32(output[_NNV]);
-    }
-    return contents;
-};
-const de_NoncurrentVersionTransition = (output, context) => {
-    const contents = {};
-    if (output[_ND] != null) {
-        contents[_ND] = smithyClient.strictParseInt32(output[_ND]);
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    if (output[_NNV] != null) {
-        contents[_NNV] = smithyClient.strictParseInt32(output[_NNV]);
-    }
-    return contents;
-};
-const de_NoncurrentVersionTransitionList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_NoncurrentVersionTransition(entry);
-    });
-};
-const de_NotificationConfigurationFilter = (output, context) => {
-    const contents = {};
-    if (output[_SKe] != null) {
-        contents[_K] = de_S3KeyFilter(output[_SKe]);
-    }
-    return contents;
-};
-const de__Object = (output, context) => {
-    const contents = {};
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    if (output[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(output[_ETa]);
-    }
-    if (String(output.ChecksumAlgorithm).trim() === "") {
-        contents[_CA] = [];
-    }
-    else if (output[_CA] != null) {
-        contents[_CA] = de_ChecksumAlgorithmList(smithyClient.getArrayIfSingleItem(output[_CA]));
-    }
-    if (output[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(output[_CT]);
-    }
-    if (output[_Si] != null) {
-        contents[_Si] = smithyClient.strictParseLong(output[_Si]);
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    if (output[_O] != null) {
-        contents[_O] = de_Owner(output[_O]);
-    }
-    if (output[_RSes] != null) {
-        contents[_RSes] = de_RestoreStatus(output[_RSes]);
-    }
-    return contents;
-};
-const de_ObjectList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de__Object(entry);
-    });
-};
-const de_ObjectLockConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_OLE] != null) {
-        contents[_OLE] = smithyClient.expectString(output[_OLE]);
-    }
-    if (output[_Ru] != null) {
-        contents[_Ru] = de_ObjectLockRule(output[_Ru]);
-    }
-    return contents;
-};
-const de_ObjectLockLegalHold = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    return contents;
-};
-const de_ObjectLockRetention = (output, context) => {
-    const contents = {};
-    if (output[_Mo] != null) {
-        contents[_Mo] = smithyClient.expectString(output[_Mo]);
-    }
-    if (output[_RUD] != null) {
-        contents[_RUD] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_RUD]));
-    }
-    return contents;
-};
-const de_ObjectLockRule = (output, context) => {
-    const contents = {};
-    if (output[_DRe] != null) {
-        contents[_DRe] = de_DefaultRetention(output[_DRe]);
-    }
-    return contents;
-};
-const de_ObjectPart = (output, context) => {
-    const contents = {};
-    if (output[_PN] != null) {
-        contents[_PN] = smithyClient.strictParseInt32(output[_PN]);
-    }
-    if (output[_Si] != null) {
-        contents[_Si] = smithyClient.strictParseLong(output[_Si]);
-    }
-    if (output[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(output[_CCRC]);
-    }
-    if (output[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(output[_CCRCC]);
-    }
-    if (output[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(output[_CCRCNVME]);
-    }
-    if (output[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(output[_CSHA]);
-    }
-    if (output[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(output[_CSHAh]);
-    }
-    return contents;
-};
-const de_ObjectVersion = (output, context) => {
-    const contents = {};
-    if (output[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(output[_ETa]);
-    }
-    if (String(output.ChecksumAlgorithm).trim() === "") {
-        contents[_CA] = [];
-    }
-    else if (output[_CA] != null) {
-        contents[_CA] = de_ChecksumAlgorithmList(smithyClient.getArrayIfSingleItem(output[_CA]));
-    }
-    if (output[_CT] != null) {
-        contents[_CT] = smithyClient.expectString(output[_CT]);
-    }
-    if (output[_Si] != null) {
-        contents[_Si] = smithyClient.strictParseLong(output[_Si]);
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_VI] != null) {
-        contents[_VI] = smithyClient.expectString(output[_VI]);
-    }
-    if (output[_IL] != null) {
-        contents[_IL] = smithyClient.parseBoolean(output[_IL]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    if (output[_O] != null) {
-        contents[_O] = de_Owner(output[_O]);
-    }
-    if (output[_RSes] != null) {
-        contents[_RSes] = de_RestoreStatus(output[_RSes]);
-    }
-    return contents;
-};
-const de_ObjectVersionList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_ObjectVersion(entry);
-    });
-};
-const de_Owner = (output, context) => {
-    const contents = {};
-    if (output[_DN] != null) {
-        contents[_DN] = smithyClient.expectString(output[_DN]);
-    }
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    return contents;
-};
-const de_OwnershipControls = (output, context) => {
-    const contents = {};
-    if (String(output.Rule).trim() === "") {
-        contents[_Rul] = [];
-    }
-    else if (output[_Ru] != null) {
-        contents[_Rul] = de_OwnershipControlsRules(smithyClient.getArrayIfSingleItem(output[_Ru]));
-    }
-    return contents;
-};
-const de_OwnershipControlsRule = (output, context) => {
-    const contents = {};
-    if (output[_OO] != null) {
-        contents[_OO] = smithyClient.expectString(output[_OO]);
-    }
-    return contents;
-};
-const de_OwnershipControlsRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_OwnershipControlsRule(entry);
-    });
-};
-const de_Part = (output, context) => {
-    const contents = {};
-    if (output[_PN] != null) {
-        contents[_PN] = smithyClient.strictParseInt32(output[_PN]);
-    }
-    if (output[_LM] != null) {
-        contents[_LM] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_LM]));
-    }
-    if (output[_ETa] != null) {
-        contents[_ETa] = smithyClient.expectString(output[_ETa]);
-    }
-    if (output[_Si] != null) {
-        contents[_Si] = smithyClient.strictParseLong(output[_Si]);
-    }
-    if (output[_CCRC] != null) {
-        contents[_CCRC] = smithyClient.expectString(output[_CCRC]);
-    }
-    if (output[_CCRCC] != null) {
-        contents[_CCRCC] = smithyClient.expectString(output[_CCRCC]);
-    }
-    if (output[_CCRCNVME] != null) {
-        contents[_CCRCNVME] = smithyClient.expectString(output[_CCRCNVME]);
-    }
-    if (output[_CSHA] != null) {
-        contents[_CSHA] = smithyClient.expectString(output[_CSHA]);
-    }
-    if (output[_CSHAh] != null) {
-        contents[_CSHAh] = smithyClient.expectString(output[_CSHAh]);
-    }
-    return contents;
-};
-const de_PartitionedPrefix = (output, context) => {
-    const contents = {};
-    if (output[_PDS] != null) {
-        contents[_PDS] = smithyClient.expectString(output[_PDS]);
-    }
-    return contents;
-};
-const de_Parts = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Part(entry);
-    });
-};
-const de_PartsList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_ObjectPart(entry);
-    });
-};
-const de_PolicyStatus = (output, context) => {
-    const contents = {};
-    if (output[_IP] != null) {
-        contents[_IP] = smithyClient.parseBoolean(output[_IP]);
-    }
-    return contents;
-};
-const de_Progress = (output, context) => {
-    const contents = {};
-    if (output[_BS] != null) {
-        contents[_BS] = smithyClient.strictParseLong(output[_BS]);
-    }
-    if (output[_BP] != null) {
-        contents[_BP] = smithyClient.strictParseLong(output[_BP]);
-    }
-    if (output[_BRy] != null) {
-        contents[_BRy] = smithyClient.strictParseLong(output[_BRy]);
-    }
-    return contents;
-};
-const de_PublicAccessBlockConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_BPA] != null) {
-        contents[_BPA] = smithyClient.parseBoolean(output[_BPA]);
-    }
-    if (output[_IPA] != null) {
-        contents[_IPA] = smithyClient.parseBoolean(output[_IPA]);
-    }
-    if (output[_BPP] != null) {
-        contents[_BPP] = smithyClient.parseBoolean(output[_BPP]);
-    }
-    if (output[_RPB] != null) {
-        contents[_RPB] = smithyClient.parseBoolean(output[_RPB]);
-    }
-    return contents;
-};
-const de_QueueConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (output[_Qu] != null) {
-        contents[_QA] = smithyClient.expectString(output[_Qu]);
-    }
-    if (String(output.Event).trim() === "") {
-        contents[_Eve] = [];
-    }
-    else if (output[_Ev] != null) {
-        contents[_Eve] = de_EventList(smithyClient.getArrayIfSingleItem(output[_Ev]));
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_NotificationConfigurationFilter(output[_F]);
-    }
-    return contents;
-};
-const de_QueueConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_QueueConfiguration(entry);
-    });
-};
-const de_RecordExpiration = (output, context) => {
-    const contents = {};
-    if (output[_Exp] != null) {
-        contents[_Exp] = smithyClient.expectString(output[_Exp]);
-    }
-    if (output[_Da] != null) {
-        contents[_Da] = smithyClient.strictParseInt32(output[_Da]);
-    }
-    return contents;
-};
-const de_Redirect = (output, context) => {
-    const contents = {};
-    if (output[_HN] != null) {
-        contents[_HN] = smithyClient.expectString(output[_HN]);
-    }
-    if (output[_HRC] != null) {
-        contents[_HRC] = smithyClient.expectString(output[_HRC]);
-    }
-    if (output[_Pr] != null) {
-        contents[_Pr] = smithyClient.expectString(output[_Pr]);
-    }
-    if (output[_RKPW] != null) {
-        contents[_RKPW] = smithyClient.expectString(output[_RKPW]);
-    }
-    if (output[_RKW] != null) {
-        contents[_RKW] = smithyClient.expectString(output[_RKW]);
-    }
-    return contents;
-};
-const de_RedirectAllRequestsTo = (output, context) => {
-    const contents = {};
-    if (output[_HN] != null) {
-        contents[_HN] = smithyClient.expectString(output[_HN]);
-    }
-    if (output[_Pr] != null) {
-        contents[_Pr] = smithyClient.expectString(output[_Pr]);
-    }
-    return contents;
-};
-const de_ReplicaModifications = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    return contents;
-};
-const de_ReplicationConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_Ro] != null) {
-        contents[_Ro] = smithyClient.expectString(output[_Ro]);
-    }
-    if (String(output.Rule).trim() === "") {
-        contents[_Rul] = [];
-    }
-    else if (output[_Ru] != null) {
-        contents[_Rul] = de_ReplicationRules(smithyClient.getArrayIfSingleItem(output[_Ru]));
-    }
-    return contents;
-};
-const de_ReplicationRule = (output, context) => {
-    const contents = {};
-    if (output[_ID_] != null) {
-        contents[_ID_] = smithyClient.expectString(output[_ID_]);
-    }
-    if (output[_Pri] != null) {
-        contents[_Pri] = smithyClient.strictParseInt32(output[_Pri]);
-    }
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_ReplicationRuleFilter(output[_F]);
-    }
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (output[_SSC] != null) {
-        contents[_SSC] = de_SourceSelectionCriteria(output[_SSC]);
-    }
-    if (output[_EOR] != null) {
-        contents[_EOR] = de_ExistingObjectReplication(output[_EOR]);
-    }
-    if (output[_Des] != null) {
-        contents[_Des] = de_Destination(output[_Des]);
-    }
-    if (output[_DMR] != null) {
-        contents[_DMR] = de_DeleteMarkerReplication(output[_DMR]);
-    }
-    return contents;
-};
-const de_ReplicationRuleAndOperator = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (String(output.Tag).trim() === "") {
-        contents[_Tag] = [];
-    }
-    else if (output[_Ta] != null) {
-        contents[_Tag] = de_TagSet(smithyClient.getArrayIfSingleItem(output[_Ta]));
-    }
-    return contents;
-};
-const de_ReplicationRuleFilter = (output, context) => {
-    const contents = {};
-    if (output[_P] != null) {
-        contents[_P] = smithyClient.expectString(output[_P]);
-    }
-    if (output[_Ta] != null) {
-        contents[_Ta] = de_Tag(output[_Ta]);
-    }
-    if (output[_A] != null) {
-        contents[_A] = de_ReplicationRuleAndOperator(output[_A]);
-    }
-    return contents;
-};
-const de_ReplicationRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_ReplicationRule(entry);
-    });
-};
-const de_ReplicationTime = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    if (output[_Tim] != null) {
-        contents[_Tim] = de_ReplicationTimeValue(output[_Tim]);
-    }
-    return contents;
-};
-const de_ReplicationTimeValue = (output, context) => {
-    const contents = {};
-    if (output[_Mi] != null) {
-        contents[_Mi] = smithyClient.strictParseInt32(output[_Mi]);
-    }
-    return contents;
-};
-const de_RestoreStatus = (output, context) => {
-    const contents = {};
-    if (output[_IRIP] != null) {
-        contents[_IRIP] = smithyClient.parseBoolean(output[_IRIP]);
-    }
-    if (output[_REDe] != null) {
-        contents[_REDe] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_REDe]));
-    }
-    return contents;
-};
-const de_RoutingRule = (output, context) => {
-    const contents = {};
-    if (output[_Con] != null) {
-        contents[_Con] = de_Condition(output[_Con]);
-    }
-    if (output[_Red] != null) {
-        contents[_Red] = de_Redirect(output[_Red]);
-    }
-    return contents;
-};
-const de_RoutingRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_RoutingRule(entry);
-    });
-};
-const de_S3KeyFilter = (output, context) => {
-    const contents = {};
-    if (String(output.FilterRule).trim() === "") {
-        contents[_FRi] = [];
-    }
-    else if (output[_FR] != null) {
-        contents[_FRi] = de_FilterRuleList(smithyClient.getArrayIfSingleItem(output[_FR]));
-    }
-    return contents;
-};
-const de_S3TablesDestinationResult = (output, context) => {
-    const contents = {};
-    if (output[_TBA] != null) {
-        contents[_TBA] = smithyClient.expectString(output[_TBA]);
-    }
-    if (output[_TN] != null) {
-        contents[_TN] = smithyClient.expectString(output[_TN]);
-    }
-    if (output[_TAa] != null) {
-        contents[_TAa] = smithyClient.expectString(output[_TAa]);
-    }
-    if (output[_TNa] != null) {
-        contents[_TNa] = smithyClient.expectString(output[_TNa]);
-    }
-    return contents;
-};
-const de_ServerSideEncryptionByDefault = (output, context) => {
-    const contents = {};
-    if (output[_SSEA] != null) {
-        contents[_SSEA] = smithyClient.expectString(output[_SSEA]);
-    }
-    if (output[_KMSMKID] != null) {
-        contents[_KMSMKID] = smithyClient.expectString(output[_KMSMKID]);
-    }
-    return contents;
-};
-const de_ServerSideEncryptionConfiguration = (output, context) => {
-    const contents = {};
-    if (String(output.Rule).trim() === "") {
-        contents[_Rul] = [];
-    }
-    else if (output[_Ru] != null) {
-        contents[_Rul] = de_ServerSideEncryptionRules(smithyClient.getArrayIfSingleItem(output[_Ru]));
-    }
-    return contents;
-};
-const de_ServerSideEncryptionRule = (output, context) => {
-    const contents = {};
-    if (output[_ASSEBD] != null) {
-        contents[_ASSEBD] = de_ServerSideEncryptionByDefault(output[_ASSEBD]);
-    }
-    if (output[_BKE] != null) {
-        contents[_BKE] = smithyClient.parseBoolean(output[_BKE]);
-    }
-    return contents;
-};
-const de_ServerSideEncryptionRules = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_ServerSideEncryptionRule(entry);
-    });
-};
-const de_SessionCredentials = (output, context) => {
-    const contents = {};
-    if (output[_AKI] != null) {
-        contents[_AKI] = smithyClient.expectString(output[_AKI]);
-    }
-    if (output[_SAK] != null) {
-        contents[_SAK] = smithyClient.expectString(output[_SAK]);
-    }
-    if (output[_ST] != null) {
-        contents[_ST] = smithyClient.expectString(output[_ST]);
-    }
-    if (output[_Exp] != null) {
-        contents[_Exp] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_Exp]));
-    }
-    return contents;
-};
-const de_SimplePrefix = (output, context) => {
-    const contents = {};
-    return contents;
-};
-const de_SourceSelectionCriteria = (output, context) => {
-    const contents = {};
-    if (output[_SKEO] != null) {
-        contents[_SKEO] = de_SseKmsEncryptedObjects(output[_SKEO]);
-    }
-    if (output[_RM] != null) {
-        contents[_RM] = de_ReplicaModifications(output[_RM]);
-    }
-    return contents;
-};
-const de_SSEKMS = (output, context) => {
-    const contents = {};
-    if (output[_KI] != null) {
-        contents[_KI] = smithyClient.expectString(output[_KI]);
-    }
-    return contents;
-};
-const de_SseKmsEncryptedObjects = (output, context) => {
-    const contents = {};
-    if (output[_S] != null) {
-        contents[_S] = smithyClient.expectString(output[_S]);
-    }
-    return contents;
-};
-const de_SSES3 = (output, context) => {
-    const contents = {};
-    return contents;
-};
-const de_Stats = (output, context) => {
-    const contents = {};
-    if (output[_BS] != null) {
-        contents[_BS] = smithyClient.strictParseLong(output[_BS]);
-    }
-    if (output[_BP] != null) {
-        contents[_BP] = smithyClient.strictParseLong(output[_BP]);
-    }
-    if (output[_BRy] != null) {
-        contents[_BRy] = smithyClient.strictParseLong(output[_BRy]);
-    }
-    return contents;
-};
-const de_StorageClassAnalysis = (output, context) => {
-    const contents = {};
-    if (output[_DE] != null) {
-        contents[_DE] = de_StorageClassAnalysisDataExport(output[_DE]);
-    }
-    return contents;
-};
-const de_StorageClassAnalysisDataExport = (output, context) => {
-    const contents = {};
-    if (output[_OSV] != null) {
-        contents[_OSV] = smithyClient.expectString(output[_OSV]);
-    }
-    if (output[_Des] != null) {
-        contents[_Des] = de_AnalyticsExportDestination(output[_Des]);
-    }
-    return contents;
-};
-const de_Tag = (output, context) => {
-    const contents = {};
-    if (output[_K] != null) {
-        contents[_K] = smithyClient.expectString(output[_K]);
-    }
-    if (output[_Va] != null) {
-        contents[_Va] = smithyClient.expectString(output[_Va]);
-    }
-    return contents;
-};
-const de_TagSet = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Tag(entry);
-    });
-};
-const de_TargetGrant = (output, context) => {
-    const contents = {};
-    if (output[_Gra] != null) {
-        contents[_Gra] = de_Grantee(output[_Gra]);
-    }
-    if (output[_Pe] != null) {
-        contents[_Pe] = smithyClient.expectString(output[_Pe]);
-    }
-    return contents;
-};
-const de_TargetGrants = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_TargetGrant(entry);
-    });
-};
-const de_TargetObjectKeyFormat = (output, context) => {
-    const contents = {};
-    if (output[_SPi] != null) {
-        contents[_SPi] = de_SimplePrefix(output[_SPi]);
-    }
-    if (output[_PP] != null) {
-        contents[_PP] = de_PartitionedPrefix(output[_PP]);
-    }
-    return contents;
-};
-const de_Tiering = (output, context) => {
-    const contents = {};
-    if (output[_Da] != null) {
-        contents[_Da] = smithyClient.strictParseInt32(output[_Da]);
-    }
-    if (output[_AT] != null) {
-        contents[_AT] = smithyClient.expectString(output[_AT]);
-    }
-    return contents;
-};
-const de_TieringList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Tiering(entry);
-    });
-};
-const de_TopicConfiguration = (output, context) => {
-    const contents = {};
-    if (output[_I] != null) {
-        contents[_I] = smithyClient.expectString(output[_I]);
-    }
-    if (output[_Top] != null) {
-        contents[_TA] = smithyClient.expectString(output[_Top]);
-    }
-    if (String(output.Event).trim() === "") {
-        contents[_Eve] = [];
-    }
-    else if (output[_Ev] != null) {
-        contents[_Eve] = de_EventList(smithyClient.getArrayIfSingleItem(output[_Ev]));
-    }
-    if (output[_F] != null) {
-        contents[_F] = de_NotificationConfigurationFilter(output[_F]);
-    }
-    return contents;
-};
-const de_TopicConfigurationList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_TopicConfiguration(entry);
-    });
-};
-const de_Transition = (output, context) => {
-    const contents = {};
-    if (output[_Dat] != null) {
-        contents[_Dat] = smithyClient.expectNonNull(smithyClient.parseRfc3339DateTimeWithOffset(output[_Dat]));
-    }
-    if (output[_Da] != null) {
-        contents[_Da] = smithyClient.strictParseInt32(output[_Da]);
-    }
-    if (output[_SC] != null) {
-        contents[_SC] = smithyClient.expectString(output[_SC]);
-    }
-    return contents;
-};
-const de_TransitionList = (output, context) => {
-    return (output || [])
-        .filter((e) => e != null)
-        .map((entry) => {
-        return de_Transition(entry);
-    });
-};
-const deserializeMetadata = (output) => ({
-    httpStatusCode: output.statusCode,
-    requestId: output.headers["x-amzn-requestid"] ?? output.headers["x-amzn-request-id"] ?? output.headers["x-amz-request-id"],
-    extendedRequestId: output.headers["x-amz-id-2"],
-    cfId: output.headers["x-amz-cf-id"],
-});
-const collectBodyString = (streamBody, context) => smithyClient.collectBody(streamBody, context).then((body) => context.utf8Encoder(body));
-const _A = "And";
+const _A = "Account";
 const _AAO = "AnalyticsAndOperator";
-const _AC = "AnalyticsConfiguration";
-const _ACL = "ACL";
-const _ACLc = "AccessControlList";
+const _AC = "AccelerateConfiguration";
+const _ACL = "AccessControlList";
+const _ACL_ = "ACL";
 const _ACLn = "AnalyticsConfigurationList";
 const _ACP = "AccessControlPolicy";
 const _ACT = "AccessControlTranslation";
-const _ACc = "AccelerateConfiguration";
+const _ACn = "AnalyticsConfiguration";
 const _AD = "AbortDate";
 const _AED = "AnalyticsExportDestination";
 const _AF = "AnalyticsFilter";
-const _AH = "AllowedHeader";
-const _AHl = "AllowedHeaders";
-const _AI = "AnalyticsId";
+const _AH = "AllowedHeaders";
+const _AHl = "AllowedHeader";
+const _AI = "AccountId";
 const _AIMU = "AbortIncompleteMultipartUpload";
-const _AIc = "AccountId";
 const _AKI = "AccessKeyId";
-const _AM = "AllowedMethod";
-const _AMl = "AllowedMethods";
-const _AO = "AllowedOrigin";
-const _AOl = "AllowedOrigins";
+const _AM = "AllowedMethods";
+const _AMU = "AbortMultipartUpload";
+const _AMUO = "AbortMultipartUploadOutput";
+const _AMUR = "AbortMultipartUploadRequest";
+const _AMl = "AllowedMethod";
+const _AO = "AllowedOrigins";
+const _AOl = "AllowedOrigin";
 const _APA = "AccessPointAlias";
 const _APAc = "AccessPointArn";
 const _AQRD = "AllowQuotedRecordDelimiter";
 const _AR = "AcceptRanges";
 const _ARI = "AbortRuleId";
-const _AS = "ArchiveStatus";
+const _AS = "AbacStatus";
 const _ASBD = "AnalyticsS3BucketDestination";
-const _ASEFF = "AnalyticsS3ExportFileFormat";
 const _ASSEBD = "ApplyServerSideEncryptionByDefault";
+const _ASr = "ArchiveStatus";
 const _AT = "AccessTier";
-const _Ac = "Account";
+const _An = "And";
 const _B = "Bucket";
 const _BA = "BucketArn";
+const _BAE = "BucketAlreadyExists";
 const _BAI = "BucketAccountId";
-const _BAS = "BucketAccelerateStatus";
+const _BAOBY = "BucketAlreadyOwnedByYou";
+const _BET = "BlockedEncryptionTypes";
 const _BGR = "BypassGovernanceRetention";
 const _BI = "BucketInfo";
 const _BKE = "BucketKeyEnabled";
 const _BLC = "BucketLifecycleConfiguration";
-const _BLCu = "BucketLocationConstraint";
 const _BLN = "BucketLocationName";
-const _BLP = "BucketLogsPermission";
 const _BLS = "BucketLoggingStatus";
 const _BLT = "BucketLocationType";
 const _BN = "BucketName";
@@ -12499,34 +5483,63 @@ const _BPP = "BlockPublicPolicy";
 const _BR = "BucketRegion";
 const _BRy = "BytesReturned";
 const _BS = "BytesScanned";
-const _BT = "BucketType";
-const _BVS = "BucketVersioningStatus";
+const _Bo = "Body";
 const _Bu = "Buckets";
-const _C = "Credentials";
+const _C = "Checksum";
 const _CA = "ChecksumAlgorithm";
 const _CACL = "CannedACL";
+const _CB = "CreateBucket";
 const _CBC = "CreateBucketConfiguration";
+const _CBMC = "CreateBucketMetadataConfiguration";
+const _CBMCR = "CreateBucketMetadataConfigurationRequest";
+const _CBMTC = "CreateBucketMetadataTableConfiguration";
+const _CBMTCR = "CreateBucketMetadataTableConfigurationRequest";
+const _CBO = "CreateBucketOutput";
+const _CBR = "CreateBucketRequest";
 const _CC = "CacheControl";
 const _CCRC = "ChecksumCRC32";
 const _CCRCC = "ChecksumCRC32C";
 const _CCRCNVME = "ChecksumCRC64NVME";
-const _CD = "ContentDisposition";
-const _CDr = "CreationDate";
-const _CE = "ContentEncoding";
+const _CC_ = "Cache-Control";
+const _CD = "CreationDate";
+const _CD_ = "Content-Disposition";
+const _CDo = "ContentDisposition";
+const _CE = "ContinuationEvent";
+const _CE_ = "Content-Encoding";
+const _CEo = "ContentEncoding";
 const _CF = "CloudFunction";
 const _CFC = "CloudFunctionConfiguration";
 const _CL = "ContentLanguage";
+const _CL_ = "Content-Language";
+const _CL__ = "Content-Length";
 const _CLo = "ContentLength";
-const _CM = "ChecksumMode";
+const _CM = "Content-MD5";
 const _CMD = "ContentMD5";
 const _CMU = "CompletedMultipartUpload";
+const _CMUO = "CompleteMultipartUploadOutput";
+const _CMUOr = "CreateMultipartUploadOutput";
+const _CMUR = "CompleteMultipartUploadResult";
+const _CMURo = "CompleteMultipartUploadRequest";
+const _CMURr = "CreateMultipartUploadRequest";
+const _CMUo = "CompleteMultipartUpload";
+const _CMUr = "CreateMultipartUpload";
+const _CMh = "ChecksumMode";
+const _CO = "CopyObject";
+const _COO = "CopyObjectOutput";
+const _COR = "CopyObjectResult";
 const _CORSC = "CORSConfiguration";
-const _CORSR = "CORSRule";
-const _CORSRu = "CORSRules";
-const _CP = "CommonPrefixes";
+const _CORSR = "CORSRules";
+const _CORSRu = "CORSRule";
+const _CORo = "CopyObjectRequest";
+const _CP = "CommonPrefix";
+const _CPL = "CommonPrefixList";
+const _CPLo = "CompletedPartList";
+const _CPR = "CopyPartResult";
 const _CPo = "CompletedPart";
+const _CPom = "CommonPrefixes";
 const _CR = "ContentRange";
 const _CRSBA = "ConfirmRemoveSelfBucketAccess";
+const _CR_ = "Content-Range";
 const _CS = "CopySource";
 const _CSHA = "ChecksumSHA1";
 const _CSHAh = "ChecksumSHA256";
@@ -12534,7 +5547,10 @@ const _CSIM = "CopySourceIfMatch";
 const _CSIMS = "CopySourceIfModifiedSince";
 const _CSINM = "CopySourceIfNoneMatch";
 const _CSIUS = "CopySourceIfUnmodifiedSince";
-const _CSR = "CopySourceRange";
+const _CSO = "CreateSessionOutput";
+const _CSR = "CreateSessionResult";
+const _CSRo = "CopySourceRange";
+const _CSRr = "CreateSessionRequest";
 const _CSSSECA = "CopySourceSSECustomerAlgorithm";
 const _CSSSECK = "CopySourceSSECustomerKey";
 const _CSSSECKMD = "CopySourceSSECustomerKeyMD5";
@@ -12543,141 +5559,292 @@ const _CSVI = "CopySourceVersionId";
 const _CSVIn = "CSVInput";
 const _CSVO = "CSVOutput";
 const _CSo = "ConfigurationState";
+const _CSr = "CreateSession";
 const _CT = "ChecksumType";
+const _CT_ = "Content-Type";
 const _CTl = "ClientToken";
 const _CTo = "ContentType";
 const _CTom = "CompressionType";
 const _CTon = "ContinuationToken";
-const _Ch = "Checksum";
-const _Co = "Contents";
+const _Co = "Condition";
 const _Cod = "Code";
 const _Com = "Comments";
-const _Con = "Condition";
-const _D = "Delimiter";
+const _Con = "Contents";
+const _Cont = "Cont";
+const _Cr = "Credentials";
+const _D = "Days";
 const _DAI = "DaysAfterInitiation";
+const _DB = "DeleteBucket";
+const _DBAC = "DeleteBucketAnalyticsConfiguration";
+const _DBACR = "DeleteBucketAnalyticsConfigurationRequest";
+const _DBC = "DeleteBucketCors";
+const _DBCR = "DeleteBucketCorsRequest";
+const _DBE = "DeleteBucketEncryption";
+const _DBER = "DeleteBucketEncryptionRequest";
+const _DBIC = "DeleteBucketInventoryConfiguration";
+const _DBICR = "DeleteBucketInventoryConfigurationRequest";
+const _DBITC = "DeleteBucketIntelligentTieringConfiguration";
+const _DBITCR = "DeleteBucketIntelligentTieringConfigurationRequest";
+const _DBL = "DeleteBucketLifecycle";
+const _DBLR = "DeleteBucketLifecycleRequest";
+const _DBMC = "DeleteBucketMetadataConfiguration";
+const _DBMCR = "DeleteBucketMetadataConfigurationRequest";
+const _DBMCRe = "DeleteBucketMetricsConfigurationRequest";
+const _DBMCe = "DeleteBucketMetricsConfiguration";
+const _DBMTC = "DeleteBucketMetadataTableConfiguration";
+const _DBMTCR = "DeleteBucketMetadataTableConfigurationRequest";
+const _DBOC = "DeleteBucketOwnershipControls";
+const _DBOCR = "DeleteBucketOwnershipControlsRequest";
+const _DBP = "DeleteBucketPolicy";
+const _DBPR = "DeleteBucketPolicyRequest";
+const _DBR = "DeleteBucketRequest";
+const _DBRR = "DeleteBucketReplicationRequest";
+const _DBRe = "DeleteBucketReplication";
+const _DBT = "DeleteBucketTagging";
+const _DBTR = "DeleteBucketTaggingRequest";
+const _DBW = "DeleteBucketWebsite";
+const _DBWR = "DeleteBucketWebsiteRequest";
 const _DE = "DataExport";
 const _DIM = "DestinationIfMatch";
 const _DIMS = "DestinationIfModifiedSince";
 const _DINM = "DestinationIfNoneMatch";
 const _DIUS = "DestinationIfUnmodifiedSince";
 const _DM = "DeleteMarker";
+const _DME = "DeleteMarkerEntry";
 const _DMR = "DeleteMarkerReplication";
-const _DMRS = "DeleteMarkerReplicationStatus";
 const _DMVI = "DeleteMarkerVersionId";
 const _DMe = "DeleteMarkers";
 const _DN = "DisplayName";
+const _DO = "DeletedObject";
+const _DOO = "DeleteObjectOutput";
+const _DOOe = "DeleteObjectsOutput";
+const _DOR = "DeleteObjectRequest";
+const _DORe = "DeleteObjectsRequest";
+const _DOT = "DeleteObjectTagging";
+const _DOTO = "DeleteObjectTaggingOutput";
+const _DOTR = "DeleteObjectTaggingRequest";
+const _DOe = "DeletedObjects";
+const _DOel = "DeleteObject";
+const _DOele = "DeleteObjects";
+const _DPAB = "DeletePublicAccessBlock";
+const _DPABR = "DeletePublicAccessBlockRequest";
 const _DR = "DataRedundancy";
 const _DRe = "DefaultRetention";
+const _DRel = "DeleteResult";
 const _DRes = "DestinationResult";
-const _Da = "Days";
-const _Dat = "Date";
-const _De = "Deleted";
-const _Del = "Delete";
+const _Da = "Date";
+const _De = "Delete";
+const _Del = "Deleted";
+const _Deli = "Delimiter";
 const _Des = "Destination";
 const _Desc = "Description";
-const _E = "Expires";
+const _Det = "Details";
+const _E = "Expiration";
 const _EA = "EmailAddress";
 const _EBC = "EventBridgeConfiguration";
 const _EBO = "ExpectedBucketOwner";
-const _EC = "ErrorCode";
-const _ECn = "EncryptionConfiguration";
-const _ED = "ErrorDocument";
+const _EC = "EncryptionConfiguration";
+const _ECr = "ErrorCode";
+const _ED = "ErrorDetails";
+const _EDr = "ErrorDocument";
+const _EE = "EndEvent";
 const _EH = "ExposeHeaders";
 const _EHx = "ExposeHeader";
 const _EM = "ErrorMessage";
 const _EODM = "ExpiredObjectDeleteMarker";
 const _EOR = "ExistingObjectReplication";
-const _EORS = "ExistingObjectReplicationStatus";
-const _ERP = "EnableRequestProgress";
 const _ES = "ExpiresString";
 const _ESBO = "ExpectedSourceBucketOwner";
-const _ESx = "ExpirationStatus";
-const _ESxp = "ExpirationState";
-const _ET = "EncodingType";
+const _ET = "EncryptionType";
+const _ETL = "EncryptionTypeList";
+const _ETM = "EncryptionTypeMismatch";
 const _ETa = "ETag";
-const _ETn = "EncryptionType";
+const _ETn = "EncodingType";
 const _ETv = "EventThreshold";
 const _ETx = "ExpressionType";
 const _En = "Encryption";
 const _Ena = "Enabled";
 const _End = "End";
-const _Er = "Error";
-const _Err = "Errors";
-const _Ev = "Event";
-const _Eve = "Events";
-const _Ex = "Expression";
-const _Exp = "Expiration";
+const _Er = "Errors";
+const _Err = "Error";
+const _Ev = "Events";
+const _Eve = "Event";
+const _Ex = "Expires";
+const _Exp = "Expression";
 const _F = "Filter";
 const _FD = "FieldDelimiter";
 const _FHI = "FileHeaderInfo";
 const _FO = "FetchOwner";
 const _FR = "FilterRule";
-const _FRN = "FilterRuleName";
-const _FRV = "FilterRuleValue";
+const _FRL = "FilterRuleList";
 const _FRi = "FilterRules";
 const _Fi = "Field";
 const _Fo = "Format";
 const _Fr = "Frequency";
-const _G = "Grant";
+const _G = "Grants";
+const _GBA = "GetBucketAbac";
+const _GBAC = "GetBucketAccelerateConfiguration";
+const _GBACO = "GetBucketAccelerateConfigurationOutput";
+const _GBACOe = "GetBucketAnalyticsConfigurationOutput";
+const _GBACR = "GetBucketAccelerateConfigurationRequest";
+const _GBACRe = "GetBucketAnalyticsConfigurationRequest";
+const _GBACe = "GetBucketAnalyticsConfiguration";
+const _GBAO = "GetBucketAbacOutput";
+const _GBAOe = "GetBucketAclOutput";
+const _GBAR = "GetBucketAbacRequest";
+const _GBARe = "GetBucketAclRequest";
+const _GBAe = "GetBucketAcl";
+const _GBC = "GetBucketCors";
+const _GBCO = "GetBucketCorsOutput";
+const _GBCR = "GetBucketCorsRequest";
+const _GBE = "GetBucketEncryption";
+const _GBEO = "GetBucketEncryptionOutput";
+const _GBER = "GetBucketEncryptionRequest";
+const _GBIC = "GetBucketInventoryConfiguration";
+const _GBICO = "GetBucketInventoryConfigurationOutput";
+const _GBICR = "GetBucketInventoryConfigurationRequest";
+const _GBITC = "GetBucketIntelligentTieringConfiguration";
+const _GBITCO = "GetBucketIntelligentTieringConfigurationOutput";
+const _GBITCR = "GetBucketIntelligentTieringConfigurationRequest";
+const _GBL = "GetBucketLocation";
+const _GBLC = "GetBucketLifecycleConfiguration";
+const _GBLCO = "GetBucketLifecycleConfigurationOutput";
+const _GBLCR = "GetBucketLifecycleConfigurationRequest";
+const _GBLO = "GetBucketLocationOutput";
+const _GBLOe = "GetBucketLoggingOutput";
+const _GBLR = "GetBucketLocationRequest";
+const _GBLRe = "GetBucketLoggingRequest";
+const _GBLe = "GetBucketLogging";
+const _GBMC = "GetBucketMetadataConfiguration";
+const _GBMCO = "GetBucketMetadataConfigurationOutput";
+const _GBMCOe = "GetBucketMetricsConfigurationOutput";
+const _GBMCR = "GetBucketMetadataConfigurationResult";
+const _GBMCRe = "GetBucketMetadataConfigurationRequest";
+const _GBMCRet = "GetBucketMetricsConfigurationRequest";
+const _GBMCe = "GetBucketMetricsConfiguration";
+const _GBMTC = "GetBucketMetadataTableConfiguration";
+const _GBMTCO = "GetBucketMetadataTableConfigurationOutput";
+const _GBMTCR = "GetBucketMetadataTableConfigurationResult";
+const _GBMTCRe = "GetBucketMetadataTableConfigurationRequest";
+const _GBNC = "GetBucketNotificationConfiguration";
+const _GBNCR = "GetBucketNotificationConfigurationRequest";
+const _GBOC = "GetBucketOwnershipControls";
+const _GBOCO = "GetBucketOwnershipControlsOutput";
+const _GBOCR = "GetBucketOwnershipControlsRequest";
+const _GBP = "GetBucketPolicy";
+const _GBPO = "GetBucketPolicyOutput";
+const _GBPR = "GetBucketPolicyRequest";
+const _GBPS = "GetBucketPolicyStatus";
+const _GBPSO = "GetBucketPolicyStatusOutput";
+const _GBPSR = "GetBucketPolicyStatusRequest";
+const _GBR = "GetBucketReplication";
+const _GBRO = "GetBucketReplicationOutput";
+const _GBRP = "GetBucketRequestPayment";
+const _GBRPO = "GetBucketRequestPaymentOutput";
+const _GBRPR = "GetBucketRequestPaymentRequest";
+const _GBRR = "GetBucketReplicationRequest";
+const _GBT = "GetBucketTagging";
+const _GBTO = "GetBucketTaggingOutput";
+const _GBTR = "GetBucketTaggingRequest";
+const _GBV = "GetBucketVersioning";
+const _GBVO = "GetBucketVersioningOutput";
+const _GBVR = "GetBucketVersioningRequest";
+const _GBW = "GetBucketWebsite";
+const _GBWO = "GetBucketWebsiteOutput";
+const _GBWR = "GetBucketWebsiteRequest";
 const _GFC = "GrantFullControl";
 const _GJP = "GlacierJobParameters";
+const _GO = "GetObject";
+const _GOA = "GetObjectAcl";
+const _GOAO = "GetObjectAclOutput";
+const _GOAOe = "GetObjectAttributesOutput";
+const _GOAP = "GetObjectAttributesParts";
+const _GOAR = "GetObjectAclRequest";
+const _GOARe = "GetObjectAttributesResponse";
+const _GOARet = "GetObjectAttributesRequest";
+const _GOAe = "GetObjectAttributes";
+const _GOLC = "GetObjectLockConfiguration";
+const _GOLCO = "GetObjectLockConfigurationOutput";
+const _GOLCR = "GetObjectLockConfigurationRequest";
+const _GOLH = "GetObjectLegalHold";
+const _GOLHO = "GetObjectLegalHoldOutput";
+const _GOLHR = "GetObjectLegalHoldRequest";
+const _GOO = "GetObjectOutput";
+const _GOR = "GetObjectRequest";
+const _GORO = "GetObjectRetentionOutput";
+const _GORR = "GetObjectRetentionRequest";
+const _GORe = "GetObjectRetention";
+const _GOT = "GetObjectTagging";
+const _GOTO = "GetObjectTaggingOutput";
+const _GOTOe = "GetObjectTorrentOutput";
+const _GOTR = "GetObjectTaggingRequest";
+const _GOTRe = "GetObjectTorrentRequest";
+const _GOTe = "GetObjectTorrent";
+const _GPAB = "GetPublicAccessBlock";
+const _GPABO = "GetPublicAccessBlockOutput";
+const _GPABR = "GetPublicAccessBlockRequest";
 const _GR = "GrantRead";
 const _GRACP = "GrantReadACP";
 const _GW = "GrantWrite";
 const _GWACP = "GrantWriteACP";
-const _Gr = "Grants";
+const _Gr = "Grant";
 const _Gra = "Grantee";
+const _HB = "HeadBucket";
+const _HBO = "HeadBucketOutput";
+const _HBR = "HeadBucketRequest";
 const _HECRE = "HttpErrorCodeReturnedEquals";
 const _HN = "HostName";
+const _HO = "HeadObject";
+const _HOO = "HeadObjectOutput";
+const _HOR = "HeadObjectRequest";
 const _HRC = "HttpRedirectCode";
 const _I = "Id";
 const _IC = "InventoryConfiguration";
 const _ICL = "InventoryConfigurationList";
-const _ICS = "InventoryConfigurationState";
-const _ID = "IndexDocument";
-const _ID_ = "ID";
-const _IDn = "InventoryDestination";
+const _ID = "ID";
+const _IDn = "IndexDocument";
+const _IDnv = "InventoryDestination";
 const _IE = "IsEnabled";
 const _IEn = "InventoryEncryption";
 const _IF = "InventoryFilter";
-const _IFn = "InventoryFormat";
-const _IFnv = "InventoryFrequency";
-const _II = "InventoryId";
-const _IIOV = "InventoryIncludedObjectVersions";
 const _IL = "IsLatest";
 const _IM = "IfMatch";
 const _IMIT = "IfMatchInitiatedTime";
 const _IMLMT = "IfMatchLastModifiedTime";
 const _IMS = "IfMatchSize";
+const _IMS_ = "If-Modified-Since";
 const _IMSf = "IfModifiedSince";
+const _IMUR = "InitiateMultipartUploadResult";
+const _IM_ = "If-Match";
 const _INM = "IfNoneMatch";
-const _IOF = "InventoryOptionalField";
+const _INM_ = "If-None-Match";
+const _IOF = "InventoryOptionalFields";
+const _IOS = "InvalidObjectState";
 const _IOV = "IncludedObjectVersions";
 const _IP = "IsPublic";
 const _IPA = "IgnorePublicAcls";
+const _IPM = "IdempotencyParameterMismatch";
+const _IR = "InvalidRequest";
 const _IRIP = "IsRestoreInProgress";
 const _IS = "InputSerialization";
 const _ISBD = "InventoryS3BucketDestination";
 const _ISn = "InventorySchedule";
 const _IT = "IsTruncated";
 const _ITAO = "IntelligentTieringAndOperator";
-const _ITAT = "IntelligentTieringAccessTier";
 const _ITC = "IntelligentTieringConfiguration";
 const _ITCL = "IntelligentTieringConfigurationList";
 const _ITCR = "InventoryTableConfigurationResult";
 const _ITCU = "InventoryTableConfigurationUpdates";
 const _ITCn = "InventoryTableConfiguration";
-const _ITD = "IntelligentTieringDays";
 const _ITF = "IntelligentTieringFilter";
-const _ITI = "IntelligentTieringId";
-const _ITS = "IntelligentTieringStatus";
 const _IUS = "IfUnmodifiedSince";
+const _IUS_ = "If-Unmodified-Since";
+const _IWO = "InvalidWriteOffset";
 const _In = "Initiator";
 const _Ini = "Initiated";
 const _JSON = "JSON";
 const _JSONI = "JSONInput";
 const _JSONO = "JSONOutput";
-const _JSONT = "JSONType";
 const _JTC = "JournalTableConfiguration";
 const _JTCR = "JournalTableConfigurationResult";
 const _JTCU = "JournalTableConfigurationUpdates";
@@ -12691,29 +5858,73 @@ const _KMSKI = "KMSKeyId";
 const _KMSMKID = "KMSMasterKeyID";
 const _KPE = "KeyPrefixEquals";
 const _L = "Location";
+const _LAMBR = "ListAllMyBucketsResult";
+const _LAMDBR = "ListAllMyDirectoryBucketsResult";
+const _LB = "ListBuckets";
+const _LBAC = "ListBucketAnalyticsConfigurations";
+const _LBACO = "ListBucketAnalyticsConfigurationsOutput";
+const _LBACR = "ListBucketAnalyticsConfigurationResult";
+const _LBACRi = "ListBucketAnalyticsConfigurationsRequest";
+const _LBIC = "ListBucketInventoryConfigurations";
+const _LBICO = "ListBucketInventoryConfigurationsOutput";
+const _LBICR = "ListBucketInventoryConfigurationsRequest";
+const _LBITC = "ListBucketIntelligentTieringConfigurations";
+const _LBITCO = "ListBucketIntelligentTieringConfigurationsOutput";
+const _LBITCR = "ListBucketIntelligentTieringConfigurationsRequest";
+const _LBMC = "ListBucketMetricsConfigurations";
+const _LBMCO = "ListBucketMetricsConfigurationsOutput";
+const _LBMCR = "ListBucketMetricsConfigurationsRequest";
+const _LBO = "ListBucketsOutput";
+const _LBR = "ListBucketsRequest";
+const _LBRi = "ListBucketResult";
 const _LC = "LocationConstraint";
+const _LCi = "LifecycleConfiguration";
+const _LDB = "ListDirectoryBuckets";
+const _LDBO = "ListDirectoryBucketsOutput";
+const _LDBR = "ListDirectoryBucketsRequest";
 const _LE = "LoggingEnabled";
 const _LEi = "LifecycleExpiration";
 const _LFA = "LambdaFunctionArn";
-const _LFC = "LambdaFunctionConfigurations";
-const _LFCa = "LambdaFunctionConfiguration";
+const _LFC = "LambdaFunctionConfiguration";
+const _LFCL = "LambdaFunctionConfigurationList";
+const _LFCa = "LambdaFunctionConfigurations";
+const _LH = "LegalHold";
 const _LI = "LocationInfo";
+const _LICR = "ListInventoryConfigurationsResult";
 const _LM = "LastModified";
+const _LMCR = "ListMetricsConfigurationsResult";
 const _LMT = "LastModifiedTime";
-const _LNAS = "LocationNameAsString";
-const _LP = "LocationPrefix";
+const _LMU = "ListMultipartUploads";
+const _LMUO = "ListMultipartUploadsOutput";
+const _LMUR = "ListMultipartUploadsResult";
+const _LMURi = "ListMultipartUploadsRequest";
+const _LM_ = "Last-Modified";
+const _LO = "ListObjects";
+const _LOO = "ListObjectsOutput";
+const _LOR = "ListObjectsRequest";
+const _LOV = "ListObjectsV2";
+const _LOVO = "ListObjectsV2Output";
+const _LOVOi = "ListObjectVersionsOutput";
+const _LOVR = "ListObjectsV2Request";
+const _LOVRi = "ListObjectVersionsRequest";
+const _LOVi = "ListObjectVersions";
+const _LP = "ListParts";
+const _LPO = "ListPartsOutput";
+const _LPR = "ListPartsResult";
+const _LPRi = "ListPartsRequest";
 const _LR = "LifecycleRule";
 const _LRAO = "LifecycleRuleAndOperator";
 const _LRF = "LifecycleRuleFilter";
-const _LT = "LocationType";
-const _M = "Marker";
+const _LRi = "LifecycleRules";
+const _LVR = "ListVersionsResult";
+const _M = "Metadata";
 const _MAO = "MetricsAndOperator";
 const _MAS = "MaxAgeSeconds";
 const _MB = "MaxBuckets";
-const _MC = "MetricsConfiguration";
+const _MC = "MetadataConfiguration";
 const _MCL = "MetricsConfigurationList";
 const _MCR = "MetadataConfigurationResult";
-const _MCe = "MetadataConfiguration";
+const _MCe = "MetricsConfiguration";
 const _MD = "MetadataDirective";
 const _MDB = "MaxDirectoryBuckets";
 const _MDf = "MfaDelete";
@@ -12721,18 +5932,17 @@ const _ME = "MetadataEntry";
 const _MF = "MetricsFilter";
 const _MFA = "MFA";
 const _MFAD = "MFADelete";
-const _MI = "MetricsId";
 const _MK = "MaxKeys";
-const _MKe = "MetadataKey";
 const _MM = "MissingMeta";
 const _MOS = "MpuObjectSize";
 const _MP = "MaxParts";
-const _MS = "MetricsStatus";
 const _MTC = "MetadataTableConfiguration";
 const _MTCR = "MetadataTableConfigurationResult";
 const _MTEC = "MetadataTableEncryptionConfiguration";
-const _MU = "MaxUploads";
-const _MV = "MetadataValue";
+const _MU = "MultipartUpload";
+const _MUL = "MultipartUploadList";
+const _MUa = "MaxUploads";
+const _Ma = "Marker";
 const _Me = "Metrics";
 const _Mes = "Message";
 const _Mi = "Minutes";
@@ -12742,24 +5952,29 @@ const _NC = "NotificationConfiguration";
 const _NCF = "NotificationConfigurationFilter";
 const _NCT = "NextContinuationToken";
 const _ND = "NoncurrentDays";
-const _NI = "NotificationId";
+const _NF = "NotFound";
 const _NKM = "NextKeyMarker";
 const _NM = "NextMarker";
 const _NNV = "NewerNoncurrentVersions";
 const _NPNM = "NextPartNumberMarker";
+const _NSB = "NoSuchBucket";
+const _NSK = "NoSuchKey";
+const _NSU = "NoSuchUpload";
 const _NUIM = "NextUploadIdMarker";
 const _NVE = "NoncurrentVersionExpiration";
 const _NVIM = "NextVersionIdMarker";
 const _NVT = "NoncurrentVersionTransitions";
+const _NVTL = "NoncurrentVersionTransitionList";
 const _NVTo = "NoncurrentVersionTransition";
 const _O = "Owner";
 const _OA = "ObjectAttributes";
+const _OAIATE = "ObjectAlreadyInActiveTierError";
 const _OC = "OwnershipControls";
-const _OCACL = "ObjectCannedACL";
 const _OCR = "OwnershipControlsRule";
+const _OCRw = "OwnershipControlsRules";
 const _OF = "OptionalFields";
 const _OI = "ObjectIdentifier";
-const _OK = "ObjectKey";
+const _OIL = "ObjectIdentifierList";
 const _OL = "OutputLocation";
 const _OLC = "ObjectLockConfiguration";
 const _OLE = "ObjectLockEnabled";
@@ -12768,46 +5983,113 @@ const _OLLH = "ObjectLockLegalHold";
 const _OLLHS = "ObjectLockLegalHoldStatus";
 const _OLM = "ObjectLockMode";
 const _OLR = "ObjectLockRetention";
-const _OLRM = "ObjectLockRetentionMode";
 const _OLRUD = "ObjectLockRetainUntilDate";
 const _OLRb = "ObjectLockRule";
+const _OLb = "ObjectList";
+const _ONIATE = "ObjectNotInActiveTierError";
 const _OO = "ObjectOwnership";
 const _OOA = "OptionalObjectAttributes";
-const _OOw = "OwnerOverride";
 const _OP = "ObjectParts";
-const _OS = "OutputSerialization";
+const _OPb = "ObjectPart";
+const _OS = "ObjectSize";
 const _OSGT = "ObjectSizeGreaterThan";
-const _OSGTB = "ObjectSizeGreaterThanBytes";
 const _OSLT = "ObjectSizeLessThan";
-const _OSLTB = "ObjectSizeLessThanBytes";
 const _OSV = "OutputSchemaVersion";
-const _OSb = "ObjectSize";
-const _OVI = "ObjectVersionId";
+const _OSu = "OutputSerialization";
+const _OV = "ObjectVersion";
+const _OVL = "ObjectVersionList";
 const _Ob = "Objects";
+const _Obj = "Object";
 const _P = "Prefix";
 const _PABC = "PublicAccessBlockConfiguration";
+const _PBA = "PutBucketAbac";
+const _PBAC = "PutBucketAccelerateConfiguration";
+const _PBACR = "PutBucketAccelerateConfigurationRequest";
+const _PBACRu = "PutBucketAnalyticsConfigurationRequest";
+const _PBACu = "PutBucketAnalyticsConfiguration";
+const _PBAR = "PutBucketAbacRequest";
+const _PBARu = "PutBucketAclRequest";
+const _PBAu = "PutBucketAcl";
+const _PBC = "PutBucketCors";
+const _PBCR = "PutBucketCorsRequest";
+const _PBE = "PutBucketEncryption";
+const _PBER = "PutBucketEncryptionRequest";
+const _PBIC = "PutBucketInventoryConfiguration";
+const _PBICR = "PutBucketInventoryConfigurationRequest";
+const _PBITC = "PutBucketIntelligentTieringConfiguration";
+const _PBITCR = "PutBucketIntelligentTieringConfigurationRequest";
+const _PBL = "PutBucketLogging";
+const _PBLC = "PutBucketLifecycleConfiguration";
+const _PBLCO = "PutBucketLifecycleConfigurationOutput";
+const _PBLCR = "PutBucketLifecycleConfigurationRequest";
+const _PBLR = "PutBucketLoggingRequest";
+const _PBMC = "PutBucketMetricsConfiguration";
+const _PBMCR = "PutBucketMetricsConfigurationRequest";
+const _PBNC = "PutBucketNotificationConfiguration";
+const _PBNCR = "PutBucketNotificationConfigurationRequest";
+const _PBOC = "PutBucketOwnershipControls";
+const _PBOCR = "PutBucketOwnershipControlsRequest";
+const _PBP = "PutBucketPolicy";
+const _PBPR = "PutBucketPolicyRequest";
+const _PBR = "PutBucketReplication";
+const _PBRP = "PutBucketRequestPayment";
+const _PBRPR = "PutBucketRequestPaymentRequest";
+const _PBRR = "PutBucketReplicationRequest";
+const _PBT = "PutBucketTagging";
+const _PBTR = "PutBucketTaggingRequest";
+const _PBV = "PutBucketVersioning";
+const _PBVR = "PutBucketVersioningRequest";
+const _PBW = "PutBucketWebsite";
+const _PBWR = "PutBucketWebsiteRequest";
 const _PC = "PartsCount";
 const _PDS = "PartitionDateSource";
+const _PE = "ProgressEvent";
 const _PI = "ParquetInput";
+const _PL = "PartsList";
 const _PN = "PartNumber";
 const _PNM = "PartNumberMarker";
+const _PO = "PutObject";
+const _POA = "PutObjectAcl";
+const _POAO = "PutObjectAclOutput";
+const _POAR = "PutObjectAclRequest";
+const _POLC = "PutObjectLockConfiguration";
+const _POLCO = "PutObjectLockConfigurationOutput";
+const _POLCR = "PutObjectLockConfigurationRequest";
+const _POLH = "PutObjectLegalHold";
+const _POLHO = "PutObjectLegalHoldOutput";
+const _POLHR = "PutObjectLegalHoldRequest";
+const _POO = "PutObjectOutput";
+const _POR = "PutObjectRequest";
+const _PORO = "PutObjectRetentionOutput";
+const _PORR = "PutObjectRetentionRequest";
+const _PORu = "PutObjectRetention";
+const _POT = "PutObjectTagging";
+const _POTO = "PutObjectTaggingOutput";
+const _POTR = "PutObjectTaggingRequest";
 const _PP = "PartitionedPrefix";
-const _Pa = "Payer";
+const _PPAB = "PutPublicAccessBlock";
+const _PPABR = "PutPublicAccessBlockRequest";
+const _PS = "PolicyStatus";
+const _Pa = "Parts";
 const _Par = "Part";
 const _Parq = "Parquet";
-const _Part = "Parts";
+const _Pay = "Payer";
+const _Payl = "Payload";
 const _Pe = "Permission";
-const _Pr = "Protocol";
+const _Po = "Policy";
+const _Pr = "Progress";
 const _Pri = "Priority";
+const _Pro = "Protocol";
 const _Q = "Quiet";
 const _QA = "QueueArn";
-const _QC = "QueueConfiguration";
+const _QC = "QuoteCharacter";
+const _QCL = "QueueConfigurationList";
 const _QCu = "QueueConfigurations";
-const _QCuo = "QuoteCharacter";
+const _QCue = "QueueConfiguration";
 const _QEC = "QuoteEscapeCharacter";
 const _QF = "QuoteFields";
 const _Qu = "Queue";
-const _R = "Range";
+const _R = "Rules";
 const _RART = "RedirectAllRequestsTo";
 const _RC = "RequestCharged";
 const _RCC = "ResponseCacheControl";
@@ -12818,63 +6100,73 @@ const _RCT = "ResponseContentType";
 const _RCe = "ReplicationConfiguration";
 const _RD = "RecordDelimiter";
 const _RE = "ResponseExpires";
-const _RED = "RecordExpirationDays";
-const _REDe = "RestoreExpiryDate";
+const _RED = "RestoreExpiryDate";
 const _REe = "RecordExpiration";
+const _REec = "RecordsEvent";
 const _RKKID = "ReplicaKmsKeyID";
 const _RKPW = "ReplaceKeyPrefixWith";
 const _RKW = "ReplaceKeyWith";
 const _RM = "ReplicaModifications";
-const _RMS = "ReplicaModificationsStatus";
+const _RO = "RenameObject";
+const _ROO = "RenameObjectOutput";
+const _ROOe = "RestoreObjectOutput";
 const _ROP = "RestoreOutputPath";
+const _ROR = "RenameObjectRequest";
+const _RORe = "RestoreObjectRequest";
+const _ROe = "RestoreObject";
 const _RP = "RequestPayer";
 const _RPB = "RestrictPublicBuckets";
 const _RPC = "RequestPaymentConfiguration";
 const _RPe = "RequestProgress";
-const _RR = "RequestRoute";
+const _RR = "RoutingRules";
 const _RRAO = "ReplicationRuleAndOperator";
 const _RRF = "ReplicationRuleFilter";
-const _RRS = "ReplicationRuleStatus";
-const _RRT = "RestoreRequestType";
 const _RRe = "ReplicationRule";
+const _RRep = "ReplicationRules";
+const _RReq = "RequestRoute";
 const _RRes = "RestoreRequest";
-const _RRo = "RoutingRules";
-const _RRou = "RoutingRule";
-const _RS = "RenameSource";
-const _RSe = "ReplicationStatus";
-const _RSes = "RestoreStatus";
-const _RT = "RequestToken";
-const _RTS = "ReplicationTimeStatus";
+const _RRo = "RoutingRule";
+const _RS = "ReplicationStatus";
+const _RSe = "RestoreStatus";
+const _RSen = "RenameSource";
+const _RT = "ReplicationTime";
 const _RTV = "ReplicationTimeValue";
-const _RTe = "ReplicationTime";
+const _RTe = "RequestToken";
 const _RUD = "RetainUntilDate";
+const _Ra = "Range";
 const _Re = "Restore";
+const _Rec = "Records";
 const _Red = "Redirect";
+const _Ret = "Retention";
 const _Ro = "Role";
 const _Ru = "Rule";
-const _Rul = "Rules";
 const _S = "Status";
 const _SA = "StartAfter";
 const _SAK = "SecretAccessKey";
 const _SAs = "SseAlgorithm";
+const _SB = "StreamingBlob";
 const _SBD = "S3BucketDestination";
 const _SC = "StorageClass";
 const _SCA = "StorageClassAnalysis";
 const _SCADE = "StorageClassAnalysisDataExport";
-const _SCASV = "StorageClassAnalysisSchemaVersion";
+const _SCV = "SessionCredentialValue";
+const _SCe = "SessionCredentials";
 const _SCt = "StatusCode";
 const _SDV = "SkipDestinationValidation";
+const _SE = "StatsEvent";
 const _SIM = "SourceIfMatch";
 const _SIMS = "SourceIfModifiedSince";
 const _SINM = "SourceIfNoneMatch";
 const _SIUS = "SourceIfUnmodifiedSince";
 const _SK = "SSE-KMS";
 const _SKEO = "SseKmsEncryptedObjects";
-const _SKEOS = "SseKmsEncryptedObjectsStatus";
 const _SKF = "S3KeyFilter";
 const _SKe = "S3Key";
 const _SL = "S3Location";
 const _SM = "SessionMode";
+const _SOC = "SelectObjectContent";
+const _SOCES = "SelectObjectContentEventStream";
+const _SOCO = "SelectObjectContentOutput";
 const _SOCR = "SelectObjectContentRequest";
 const _SP = "SelectParameters";
 const _SPi = "SimplePrefix";
@@ -12892,42 +6184,43 @@ const _SSEKMS = "SSEKMS";
 const _SSEKMSEC = "SSEKMSEncryptionContext";
 const _SSEKMSKI = "SSEKMSKeyId";
 const _SSER = "ServerSideEncryptionRule";
+const _SSERe = "ServerSideEncryptionRules";
 const _SSES = "SSES3";
 const _ST = "SessionToken";
-const _STBA = "S3TablesBucketArn";
 const _STD = "S3TablesDestination";
 const _STDR = "S3TablesDestinationResult";
-const _STN = "S3TablesName";
 const _S_ = "S3";
 const _Sc = "Schedule";
-const _Se = "Setting";
 const _Si = "Size";
 const _St = "Start";
+const _Sta = "Stats";
 const _Su = "Suffix";
-const _T = "Tagging";
-const _TA = "TopicArn";
-const _TAa = "TableArn";
+const _T = "Tags";
+const _TA = "TableArn";
+const _TAo = "TopicArn";
 const _TB = "TargetBucket";
 const _TBA = "TableBucketArn";
 const _TBT = "TableBucketType";
 const _TC = "TagCount";
-const _TCo = "TopicConfiguration";
-const _TCop = "TopicConfigurations";
+const _TCL = "TopicConfigurationList";
+const _TCo = "TopicConfigurations";
+const _TCop = "TopicConfiguration";
 const _TD = "TaggingDirective";
 const _TDMOS = "TransitionDefaultMinimumObjectSize";
 const _TG = "TargetGrants";
 const _TGa = "TargetGrant";
-const _TN = "TableName";
-const _TNa = "TableNamespace";
+const _TL = "TieringList";
+const _TLr = "TransitionList";
+const _TMP = "TooManyParts";
+const _TN = "TableNamespace";
+const _TNa = "TableName";
 const _TOKF = "TargetObjectKeyFormat";
 const _TP = "TargetPrefix";
 const _TPC = "TotalPartsCount";
 const _TS = "TagSet";
-const _TSA = "TableSseAlgorithm";
-const _TSC = "TransitionStorageClass";
 const _TSa = "TableStatus";
 const _Ta = "Tag";
-const _Tag = "Tags";
+const _Tag = "Tagging";
 const _Ti = "Tier";
 const _Tie = "Tierings";
 const _Tier = "Tiering";
@@ -12937,110 +6230,83 @@ const _Top = "Topic";
 const _Tr = "Transitions";
 const _Tra = "Transition";
 const _Ty = "Type";
-const _U = "Upload";
+const _U = "Uploads";
+const _UBMITC = "UpdateBucketMetadataInventoryTableConfiguration";
+const _UBMITCR = "UpdateBucketMetadataInventoryTableConfigurationRequest";
+const _UBMJTC = "UpdateBucketMetadataJournalTableConfiguration";
+const _UBMJTCR = "UpdateBucketMetadataJournalTableConfigurationRequest";
 const _UI = "UploadId";
 const _UIM = "UploadIdMarker";
 const _UM = "UserMetadata";
+const _UP = "UploadPart";
+const _UPC = "UploadPartCopy";
+const _UPCO = "UploadPartCopyOutput";
+const _UPCR = "UploadPartCopyRequest";
+const _UPO = "UploadPartOutput";
+const _UPR = "UploadPartRequest";
 const _URI = "URI";
-const _Up = "Uploads";
-const _V = "Version";
-const _VC = "VersionCount";
-const _VCe = "VersioningConfiguration";
+const _Up = "Upload";
+const _V = "Value";
+const _VC = "VersioningConfiguration";
 const _VI = "VersionId";
 const _VIM = "VersionIdMarker";
-const _Va = "Value";
 const _Ve = "Versions";
+const _Ver = "Version";
 const _WC = "WebsiteConfiguration";
+const _WGOR = "WriteGetObjectResponse";
+const _WGORR = "WriteGetObjectResponseRequest";
 const _WOB = "WriteOffsetBytes";
 const _WRL = "WebsiteRedirectLocation";
 const _Y = "Years";
-const _a = "analytics";
-const _ac = "accelerate";
-const _acl = "acl";
 const _ar = "accept-ranges";
-const _at = "attributes";
 const _br = "bucket-region";
-const _c = "cors";
-const _cc = "cache-control";
-const _cd = "content-disposition";
-const _ce = "content-encoding";
-const _cl = "content-language";
-const _cl_ = "content-length";
-const _cm = "content-md5";
-const _cr = "content-range";
-const _ct = "content-type";
-const _ct_ = "continuation-token";
-const _d = "delete";
-const _de = "delimiter";
-const _e = "expires";
-const _en = "encryption";
+const _c = "client";
+const _ct = "continuation-token";
+const _d = "delimiter";
+const _e = "error";
+const _eP = "eventPayload";
+const _en = "endpoint";
 const _et = "encoding-type";
-const _eta = "etag";
-const _ex = "expiresstring";
 const _fo = "fetch-owner";
+const _h = "http";
+const _hC = "httpChecksum";
+const _hE = "httpError";
+const _hH = "httpHeader";
+const _hL = "hostLabel";
+const _hP = "httpPayload";
+const _hPH = "httpPrefixHeaders";
+const _hQ = "httpQuery";
+const _hi = "http://www.w3.org/2001/XMLSchema-instance";
 const _i = "id";
-const _im = "if-match";
-const _ims = "if-modified-since";
-const _in = "inventory";
-const _inm = "if-none-match";
-const _it = "intelligent-tiering";
-const _ius = "if-unmodified-since";
+const _iT = "idempotencyToken";
 const _km = "key-marker";
-const _l = "lifecycle";
-const _lh = "legal-hold";
-const _lm = "last-modified";
-const _lo = "location";
-const _log = "logging";
-const _lt = "list-type";
-const _m = "metrics";
-const _mC = "metadataConfiguration";
-const _mIT = "metadataInventoryTable";
-const _mJT = "metadataJournalTable";
-const _mT = "metadataTable";
-const _ma = "marker";
+const _m = "marker";
 const _mb = "max-buckets";
 const _mdb = "max-directory-buckets";
-const _me = "member";
 const _mk = "max-keys";
 const _mp = "max-parts";
 const _mu = "max-uploads";
-const _n = "notification";
-const _oC = "ownershipControls";
-const _ol = "object-lock";
-const _p = "policy";
-const _pAB = "publicAccessBlock";
+const _p = "prefix";
 const _pN = "partNumber";
-const _pS = "policyStatus";
 const _pnm = "part-number-marker";
-const _pr = "prefix";
-const _r = "replication";
-const _rO = "renameObject";
-const _rP = "requestPayment";
-const _ra = "range";
 const _rcc = "response-cache-control";
 const _rcd = "response-content-disposition";
 const _rce = "response-content-encoding";
 const _rcl = "response-content-language";
 const _rct = "response-content-type";
 const _re = "response-expires";
-const _res = "restore";
-const _ret = "retention";
-const _s = "session";
+const _s = "streaming";
 const _sa = "start-after";
-const _se = "select";
-const _st = "select-type";
-const _t = "tagging";
-const _to = "torrent";
-const _u = "uploads";
+const _sm = "smithy.ts.sdk.synthetic.com.amazonaws.s3";
 const _uI = "uploadId";
 const _uim = "upload-id-marker";
-const _v = "versioning";
 const _vI = "versionId";
-const _ve = '<?xml version="1.0" encoding="UTF-8"?>';
-const _ver = "versions";
 const _vim = "version-id-marker";
-const _w = "website";
-const _x = "xsi:type";
+const _x = "xsi";
+const _xA = "xmlAttribute";
+const _xF = "xmlFlattened";
+const _xN = "xmlName";
+const _xNm = "xmlNamespace";
 const _xaa = "x-amz-acl";
 const _xaad = "x-amz-abort-date";
 const _xaapa = "x-amz-access-point-alias";
@@ -13070,7 +6336,7 @@ const _xacsm = "x-amz-create-session-mode";
 const _xacsr = "x-amz-copy-source-range";
 const _xacssseca = "x-amz-copy-source-server-side-encryption-customer-algorithm";
 const _xacssseck = "x-amz-copy-source-server-side-encryption-customer-key";
-const _xacssseckm = "x-amz-copy-source-server-side-encryption-customer-key-md5";
+const _xacssseckM = "x-amz-copy-source-server-side-encryption-customer-key-MD5";
 const _xacsvi = "x-amz-copy-source-version-id";
 const _xact = "x-amz-checksum-type";
 const _xact_ = "x-amz-client-token";
@@ -13079,16 +6345,16 @@ const _xae = "x-amz-expiration";
 const _xaebo = "x-amz-expected-bucket-owner";
 const _xafec = "x-amz-fwd-error-code";
 const _xafem = "x-amz-fwd-error-message";
+const _xafhCC = "x-amz-fwd-header-Cache-Control";
+const _xafhCD = "x-amz-fwd-header-Content-Disposition";
+const _xafhCE = "x-amz-fwd-header-Content-Encoding";
+const _xafhCL = "x-amz-fwd-header-Content-Language";
+const _xafhCR = "x-amz-fwd-header-Content-Range";
+const _xafhCT = "x-amz-fwd-header-Content-Type";
+const _xafhE = "x-amz-fwd-header-ETag";
+const _xafhE_ = "x-amz-fwd-header-Expires";
+const _xafhLM = "x-amz-fwd-header-Last-Modified";
 const _xafhar = "x-amz-fwd-header-accept-ranges";
-const _xafhcc = "x-amz-fwd-header-cache-control";
-const _xafhcd = "x-amz-fwd-header-content-disposition";
-const _xafhce = "x-amz-fwd-header-content-encoding";
-const _xafhcl = "x-amz-fwd-header-content-language";
-const _xafhcr = "x-amz-fwd-header-content-range";
-const _xafhct = "x-amz-fwd-header-content-type";
-const _xafhe = "x-amz-fwd-header-etag";
-const _xafhe_ = "x-amz-fwd-header-expires";
-const _xafhlm = "x-amz-fwd-header-last-modified";
 const _xafhxacc = "x-amz-fwd-header-x-amz-checksum-crc32";
 const _xafhxacc_ = "x-amz-fwd-header-x-amz-checksum-crc32c";
 const _xafhxacc__ = "x-amz-fwd-header-x-amz-checksum-crc64nvme";
@@ -13109,7 +6375,7 @@ const _xafhxasse = "x-amz-fwd-header-x-amz-server-side-encryption";
 const _xafhxasseakki = "x-amz-fwd-header-x-amz-server-side-encryption-aws-kms-key-id";
 const _xafhxassebke = "x-amz-fwd-header-x-amz-server-side-encryption-bucket-key-enabled";
 const _xafhxasseca = "x-amz-fwd-header-x-amz-server-side-encryption-customer-algorithm";
-const _xafhxasseckm = "x-amz-fwd-header-x-amz-server-side-encryption-customer-key-md5";
+const _xafhxasseckM = "x-amz-fwd-header-x-amz-server-side-encryption-customer-key-MD5";
 const _xafhxatc = "x-amz-fwd-header-x-amz-tagging-count";
 const _xafhxavi = "x-amz-fwd-header-x-amz-version-id";
 const _xafs = "x-amz-fwd-status";
@@ -13121,7 +6387,8 @@ const _xagwa = "x-amz-grant-write-acp";
 const _xaimit = "x-amz-if-match-initiated-time";
 const _xaimlmt = "x-amz-if-match-last-modified-time";
 const _xaims = "x-amz-if-match-size";
-const _xam = "x-amz-mfa";
+const _xam = "x-amz-meta-";
+const _xam_ = "x-amz-mfa";
 const _xamd = "x-amz-metadata-directive";
 const _xamm = "x-amz-missing-meta";
 const _xamos = "x-amz-mp-object-size";
@@ -13140,8 +6407,8 @@ const _xarc = "x-amz-request-charged";
 const _xarop = "x-amz-restore-output-path";
 const _xarp = "x-amz-request-payer";
 const _xarr = "x-amz-request-route";
-const _xars = "x-amz-rename-source";
-const _xars_ = "x-amz-replication-status";
+const _xars = "x-amz-replication-status";
+const _xars_ = "x-amz-rename-source";
 const _xarsim = "x-amz-rename-source-if-match";
 const _xarsims = "x-amz-rename-source-if-modified-since";
 const _xarsinm = "x-amz-rename-source-if-none-match";
@@ -13157,7 +6424,7 @@ const _xassebke = "x-amz-server-side-encryption-bucket-key-enabled";
 const _xassec = "x-amz-server-side-encryption-context";
 const _xasseca = "x-amz-server-side-encryption-customer-algorithm";
 const _xasseck = "x-amz-server-side-encryption-customer-key";
-const _xasseckm = "x-amz-server-side-encryption-customer-key-md5";
+const _xasseckM = "x-amz-server-side-encryption-customer-key-MD5";
 const _xat = "x-amz-tagging";
 const _xatc = "x-amz-tagging-count";
 const _xatd = "x-amz-tagging-directive";
@@ -13165,7 +6432,2190 @@ const _xatdmos = "x-amz-transition-default-minimum-object-size";
 const _xavi = "x-amz-version-id";
 const _xawob = "x-amz-write-offset-bytes";
 const _xawrl = "x-amz-website-redirect-location";
-const _xi = "x-id";
+const _xs = "xsi:type";
+const n0 = "com.amazonaws.s3";
+var CopySourceSSECustomerKey = [0, n0, _CSSSECK, 8, 0];
+var SessionCredentialValue = [0, n0, _SCV, 8, 0];
+var SSECustomerKey = [0, n0, _SSECK, 8, 0];
+var SSEKMSEncryptionContext = [0, n0, _SSEKMSEC, 8, 0];
+var SSEKMSKeyId = [0, n0, _SSEKMSKI, 8, 0];
+var StreamingBlob = [0, n0, _SB, { [_s]: 1 }, 42];
+var AbacStatus$ = [3, n0, _AS,
+    0,
+    [_S],
+    [0]
+];
+var AbortIncompleteMultipartUpload$ = [3, n0, _AIMU,
+    0,
+    [_DAI],
+    [1]
+];
+var AbortMultipartUploadOutput$ = [3, n0, _AMUO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var AbortMultipartUploadRequest$ = [3, n0, _AMUR,
+    0,
+    [_B, _K, _UI, _RP, _EBO, _IMIT],
+    [[0, 1], [0, 1], [0, { [_hQ]: _uI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [6, { [_hH]: _xaimit }]]
+];
+var AccelerateConfiguration$ = [3, n0, _AC,
+    0,
+    [_S],
+    [0]
+];
+var AccessControlPolicy$ = [3, n0, _ACP,
+    0,
+    [_G, _O],
+    [[() => Grants, { [_xN]: _ACL }], () => Owner$]
+];
+var AccessControlTranslation$ = [3, n0, _ACT,
+    0,
+    [_O],
+    [0]
+];
+var AnalyticsAndOperator$ = [3, n0, _AAO,
+    0,
+    [_P, _T],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
+];
+var AnalyticsConfiguration$ = [3, n0, _ACn,
+    0,
+    [_I, _F, _SCA],
+    [0, [() => AnalyticsFilter$, 0], () => StorageClassAnalysis$]
+];
+var AnalyticsExportDestination$ = [3, n0, _AED,
+    0,
+    [_SBD],
+    [() => AnalyticsS3BucketDestination$]
+];
+var AnalyticsS3BucketDestination$ = [3, n0, _ASBD,
+    0,
+    [_Fo, _BAI, _B, _P],
+    [0, 0, 0, 0]
+];
+var BlockedEncryptionTypes$ = [3, n0, _BET,
+    0,
+    [_ET],
+    [[() => EncryptionTypeList, { [_xF]: 1 }]]
+];
+var Bucket$ = [3, n0, _B,
+    0,
+    [_N, _CD, _BR, _BA],
+    [0, 4, 0, 0]
+];
+var BucketAlreadyExists$ = [-3, n0, _BAE,
+    { [_e]: _c, [_hE]: 409 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(BucketAlreadyExists$, BucketAlreadyExists);
+var BucketAlreadyOwnedByYou$ = [-3, n0, _BAOBY,
+    { [_e]: _c, [_hE]: 409 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(BucketAlreadyOwnedByYou$, BucketAlreadyOwnedByYou);
+var BucketInfo$ = [3, n0, _BI,
+    0,
+    [_DR, _Ty],
+    [0, 0]
+];
+var BucketLifecycleConfiguration$ = [3, n0, _BLC,
+    0,
+    [_R],
+    [[() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var BucketLoggingStatus$ = [3, n0, _BLS,
+    0,
+    [_LE],
+    [[() => LoggingEnabled$, 0]]
+];
+var Checksum$ = [3, n0, _C,
+    0,
+    [_CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT],
+    [0, 0, 0, 0, 0, 0]
+];
+var CommonPrefix$ = [3, n0, _CP,
+    0,
+    [_P],
+    [0]
+];
+var CompletedMultipartUpload$ = [3, n0, _CMU,
+    0,
+    [_Pa],
+    [[() => CompletedPartList, { [_xF]: 1, [_xN]: _Par }]]
+];
+var CompletedPart$ = [3, n0, _CPo,
+    0,
+    [_ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _PN],
+    [0, 0, 0, 0, 0, 0, 1]
+];
+var CompleteMultipartUploadOutput$ = [3, n0, _CMUO,
+    { [_xN]: _CMUR },
+    [_L, _B, _K, _E, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _SSE, _VI, _SSEKMSKI, _BKE, _RC],
+    [0, 0, 0, [0, { [_hH]: _xae }], 0, 0, 0, 0, 0, 0, 0, [0, { [_hH]: _xasse }], [0, { [_hH]: _xavi }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var CompleteMultipartUploadRequest$ = [3, n0, _CMURo,
+    0,
+    [_B, _K, _MU, _UI, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _MOS, _RP, _EBO, _IM, _INM, _SSECA, _SSECK, _SSECKMD],
+    [[0, 1], [0, 1], [() => CompletedMultipartUpload$, { [_hP]: 1, [_xN]: _CMUo }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [1, { [_hH]: _xamos }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }]]
+];
+var Condition$ = [3, n0, _Co,
+    0,
+    [_HECRE, _KPE],
+    [0, 0]
+];
+var ContinuationEvent$ = [3, n0, _CE,
+    0,
+    [],
+    []
+];
+var CopyObjectOutput$ = [3, n0, _COO,
+    0,
+    [_COR, _E, _CSVI, _VI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC],
+    [[() => CopyObjectResult$, 16], [0, { [_hH]: _xae }], [0, { [_hH]: _xacsvi }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var CopyObjectRequest$ = [3, n0, _CORo,
+    0,
+    [_ACL_, _B, _CC, _CA, _CDo, _CEo, _CL, _CTo, _CS, _CSIM, _CSIMS, _CSINM, _CSIUS, _Ex, _GFC, _GR, _GRACP, _GWACP, _IM, _INM, _K, _M, _MD, _TD, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _CSSSECA, _CSSSECK, _CSSSECKMD, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO, _ESBO],
+    [[0, { [_hH]: _xaa }], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _xaca }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _xacs__ }], [0, { [_hH]: _xacsim }], [4, { [_hH]: _xacsims }], [0, { [_hH]: _xacsinm }], [4, { [_hH]: _xacsius }], [4, { [_hH]: _Ex }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, 1], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xamd }], [0, { [_hH]: _xatd }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xacssseca }], [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }], [0, { [_hH]: _xacssseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasebo }]]
+];
+var CopyObjectResult$ = [3, n0, _COR,
+    0,
+    [_ETa, _LM, _CT, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [0, 4, 0, 0, 0, 0, 0, 0]
+];
+var CopyPartResult$ = [3, n0, _CPR,
+    0,
+    [_ETa, _LM, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [0, 4, 0, 0, 0, 0, 0]
+];
+var CORSConfiguration$ = [3, n0, _CORSC,
+    0,
+    [_CORSR],
+    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]]
+];
+var CORSRule$ = [3, n0, _CORSRu,
+    0,
+    [_ID, _AH, _AM, _AO, _EH, _MAS],
+    [0, [64 | 0, { [_xF]: 1, [_xN]: _AHl }], [64 | 0, { [_xF]: 1, [_xN]: _AMl }], [64 | 0, { [_xF]: 1, [_xN]: _AOl }], [64 | 0, { [_xF]: 1, [_xN]: _EHx }], 1]
+];
+var CreateBucketConfiguration$ = [3, n0, _CBC,
+    0,
+    [_LC, _L, _B, _T],
+    [0, () => LocationInfo$, () => BucketInfo$, [() => TagSet, 0]]
+];
+var CreateBucketMetadataConfigurationRequest$ = [3, n0, _CBMCR,
+    0,
+    [_B, _CMD, _CA, _MC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => MetadataConfiguration$, { [_hP]: 1, [_xN]: _MC }], [0, { [_hH]: _xaebo }]]
+];
+var CreateBucketMetadataTableConfigurationRequest$ = [3, n0, _CBMTCR,
+    0,
+    [_B, _CMD, _CA, _MTC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => MetadataTableConfiguration$, { [_hP]: 1, [_xN]: _MTC }], [0, { [_hH]: _xaebo }]]
+];
+var CreateBucketOutput$ = [3, n0, _CBO,
+    0,
+    [_L, _BA],
+    [[0, { [_hH]: _L }], [0, { [_hH]: _xaba }]]
+];
+var CreateBucketRequest$ = [3, n0, _CBR,
+    0,
+    [_ACL_, _B, _CBC, _GFC, _GR, _GRACP, _GW, _GWACP, _OLEFB, _OO],
+    [[0, { [_hH]: _xaa }], [0, 1], [() => CreateBucketConfiguration$, { [_hP]: 1, [_xN]: _CBC }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [2, { [_hH]: _xabole }], [0, { [_hH]: _xaoo }]]
+];
+var CreateMultipartUploadOutput$ = [3, n0, _CMUOr,
+    { [_xN]: _IMUR },
+    [_AD, _ARI, _B, _K, _UI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC, _CA, _CT],
+    [[4, { [_hH]: _xaad }], [0, { [_hH]: _xaari }], [0, { [_xN]: _B }], 0, 0, [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xaca }], [0, { [_hH]: _xact }]]
+];
+var CreateMultipartUploadRequest$ = [3, n0, _CMURr,
+    0,
+    [_ACL_, _B, _CC, _CDo, _CEo, _CL, _CTo, _Ex, _GFC, _GR, _GRACP, _GWACP, _K, _M, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO, _CA, _CT],
+    [[0, { [_hH]: _xaa }], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, 1], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xaca }], [0, { [_hH]: _xact }]]
+];
+var CreateSessionOutput$ = [3, n0, _CSO,
+    { [_xN]: _CSR },
+    [_SSE, _SSEKMSKI, _SSEKMSEC, _BKE, _Cr],
+    [[0, { [_hH]: _xasse }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [() => SessionCredentials$, { [_xN]: _Cr }]]
+];
+var CreateSessionRequest$ = [3, n0, _CSRr,
+    0,
+    [_SM, _B, _SSE, _SSEKMSKI, _SSEKMSEC, _BKE],
+    [[0, { [_hH]: _xacsm }], [0, 1], [0, { [_hH]: _xasse }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }]]
+];
+var CSVInput$ = [3, n0, _CSVIn,
+    0,
+    [_FHI, _Com, _QEC, _RD, _FD, _QC, _AQRD],
+    [0, 0, 0, 0, 0, 0, 2]
+];
+var CSVOutput$ = [3, n0, _CSVO,
+    0,
+    [_QF, _QEC, _RD, _FD, _QC],
+    [0, 0, 0, 0, 0]
+];
+var DefaultRetention$ = [3, n0, _DRe,
+    0,
+    [_Mo, _D, _Y],
+    [0, 1, 1]
+];
+var Delete$ = [3, n0, _De,
+    0,
+    [_Ob, _Q],
+    [[() => ObjectIdentifierList, { [_xF]: 1, [_xN]: _Obj }], 2]
+];
+var DeleteBucketAnalyticsConfigurationRequest$ = [3, n0, _DBACR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketCorsRequest$ = [3, n0, _DBCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketEncryptionRequest$ = [3, n0, _DBER,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketIntelligentTieringConfigurationRequest$ = [3, n0, _DBITCR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketInventoryConfigurationRequest$ = [3, n0, _DBICR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketLifecycleRequest$ = [3, n0, _DBLR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetadataConfigurationRequest$ = [3, n0, _DBMCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetadataTableConfigurationRequest$ = [3, n0, _DBMTCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetricsConfigurationRequest$ = [3, n0, _DBMCRe,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketOwnershipControlsRequest$ = [3, n0, _DBOCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketPolicyRequest$ = [3, n0, _DBPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketReplicationRequest$ = [3, n0, _DBRR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketRequest$ = [3, n0, _DBR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketTaggingRequest$ = [3, n0, _DBTR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketWebsiteRequest$ = [3, n0, _DBWR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeletedObject$ = [3, n0, _DO,
+    0,
+    [_K, _VI, _DM, _DMVI],
+    [0, 0, 2, 0]
+];
+var DeleteMarkerEntry$ = [3, n0, _DME,
+    0,
+    [_O, _K, _VI, _IL, _LM],
+    [() => Owner$, 0, 0, 2, 4]
+];
+var DeleteMarkerReplication$ = [3, n0, _DMR,
+    0,
+    [_S],
+    [0]
+];
+var DeleteObjectOutput$ = [3, n0, _DOO,
+    0,
+    [_DM, _VI, _RC],
+    [[2, { [_hH]: _xadm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xarc }]]
+];
+var DeleteObjectRequest$ = [3, n0, _DOR,
+    0,
+    [_B, _K, _MFA, _VI, _RP, _BGR, _EBO, _IM, _IMLMT, _IMS],
+    [[0, 1], [0, 1], [0, { [_hH]: _xam_ }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _IM_ }], [6, { [_hH]: _xaimlmt }], [1, { [_hH]: _xaims }]]
+];
+var DeleteObjectsOutput$ = [3, n0, _DOOe,
+    { [_xN]: _DRel },
+    [_Del, _RC, _Er],
+    [[() => DeletedObjects, { [_xF]: 1 }], [0, { [_hH]: _xarc }], [() => Errors, { [_xF]: 1, [_xN]: _Err }]]
+];
+var DeleteObjectsRequest$ = [3, n0, _DORe,
+    0,
+    [_B, _De, _MFA, _RP, _BGR, _EBO, _CA],
+    [[0, 1], [() => Delete$, { [_hP]: 1, [_xN]: _De }], [0, { [_hH]: _xam_ }], [0, { [_hH]: _xarp }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasca }]]
+];
+var DeleteObjectTaggingOutput$ = [3, n0, _DOTO,
+    0,
+    [_VI],
+    [[0, { [_hH]: _xavi }]]
+];
+var DeleteObjectTaggingRequest$ = [3, n0, _DOTR,
+    0,
+    [_B, _K, _VI, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }]]
+];
+var DeletePublicAccessBlockRequest$ = [3, n0, _DPABR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var Destination$ = [3, n0, _Des,
+    0,
+    [_B, _A, _SC, _ACT, _EC, _RT, _Me],
+    [0, 0, 0, () => AccessControlTranslation$, () => EncryptionConfiguration$, () => ReplicationTime$, () => Metrics$]
+];
+var DestinationResult$ = [3, n0, _DRes,
+    0,
+    [_TBT, _TBA, _TN],
+    [0, 0, 0]
+];
+var Encryption$ = [3, n0, _En,
+    0,
+    [_ET, _KMSKI, _KMSC],
+    [0, [() => SSEKMSKeyId, 0], 0]
+];
+var EncryptionConfiguration$ = [3, n0, _EC,
+    0,
+    [_RKKID],
+    [0]
+];
+var EncryptionTypeMismatch$ = [-3, n0, _ETM,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(EncryptionTypeMismatch$, EncryptionTypeMismatch);
+var EndEvent$ = [3, n0, _EE,
+    0,
+    [],
+    []
+];
+var _Error$ = [3, n0, _Err,
+    0,
+    [_K, _VI, _Cod, _Mes],
+    [0, 0, 0, 0]
+];
+var ErrorDetails$ = [3, n0, _ED,
+    0,
+    [_ECr, _EM],
+    [0, 0]
+];
+var ErrorDocument$ = [3, n0, _EDr,
+    0,
+    [_K],
+    [0]
+];
+var EventBridgeConfiguration$ = [3, n0, _EBC,
+    0,
+    [],
+    []
+];
+var ExistingObjectReplication$ = [3, n0, _EOR,
+    0,
+    [_S],
+    [0]
+];
+var FilterRule$ = [3, n0, _FR,
+    0,
+    [_N, _V],
+    [0, 0]
+];
+var GetBucketAbacOutput$ = [3, n0, _GBAO,
+    0,
+    [_AS],
+    [[() => AbacStatus$, 16]]
+];
+var GetBucketAbacRequest$ = [3, n0, _GBAR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketAccelerateConfigurationOutput$ = [3, n0, _GBACO,
+    { [_xN]: _AC },
+    [_S, _RC],
+    [0, [0, { [_hH]: _xarc }]]
+];
+var GetBucketAccelerateConfigurationRequest$ = [3, n0, _GBACR,
+    0,
+    [_B, _EBO, _RP],
+    [[0, 1], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var GetBucketAclOutput$ = [3, n0, _GBAOe,
+    { [_xN]: _ACP },
+    [_O, _G],
+    [() => Owner$, [() => Grants, { [_xN]: _ACL }]]
+];
+var GetBucketAclRequest$ = [3, n0, _GBARe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketAnalyticsConfigurationOutput$ = [3, n0, _GBACOe,
+    0,
+    [_ACn],
+    [[() => AnalyticsConfiguration$, 16]]
+];
+var GetBucketAnalyticsConfigurationRequest$ = [3, n0, _GBACRe,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketCorsOutput$ = [3, n0, _GBCO,
+    { [_xN]: _CORSC },
+    [_CORSR],
+    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]]
+];
+var GetBucketCorsRequest$ = [3, n0, _GBCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketEncryptionOutput$ = [3, n0, _GBEO,
+    0,
+    [_SSEC],
+    [[() => ServerSideEncryptionConfiguration$, 16]]
+];
+var GetBucketEncryptionRequest$ = [3, n0, _GBER,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketIntelligentTieringConfigurationOutput$ = [3, n0, _GBITCO,
+    0,
+    [_ITC],
+    [[() => IntelligentTieringConfiguration$, 16]]
+];
+var GetBucketIntelligentTieringConfigurationRequest$ = [3, n0, _GBITCR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketInventoryConfigurationOutput$ = [3, n0, _GBICO,
+    0,
+    [_IC],
+    [[() => InventoryConfiguration$, 16]]
+];
+var GetBucketInventoryConfigurationRequest$ = [3, n0, _GBICR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLifecycleConfigurationOutput$ = [3, n0, _GBLCO,
+    { [_xN]: _LCi },
+    [_R, _TDMOS],
+    [[() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }], [0, { [_hH]: _xatdmos }]]
+];
+var GetBucketLifecycleConfigurationRequest$ = [3, n0, _GBLCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLocationOutput$ = [3, n0, _GBLO,
+    { [_xN]: _LC },
+    [_LC],
+    [0]
+];
+var GetBucketLocationRequest$ = [3, n0, _GBLR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLoggingOutput$ = [3, n0, _GBLOe,
+    { [_xN]: _BLS },
+    [_LE],
+    [[() => LoggingEnabled$, 0]]
+];
+var GetBucketLoggingRequest$ = [3, n0, _GBLRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataConfigurationOutput$ = [3, n0, _GBMCO,
+    0,
+    [_GBMCR],
+    [[() => GetBucketMetadataConfigurationResult$, 16]]
+];
+var GetBucketMetadataConfigurationRequest$ = [3, n0, _GBMCRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataConfigurationResult$ = [3, n0, _GBMCR,
+    0,
+    [_MCR],
+    [() => MetadataConfigurationResult$]
+];
+var GetBucketMetadataTableConfigurationOutput$ = [3, n0, _GBMTCO,
+    0,
+    [_GBMTCR],
+    [[() => GetBucketMetadataTableConfigurationResult$, 16]]
+];
+var GetBucketMetadataTableConfigurationRequest$ = [3, n0, _GBMTCRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataTableConfigurationResult$ = [3, n0, _GBMTCR,
+    0,
+    [_MTCR, _S, _Err],
+    [() => MetadataTableConfigurationResult$, 0, () => ErrorDetails$]
+];
+var GetBucketMetricsConfigurationOutput$ = [3, n0, _GBMCOe,
+    0,
+    [_MCe],
+    [[() => MetricsConfiguration$, 16]]
+];
+var GetBucketMetricsConfigurationRequest$ = [3, n0, _GBMCRet,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketNotificationConfigurationRequest$ = [3, n0, _GBNCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketOwnershipControlsOutput$ = [3, n0, _GBOCO,
+    0,
+    [_OC],
+    [[() => OwnershipControls$, 16]]
+];
+var GetBucketOwnershipControlsRequest$ = [3, n0, _GBOCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketPolicyOutput$ = [3, n0, _GBPO,
+    0,
+    [_Po],
+    [[0, 16]]
+];
+var GetBucketPolicyRequest$ = [3, n0, _GBPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketPolicyStatusOutput$ = [3, n0, _GBPSO,
+    0,
+    [_PS],
+    [[() => PolicyStatus$, 16]]
+];
+var GetBucketPolicyStatusRequest$ = [3, n0, _GBPSR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketReplicationOutput$ = [3, n0, _GBRO,
+    0,
+    [_RCe],
+    [[() => ReplicationConfiguration$, 16]]
+];
+var GetBucketReplicationRequest$ = [3, n0, _GBRR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketRequestPaymentOutput$ = [3, n0, _GBRPO,
+    { [_xN]: _RPC },
+    [_Pay],
+    [0]
+];
+var GetBucketRequestPaymentRequest$ = [3, n0, _GBRPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketTaggingOutput$ = [3, n0, _GBTO,
+    { [_xN]: _Tag },
+    [_TS],
+    [[() => TagSet, 0]]
+];
+var GetBucketTaggingRequest$ = [3, n0, _GBTR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketVersioningOutput$ = [3, n0, _GBVO,
+    { [_xN]: _VC },
+    [_S, _MFAD],
+    [0, [0, { [_xN]: _MDf }]]
+];
+var GetBucketVersioningRequest$ = [3, n0, _GBVR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketWebsiteOutput$ = [3, n0, _GBWO,
+    { [_xN]: _WC },
+    [_RART, _IDn, _EDr, _RR],
+    [() => RedirectAllRequestsTo$, () => IndexDocument$, () => ErrorDocument$, [() => RoutingRules, 0]]
+];
+var GetBucketWebsiteRequest$ = [3, n0, _GBWR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectAclOutput$ = [3, n0, _GOAO,
+    { [_xN]: _ACP },
+    [_O, _G, _RC],
+    [() => Owner$, [() => Grants, { [_xN]: _ACL }], [0, { [_hH]: _xarc }]]
+];
+var GetObjectAclRequest$ = [3, n0, _GOAR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectAttributesOutput$ = [3, n0, _GOAOe,
+    { [_xN]: _GOARe },
+    [_DM, _LM, _VI, _RC, _ETa, _C, _OP, _SC, _OS],
+    [[2, { [_hH]: _xadm }], [4, { [_hH]: _LM_ }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xarc }], 0, () => Checksum$, [() => GetObjectAttributesParts$, 0], 0, 1]
+];
+var GetObjectAttributesParts$ = [3, n0, _GOAP,
+    0,
+    [_TPC, _PNM, _NPNM, _MP, _IT, _Pa],
+    [[1, { [_xN]: _PC }], 0, 0, 1, 2, [() => PartsList, { [_xF]: 1, [_xN]: _Par }]]
+];
+var GetObjectAttributesRequest$ = [3, n0, _GOARet,
+    0,
+    [_B, _K, _VI, _MP, _PNM, _SSECA, _SSECK, _SSECKMD, _RP, _EBO, _OA],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [1, { [_hH]: _xamp }], [0, { [_hH]: _xapnm }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaoa }]]
+];
+var GetObjectLegalHoldOutput$ = [3, n0, _GOLHO,
+    0,
+    [_LH],
+    [[() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }]]
+];
+var GetObjectLegalHoldRequest$ = [3, n0, _GOLHR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectLockConfigurationOutput$ = [3, n0, _GOLCO,
+    0,
+    [_OLC],
+    [[() => ObjectLockConfiguration$, 16]]
+];
+var GetObjectLockConfigurationRequest$ = [3, n0, _GOLCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectOutput$ = [3, n0, _GOO,
+    0,
+    [_Bo, _DM, _AR, _E, _Re, _LM, _CLo, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _MM, _VI, _CC, _CDo, _CEo, _CL, _CR, _CTo, _Ex, _ES, _WRL, _SSE, _M, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _SC, _RC, _RS, _PC, _TC, _OLM, _OLRUD, _OLLHS],
+    [[() => StreamingBlob, 16], [2, { [_hH]: _xadm }], [0, { [_hH]: _ar }], [0, { [_hH]: _xae }], [0, { [_hH]: _xar }], [4, { [_hH]: _LM_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [1, { [_hH]: _xamm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CR_ }], [0, { [_hH]: _CT_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _ES }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasse }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xars }], [1, { [_hH]: _xampc }], [1, { [_hH]: _xatc }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }]]
+];
+var GetObjectRequest$ = [3, n0, _GOR,
+    0,
+    [_B, _IM, _IMSf, _INM, _IUS, _K, _Ra, _RCC, _RCD, _RCE, _RCL, _RCT, _RE, _VI, _SSECA, _SSECK, _SSECKMD, _RP, _PN, _EBO, _CMh],
+    [[0, 1], [0, { [_hH]: _IM_ }], [4, { [_hH]: _IMS_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IUS_ }], [0, 1], [0, { [_hH]: _Ra }], [0, { [_hQ]: _rcc }], [0, { [_hQ]: _rcd }], [0, { [_hQ]: _rce }], [0, { [_hQ]: _rcl }], [0, { [_hQ]: _rct }], [6, { [_hQ]: _re }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [1, { [_hQ]: _pN }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xacm }]]
+];
+var GetObjectRetentionOutput$ = [3, n0, _GORO,
+    0,
+    [_Ret],
+    [[() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }]]
+];
+var GetObjectRetentionRequest$ = [3, n0, _GORR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectTaggingOutput$ = [3, n0, _GOTO,
+    { [_xN]: _Tag },
+    [_VI, _TS],
+    [[0, { [_hH]: _xavi }], [() => TagSet, 0]]
+];
+var GetObjectTaggingRequest$ = [3, n0, _GOTR,
+    0,
+    [_B, _K, _VI, _EBO, _RP],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var GetObjectTorrentOutput$ = [3, n0, _GOTOe,
+    0,
+    [_Bo, _RC],
+    [[() => StreamingBlob, 16], [0, { [_hH]: _xarc }]]
+];
+var GetObjectTorrentRequest$ = [3, n0, _GOTRe,
+    0,
+    [_B, _K, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetPublicAccessBlockOutput$ = [3, n0, _GPABO,
+    0,
+    [_PABC],
+    [[() => PublicAccessBlockConfiguration$, 16]]
+];
+var GetPublicAccessBlockRequest$ = [3, n0, _GPABR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GlacierJobParameters$ = [3, n0, _GJP,
+    0,
+    [_Ti],
+    [0]
+];
+var Grant$ = [3, n0, _Gr,
+    0,
+    [_Gra, _Pe],
+    [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0]
+];
+var Grantee$ = [3, n0, _Gra,
+    0,
+    [_DN, _EA, _ID, _URI, _Ty],
+    [0, 0, 0, 0, [0, { [_xA]: 1, [_xN]: _xs }]]
+];
+var HeadBucketOutput$ = [3, n0, _HBO,
+    0,
+    [_BA, _BLT, _BLN, _BR, _APA],
+    [[0, { [_hH]: _xaba }], [0, { [_hH]: _xablt }], [0, { [_hH]: _xabln }], [0, { [_hH]: _xabr }], [2, { [_hH]: _xaapa }]]
+];
+var HeadBucketRequest$ = [3, n0, _HBR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var HeadObjectOutput$ = [3, n0, _HOO,
+    0,
+    [_DM, _AR, _E, _Re, _ASr, _LM, _CLo, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _ETa, _MM, _VI, _CC, _CDo, _CEo, _CL, _CTo, _CR, _Ex, _ES, _WRL, _SSE, _M, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _SC, _RC, _RS, _PC, _TC, _OLM, _OLRUD, _OLLHS],
+    [[2, { [_hH]: _xadm }], [0, { [_hH]: _ar }], [0, { [_hH]: _xae }], [0, { [_hH]: _xar }], [0, { [_hH]: _xaas }], [4, { [_hH]: _LM_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [0, { [_hH]: _ETa }], [1, { [_hH]: _xamm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _CR_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _ES }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasse }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xars }], [1, { [_hH]: _xampc }], [1, { [_hH]: _xatc }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }]]
+];
+var HeadObjectRequest$ = [3, n0, _HOR,
+    0,
+    [_B, _IM, _IMSf, _INM, _IUS, _K, _Ra, _RCC, _RCD, _RCE, _RCL, _RCT, _RE, _VI, _SSECA, _SSECK, _SSECKMD, _RP, _PN, _EBO, _CMh],
+    [[0, 1], [0, { [_hH]: _IM_ }], [4, { [_hH]: _IMS_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IUS_ }], [0, 1], [0, { [_hH]: _Ra }], [0, { [_hQ]: _rcc }], [0, { [_hQ]: _rcd }], [0, { [_hQ]: _rce }], [0, { [_hQ]: _rcl }], [0, { [_hQ]: _rct }], [6, { [_hQ]: _re }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [1, { [_hQ]: _pN }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xacm }]]
+];
+var IdempotencyParameterMismatch$ = [-3, n0, _IPM,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(IdempotencyParameterMismatch$, IdempotencyParameterMismatch);
+var IndexDocument$ = [3, n0, _IDn,
+    0,
+    [_Su],
+    [0]
+];
+var Initiator$ = [3, n0, _In,
+    0,
+    [_ID, _DN],
+    [0, 0]
+];
+var InputSerialization$ = [3, n0, _IS,
+    0,
+    [_CSV, _CTom, _JSON, _Parq],
+    [() => CSVInput$, 0, () => JSONInput$, () => ParquetInput$]
+];
+var IntelligentTieringAndOperator$ = [3, n0, _ITAO,
+    0,
+    [_P, _T],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
+];
+var IntelligentTieringConfiguration$ = [3, n0, _ITC,
+    0,
+    [_I, _F, _S, _Tie],
+    [0, [() => IntelligentTieringFilter$, 0], 0, [() => TieringList, { [_xF]: 1, [_xN]: _Tier }]]
+];
+var IntelligentTieringFilter$ = [3, n0, _ITF,
+    0,
+    [_P, _Ta, _An],
+    [0, () => Tag$, [() => IntelligentTieringAndOperator$, 0]]
+];
+var InvalidObjectState$ = [-3, n0, _IOS,
+    { [_e]: _c, [_hE]: 403 },
+    [_SC, _AT],
+    [0, 0]
+];
+schema.TypeRegistry.for(n0).registerError(InvalidObjectState$, InvalidObjectState);
+var InvalidRequest$ = [-3, n0, _IR,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(InvalidRequest$, InvalidRequest);
+var InvalidWriteOffset$ = [-3, n0, _IWO,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(InvalidWriteOffset$, InvalidWriteOffset);
+var InventoryConfiguration$ = [3, n0, _IC,
+    0,
+    [_Des, _IE, _F, _I, _IOV, _OF, _Sc],
+    [[() => InventoryDestination$, 0], 2, () => InventoryFilter$, 0, 0, [() => InventoryOptionalFields, 0], () => InventorySchedule$]
+];
+var InventoryDestination$ = [3, n0, _IDnv,
+    0,
+    [_SBD],
+    [[() => InventoryS3BucketDestination$, 0]]
+];
+var InventoryEncryption$ = [3, n0, _IEn,
+    0,
+    [_SSES, _SSEKMS],
+    [[() => SSES3$, { [_xN]: _SS }], [() => SSEKMS$, { [_xN]: _SK }]]
+];
+var InventoryFilter$ = [3, n0, _IF,
+    0,
+    [_P],
+    [0]
+];
+var InventoryS3BucketDestination$ = [3, n0, _ISBD,
+    0,
+    [_AI, _B, _Fo, _P, _En],
+    [0, 0, 0, 0, [() => InventoryEncryption$, 0]]
+];
+var InventorySchedule$ = [3, n0, _ISn,
+    0,
+    [_Fr],
+    [0]
+];
+var InventoryTableConfiguration$ = [3, n0, _ITCn,
+    0,
+    [_CSo, _EC],
+    [0, () => MetadataTableEncryptionConfiguration$]
+];
+var InventoryTableConfigurationResult$ = [3, n0, _ITCR,
+    0,
+    [_CSo, _TSa, _Err, _TNa, _TA],
+    [0, 0, () => ErrorDetails$, 0, 0]
+];
+var InventoryTableConfigurationUpdates$ = [3, n0, _ITCU,
+    0,
+    [_CSo, _EC],
+    [0, () => MetadataTableEncryptionConfiguration$]
+];
+var JournalTableConfiguration$ = [3, n0, _JTC,
+    0,
+    [_REe, _EC],
+    [() => RecordExpiration$, () => MetadataTableEncryptionConfiguration$]
+];
+var JournalTableConfigurationResult$ = [3, n0, _JTCR,
+    0,
+    [_TSa, _Err, _TNa, _TA, _REe],
+    [0, () => ErrorDetails$, 0, 0, () => RecordExpiration$]
+];
+var JournalTableConfigurationUpdates$ = [3, n0, _JTCU,
+    0,
+    [_REe],
+    [() => RecordExpiration$]
+];
+var JSONInput$ = [3, n0, _JSONI,
+    0,
+    [_Ty],
+    [0]
+];
+var JSONOutput$ = [3, n0, _JSONO,
+    0,
+    [_RD],
+    [0]
+];
+var LambdaFunctionConfiguration$ = [3, n0, _LFC,
+    0,
+    [_I, _LFA, _Ev, _F],
+    [0, [0, { [_xN]: _CF }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
+];
+var LifecycleExpiration$ = [3, n0, _LEi,
+    0,
+    [_Da, _D, _EODM],
+    [5, 1, 2]
+];
+var LifecycleRule$ = [3, n0, _LR,
+    0,
+    [_E, _ID, _P, _F, _S, _Tr, _NVT, _NVE, _AIMU],
+    [() => LifecycleExpiration$, 0, 0, [() => LifecycleRuleFilter$, 0], 0, [() => TransitionList, { [_xF]: 1, [_xN]: _Tra }], [() => NoncurrentVersionTransitionList, { [_xF]: 1, [_xN]: _NVTo }], () => NoncurrentVersionExpiration$, () => AbortIncompleteMultipartUpload$]
+];
+var LifecycleRuleAndOperator$ = [3, n0, _LRAO,
+    0,
+    [_P, _T, _OSGT, _OSLT],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 1, 1]
+];
+var LifecycleRuleFilter$ = [3, n0, _LRF,
+    0,
+    [_P, _Ta, _OSGT, _OSLT, _An],
+    [0, () => Tag$, 1, 1, [() => LifecycleRuleAndOperator$, 0]]
+];
+var ListBucketAnalyticsConfigurationsOutput$ = [3, n0, _LBACO,
+    { [_xN]: _LBACR },
+    [_IT, _CTon, _NCT, _ACLn],
+    [2, 0, 0, [() => AnalyticsConfigurationList, { [_xF]: 1, [_xN]: _ACn }]]
+];
+var ListBucketAnalyticsConfigurationsRequest$ = [3, n0, _LBACRi,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketIntelligentTieringConfigurationsOutput$ = [3, n0, _LBITCO,
+    0,
+    [_IT, _CTon, _NCT, _ITCL],
+    [2, 0, 0, [() => IntelligentTieringConfigurationList, { [_xF]: 1, [_xN]: _ITC }]]
+];
+var ListBucketIntelligentTieringConfigurationsRequest$ = [3, n0, _LBITCR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketInventoryConfigurationsOutput$ = [3, n0, _LBICO,
+    { [_xN]: _LICR },
+    [_CTon, _ICL, _IT, _NCT],
+    [0, [() => InventoryConfigurationList, { [_xF]: 1, [_xN]: _IC }], 2, 0]
+];
+var ListBucketInventoryConfigurationsRequest$ = [3, n0, _LBICR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketMetricsConfigurationsOutput$ = [3, n0, _LBMCO,
+    { [_xN]: _LMCR },
+    [_IT, _CTon, _NCT, _MCL],
+    [2, 0, 0, [() => MetricsConfigurationList, { [_xF]: 1, [_xN]: _MCe }]]
+];
+var ListBucketMetricsConfigurationsRequest$ = [3, n0, _LBMCR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketsOutput$ = [3, n0, _LBO,
+    { [_xN]: _LAMBR },
+    [_Bu, _O, _CTon, _P],
+    [[() => Buckets, 0], () => Owner$, 0, 0]
+];
+var ListBucketsRequest$ = [3, n0, _LBR,
+    0,
+    [_MB, _CTon, _P, _BR],
+    [[1, { [_hQ]: _mb }], [0, { [_hQ]: _ct }], [0, { [_hQ]: _p }], [0, { [_hQ]: _br }]]
+];
+var ListDirectoryBucketsOutput$ = [3, n0, _LDBO,
+    { [_xN]: _LAMDBR },
+    [_Bu, _CTon],
+    [[() => Buckets, 0], 0]
+];
+var ListDirectoryBucketsRequest$ = [3, n0, _LDBR,
+    0,
+    [_CTon, _MDB],
+    [[0, { [_hQ]: _ct }], [1, { [_hQ]: _mdb }]]
+];
+var ListMultipartUploadsOutput$ = [3, n0, _LMUO,
+    { [_xN]: _LMUR },
+    [_B, _KM, _UIM, _NKM, _P, _Deli, _NUIM, _MUa, _IT, _U, _CPom, _ETn, _RC],
+    [0, 0, 0, 0, 0, 0, 0, 1, 2, [() => MultipartUploadList, { [_xF]: 1, [_xN]: _Up }], [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListMultipartUploadsRequest$ = [3, n0, _LMURi,
+    0,
+    [_B, _Deli, _ETn, _KM, _MUa, _P, _UIM, _EBO, _RP],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _km }], [1, { [_hQ]: _mu }], [0, { [_hQ]: _p }], [0, { [_hQ]: _uim }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var ListObjectsOutput$ = [3, n0, _LOO,
+    { [_xN]: _LBRi },
+    [_IT, _Ma, _NM, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
+    [2, 0, 0, [() => ObjectList, { [_xF]: 1 }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectsRequest$ = [3, n0, _LOR,
+    0,
+    [_B, _Deli, _ETn, _Ma, _MK, _P, _RP, _EBO, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _m }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListObjectsV2Output$ = [3, n0, _LOVO,
+    { [_xN]: _LBRi },
+    [_IT, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _KC, _CTon, _NCT, _SA, _RC],
+    [2, [() => ObjectList, { [_xF]: 1 }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, 1, 0, 0, 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectsV2Request$ = [3, n0, _LOVR,
+    0,
+    [_B, _Deli, _ETn, _MK, _P, _CTon, _FO, _SA, _RP, _EBO, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hQ]: _ct }], [2, { [_hQ]: _fo }], [0, { [_hQ]: _sa }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListObjectVersionsOutput$ = [3, n0, _LOVOi,
+    { [_xN]: _LVR },
+    [_IT, _KM, _VIM, _NKM, _NVIM, _Ve, _DMe, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
+    [2, 0, 0, 0, 0, [() => ObjectVersionList, { [_xF]: 1, [_xN]: _Ver }], [() => DeleteMarkers, { [_xF]: 1, [_xN]: _DM }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectVersionsRequest$ = [3, n0, _LOVRi,
+    0,
+    [_B, _Deli, _ETn, _KM, _MK, _P, _VIM, _EBO, _RP, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _km }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hQ]: _vim }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListPartsOutput$ = [3, n0, _LPO,
+    { [_xN]: _LPR },
+    [_AD, _ARI, _B, _K, _UI, _PNM, _NPNM, _MP, _IT, _Pa, _In, _O, _SC, _RC, _CA, _CT],
+    [[4, { [_hH]: _xaad }], [0, { [_hH]: _xaari }], 0, 0, 0, 0, 0, 1, 2, [() => Parts, { [_xF]: 1, [_xN]: _Par }], () => Initiator$, () => Owner$, 0, [0, { [_hH]: _xarc }], 0, 0]
+];
+var ListPartsRequest$ = [3, n0, _LPRi,
+    0,
+    [_B, _K, _MP, _PNM, _UI, _RP, _EBO, _SSECA, _SSECK, _SSECKMD],
+    [[0, 1], [0, 1], [1, { [_hQ]: _mp }], [0, { [_hQ]: _pnm }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }]]
+];
+var LocationInfo$ = [3, n0, _LI,
+    0,
+    [_Ty, _N],
+    [0, 0]
+];
+var LoggingEnabled$ = [3, n0, _LE,
+    0,
+    [_TB, _TG, _TP, _TOKF],
+    [0, [() => TargetGrants, 0], 0, [() => TargetObjectKeyFormat$, 0]]
+];
+var MetadataConfiguration$ = [3, n0, _MC,
+    0,
+    [_JTC, _ITCn],
+    [() => JournalTableConfiguration$, () => InventoryTableConfiguration$]
+];
+var MetadataConfigurationResult$ = [3, n0, _MCR,
+    0,
+    [_DRes, _JTCR, _ITCR],
+    [() => DestinationResult$, () => JournalTableConfigurationResult$, () => InventoryTableConfigurationResult$]
+];
+var MetadataEntry$ = [3, n0, _ME,
+    0,
+    [_N, _V],
+    [0, 0]
+];
+var MetadataTableConfiguration$ = [3, n0, _MTC,
+    0,
+    [_STD],
+    [() => S3TablesDestination$]
+];
+var MetadataTableConfigurationResult$ = [3, n0, _MTCR,
+    0,
+    [_STDR],
+    [() => S3TablesDestinationResult$]
+];
+var MetadataTableEncryptionConfiguration$ = [3, n0, _MTEC,
+    0,
+    [_SAs, _KKA],
+    [0, 0]
+];
+var Metrics$ = [3, n0, _Me,
+    0,
+    [_S, _ETv],
+    [0, () => ReplicationTimeValue$]
+];
+var MetricsAndOperator$ = [3, n0, _MAO,
+    0,
+    [_P, _T, _APAc],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 0]
+];
+var MetricsConfiguration$ = [3, n0, _MCe,
+    0,
+    [_I, _F],
+    [0, [() => MetricsFilter$, 0]]
+];
+var MultipartUpload$ = [3, n0, _MU,
+    0,
+    [_UI, _K, _Ini, _SC, _O, _In, _CA, _CT],
+    [0, 0, 4, 0, () => Owner$, () => Initiator$, 0, 0]
+];
+var NoncurrentVersionExpiration$ = [3, n0, _NVE,
+    0,
+    [_ND, _NNV],
+    [1, 1]
+];
+var NoncurrentVersionTransition$ = [3, n0, _NVTo,
+    0,
+    [_ND, _SC, _NNV],
+    [1, 0, 1]
+];
+var NoSuchBucket$ = [-3, n0, _NSB,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchBucket$, NoSuchBucket);
+var NoSuchKey$ = [-3, n0, _NSK,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchKey$, NoSuchKey);
+var NoSuchUpload$ = [-3, n0, _NSU,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchUpload$, NoSuchUpload);
+var NotFound$ = [-3, n0, _NF,
+    { [_e]: _c },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NotFound$, NotFound);
+var NotificationConfiguration$ = [3, n0, _NC,
+    0,
+    [_TCo, _QCu, _LFCa, _EBC],
+    [[() => TopicConfigurationList, { [_xF]: 1, [_xN]: _TCop }], [() => QueueConfigurationList, { [_xF]: 1, [_xN]: _QCue }], [() => LambdaFunctionConfigurationList, { [_xF]: 1, [_xN]: _CFC }], () => EventBridgeConfiguration$]
+];
+var NotificationConfigurationFilter$ = [3, n0, _NCF,
+    0,
+    [_K],
+    [[() => S3KeyFilter$, { [_xN]: _SKe }]]
+];
+var _Object$ = [3, n0, _Obj,
+    0,
+    [_K, _LM, _ETa, _CA, _CT, _Si, _SC, _O, _RSe],
+    [0, 4, 0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, () => Owner$, () => RestoreStatus$]
+];
+var ObjectAlreadyInActiveTierError$ = [-3, n0, _OAIATE,
+    { [_e]: _c, [_hE]: 403 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(ObjectAlreadyInActiveTierError$, ObjectAlreadyInActiveTierError);
+var ObjectIdentifier$ = [3, n0, _OI,
+    0,
+    [_K, _VI, _ETa, _LMT, _Si],
+    [0, 0, 0, 6, 1]
+];
+var ObjectLockConfiguration$ = [3, n0, _OLC,
+    0,
+    [_OLE, _Ru],
+    [0, () => ObjectLockRule$]
+];
+var ObjectLockLegalHold$ = [3, n0, _OLLH,
+    0,
+    [_S],
+    [0]
+];
+var ObjectLockRetention$ = [3, n0, _OLR,
+    0,
+    [_Mo, _RUD],
+    [0, 5]
+];
+var ObjectLockRule$ = [3, n0, _OLRb,
+    0,
+    [_DRe],
+    [() => DefaultRetention$]
+];
+var ObjectNotInActiveTierError$ = [-3, n0, _ONIATE,
+    { [_e]: _c, [_hE]: 403 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(ObjectNotInActiveTierError$, ObjectNotInActiveTierError);
+var ObjectPart$ = [3, n0, _OPb,
+    0,
+    [_PN, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [1, 1, 0, 0, 0, 0, 0]
+];
+var ObjectVersion$ = [3, n0, _OV,
+    0,
+    [_ETa, _CA, _CT, _Si, _SC, _K, _VI, _IL, _LM, _O, _RSe],
+    [0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, 0, 0, 2, 4, () => Owner$, () => RestoreStatus$]
+];
+var OutputLocation$ = [3, n0, _OL,
+    0,
+    [_S_],
+    [[() => S3Location$, 0]]
+];
+var OutputSerialization$ = [3, n0, _OSu,
+    0,
+    [_CSV, _JSON],
+    [() => CSVOutput$, () => JSONOutput$]
+];
+var Owner$ = [3, n0, _O,
+    0,
+    [_DN, _ID],
+    [0, 0]
+];
+var OwnershipControls$ = [3, n0, _OC,
+    0,
+    [_R],
+    [[() => OwnershipControlsRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var OwnershipControlsRule$ = [3, n0, _OCR,
+    0,
+    [_OO],
+    [0]
+];
+var ParquetInput$ = [3, n0, _PI,
+    0,
+    [],
+    []
+];
+var Part$ = [3, n0, _Par,
+    0,
+    [_PN, _LM, _ETa, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [1, 4, 0, 1, 0, 0, 0, 0, 0]
+];
+var PartitionedPrefix$ = [3, n0, _PP,
+    { [_xN]: _PP },
+    [_PDS],
+    [0]
+];
+var PolicyStatus$ = [3, n0, _PS,
+    0,
+    [_IP],
+    [[2, { [_xN]: _IP }]]
+];
+var Progress$ = [3, n0, _Pr,
+    0,
+    [_BS, _BP, _BRy],
+    [1, 1, 1]
+];
+var ProgressEvent$ = [3, n0, _PE,
+    0,
+    [_Det],
+    [[() => Progress$, { [_eP]: 1 }]]
+];
+var PublicAccessBlockConfiguration$ = [3, n0, _PABC,
+    0,
+    [_BPA, _IPA, _BPP, _RPB],
+    [[2, { [_xN]: _BPA }], [2, { [_xN]: _IPA }], [2, { [_xN]: _BPP }], [2, { [_xN]: _RPB }]]
+];
+var PutBucketAbacRequest$ = [3, n0, _PBAR,
+    0,
+    [_B, _CMD, _CA, _EBO, _AS],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }], [() => AbacStatus$, { [_hP]: 1, [_xN]: _AS }]]
+];
+var PutBucketAccelerateConfigurationRequest$ = [3, n0, _PBACR,
+    0,
+    [_B, _AC, _EBO, _CA],
+    [[0, 1], [() => AccelerateConfiguration$, { [_hP]: 1, [_xN]: _AC }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasca }]]
+];
+var PutBucketAclRequest$ = [3, n0, _PBARu,
+    0,
+    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _EBO],
+    [[0, { [_hH]: _xaa }], [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }], [0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketAnalyticsConfigurationRequest$ = [3, n0, _PBACRu,
+    0,
+    [_B, _I, _ACn, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => AnalyticsConfiguration$, { [_hP]: 1, [_xN]: _ACn }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketCorsRequest$ = [3, n0, _PBCR,
+    0,
+    [_B, _CORSC, _CMD, _CA, _EBO],
+    [[0, 1], [() => CORSConfiguration$, { [_hP]: 1, [_xN]: _CORSC }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketEncryptionRequest$ = [3, n0, _PBER,
+    0,
+    [_B, _CMD, _CA, _SSEC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => ServerSideEncryptionConfiguration$, { [_hP]: 1, [_xN]: _SSEC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketIntelligentTieringConfigurationRequest$ = [3, n0, _PBITCR,
+    0,
+    [_B, _I, _EBO, _ITC],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }], [() => IntelligentTieringConfiguration$, { [_hP]: 1, [_xN]: _ITC }]]
+];
+var PutBucketInventoryConfigurationRequest$ = [3, n0, _PBICR,
+    0,
+    [_B, _I, _IC, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => InventoryConfiguration$, { [_hP]: 1, [_xN]: _IC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketLifecycleConfigurationOutput$ = [3, n0, _PBLCO,
+    0,
+    [_TDMOS],
+    [[0, { [_hH]: _xatdmos }]]
+];
+var PutBucketLifecycleConfigurationRequest$ = [3, n0, _PBLCR,
+    0,
+    [_B, _CA, _LCi, _EBO, _TDMOS],
+    [[0, 1], [0, { [_hH]: _xasca }], [() => BucketLifecycleConfiguration$, { [_hP]: 1, [_xN]: _LCi }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xatdmos }]]
+];
+var PutBucketLoggingRequest$ = [3, n0, _PBLR,
+    0,
+    [_B, _BLS, _CMD, _CA, _EBO],
+    [[0, 1], [() => BucketLoggingStatus$, { [_hP]: 1, [_xN]: _BLS }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketMetricsConfigurationRequest$ = [3, n0, _PBMCR,
+    0,
+    [_B, _I, _MCe, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => MetricsConfiguration$, { [_hP]: 1, [_xN]: _MCe }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketNotificationConfigurationRequest$ = [3, n0, _PBNCR,
+    0,
+    [_B, _NC, _EBO, _SDV],
+    [[0, 1], [() => NotificationConfiguration$, { [_hP]: 1, [_xN]: _NC }], [0, { [_hH]: _xaebo }], [2, { [_hH]: _xasdv }]]
+];
+var PutBucketOwnershipControlsRequest$ = [3, n0, _PBOCR,
+    0,
+    [_B, _CMD, _EBO, _OC, _CA],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xaebo }], [() => OwnershipControls$, { [_hP]: 1, [_xN]: _OC }], [0, { [_hH]: _xasca }]]
+];
+var PutBucketPolicyRequest$ = [3, n0, _PBPR,
+    0,
+    [_B, _CMD, _CA, _CRSBA, _Po, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [2, { [_hH]: _xacrsba }], [0, 16], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketReplicationRequest$ = [3, n0, _PBRR,
+    0,
+    [_B, _CMD, _CA, _RCe, _To, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => ReplicationConfiguration$, { [_hP]: 1, [_xN]: _RCe }], [0, { [_hH]: _xabolt }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketRequestPaymentRequest$ = [3, n0, _PBRPR,
+    0,
+    [_B, _CMD, _CA, _RPC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => RequestPaymentConfiguration$, { [_hP]: 1, [_xN]: _RPC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketTaggingRequest$ = [3, n0, _PBTR,
+    0,
+    [_B, _CMD, _CA, _Tag, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketVersioningRequest$ = [3, n0, _PBVR,
+    0,
+    [_B, _CMD, _CA, _MFA, _VC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xam_ }], [() => VersioningConfiguration$, { [_hP]: 1, [_xN]: _VC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketWebsiteRequest$ = [3, n0, _PBWR,
+    0,
+    [_B, _CMD, _CA, _WC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => WebsiteConfiguration$, { [_hP]: 1, [_xN]: _WC }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectAclOutput$ = [3, n0, _POAO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectAclRequest$ = [3, n0, _POAR,
+    0,
+    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _K, _RP, _VI, _EBO],
+    [[0, { [_hH]: _xaa }], [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }], [0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [0, 1], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectLegalHoldOutput$ = [3, n0, _POLHO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectLegalHoldRequest$ = [3, n0, _POLHR,
+    0,
+    [_B, _K, _LH, _RP, _VI, _CMD, _CA, _EBO],
+    [[0, 1], [0, 1], [() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectLockConfigurationOutput$ = [3, n0, _POLCO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectLockConfigurationRequest$ = [3, n0, _POLCR,
+    0,
+    [_B, _OLC, _RP, _To, _CMD, _CA, _EBO],
+    [[0, 1], [() => ObjectLockConfiguration$, { [_hP]: 1, [_xN]: _OLC }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xabolt }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectOutput$ = [3, n0, _POO,
+    0,
+    [_E, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _SSE, _VI, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _Si, _RC],
+    [[0, { [_hH]: _xae }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [1, { [_hH]: _xaos }], [0, { [_hH]: _xarc }]]
+];
+var PutObjectRequest$ = [3, n0, _POR,
+    0,
+    [_ACL_, _Bo, _B, _CC, _CDo, _CEo, _CL, _CLo, _CMD, _CTo, _CA, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _Ex, _IM, _INM, _GFC, _GR, _GRACP, _GWACP, _K, _WOB, _M, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO],
+    [[0, { [_hH]: _xaa }], [() => StreamingBlob, 16], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _CM }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, 1], [1, { [_hH]: _xawob }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectRetentionOutput$ = [3, n0, _PORO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectRetentionRequest$ = [3, n0, _PORR,
+    0,
+    [_B, _K, _Ret, _RP, _VI, _BGR, _CMD, _CA, _EBO],
+    [[0, 1], [0, 1], [() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectTaggingOutput$ = [3, n0, _POTO,
+    0,
+    [_VI],
+    [[0, { [_hH]: _xavi }]]
+];
+var PutObjectTaggingRequest$ = [3, n0, _POTR,
+    0,
+    [_B, _K, _VI, _CMD, _CA, _Tag, _EBO, _RP],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var PutPublicAccessBlockRequest$ = [3, n0, _PPABR,
+    0,
+    [_B, _CMD, _CA, _PABC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => PublicAccessBlockConfiguration$, { [_hP]: 1, [_xN]: _PABC }], [0, { [_hH]: _xaebo }]]
+];
+var QueueConfiguration$ = [3, n0, _QCue,
+    0,
+    [_I, _QA, _Ev, _F],
+    [0, [0, { [_xN]: _Qu }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
+];
+var RecordExpiration$ = [3, n0, _REe,
+    0,
+    [_E, _D],
+    [0, 1]
+];
+var RecordsEvent$ = [3, n0, _REec,
+    0,
+    [_Payl],
+    [[21, { [_eP]: 1 }]]
+];
+var Redirect$ = [3, n0, _Red,
+    0,
+    [_HN, _HRC, _Pro, _RKPW, _RKW],
+    [0, 0, 0, 0, 0]
+];
+var RedirectAllRequestsTo$ = [3, n0, _RART,
+    0,
+    [_HN, _Pro],
+    [0, 0]
+];
+var RenameObjectOutput$ = [3, n0, _ROO,
+    0,
+    [],
+    []
+];
+var RenameObjectRequest$ = [3, n0, _ROR,
+    0,
+    [_B, _K, _RSen, _DIM, _DINM, _DIMS, _DIUS, _SIM, _SINM, _SIMS, _SIUS, _CTl],
+    [[0, 1], [0, 1], [0, { [_hH]: _xars_ }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IMS_ }], [4, { [_hH]: _IUS_ }], [0, { [_hH]: _xarsim }], [0, { [_hH]: _xarsinm }], [6, { [_hH]: _xarsims }], [6, { [_hH]: _xarsius }], [0, { [_hH]: _xact_, [_iT]: 1 }]]
+];
+var ReplicaModifications$ = [3, n0, _RM,
+    0,
+    [_S],
+    [0]
+];
+var ReplicationConfiguration$ = [3, n0, _RCe,
+    0,
+    [_Ro, _R],
+    [0, [() => ReplicationRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var ReplicationRule$ = [3, n0, _RRe,
+    0,
+    [_ID, _Pri, _P, _F, _S, _SSC, _EOR, _Des, _DMR],
+    [0, 1, 0, [() => ReplicationRuleFilter$, 0], 0, () => SourceSelectionCriteria$, () => ExistingObjectReplication$, () => Destination$, () => DeleteMarkerReplication$]
+];
+var ReplicationRuleAndOperator$ = [3, n0, _RRAO,
+    0,
+    [_P, _T],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
+];
+var ReplicationRuleFilter$ = [3, n0, _RRF,
+    0,
+    [_P, _Ta, _An],
+    [0, () => Tag$, [() => ReplicationRuleAndOperator$, 0]]
+];
+var ReplicationTime$ = [3, n0, _RT,
+    0,
+    [_S, _Tim],
+    [0, () => ReplicationTimeValue$]
+];
+var ReplicationTimeValue$ = [3, n0, _RTV,
+    0,
+    [_Mi],
+    [1]
+];
+var RequestPaymentConfiguration$ = [3, n0, _RPC,
+    0,
+    [_Pay],
+    [0]
+];
+var RequestProgress$ = [3, n0, _RPe,
+    0,
+    [_Ena],
+    [2]
+];
+var RestoreObjectOutput$ = [3, n0, _ROOe,
+    0,
+    [_RC, _ROP],
+    [[0, { [_hH]: _xarc }], [0, { [_hH]: _xarop }]]
+];
+var RestoreObjectRequest$ = [3, n0, _RORe,
+    0,
+    [_B, _K, _VI, _RRes, _RP, _CA, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [() => RestoreRequest$, { [_hP]: 1, [_xN]: _RRes }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var RestoreRequest$ = [3, n0, _RRes,
+    0,
+    [_D, _GJP, _Ty, _Ti, _Desc, _SP, _OL],
+    [1, () => GlacierJobParameters$, 0, 0, 0, () => SelectParameters$, [() => OutputLocation$, 0]]
+];
+var RestoreStatus$ = [3, n0, _RSe,
+    0,
+    [_IRIP, _RED],
+    [2, 4]
+];
+var RoutingRule$ = [3, n0, _RRo,
+    0,
+    [_Co, _Red],
+    [() => Condition$, () => Redirect$]
+];
+var S3KeyFilter$ = [3, n0, _SKF,
+    0,
+    [_FRi],
+    [[() => FilterRuleList, { [_xF]: 1, [_xN]: _FR }]]
+];
+var S3Location$ = [3, n0, _SL,
+    0,
+    [_BN, _P, _En, _CACL, _ACL, _Tag, _UM, _SC],
+    [0, 0, [() => Encryption$, 0], 0, [() => Grants, 0], [() => Tagging$, 0], [() => UserMetadata, 0], 0]
+];
+var S3TablesDestination$ = [3, n0, _STD,
+    0,
+    [_TBA, _TNa],
+    [0, 0]
+];
+var S3TablesDestinationResult$ = [3, n0, _STDR,
+    0,
+    [_TBA, _TNa, _TA, _TN],
+    [0, 0, 0, 0]
+];
+var ScanRange$ = [3, n0, _SR,
+    0,
+    [_St, _End],
+    [1, 1]
+];
+var SelectObjectContentOutput$ = [3, n0, _SOCO,
+    0,
+    [_Payl],
+    [[() => SelectObjectContentEventStream$, 16]]
+];
+var SelectObjectContentRequest$ = [3, n0, _SOCR,
+    0,
+    [_B, _K, _SSECA, _SSECK, _SSECKMD, _Exp, _ETx, _RPe, _IS, _OSu, _SR, _EBO],
+    [[0, 1], [0, 1], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], 0, 0, () => RequestProgress$, () => InputSerialization$, () => OutputSerialization$, () => ScanRange$, [0, { [_hH]: _xaebo }]]
+];
+var SelectParameters$ = [3, n0, _SP,
+    0,
+    [_IS, _ETx, _Exp, _OSu],
+    [() => InputSerialization$, 0, 0, () => OutputSerialization$]
+];
+var ServerSideEncryptionByDefault$ = [3, n0, _SSEBD,
+    0,
+    [_SSEA, _KMSMKID],
+    [0, [() => SSEKMSKeyId, 0]]
+];
+var ServerSideEncryptionConfiguration$ = [3, n0, _SSEC,
+    0,
+    [_R],
+    [[() => ServerSideEncryptionRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var ServerSideEncryptionRule$ = [3, n0, _SSER,
+    0,
+    [_ASSEBD, _BKE, _BET],
+    [[() => ServerSideEncryptionByDefault$, 0], 2, [() => BlockedEncryptionTypes$, 0]]
+];
+var SessionCredentials$ = [3, n0, _SCe,
+    0,
+    [_AKI, _SAK, _ST, _E],
+    [[0, { [_xN]: _AKI }], [() => SessionCredentialValue, { [_xN]: _SAK }], [() => SessionCredentialValue, { [_xN]: _ST }], [4, { [_xN]: _E }]]
+];
+var SimplePrefix$ = [3, n0, _SPi,
+    { [_xN]: _SPi },
+    [],
+    []
+];
+var SourceSelectionCriteria$ = [3, n0, _SSC,
+    0,
+    [_SKEO, _RM],
+    [() => SseKmsEncryptedObjects$, () => ReplicaModifications$]
+];
+var SSEKMS$ = [3, n0, _SSEKMS,
+    { [_xN]: _SK },
+    [_KI],
+    [[() => SSEKMSKeyId, 0]]
+];
+var SseKmsEncryptedObjects$ = [3, n0, _SKEO,
+    0,
+    [_S],
+    [0]
+];
+var SSES3$ = [3, n0, _SSES,
+    { [_xN]: _SS },
+    [],
+    []
+];
+var Stats$ = [3, n0, _Sta,
+    0,
+    [_BS, _BP, _BRy],
+    [1, 1, 1]
+];
+var StatsEvent$ = [3, n0, _SE,
+    0,
+    [_Det],
+    [[() => Stats$, { [_eP]: 1 }]]
+];
+var StorageClassAnalysis$ = [3, n0, _SCA,
+    0,
+    [_DE],
+    [() => StorageClassAnalysisDataExport$]
+];
+var StorageClassAnalysisDataExport$ = [3, n0, _SCADE,
+    0,
+    [_OSV, _Des],
+    [0, () => AnalyticsExportDestination$]
+];
+var Tag$ = [3, n0, _Ta,
+    0,
+    [_K, _V],
+    [0, 0]
+];
+var Tagging$ = [3, n0, _Tag,
+    0,
+    [_TS],
+    [[() => TagSet, 0]]
+];
+var TargetGrant$ = [3, n0, _TGa,
+    0,
+    [_Gra, _Pe],
+    [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0]
+];
+var TargetObjectKeyFormat$ = [3, n0, _TOKF,
+    0,
+    [_SPi, _PP],
+    [[() => SimplePrefix$, { [_xN]: _SPi }], [() => PartitionedPrefix$, { [_xN]: _PP }]]
+];
+var Tiering$ = [3, n0, _Tier,
+    0,
+    [_D, _AT],
+    [1, 0]
+];
+var TooManyParts$ = [-3, n0, _TMP,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(TooManyParts$, TooManyParts);
+var TopicConfiguration$ = [3, n0, _TCop,
+    0,
+    [_I, _TAo, _Ev, _F],
+    [0, [0, { [_xN]: _Top }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
+];
+var Transition$ = [3, n0, _Tra,
+    0,
+    [_Da, _D, _SC],
+    [5, 1, 0]
+];
+var UpdateBucketMetadataInventoryTableConfigurationRequest$ = [3, n0, _UBMITCR,
+    0,
+    [_B, _CMD, _CA, _ITCn, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => InventoryTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _ITCn }], [0, { [_hH]: _xaebo }]]
+];
+var UpdateBucketMetadataJournalTableConfigurationRequest$ = [3, n0, _UBMJTCR,
+    0,
+    [_B, _CMD, _CA, _JTC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => JournalTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _JTC }], [0, { [_hH]: _xaebo }]]
+];
+var UploadPartCopyOutput$ = [3, n0, _UPCO,
+    0,
+    [_CSVI, _CPR, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _RC],
+    [[0, { [_hH]: _xacsvi }], [() => CopyPartResult$, 16], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var UploadPartCopyRequest$ = [3, n0, _UPCR,
+    0,
+    [_B, _CS, _CSIM, _CSIMS, _CSINM, _CSIUS, _CSRo, _K, _PN, _UI, _SSECA, _SSECK, _SSECKMD, _CSSSECA, _CSSSECK, _CSSSECKMD, _RP, _EBO, _ESBO],
+    [[0, 1], [0, { [_hH]: _xacs__ }], [0, { [_hH]: _xacsim }], [4, { [_hH]: _xacsims }], [0, { [_hH]: _xacsinm }], [4, { [_hH]: _xacsius }], [0, { [_hH]: _xacsr }], [0, 1], [1, { [_hQ]: _pN }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xacssseca }], [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }], [0, { [_hH]: _xacssseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasebo }]]
+];
+var UploadPartOutput$ = [3, n0, _UPO,
+    0,
+    [_SSE, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _RC],
+    [[0, { [_hH]: _xasse }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var UploadPartRequest$ = [3, n0, _UPR,
+    0,
+    [_Bo, _B, _CLo, _CMD, _CA, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _K, _PN, _UI, _SSECA, _SSECK, _SSECKMD, _RP, _EBO],
+    [[() => StreamingBlob, 16], [0, 1], [1, { [_hH]: _CL__ }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, 1], [1, { [_hQ]: _pN }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var VersioningConfiguration$ = [3, n0, _VC,
+    0,
+    [_MFAD, _S],
+    [[0, { [_xN]: _MDf }], 0]
+];
+var WebsiteConfiguration$ = [3, n0, _WC,
+    0,
+    [_EDr, _IDn, _RART, _RR],
+    [() => ErrorDocument$, () => IndexDocument$, () => RedirectAllRequestsTo$, [() => RoutingRules, 0]]
+];
+var WriteGetObjectResponseRequest$ = [3, n0, _WGORR,
+    0,
+    [_RReq, _RTe, _Bo, _SCt, _ECr, _EM, _AR, _CC, _CDo, _CEo, _CL, _CLo, _CR, _CTo, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _DM, _ETa, _Ex, _E, _LM, _MM, _M, _OLM, _OLLHS, _OLRUD, _PC, _RS, _RC, _Re, _SSE, _SSECA, _SSEKMSKI, _SSECKMD, _SC, _TC, _VI, _BKE],
+    [[0, { [_hL]: 1, [_hH]: _xarr }], [0, { [_hH]: _xart }], [() => StreamingBlob, 16], [1, { [_hH]: _xafs }], [0, { [_hH]: _xafec }], [0, { [_hH]: _xafem }], [0, { [_hH]: _xafhar }], [0, { [_hH]: _xafhCC }], [0, { [_hH]: _xafhCD }], [0, { [_hH]: _xafhCE }], [0, { [_hH]: _xafhCL }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _xafhCR }], [0, { [_hH]: _xafhCT }], [0, { [_hH]: _xafhxacc }], [0, { [_hH]: _xafhxacc_ }], [0, { [_hH]: _xafhxacc__ }], [0, { [_hH]: _xafhxacs }], [0, { [_hH]: _xafhxacs_ }], [2, { [_hH]: _xafhxadm }], [0, { [_hH]: _xafhE }], [4, { [_hH]: _xafhE_ }], [0, { [_hH]: _xafhxae }], [4, { [_hH]: _xafhLM }], [1, { [_hH]: _xafhxamm }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xafhxaolm }], [0, { [_hH]: _xafhxaollh }], [5, { [_hH]: _xafhxaolrud }], [1, { [_hH]: _xafhxampc }], [0, { [_hH]: _xafhxars }], [0, { [_hH]: _xafhxarc }], [0, { [_hH]: _xafhxar }], [0, { [_hH]: _xafhxasse }], [0, { [_hH]: _xafhxasseca }], [() => SSEKMSKeyId, { [_hH]: _xafhxasseakki }], [0, { [_hH]: _xafhxasseckM }], [0, { [_hH]: _xafhxasc }], [1, { [_hH]: _xafhxatc }], [0, { [_hH]: _xafhxavi }], [2, { [_hH]: _xafhxassebke }]]
+];
+var __Unit = "unit";
+var S3ServiceException$ = [-3, _sm, "S3ServiceException", 0, [], []];
+schema.TypeRegistry.for(_sm).registerError(S3ServiceException$, S3ServiceException);
+var AnalyticsConfigurationList = [1, n0, _ACLn,
+    0, [() => AnalyticsConfiguration$,
+        0]
+];
+var Buckets = [1, n0, _Bu,
+    0, [() => Bucket$,
+        { [_xN]: _B }]
+];
+var CommonPrefixList = [1, n0, _CPL,
+    0, () => CommonPrefix$
+];
+var CompletedPartList = [1, n0, _CPLo,
+    0, () => CompletedPart$
+];
+var CORSRules = [1, n0, _CORSR,
+    0, [() => CORSRule$,
+        0]
+];
+var DeletedObjects = [1, n0, _DOe,
+    0, () => DeletedObject$
+];
+var DeleteMarkers = [1, n0, _DMe,
+    0, () => DeleteMarkerEntry$
+];
+var EncryptionTypeList = [1, n0, _ETL,
+    0, [0,
+        { [_xN]: _ET }]
+];
+var Errors = [1, n0, _Er,
+    0, () => _Error$
+];
+var FilterRuleList = [1, n0, _FRL,
+    0, () => FilterRule$
+];
+var Grants = [1, n0, _G,
+    0, [() => Grant$,
+        { [_xN]: _Gr }]
+];
+var IntelligentTieringConfigurationList = [1, n0, _ITCL,
+    0, [() => IntelligentTieringConfiguration$,
+        0]
+];
+var InventoryConfigurationList = [1, n0, _ICL,
+    0, [() => InventoryConfiguration$,
+        0]
+];
+var InventoryOptionalFields = [1, n0, _IOF,
+    0, [0,
+        { [_xN]: _Fi }]
+];
+var LambdaFunctionConfigurationList = [1, n0, _LFCL,
+    0, [() => LambdaFunctionConfiguration$,
+        0]
+];
+var LifecycleRules = [1, n0, _LRi,
+    0, [() => LifecycleRule$,
+        0]
+];
+var MetricsConfigurationList = [1, n0, _MCL,
+    0, [() => MetricsConfiguration$,
+        0]
+];
+var MultipartUploadList = [1, n0, _MUL,
+    0, () => MultipartUpload$
+];
+var NoncurrentVersionTransitionList = [1, n0, _NVTL,
+    0, () => NoncurrentVersionTransition$
+];
+var ObjectIdentifierList = [1, n0, _OIL,
+    0, () => ObjectIdentifier$
+];
+var ObjectList = [1, n0, _OLb,
+    0, [() => _Object$,
+        0]
+];
+var ObjectVersionList = [1, n0, _OVL,
+    0, [() => ObjectVersion$,
+        0]
+];
+var OwnershipControlsRules = [1, n0, _OCRw,
+    0, () => OwnershipControlsRule$
+];
+var Parts = [1, n0, _Pa,
+    0, () => Part$
+];
+var PartsList = [1, n0, _PL,
+    0, () => ObjectPart$
+];
+var QueueConfigurationList = [1, n0, _QCL,
+    0, [() => QueueConfiguration$,
+        0]
+];
+var ReplicationRules = [1, n0, _RRep,
+    0, [() => ReplicationRule$,
+        0]
+];
+var RoutingRules = [1, n0, _RR,
+    0, [() => RoutingRule$,
+        { [_xN]: _RRo }]
+];
+var ServerSideEncryptionRules = [1, n0, _SSERe,
+    0, [() => ServerSideEncryptionRule$,
+        0]
+];
+var TagSet = [1, n0, _TS,
+    0, [() => Tag$,
+        { [_xN]: _Ta }]
+];
+var TargetGrants = [1, n0, _TG,
+    0, [() => TargetGrant$,
+        { [_xN]: _Gr }]
+];
+var TieringList = [1, n0, _TL,
+    0, () => Tiering$
+];
+var TopicConfigurationList = [1, n0, _TCL,
+    0, [() => TopicConfiguration$,
+        0]
+];
+var TransitionList = [1, n0, _TLr,
+    0, () => Transition$
+];
+var UserMetadata = [1, n0, _UM,
+    0, [() => MetadataEntry$,
+        { [_xN]: _ME }]
+];
+var AnalyticsFilter$ = [4, n0, _AF,
+    0,
+    [_P, _Ta, _An],
+    [0, () => Tag$, [() => AnalyticsAndOperator$, 0]]
+];
+var MetricsFilter$ = [4, n0, _MF,
+    0,
+    [_P, _Ta, _APAc, _An],
+    [0, () => Tag$, 0, [() => MetricsAndOperator$, 0]]
+];
+var SelectObjectContentEventStream$ = [4, n0, _SOCES,
+    { [_s]: 1 },
+    [_Rec, _Sta, _Pr, _Cont, _End],
+    [[() => RecordsEvent$, 0], [() => StatsEvent$, 0], [() => ProgressEvent$, 0], () => ContinuationEvent$, () => EndEvent$]
+];
+var AbortMultipartUpload$ = [9, n0, _AMU,
+    { [_h]: ["DELETE", "/{Key+}?x-id=AbortMultipartUpload", 204] }, () => AbortMultipartUploadRequest$, () => AbortMultipartUploadOutput$
+];
+var CompleteMultipartUpload$ = [9, n0, _CMUo,
+    { [_h]: ["POST", "/{Key+}", 200] }, () => CompleteMultipartUploadRequest$, () => CompleteMultipartUploadOutput$
+];
+var CopyObject$ = [9, n0, _CO,
+    { [_h]: ["PUT", "/{Key+}?x-id=CopyObject", 200] }, () => CopyObjectRequest$, () => CopyObjectOutput$
+];
+var CreateBucket$ = [9, n0, _CB,
+    { [_h]: ["PUT", "/", 200] }, () => CreateBucketRequest$, () => CreateBucketOutput$
+];
+var CreateBucketMetadataConfiguration$ = [9, n0, _CBMC,
+    { [_hC]: "-", [_h]: ["POST", "/?metadataConfiguration", 200] }, () => CreateBucketMetadataConfigurationRequest$, () => __Unit
+];
+var CreateBucketMetadataTableConfiguration$ = [9, n0, _CBMTC,
+    { [_hC]: "-", [_h]: ["POST", "/?metadataTable", 200] }, () => CreateBucketMetadataTableConfigurationRequest$, () => __Unit
+];
+var CreateMultipartUpload$ = [9, n0, _CMUr,
+    { [_h]: ["POST", "/{Key+}?uploads", 200] }, () => CreateMultipartUploadRequest$, () => CreateMultipartUploadOutput$
+];
+var CreateSession$ = [9, n0, _CSr,
+    { [_h]: ["GET", "/?session", 200] }, () => CreateSessionRequest$, () => CreateSessionOutput$
+];
+var DeleteBucket$ = [9, n0, _DB,
+    { [_h]: ["DELETE", "/", 204] }, () => DeleteBucketRequest$, () => __Unit
+];
+var DeleteBucketAnalyticsConfiguration$ = [9, n0, _DBAC,
+    { [_h]: ["DELETE", "/?analytics", 204] }, () => DeleteBucketAnalyticsConfigurationRequest$, () => __Unit
+];
+var DeleteBucketCors$ = [9, n0, _DBC,
+    { [_h]: ["DELETE", "/?cors", 204] }, () => DeleteBucketCorsRequest$, () => __Unit
+];
+var DeleteBucketEncryption$ = [9, n0, _DBE,
+    { [_h]: ["DELETE", "/?encryption", 204] }, () => DeleteBucketEncryptionRequest$, () => __Unit
+];
+var DeleteBucketIntelligentTieringConfiguration$ = [9, n0, _DBITC,
+    { [_h]: ["DELETE", "/?intelligent-tiering", 204] }, () => DeleteBucketIntelligentTieringConfigurationRequest$, () => __Unit
+];
+var DeleteBucketInventoryConfiguration$ = [9, n0, _DBIC,
+    { [_h]: ["DELETE", "/?inventory", 204] }, () => DeleteBucketInventoryConfigurationRequest$, () => __Unit
+];
+var DeleteBucketLifecycle$ = [9, n0, _DBL,
+    { [_h]: ["DELETE", "/?lifecycle", 204] }, () => DeleteBucketLifecycleRequest$, () => __Unit
+];
+var DeleteBucketMetadataConfiguration$ = [9, n0, _DBMC,
+    { [_h]: ["DELETE", "/?metadataConfiguration", 204] }, () => DeleteBucketMetadataConfigurationRequest$, () => __Unit
+];
+var DeleteBucketMetadataTableConfiguration$ = [9, n0, _DBMTC,
+    { [_h]: ["DELETE", "/?metadataTable", 204] }, () => DeleteBucketMetadataTableConfigurationRequest$, () => __Unit
+];
+var DeleteBucketMetricsConfiguration$ = [9, n0, _DBMCe,
+    { [_h]: ["DELETE", "/?metrics", 204] }, () => DeleteBucketMetricsConfigurationRequest$, () => __Unit
+];
+var DeleteBucketOwnershipControls$ = [9, n0, _DBOC,
+    { [_h]: ["DELETE", "/?ownershipControls", 204] }, () => DeleteBucketOwnershipControlsRequest$, () => __Unit
+];
+var DeleteBucketPolicy$ = [9, n0, _DBP,
+    { [_h]: ["DELETE", "/?policy", 204] }, () => DeleteBucketPolicyRequest$, () => __Unit
+];
+var DeleteBucketReplication$ = [9, n0, _DBRe,
+    { [_h]: ["DELETE", "/?replication", 204] }, () => DeleteBucketReplicationRequest$, () => __Unit
+];
+var DeleteBucketTagging$ = [9, n0, _DBT,
+    { [_h]: ["DELETE", "/?tagging", 204] }, () => DeleteBucketTaggingRequest$, () => __Unit
+];
+var DeleteBucketWebsite$ = [9, n0, _DBW,
+    { [_h]: ["DELETE", "/?website", 204] }, () => DeleteBucketWebsiteRequest$, () => __Unit
+];
+var DeleteObject$ = [9, n0, _DOel,
+    { [_h]: ["DELETE", "/{Key+}?x-id=DeleteObject", 204] }, () => DeleteObjectRequest$, () => DeleteObjectOutput$
+];
+var DeleteObjects$ = [9, n0, _DOele,
+    { [_hC]: "-", [_h]: ["POST", "/?delete", 200] }, () => DeleteObjectsRequest$, () => DeleteObjectsOutput$
+];
+var DeleteObjectTagging$ = [9, n0, _DOT,
+    { [_h]: ["DELETE", "/{Key+}?tagging", 204] }, () => DeleteObjectTaggingRequest$, () => DeleteObjectTaggingOutput$
+];
+var DeletePublicAccessBlock$ = [9, n0, _DPAB,
+    { [_h]: ["DELETE", "/?publicAccessBlock", 204] }, () => DeletePublicAccessBlockRequest$, () => __Unit
+];
+var GetBucketAbac$ = [9, n0, _GBA,
+    { [_h]: ["GET", "/?abac", 200] }, () => GetBucketAbacRequest$, () => GetBucketAbacOutput$
+];
+var GetBucketAccelerateConfiguration$ = [9, n0, _GBAC,
+    { [_h]: ["GET", "/?accelerate", 200] }, () => GetBucketAccelerateConfigurationRequest$, () => GetBucketAccelerateConfigurationOutput$
+];
+var GetBucketAcl$ = [9, n0, _GBAe,
+    { [_h]: ["GET", "/?acl", 200] }, () => GetBucketAclRequest$, () => GetBucketAclOutput$
+];
+var GetBucketAnalyticsConfiguration$ = [9, n0, _GBACe,
+    { [_h]: ["GET", "/?analytics&x-id=GetBucketAnalyticsConfiguration", 200] }, () => GetBucketAnalyticsConfigurationRequest$, () => GetBucketAnalyticsConfigurationOutput$
+];
+var GetBucketCors$ = [9, n0, _GBC,
+    { [_h]: ["GET", "/?cors", 200] }, () => GetBucketCorsRequest$, () => GetBucketCorsOutput$
+];
+var GetBucketEncryption$ = [9, n0, _GBE,
+    { [_h]: ["GET", "/?encryption", 200] }, () => GetBucketEncryptionRequest$, () => GetBucketEncryptionOutput$
+];
+var GetBucketIntelligentTieringConfiguration$ = [9, n0, _GBITC,
+    { [_h]: ["GET", "/?intelligent-tiering&x-id=GetBucketIntelligentTieringConfiguration", 200] }, () => GetBucketIntelligentTieringConfigurationRequest$, () => GetBucketIntelligentTieringConfigurationOutput$
+];
+var GetBucketInventoryConfiguration$ = [9, n0, _GBIC,
+    { [_h]: ["GET", "/?inventory&x-id=GetBucketInventoryConfiguration", 200] }, () => GetBucketInventoryConfigurationRequest$, () => GetBucketInventoryConfigurationOutput$
+];
+var GetBucketLifecycleConfiguration$ = [9, n0, _GBLC,
+    { [_h]: ["GET", "/?lifecycle", 200] }, () => GetBucketLifecycleConfigurationRequest$, () => GetBucketLifecycleConfigurationOutput$
+];
+var GetBucketLocation$ = [9, n0, _GBL,
+    { [_h]: ["GET", "/?location", 200] }, () => GetBucketLocationRequest$, () => GetBucketLocationOutput$
+];
+var GetBucketLogging$ = [9, n0, _GBLe,
+    { [_h]: ["GET", "/?logging", 200] }, () => GetBucketLoggingRequest$, () => GetBucketLoggingOutput$
+];
+var GetBucketMetadataConfiguration$ = [9, n0, _GBMC,
+    { [_h]: ["GET", "/?metadataConfiguration", 200] }, () => GetBucketMetadataConfigurationRequest$, () => GetBucketMetadataConfigurationOutput$
+];
+var GetBucketMetadataTableConfiguration$ = [9, n0, _GBMTC,
+    { [_h]: ["GET", "/?metadataTable", 200] }, () => GetBucketMetadataTableConfigurationRequest$, () => GetBucketMetadataTableConfigurationOutput$
+];
+var GetBucketMetricsConfiguration$ = [9, n0, _GBMCe,
+    { [_h]: ["GET", "/?metrics&x-id=GetBucketMetricsConfiguration", 200] }, () => GetBucketMetricsConfigurationRequest$, () => GetBucketMetricsConfigurationOutput$
+];
+var GetBucketNotificationConfiguration$ = [9, n0, _GBNC,
+    { [_h]: ["GET", "/?notification", 200] }, () => GetBucketNotificationConfigurationRequest$, () => NotificationConfiguration$
+];
+var GetBucketOwnershipControls$ = [9, n0, _GBOC,
+    { [_h]: ["GET", "/?ownershipControls", 200] }, () => GetBucketOwnershipControlsRequest$, () => GetBucketOwnershipControlsOutput$
+];
+var GetBucketPolicy$ = [9, n0, _GBP,
+    { [_h]: ["GET", "/?policy", 200] }, () => GetBucketPolicyRequest$, () => GetBucketPolicyOutput$
+];
+var GetBucketPolicyStatus$ = [9, n0, _GBPS,
+    { [_h]: ["GET", "/?policyStatus", 200] }, () => GetBucketPolicyStatusRequest$, () => GetBucketPolicyStatusOutput$
+];
+var GetBucketReplication$ = [9, n0, _GBR,
+    { [_h]: ["GET", "/?replication", 200] }, () => GetBucketReplicationRequest$, () => GetBucketReplicationOutput$
+];
+var GetBucketRequestPayment$ = [9, n0, _GBRP,
+    { [_h]: ["GET", "/?requestPayment", 200] }, () => GetBucketRequestPaymentRequest$, () => GetBucketRequestPaymentOutput$
+];
+var GetBucketTagging$ = [9, n0, _GBT,
+    { [_h]: ["GET", "/?tagging", 200] }, () => GetBucketTaggingRequest$, () => GetBucketTaggingOutput$
+];
+var GetBucketVersioning$ = [9, n0, _GBV,
+    { [_h]: ["GET", "/?versioning", 200] }, () => GetBucketVersioningRequest$, () => GetBucketVersioningOutput$
+];
+var GetBucketWebsite$ = [9, n0, _GBW,
+    { [_h]: ["GET", "/?website", 200] }, () => GetBucketWebsiteRequest$, () => GetBucketWebsiteOutput$
+];
+var GetObject$ = [9, n0, _GO,
+    { [_hC]: "-", [_h]: ["GET", "/{Key+}?x-id=GetObject", 200] }, () => GetObjectRequest$, () => GetObjectOutput$
+];
+var GetObjectAcl$ = [9, n0, _GOA,
+    { [_h]: ["GET", "/{Key+}?acl", 200] }, () => GetObjectAclRequest$, () => GetObjectAclOutput$
+];
+var GetObjectAttributes$ = [9, n0, _GOAe,
+    { [_h]: ["GET", "/{Key+}?attributes", 200] }, () => GetObjectAttributesRequest$, () => GetObjectAttributesOutput$
+];
+var GetObjectLegalHold$ = [9, n0, _GOLH,
+    { [_h]: ["GET", "/{Key+}?legal-hold", 200] }, () => GetObjectLegalHoldRequest$, () => GetObjectLegalHoldOutput$
+];
+var GetObjectLockConfiguration$ = [9, n0, _GOLC,
+    { [_h]: ["GET", "/?object-lock", 200] }, () => GetObjectLockConfigurationRequest$, () => GetObjectLockConfigurationOutput$
+];
+var GetObjectRetention$ = [9, n0, _GORe,
+    { [_h]: ["GET", "/{Key+}?retention", 200] }, () => GetObjectRetentionRequest$, () => GetObjectRetentionOutput$
+];
+var GetObjectTagging$ = [9, n0, _GOT,
+    { [_h]: ["GET", "/{Key+}?tagging", 200] }, () => GetObjectTaggingRequest$, () => GetObjectTaggingOutput$
+];
+var GetObjectTorrent$ = [9, n0, _GOTe,
+    { [_h]: ["GET", "/{Key+}?torrent", 200] }, () => GetObjectTorrentRequest$, () => GetObjectTorrentOutput$
+];
+var GetPublicAccessBlock$ = [9, n0, _GPAB,
+    { [_h]: ["GET", "/?publicAccessBlock", 200] }, () => GetPublicAccessBlockRequest$, () => GetPublicAccessBlockOutput$
+];
+var HeadBucket$ = [9, n0, _HB,
+    { [_h]: ["HEAD", "/", 200] }, () => HeadBucketRequest$, () => HeadBucketOutput$
+];
+var HeadObject$ = [9, n0, _HO,
+    { [_h]: ["HEAD", "/{Key+}", 200] }, () => HeadObjectRequest$, () => HeadObjectOutput$
+];
+var ListBucketAnalyticsConfigurations$ = [9, n0, _LBAC,
+    { [_h]: ["GET", "/?analytics&x-id=ListBucketAnalyticsConfigurations", 200] }, () => ListBucketAnalyticsConfigurationsRequest$, () => ListBucketAnalyticsConfigurationsOutput$
+];
+var ListBucketIntelligentTieringConfigurations$ = [9, n0, _LBITC,
+    { [_h]: ["GET", "/?intelligent-tiering&x-id=ListBucketIntelligentTieringConfigurations", 200] }, () => ListBucketIntelligentTieringConfigurationsRequest$, () => ListBucketIntelligentTieringConfigurationsOutput$
+];
+var ListBucketInventoryConfigurations$ = [9, n0, _LBIC,
+    { [_h]: ["GET", "/?inventory&x-id=ListBucketInventoryConfigurations", 200] }, () => ListBucketInventoryConfigurationsRequest$, () => ListBucketInventoryConfigurationsOutput$
+];
+var ListBucketMetricsConfigurations$ = [9, n0, _LBMC,
+    { [_h]: ["GET", "/?metrics&x-id=ListBucketMetricsConfigurations", 200] }, () => ListBucketMetricsConfigurationsRequest$, () => ListBucketMetricsConfigurationsOutput$
+];
+var ListBuckets$ = [9, n0, _LB,
+    { [_h]: ["GET", "/?x-id=ListBuckets", 200] }, () => ListBucketsRequest$, () => ListBucketsOutput$
+];
+var ListDirectoryBuckets$ = [9, n0, _LDB,
+    { [_h]: ["GET", "/?x-id=ListDirectoryBuckets", 200] }, () => ListDirectoryBucketsRequest$, () => ListDirectoryBucketsOutput$
+];
+var ListMultipartUploads$ = [9, n0, _LMU,
+    { [_h]: ["GET", "/?uploads", 200] }, () => ListMultipartUploadsRequest$, () => ListMultipartUploadsOutput$
+];
+var ListObjects$ = [9, n0, _LO,
+    { [_h]: ["GET", "/", 200] }, () => ListObjectsRequest$, () => ListObjectsOutput$
+];
+var ListObjectsV2$ = [9, n0, _LOV,
+    { [_h]: ["GET", "/?list-type=2", 200] }, () => ListObjectsV2Request$, () => ListObjectsV2Output$
+];
+var ListObjectVersions$ = [9, n0, _LOVi,
+    { [_h]: ["GET", "/?versions", 200] }, () => ListObjectVersionsRequest$, () => ListObjectVersionsOutput$
+];
+var ListParts$ = [9, n0, _LP,
+    { [_h]: ["GET", "/{Key+}?x-id=ListParts", 200] }, () => ListPartsRequest$, () => ListPartsOutput$
+];
+var PutBucketAbac$ = [9, n0, _PBA,
+    { [_hC]: "-", [_h]: ["PUT", "/?abac", 200] }, () => PutBucketAbacRequest$, () => __Unit
+];
+var PutBucketAccelerateConfiguration$ = [9, n0, _PBAC,
+    { [_hC]: "-", [_h]: ["PUT", "/?accelerate", 200] }, () => PutBucketAccelerateConfigurationRequest$, () => __Unit
+];
+var PutBucketAcl$ = [9, n0, _PBAu,
+    { [_hC]: "-", [_h]: ["PUT", "/?acl", 200] }, () => PutBucketAclRequest$, () => __Unit
+];
+var PutBucketAnalyticsConfiguration$ = [9, n0, _PBACu,
+    { [_h]: ["PUT", "/?analytics", 200] }, () => PutBucketAnalyticsConfigurationRequest$, () => __Unit
+];
+var PutBucketCors$ = [9, n0, _PBC,
+    { [_hC]: "-", [_h]: ["PUT", "/?cors", 200] }, () => PutBucketCorsRequest$, () => __Unit
+];
+var PutBucketEncryption$ = [9, n0, _PBE,
+    { [_hC]: "-", [_h]: ["PUT", "/?encryption", 200] }, () => PutBucketEncryptionRequest$, () => __Unit
+];
+var PutBucketIntelligentTieringConfiguration$ = [9, n0, _PBITC,
+    { [_h]: ["PUT", "/?intelligent-tiering", 200] }, () => PutBucketIntelligentTieringConfigurationRequest$, () => __Unit
+];
+var PutBucketInventoryConfiguration$ = [9, n0, _PBIC,
+    { [_h]: ["PUT", "/?inventory", 200] }, () => PutBucketInventoryConfigurationRequest$, () => __Unit
+];
+var PutBucketLifecycleConfiguration$ = [9, n0, _PBLC,
+    { [_hC]: "-", [_h]: ["PUT", "/?lifecycle", 200] }, () => PutBucketLifecycleConfigurationRequest$, () => PutBucketLifecycleConfigurationOutput$
+];
+var PutBucketLogging$ = [9, n0, _PBL,
+    { [_hC]: "-", [_h]: ["PUT", "/?logging", 200] }, () => PutBucketLoggingRequest$, () => __Unit
+];
+var PutBucketMetricsConfiguration$ = [9, n0, _PBMC,
+    { [_h]: ["PUT", "/?metrics", 200] }, () => PutBucketMetricsConfigurationRequest$, () => __Unit
+];
+var PutBucketNotificationConfiguration$ = [9, n0, _PBNC,
+    { [_h]: ["PUT", "/?notification", 200] }, () => PutBucketNotificationConfigurationRequest$, () => __Unit
+];
+var PutBucketOwnershipControls$ = [9, n0, _PBOC,
+    { [_hC]: "-", [_h]: ["PUT", "/?ownershipControls", 200] }, () => PutBucketOwnershipControlsRequest$, () => __Unit
+];
+var PutBucketPolicy$ = [9, n0, _PBP,
+    { [_hC]: "-", [_h]: ["PUT", "/?policy", 200] }, () => PutBucketPolicyRequest$, () => __Unit
+];
+var PutBucketReplication$ = [9, n0, _PBR,
+    { [_hC]: "-", [_h]: ["PUT", "/?replication", 200] }, () => PutBucketReplicationRequest$, () => __Unit
+];
+var PutBucketRequestPayment$ = [9, n0, _PBRP,
+    { [_hC]: "-", [_h]: ["PUT", "/?requestPayment", 200] }, () => PutBucketRequestPaymentRequest$, () => __Unit
+];
+var PutBucketTagging$ = [9, n0, _PBT,
+    { [_hC]: "-", [_h]: ["PUT", "/?tagging", 200] }, () => PutBucketTaggingRequest$, () => __Unit
+];
+var PutBucketVersioning$ = [9, n0, _PBV,
+    { [_hC]: "-", [_h]: ["PUT", "/?versioning", 200] }, () => PutBucketVersioningRequest$, () => __Unit
+];
+var PutBucketWebsite$ = [9, n0, _PBW,
+    { [_hC]: "-", [_h]: ["PUT", "/?website", 200] }, () => PutBucketWebsiteRequest$, () => __Unit
+];
+var PutObject$ = [9, n0, _PO,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=PutObject", 200] }, () => PutObjectRequest$, () => PutObjectOutput$
+];
+var PutObjectAcl$ = [9, n0, _POA,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?acl", 200] }, () => PutObjectAclRequest$, () => PutObjectAclOutput$
+];
+var PutObjectLegalHold$ = [9, n0, _POLH,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?legal-hold", 200] }, () => PutObjectLegalHoldRequest$, () => PutObjectLegalHoldOutput$
+];
+var PutObjectLockConfiguration$ = [9, n0, _POLC,
+    { [_hC]: "-", [_h]: ["PUT", "/?object-lock", 200] }, () => PutObjectLockConfigurationRequest$, () => PutObjectLockConfigurationOutput$
+];
+var PutObjectRetention$ = [9, n0, _PORu,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?retention", 200] }, () => PutObjectRetentionRequest$, () => PutObjectRetentionOutput$
+];
+var PutObjectTagging$ = [9, n0, _POT,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?tagging", 200] }, () => PutObjectTaggingRequest$, () => PutObjectTaggingOutput$
+];
+var PutPublicAccessBlock$ = [9, n0, _PPAB,
+    { [_hC]: "-", [_h]: ["PUT", "/?publicAccessBlock", 200] }, () => PutPublicAccessBlockRequest$, () => __Unit
+];
+var RenameObject$ = [9, n0, _RO,
+    { [_h]: ["PUT", "/{Key+}?renameObject", 200] }, () => RenameObjectRequest$, () => RenameObjectOutput$
+];
+var RestoreObject$ = [9, n0, _ROe,
+    { [_hC]: "-", [_h]: ["POST", "/{Key+}?restore", 200] }, () => RestoreObjectRequest$, () => RestoreObjectOutput$
+];
+var SelectObjectContent$ = [9, n0, _SOC,
+    { [_h]: ["POST", "/{Key+}?select&select-type=2", 200] }, () => SelectObjectContentRequest$, () => SelectObjectContentOutput$
+];
+var UpdateBucketMetadataInventoryTableConfiguration$ = [9, n0, _UBMITC,
+    { [_hC]: "-", [_h]: ["PUT", "/?metadataInventoryTable", 200] }, () => UpdateBucketMetadataInventoryTableConfigurationRequest$, () => __Unit
+];
+var UpdateBucketMetadataJournalTableConfiguration$ = [9, n0, _UBMJTC,
+    { [_hC]: "-", [_h]: ["PUT", "/?metadataJournalTable", 200] }, () => UpdateBucketMetadataJournalTableConfigurationRequest$, () => __Unit
+];
+var UploadPart$ = [9, n0, _UP,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=UploadPart", 200] }, () => UploadPartRequest$, () => UploadPartOutput$
+];
+var UploadPartCopy$ = [9, n0, _UPC,
+    { [_h]: ["PUT", "/{Key+}?x-id=UploadPartCopy", 200] }, () => UploadPartCopyRequest$, () => UploadPartCopyOutput$
+];
+var WriteGetObjectResponse$ = [9, n0, _WGOR,
+    { [_en]: ["{RequestRoute}."], [_h]: ["POST", "/WriteGetObjectResponse", 200] }, () => WriteGetObjectResponseRequest$, () => __Unit
+];
 
 class CreateSessionCommand extends smithyClient.Command
     .classBuilder()
@@ -13176,16 +8626,13 @@ class CreateSessionCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "CreateSession", {})
     .n("S3Client", "CreateSessionCommand")
-    .f(CreateSessionRequestFilterSensitiveLog, CreateSessionOutputFilterSensitiveLog)
-    .ser(se_CreateSessionCommand)
-    .de(de_CreateSessionCommand)
+    .sc(CreateSession$)
     .build() {
 }
 
@@ -13252,6 +8699,7 @@ class S3Client extends smithyClient.Client {
         const _config_10 = middlewareSdkS3.resolveS3Config(_config_9, { session: [() => this, CreateSessionCommand] });
         const _config_11 = resolveRuntimeExtensions(_config_10, configuration?.extensions || []);
         this.config = _config_11;
+        this.middlewareStack.use(schema.getSchemaSerdePlugin(this.config));
         this.middlewareStack.use(middlewareUserAgent.getUserAgentPlugin(this.config));
         this.middlewareStack.use(middlewareRetry.getRetryPlugin(this.config));
         this.middlewareStack.use(middlewareContentLength.getContentLengthPlugin(this.config));
@@ -13286,16 +8734,13 @@ class AbortMultipartUploadCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "AbortMultipartUpload", {})
     .n("S3Client", "AbortMultipartUploadCommand")
-    .f(void 0, void 0)
-    .ser(se_AbortMultipartUploadCommand)
-    .de(de_AbortMultipartUploadCommand)
+    .sc(AbortMultipartUpload$)
     .build() {
 }
 
@@ -13308,7 +8753,6 @@ class CompleteMultipartUploadCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -13316,9 +8760,7 @@ class CompleteMultipartUploadCommand extends smithyClient.Command
 })
     .s("AmazonS3", "CompleteMultipartUpload", {})
     .n("S3Client", "CompleteMultipartUploadCommand")
-    .f(CompleteMultipartUploadRequestFilterSensitiveLog, CompleteMultipartUploadOutputFilterSensitiveLog)
-    .ser(se_CompleteMultipartUploadCommand)
-    .de(de_CompleteMultipartUploadCommand)
+    .sc(CompleteMultipartUpload$)
     .build() {
 }
 
@@ -13333,7 +8775,6 @@ class CopyObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -13341,9 +8782,7 @@ class CopyObjectCommand extends smithyClient.Command
 })
     .s("AmazonS3", "CopyObject", {})
     .n("S3Client", "CopyObjectCommand")
-    .f(CopyObjectRequestFilterSensitiveLog, CopyObjectOutputFilterSensitiveLog)
-    .ser(se_CopyObjectCommand)
-    .de(de_CopyObjectCommand)
+    .sc(CopyObject$)
     .build() {
 }
 
@@ -13357,7 +8796,6 @@ class CreateBucketCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareLocationConstraint.getLocationConstraintPlugin(config),
@@ -13365,9 +8803,7 @@ class CreateBucketCommand extends smithyClient.Command
 })
     .s("AmazonS3", "CreateBucket", {})
     .n("S3Client", "CreateBucketCommand")
-    .f(void 0, void 0)
-    .ser(se_CreateBucketCommand)
-    .de(de_CreateBucketCommand)
+    .sc(CreateBucket$)
     .build() {
 }
 
@@ -13380,19 +8816,16 @@ class CreateBucketMetadataConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "CreateBucketMetadataConfiguration", {})
     .n("S3Client", "CreateBucketMetadataConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_CreateBucketMetadataConfigurationCommand)
-    .de(de_CreateBucketMetadataConfigurationCommand)
+    .sc(CreateBucketMetadataConfiguration$)
     .build() {
 }
 
@@ -13405,19 +8838,16 @@ class CreateBucketMetadataTableConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "CreateBucketMetadataTableConfiguration", {})
     .n("S3Client", "CreateBucketMetadataTableConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_CreateBucketMetadataTableConfigurationCommand)
-    .de(de_CreateBucketMetadataTableConfigurationCommand)
+    .sc(CreateBucketMetadataTableConfiguration$)
     .build() {
 }
 
@@ -13430,7 +8860,6 @@ class CreateMultipartUploadCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -13438,9 +8867,7 @@ class CreateMultipartUploadCommand extends smithyClient.Command
 })
     .s("AmazonS3", "CreateMultipartUpload", {})
     .n("S3Client", "CreateMultipartUploadCommand")
-    .f(CreateMultipartUploadRequestFilterSensitiveLog, CreateMultipartUploadOutputFilterSensitiveLog)
-    .ser(se_CreateMultipartUploadCommand)
-    .de(de_CreateMultipartUploadCommand)
+    .sc(CreateMultipartUpload$)
     .build() {
 }
 
@@ -13452,16 +8879,11 @@ class DeleteBucketAnalyticsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketAnalyticsConfiguration", {})
     .n("S3Client", "DeleteBucketAnalyticsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketAnalyticsConfigurationCommand)
-    .de(de_DeleteBucketAnalyticsConfigurationCommand)
+    .sc(DeleteBucketAnalyticsConfiguration$)
     .build() {
 }
 
@@ -13473,16 +8895,11 @@ class DeleteBucketCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucket", {})
     .n("S3Client", "DeleteBucketCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketCommand)
-    .de(de_DeleteBucketCommand)
+    .sc(DeleteBucket$)
     .build() {
 }
 
@@ -13494,16 +8911,11 @@ class DeleteBucketCorsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketCors", {})
     .n("S3Client", "DeleteBucketCorsCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketCorsCommand)
-    .de(de_DeleteBucketCorsCommand)
+    .sc(DeleteBucketCors$)
     .build() {
 }
 
@@ -13515,16 +8927,11 @@ class DeleteBucketEncryptionCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketEncryption", {})
     .n("S3Client", "DeleteBucketEncryptionCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketEncryptionCommand)
-    .de(de_DeleteBucketEncryptionCommand)
+    .sc(DeleteBucketEncryption$)
     .build() {
 }
 
@@ -13536,16 +8943,11 @@ class DeleteBucketIntelligentTieringConfigurationCommand extends smithyClient.Co
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketIntelligentTieringConfiguration", {})
     .n("S3Client", "DeleteBucketIntelligentTieringConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketIntelligentTieringConfigurationCommand)
-    .de(de_DeleteBucketIntelligentTieringConfigurationCommand)
+    .sc(DeleteBucketIntelligentTieringConfiguration$)
     .build() {
 }
 
@@ -13557,16 +8959,11 @@ class DeleteBucketInventoryConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketInventoryConfiguration", {})
     .n("S3Client", "DeleteBucketInventoryConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketInventoryConfigurationCommand)
-    .de(de_DeleteBucketInventoryConfigurationCommand)
+    .sc(DeleteBucketInventoryConfiguration$)
     .build() {
 }
 
@@ -13578,16 +8975,11 @@ class DeleteBucketLifecycleCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketLifecycle", {})
     .n("S3Client", "DeleteBucketLifecycleCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketLifecycleCommand)
-    .de(de_DeleteBucketLifecycleCommand)
+    .sc(DeleteBucketLifecycle$)
     .build() {
 }
 
@@ -13599,16 +8991,11 @@ class DeleteBucketMetadataConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketMetadataConfiguration", {})
     .n("S3Client", "DeleteBucketMetadataConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketMetadataConfigurationCommand)
-    .de(de_DeleteBucketMetadataConfigurationCommand)
+    .sc(DeleteBucketMetadataConfiguration$)
     .build() {
 }
 
@@ -13620,16 +9007,11 @@ class DeleteBucketMetadataTableConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketMetadataTableConfiguration", {})
     .n("S3Client", "DeleteBucketMetadataTableConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketMetadataTableConfigurationCommand)
-    .de(de_DeleteBucketMetadataTableConfigurationCommand)
+    .sc(DeleteBucketMetadataTableConfiguration$)
     .build() {
 }
 
@@ -13641,16 +9023,11 @@ class DeleteBucketMetricsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketMetricsConfiguration", {})
     .n("S3Client", "DeleteBucketMetricsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketMetricsConfigurationCommand)
-    .de(de_DeleteBucketMetricsConfigurationCommand)
+    .sc(DeleteBucketMetricsConfiguration$)
     .build() {
 }
 
@@ -13662,16 +9039,11 @@ class DeleteBucketOwnershipControlsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketOwnershipControls", {})
     .n("S3Client", "DeleteBucketOwnershipControlsCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketOwnershipControlsCommand)
-    .de(de_DeleteBucketOwnershipControlsCommand)
+    .sc(DeleteBucketOwnershipControls$)
     .build() {
 }
 
@@ -13683,16 +9055,11 @@ class DeleteBucketPolicyCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketPolicy", {})
     .n("S3Client", "DeleteBucketPolicyCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketPolicyCommand)
-    .de(de_DeleteBucketPolicyCommand)
+    .sc(DeleteBucketPolicy$)
     .build() {
 }
 
@@ -13704,16 +9071,11 @@ class DeleteBucketReplicationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketReplication", {})
     .n("S3Client", "DeleteBucketReplicationCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketReplicationCommand)
-    .de(de_DeleteBucketReplicationCommand)
+    .sc(DeleteBucketReplication$)
     .build() {
 }
 
@@ -13725,16 +9087,11 @@ class DeleteBucketTaggingCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketTagging", {})
     .n("S3Client", "DeleteBucketTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketTaggingCommand)
-    .de(de_DeleteBucketTaggingCommand)
+    .sc(DeleteBucketTagging$)
     .build() {
 }
 
@@ -13746,16 +9103,11 @@ class DeleteBucketWebsiteCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeleteBucketWebsite", {})
     .n("S3Client", "DeleteBucketWebsiteCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteBucketWebsiteCommand)
-    .de(de_DeleteBucketWebsiteCommand)
+    .sc(DeleteBucketWebsite$)
     .build() {
 }
 
@@ -13768,16 +9120,13 @@ class DeleteObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "DeleteObject", {})
     .n("S3Client", "DeleteObjectCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteObjectCommand)
-    .de(de_DeleteObjectCommand)
+    .sc(DeleteObject$)
     .build() {
 }
 
@@ -13789,10 +9138,9 @@ class DeleteObjectsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -13800,9 +9148,7 @@ class DeleteObjectsCommand extends smithyClient.Command
 })
     .s("AmazonS3", "DeleteObjects", {})
     .n("S3Client", "DeleteObjectsCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteObjectsCommand)
-    .de(de_DeleteObjectsCommand)
+    .sc(DeleteObjects$)
     .build() {
 }
 
@@ -13814,16 +9160,13 @@ class DeleteObjectTaggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "DeleteObjectTagging", {})
     .n("S3Client", "DeleteObjectTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_DeleteObjectTaggingCommand)
-    .de(de_DeleteObjectTaggingCommand)
+    .sc(DeleteObjectTagging$)
     .build() {
 }
 
@@ -13835,16 +9178,29 @@ class DeletePublicAccessBlockCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "DeletePublicAccessBlock", {})
     .n("S3Client", "DeletePublicAccessBlockCommand")
-    .f(void 0, void 0)
-    .ser(se_DeletePublicAccessBlockCommand)
-    .de(de_DeletePublicAccessBlockCommand)
+    .sc(DeletePublicAccessBlock$)
+    .build() {
+}
+
+class GetBucketAbacCommand extends smithyClient.Command
+    .classBuilder()
+    .ep({
+    ...commonParams,
+    Bucket: { type: "contextParams", name: "Bucket" },
+})
+    .m(function (Command, cs, config, o) {
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
+})
+    .s("AmazonS3", "GetBucketAbac", {})
+    .n("S3Client", "GetBucketAbacCommand")
+    .sc(GetBucketAbac$)
     .build() {
 }
 
@@ -13857,16 +9213,13 @@ class GetBucketAccelerateConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketAccelerateConfiguration", {})
     .n("S3Client", "GetBucketAccelerateConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketAccelerateConfigurationCommand)
-    .de(de_GetBucketAccelerateConfigurationCommand)
+    .sc(GetBucketAccelerateConfiguration$)
     .build() {
 }
 
@@ -13879,16 +9232,13 @@ class GetBucketAclCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketAcl", {})
     .n("S3Client", "GetBucketAclCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketAclCommand)
-    .de(de_GetBucketAclCommand)
+    .sc(GetBucketAcl$)
     .build() {
 }
 
@@ -13901,16 +9251,13 @@ class GetBucketAnalyticsConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketAnalyticsConfiguration", {})
     .n("S3Client", "GetBucketAnalyticsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketAnalyticsConfigurationCommand)
-    .de(de_GetBucketAnalyticsConfigurationCommand)
+    .sc(GetBucketAnalyticsConfiguration$)
     .build() {
 }
 
@@ -13923,16 +9270,13 @@ class GetBucketCorsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketCors", {})
     .n("S3Client", "GetBucketCorsCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketCorsCommand)
-    .de(de_GetBucketCorsCommand)
+    .sc(GetBucketCors$)
     .build() {
 }
 
@@ -13945,16 +9289,13 @@ class GetBucketEncryptionCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketEncryption", {})
     .n("S3Client", "GetBucketEncryptionCommand")
-    .f(void 0, GetBucketEncryptionOutputFilterSensitiveLog)
-    .ser(se_GetBucketEncryptionCommand)
-    .de(de_GetBucketEncryptionCommand)
+    .sc(GetBucketEncryption$)
     .build() {
 }
 
@@ -13967,16 +9308,13 @@ class GetBucketIntelligentTieringConfigurationCommand extends smithyClient.Comma
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketIntelligentTieringConfiguration", {})
     .n("S3Client", "GetBucketIntelligentTieringConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketIntelligentTieringConfigurationCommand)
-    .de(de_GetBucketIntelligentTieringConfigurationCommand)
+    .sc(GetBucketIntelligentTieringConfiguration$)
     .build() {
 }
 
@@ -13989,16 +9327,13 @@ class GetBucketInventoryConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketInventoryConfiguration", {})
     .n("S3Client", "GetBucketInventoryConfigurationCommand")
-    .f(void 0, GetBucketInventoryConfigurationOutputFilterSensitiveLog)
-    .ser(se_GetBucketInventoryConfigurationCommand)
-    .de(de_GetBucketInventoryConfigurationCommand)
+    .sc(GetBucketInventoryConfiguration$)
     .build() {
 }
 
@@ -14011,16 +9346,13 @@ class GetBucketLifecycleConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketLifecycleConfiguration", {})
     .n("S3Client", "GetBucketLifecycleConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketLifecycleConfigurationCommand)
-    .de(de_GetBucketLifecycleConfigurationCommand)
+    .sc(GetBucketLifecycleConfiguration$)
     .build() {
 }
 
@@ -14033,16 +9365,13 @@ class GetBucketLocationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketLocation", {})
     .n("S3Client", "GetBucketLocationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketLocationCommand)
-    .de(de_GetBucketLocationCommand)
+    .sc(GetBucketLocation$)
     .build() {
 }
 
@@ -14055,16 +9384,13 @@ class GetBucketLoggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketLogging", {})
     .n("S3Client", "GetBucketLoggingCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketLoggingCommand)
-    .de(de_GetBucketLoggingCommand)
+    .sc(GetBucketLogging$)
     .build() {
 }
 
@@ -14077,16 +9403,13 @@ class GetBucketMetadataConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketMetadataConfiguration", {})
     .n("S3Client", "GetBucketMetadataConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketMetadataConfigurationCommand)
-    .de(de_GetBucketMetadataConfigurationCommand)
+    .sc(GetBucketMetadataConfiguration$)
     .build() {
 }
 
@@ -14099,16 +9422,13 @@ class GetBucketMetadataTableConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketMetadataTableConfiguration", {})
     .n("S3Client", "GetBucketMetadataTableConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketMetadataTableConfigurationCommand)
-    .de(de_GetBucketMetadataTableConfigurationCommand)
+    .sc(GetBucketMetadataTableConfiguration$)
     .build() {
 }
 
@@ -14121,16 +9441,13 @@ class GetBucketMetricsConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketMetricsConfiguration", {})
     .n("S3Client", "GetBucketMetricsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketMetricsConfigurationCommand)
-    .de(de_GetBucketMetricsConfigurationCommand)
+    .sc(GetBucketMetricsConfiguration$)
     .build() {
 }
 
@@ -14143,16 +9460,13 @@ class GetBucketNotificationConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketNotificationConfiguration", {})
     .n("S3Client", "GetBucketNotificationConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketNotificationConfigurationCommand)
-    .de(de_GetBucketNotificationConfigurationCommand)
+    .sc(GetBucketNotificationConfiguration$)
     .build() {
 }
 
@@ -14165,16 +9479,13 @@ class GetBucketOwnershipControlsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketOwnershipControls", {})
     .n("S3Client", "GetBucketOwnershipControlsCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketOwnershipControlsCommand)
-    .de(de_GetBucketOwnershipControlsCommand)
+    .sc(GetBucketOwnershipControls$)
     .build() {
 }
 
@@ -14187,16 +9498,13 @@ class GetBucketPolicyCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketPolicy", {})
     .n("S3Client", "GetBucketPolicyCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketPolicyCommand)
-    .de(de_GetBucketPolicyCommand)
+    .sc(GetBucketPolicy$)
     .build() {
 }
 
@@ -14209,16 +9517,13 @@ class GetBucketPolicyStatusCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketPolicyStatus", {})
     .n("S3Client", "GetBucketPolicyStatusCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketPolicyStatusCommand)
-    .de(de_GetBucketPolicyStatusCommand)
+    .sc(GetBucketPolicyStatus$)
     .build() {
 }
 
@@ -14231,16 +9536,13 @@ class GetBucketReplicationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketReplication", {})
     .n("S3Client", "GetBucketReplicationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketReplicationCommand)
-    .de(de_GetBucketReplicationCommand)
+    .sc(GetBucketReplication$)
     .build() {
 }
 
@@ -14253,16 +9555,13 @@ class GetBucketRequestPaymentCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketRequestPayment", {})
     .n("S3Client", "GetBucketRequestPaymentCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketRequestPaymentCommand)
-    .de(de_GetBucketRequestPaymentCommand)
+    .sc(GetBucketRequestPayment$)
     .build() {
 }
 
@@ -14275,16 +9574,13 @@ class GetBucketTaggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketTagging", {})
     .n("S3Client", "GetBucketTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketTaggingCommand)
-    .de(de_GetBucketTaggingCommand)
+    .sc(GetBucketTagging$)
     .build() {
 }
 
@@ -14297,16 +9593,13 @@ class GetBucketVersioningCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketVersioning", {})
     .n("S3Client", "GetBucketVersioningCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketVersioningCommand)
-    .de(de_GetBucketVersioningCommand)
+    .sc(GetBucketVersioning$)
     .build() {
 }
 
@@ -14319,16 +9612,13 @@ class GetBucketWebsiteCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetBucketWebsite", {})
     .n("S3Client", "GetBucketWebsiteCommand")
-    .f(void 0, void 0)
-    .ser(se_GetBucketWebsiteCommand)
-    .de(de_GetBucketWebsiteCommand)
+    .sc(GetBucketWebsite$)
     .build() {
 }
 
@@ -14341,16 +9631,13 @@ class GetObjectAclCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetObjectAcl", {})
     .n("S3Client", "GetObjectAclCommand")
-    .f(void 0, void 0)
-    .ser(se_GetObjectAclCommand)
-    .de(de_GetObjectAclCommand)
+    .sc(GetObjectAcl$)
     .build() {
 }
 
@@ -14362,7 +9649,6 @@ class GetObjectAttributesCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -14370,9 +9656,7 @@ class GetObjectAttributesCommand extends smithyClient.Command
 })
     .s("AmazonS3", "GetObjectAttributes", {})
     .n("S3Client", "GetObjectAttributesCommand")
-    .f(GetObjectAttributesRequestFilterSensitiveLog, void 0)
-    .ser(se_GetObjectAttributesCommand)
-    .de(de_GetObjectAttributesCommand)
+    .sc(GetObjectAttributes$)
     .build() {
 }
 
@@ -14385,12 +9669,11 @@ class GetObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
             requestChecksumRequired: false,
-            requestValidationModeMember: "ChecksumMode",
-            responseAlgorithms: ["CRC64NVME", "CRC32", "CRC32C", "SHA256", "SHA1"],
+            requestValidationModeMember: 'ChecksumMode',
+            'responseAlgorithms': ['CRC64NVME', 'CRC32', 'CRC32C', 'SHA256', 'SHA1'],
         }),
         middlewareSsec.getSsecPlugin(config),
         middlewareSdkS3.getS3ExpiresMiddlewarePlugin(config),
@@ -14398,9 +9681,7 @@ class GetObjectCommand extends smithyClient.Command
 })
     .s("AmazonS3", "GetObject", {})
     .n("S3Client", "GetObjectCommand")
-    .f(GetObjectRequestFilterSensitiveLog, GetObjectOutputFilterSensitiveLog)
-    .ser(se_GetObjectCommand)
-    .de(de_GetObjectCommand)
+    .sc(GetObject$)
     .build() {
 }
 
@@ -14412,16 +9693,13 @@ class GetObjectLegalHoldCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetObjectLegalHold", {})
     .n("S3Client", "GetObjectLegalHoldCommand")
-    .f(void 0, void 0)
-    .ser(se_GetObjectLegalHoldCommand)
-    .de(de_GetObjectLegalHoldCommand)
+    .sc(GetObjectLegalHold$)
     .build() {
 }
 
@@ -14433,16 +9711,13 @@ class GetObjectLockConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetObjectLockConfiguration", {})
     .n("S3Client", "GetObjectLockConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_GetObjectLockConfigurationCommand)
-    .de(de_GetObjectLockConfigurationCommand)
+    .sc(GetObjectLockConfiguration$)
     .build() {
 }
 
@@ -14454,16 +9729,13 @@ class GetObjectRetentionCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetObjectRetention", {})
     .n("S3Client", "GetObjectRetentionCommand")
-    .f(void 0, void 0)
-    .ser(se_GetObjectRetentionCommand)
-    .de(de_GetObjectRetentionCommand)
+    .sc(GetObjectRetention$)
     .build() {
 }
 
@@ -14475,16 +9747,13 @@ class GetObjectTaggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetObjectTagging", {})
     .n("S3Client", "GetObjectTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_GetObjectTaggingCommand)
-    .de(de_GetObjectTaggingCommand)
+    .sc(GetObjectTagging$)
     .build() {
 }
 
@@ -14495,16 +9764,11 @@ class GetObjectTorrentCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "GetObjectTorrent", {})
     .n("S3Client", "GetObjectTorrentCommand")
-    .f(void 0, GetObjectTorrentOutputFilterSensitiveLog)
-    .ser(se_GetObjectTorrentCommand)
-    .de(de_GetObjectTorrentCommand)
+    .sc(GetObjectTorrent$)
     .build() {
 }
 
@@ -14517,16 +9781,13 @@ class GetPublicAccessBlockCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "GetPublicAccessBlock", {})
     .n("S3Client", "GetPublicAccessBlockCommand")
-    .f(void 0, void 0)
-    .ser(se_GetPublicAccessBlockCommand)
-    .de(de_GetPublicAccessBlockCommand)
+    .sc(GetPublicAccessBlock$)
     .build() {
 }
 
@@ -14538,16 +9799,13 @@ class HeadBucketCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "HeadBucket", {})
     .n("S3Client", "HeadBucketCommand")
-    .f(void 0, void 0)
-    .ser(se_HeadBucketCommand)
-    .de(de_HeadBucketCommand)
+    .sc(HeadBucket$)
     .build() {
 }
 
@@ -14560,7 +9818,6 @@ class HeadObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -14569,9 +9826,7 @@ class HeadObjectCommand extends smithyClient.Command
 })
     .s("AmazonS3", "HeadObject", {})
     .n("S3Client", "HeadObjectCommand")
-    .f(HeadObjectRequestFilterSensitiveLog, HeadObjectOutputFilterSensitiveLog)
-    .ser(se_HeadObjectCommand)
-    .de(de_HeadObjectCommand)
+    .sc(HeadObject$)
     .build() {
 }
 
@@ -14584,16 +9839,13 @@ class ListBucketAnalyticsConfigurationsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListBucketAnalyticsConfigurations", {})
     .n("S3Client", "ListBucketAnalyticsConfigurationsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListBucketAnalyticsConfigurationsCommand)
-    .de(de_ListBucketAnalyticsConfigurationsCommand)
+    .sc(ListBucketAnalyticsConfigurations$)
     .build() {
 }
 
@@ -14606,16 +9858,13 @@ class ListBucketIntelligentTieringConfigurationsCommand extends smithyClient.Com
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListBucketIntelligentTieringConfigurations", {})
     .n("S3Client", "ListBucketIntelligentTieringConfigurationsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListBucketIntelligentTieringConfigurationsCommand)
-    .de(de_ListBucketIntelligentTieringConfigurationsCommand)
+    .sc(ListBucketIntelligentTieringConfigurations$)
     .build() {
 }
 
@@ -14628,16 +9877,13 @@ class ListBucketInventoryConfigurationsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListBucketInventoryConfigurations", {})
     .n("S3Client", "ListBucketInventoryConfigurationsCommand")
-    .f(void 0, ListBucketInventoryConfigurationsOutputFilterSensitiveLog)
-    .ser(se_ListBucketInventoryConfigurationsCommand)
-    .de(de_ListBucketInventoryConfigurationsCommand)
+    .sc(ListBucketInventoryConfigurations$)
     .build() {
 }
 
@@ -14649,16 +9895,13 @@ class ListBucketMetricsConfigurationsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListBucketMetricsConfigurations", {})
     .n("S3Client", "ListBucketMetricsConfigurationsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListBucketMetricsConfigurationsCommand)
-    .de(de_ListBucketMetricsConfigurationsCommand)
+    .sc(ListBucketMetricsConfigurations$)
     .build() {
 }
 
@@ -14667,16 +9910,13 @@ class ListBucketsCommand extends smithyClient.Command
     .ep(commonParams)
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListBuckets", {})
     .n("S3Client", "ListBucketsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListBucketsCommand)
-    .de(de_ListBucketsCommand)
+    .sc(ListBuckets$)
     .build() {
 }
 
@@ -14688,16 +9928,13 @@ class ListDirectoryBucketsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListDirectoryBuckets", {})
     .n("S3Client", "ListDirectoryBucketsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListDirectoryBucketsCommand)
-    .de(de_ListDirectoryBucketsCommand)
+    .sc(ListDirectoryBuckets$)
     .build() {
 }
 
@@ -14710,16 +9947,13 @@ class ListMultipartUploadsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListMultipartUploads", {})
     .n("S3Client", "ListMultipartUploadsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListMultipartUploadsCommand)
-    .de(de_ListMultipartUploadsCommand)
+    .sc(ListMultipartUploads$)
     .build() {
 }
 
@@ -14732,16 +9966,13 @@ class ListObjectsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListObjects", {})
     .n("S3Client", "ListObjectsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListObjectsCommand)
-    .de(de_ListObjectsCommand)
+    .sc(ListObjects$)
     .build() {
 }
 
@@ -14754,16 +9985,13 @@ class ListObjectsV2Command extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListObjectsV2", {})
     .n("S3Client", "ListObjectsV2Command")
-    .f(void 0, void 0)
-    .ser(se_ListObjectsV2Command)
-    .de(de_ListObjectsV2Command)
+    .sc(ListObjectsV2$)
     .build() {
 }
 
@@ -14776,16 +10004,13 @@ class ListObjectVersionsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "ListObjectVersions", {})
     .n("S3Client", "ListObjectVersionsCommand")
-    .f(void 0, void 0)
-    .ser(se_ListObjectVersionsCommand)
-    .de(de_ListObjectVersionsCommand)
+    .sc(ListObjectVersions$)
     .build() {
 }
 
@@ -14798,7 +10023,6 @@ class ListPartsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -14806,9 +10030,28 @@ class ListPartsCommand extends smithyClient.Command
 })
     .s("AmazonS3", "ListParts", {})
     .n("S3Client", "ListPartsCommand")
-    .f(ListPartsRequestFilterSensitiveLog, void 0)
-    .ser(se_ListPartsCommand)
-    .de(de_ListPartsCommand)
+    .sc(ListParts$)
+    .build() {
+}
+
+class PutBucketAbacCommand extends smithyClient.Command
+    .classBuilder()
+    .ep({
+    ...commonParams,
+    Bucket: { type: "contextParams", name: "Bucket" },
+})
+    .m(function (Command, cs, config, o) {
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
+            requestChecksumRequired: false,
+        }),
+    ];
+})
+    .s("AmazonS3", "PutBucketAbac", {})
+    .n("S3Client", "PutBucketAbacCommand")
+    .sc(PutBucketAbac$)
     .build() {
 }
 
@@ -14821,19 +10064,16 @@ class PutBucketAccelerateConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketAccelerateConfiguration", {})
     .n("S3Client", "PutBucketAccelerateConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketAccelerateConfigurationCommand)
-    .de(de_PutBucketAccelerateConfigurationCommand)
+    .sc(PutBucketAccelerateConfiguration$)
     .build() {
 }
 
@@ -14846,19 +10086,16 @@ class PutBucketAclCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketAcl", {})
     .n("S3Client", "PutBucketAclCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketAclCommand)
-    .de(de_PutBucketAclCommand)
+    .sc(PutBucketAcl$)
     .build() {
 }
 
@@ -14870,16 +10107,11 @@ class PutBucketAnalyticsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "PutBucketAnalyticsConfiguration", {})
     .n("S3Client", "PutBucketAnalyticsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketAnalyticsConfigurationCommand)
-    .de(de_PutBucketAnalyticsConfigurationCommand)
+    .sc(PutBucketAnalyticsConfiguration$)
     .build() {
 }
 
@@ -14892,19 +10124,16 @@ class PutBucketCorsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketCors", {})
     .n("S3Client", "PutBucketCorsCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketCorsCommand)
-    .de(de_PutBucketCorsCommand)
+    .sc(PutBucketCors$)
     .build() {
 }
 
@@ -14917,19 +10146,16 @@ class PutBucketEncryptionCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketEncryption", {})
     .n("S3Client", "PutBucketEncryptionCommand")
-    .f(PutBucketEncryptionRequestFilterSensitiveLog, void 0)
-    .ser(se_PutBucketEncryptionCommand)
-    .de(de_PutBucketEncryptionCommand)
+    .sc(PutBucketEncryption$)
     .build() {
 }
 
@@ -14941,16 +10167,11 @@ class PutBucketIntelligentTieringConfigurationCommand extends smithyClient.Comma
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "PutBucketIntelligentTieringConfiguration", {})
     .n("S3Client", "PutBucketIntelligentTieringConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketIntelligentTieringConfigurationCommand)
-    .de(de_PutBucketIntelligentTieringConfigurationCommand)
+    .sc(PutBucketIntelligentTieringConfiguration$)
     .build() {
 }
 
@@ -14962,16 +10183,11 @@ class PutBucketInventoryConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "PutBucketInventoryConfiguration", {})
     .n("S3Client", "PutBucketInventoryConfigurationCommand")
-    .f(PutBucketInventoryConfigurationRequestFilterSensitiveLog, void 0)
-    .ser(se_PutBucketInventoryConfigurationCommand)
-    .de(de_PutBucketInventoryConfigurationCommand)
+    .sc(PutBucketInventoryConfiguration$)
     .build() {
 }
 
@@ -14984,10 +10200,9 @@ class PutBucketLifecycleConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -14995,9 +10210,7 @@ class PutBucketLifecycleConfigurationCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutBucketLifecycleConfiguration", {})
     .n("S3Client", "PutBucketLifecycleConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketLifecycleConfigurationCommand)
-    .de(de_PutBucketLifecycleConfigurationCommand)
+    .sc(PutBucketLifecycleConfiguration$)
     .build() {
 }
 
@@ -15010,19 +10223,16 @@ class PutBucketLoggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketLogging", {})
     .n("S3Client", "PutBucketLoggingCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketLoggingCommand)
-    .de(de_PutBucketLoggingCommand)
+    .sc(PutBucketLogging$)
     .build() {
 }
 
@@ -15034,16 +10244,11 @@ class PutBucketMetricsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "PutBucketMetricsConfiguration", {})
     .n("S3Client", "PutBucketMetricsConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketMetricsConfigurationCommand)
-    .de(de_PutBucketMetricsConfigurationCommand)
+    .sc(PutBucketMetricsConfiguration$)
     .build() {
 }
 
@@ -15055,16 +10260,11 @@ class PutBucketNotificationConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "PutBucketNotificationConfiguration", {})
     .n("S3Client", "PutBucketNotificationConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketNotificationConfigurationCommand)
-    .de(de_PutBucketNotificationConfigurationCommand)
+    .sc(PutBucketNotificationConfiguration$)
     .build() {
 }
 
@@ -15077,19 +10277,16 @@ class PutBucketOwnershipControlsCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketOwnershipControls", {})
     .n("S3Client", "PutBucketOwnershipControlsCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketOwnershipControlsCommand)
-    .de(de_PutBucketOwnershipControlsCommand)
+    .sc(PutBucketOwnershipControls$)
     .build() {
 }
 
@@ -15102,19 +10299,16 @@ class PutBucketPolicyCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketPolicy", {})
     .n("S3Client", "PutBucketPolicyCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketPolicyCommand)
-    .de(de_PutBucketPolicyCommand)
+    .sc(PutBucketPolicy$)
     .build() {
 }
 
@@ -15127,19 +10321,16 @@ class PutBucketReplicationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketReplication", {})
     .n("S3Client", "PutBucketReplicationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketReplicationCommand)
-    .de(de_PutBucketReplicationCommand)
+    .sc(PutBucketReplication$)
     .build() {
 }
 
@@ -15152,19 +10343,16 @@ class PutBucketRequestPaymentCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketRequestPayment", {})
     .n("S3Client", "PutBucketRequestPaymentCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketRequestPaymentCommand)
-    .de(de_PutBucketRequestPaymentCommand)
+    .sc(PutBucketRequestPayment$)
     .build() {
 }
 
@@ -15177,19 +10365,16 @@ class PutBucketTaggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketTagging", {})
     .n("S3Client", "PutBucketTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketTaggingCommand)
-    .de(de_PutBucketTaggingCommand)
+    .sc(PutBucketTagging$)
     .build() {
 }
 
@@ -15202,19 +10387,16 @@ class PutBucketVersioningCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketVersioning", {})
     .n("S3Client", "PutBucketVersioningCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketVersioningCommand)
-    .de(de_PutBucketVersioningCommand)
+    .sc(PutBucketVersioning$)
     .build() {
 }
 
@@ -15227,19 +10409,16 @@ class PutBucketWebsiteCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutBucketWebsite", {})
     .n("S3Client", "PutBucketWebsiteCommand")
-    .f(void 0, void 0)
-    .ser(se_PutBucketWebsiteCommand)
-    .de(de_PutBucketWebsiteCommand)
+    .sc(PutBucketWebsite$)
     .build() {
 }
 
@@ -15252,10 +10431,9 @@ class PutObjectAclCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15263,9 +10441,7 @@ class PutObjectAclCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObjectAcl", {})
     .n("S3Client", "PutObjectAclCommand")
-    .f(void 0, void 0)
-    .ser(se_PutObjectAclCommand)
-    .de(de_PutObjectAclCommand)
+    .sc(PutObjectAcl$)
     .build() {
 }
 
@@ -15278,10 +10454,9 @@ class PutObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getCheckContentLengthHeaderPlugin(config),
@@ -15291,9 +10466,7 @@ class PutObjectCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObject", {})
     .n("S3Client", "PutObjectCommand")
-    .f(PutObjectRequestFilterSensitiveLog, PutObjectOutputFilterSensitiveLog)
-    .ser(se_PutObjectCommand)
-    .de(de_PutObjectCommand)
+    .sc(PutObject$)
     .build() {
 }
 
@@ -15305,10 +10478,9 @@ class PutObjectLegalHoldCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15316,9 +10488,7 @@ class PutObjectLegalHoldCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObjectLegalHold", {})
     .n("S3Client", "PutObjectLegalHoldCommand")
-    .f(void 0, void 0)
-    .ser(se_PutObjectLegalHoldCommand)
-    .de(de_PutObjectLegalHoldCommand)
+    .sc(PutObjectLegalHold$)
     .build() {
 }
 
@@ -15330,10 +10500,9 @@ class PutObjectLockConfigurationCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15341,9 +10510,7 @@ class PutObjectLockConfigurationCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObjectLockConfiguration", {})
     .n("S3Client", "PutObjectLockConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_PutObjectLockConfigurationCommand)
-    .de(de_PutObjectLockConfigurationCommand)
+    .sc(PutObjectLockConfiguration$)
     .build() {
 }
 
@@ -15355,10 +10522,9 @@ class PutObjectRetentionCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15366,9 +10532,7 @@ class PutObjectRetentionCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObjectRetention", {})
     .n("S3Client", "PutObjectRetentionCommand")
-    .f(void 0, void 0)
-    .ser(se_PutObjectRetentionCommand)
-    .de(de_PutObjectRetentionCommand)
+    .sc(PutObjectRetention$)
     .build() {
 }
 
@@ -15380,10 +10544,9 @@ class PutObjectTaggingCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15391,9 +10554,7 @@ class PutObjectTaggingCommand extends smithyClient.Command
 })
     .s("AmazonS3", "PutObjectTagging", {})
     .n("S3Client", "PutObjectTaggingCommand")
-    .f(void 0, void 0)
-    .ser(se_PutObjectTaggingCommand)
-    .de(de_PutObjectTaggingCommand)
+    .sc(PutObjectTagging$)
     .build() {
 }
 
@@ -15406,19 +10567,16 @@ class PutPublicAccessBlockCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "PutPublicAccessBlock", {})
     .n("S3Client", "PutPublicAccessBlockCommand")
-    .f(void 0, void 0)
-    .ser(se_PutPublicAccessBlockCommand)
-    .de(de_PutPublicAccessBlockCommand)
+    .sc(PutPublicAccessBlock$)
     .build() {
 }
 
@@ -15431,16 +10589,13 @@ class RenameObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
     ];
 })
     .s("AmazonS3", "RenameObject", {})
     .n("S3Client", "RenameObjectCommand")
-    .f(void 0, void 0)
-    .ser(se_RenameObjectCommand)
-    .de(de_RenameObjectCommand)
+    .sc(RenameObject$)
     .build() {
 }
 
@@ -15452,10 +10607,9 @@ class RestoreObjectCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15463,9 +10617,7 @@ class RestoreObjectCommand extends smithyClient.Command
 })
     .s("AmazonS3", "RestoreObject", {})
     .n("S3Client", "RestoreObjectCommand")
-    .f(RestoreObjectRequestFilterSensitiveLog, void 0)
-    .ser(se_RestoreObjectCommand)
-    .de(de_RestoreObjectCommand)
+    .sc(RestoreObject$)
     .build() {
 }
 
@@ -15477,7 +10629,6 @@ class SelectObjectContentCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -15489,9 +10640,7 @@ class SelectObjectContentCommand extends smithyClient.Command
     },
 })
     .n("S3Client", "SelectObjectContentCommand")
-    .f(SelectObjectContentRequestFilterSensitiveLog, SelectObjectContentOutputFilterSensitiveLog)
-    .ser(se_SelectObjectContentCommand)
-    .de(de_SelectObjectContentCommand)
+    .sc(SelectObjectContent$)
     .build() {
 }
 
@@ -15504,19 +10653,16 @@ class UpdateBucketMetadataInventoryTableConfigurationCommand extends smithyClien
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "UpdateBucketMetadataInventoryTableConfiguration", {})
     .n("S3Client", "UpdateBucketMetadataInventoryTableConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_UpdateBucketMetadataInventoryTableConfigurationCommand)
-    .de(de_UpdateBucketMetadataInventoryTableConfigurationCommand)
+    .sc(UpdateBucketMetadataInventoryTableConfiguration$)
     .build() {
 }
 
@@ -15529,19 +10675,16 @@ class UpdateBucketMetadataJournalTableConfigurationCommand extends smithyClient.
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
 })
     .s("AmazonS3", "UpdateBucketMetadataJournalTableConfiguration", {})
     .n("S3Client", "UpdateBucketMetadataJournalTableConfigurationCommand")
-    .f(void 0, void 0)
-    .ser(se_UpdateBucketMetadataJournalTableConfigurationCommand)
-    .de(de_UpdateBucketMetadataJournalTableConfigurationCommand)
+    .sc(UpdateBucketMetadataJournalTableConfiguration$)
     .build() {
 }
 
@@ -15554,10 +10697,9 @@ class UploadPartCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -15566,9 +10708,7 @@ class UploadPartCommand extends smithyClient.Command
 })
     .s("AmazonS3", "UploadPart", {})
     .n("S3Client", "UploadPartCommand")
-    .f(UploadPartRequestFilterSensitiveLog, UploadPartOutputFilterSensitiveLog)
-    .ser(se_UploadPartCommand)
-    .de(de_UploadPartCommand)
+    .sc(UploadPart$)
     .build() {
 }
 
@@ -15581,7 +10721,6 @@ class UploadPartCopyCommand extends smithyClient.Command
 })
     .m(function (Command, cs, config, o) {
     return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
         middlewareSsec.getSsecPlugin(config),
@@ -15589,9 +10728,7 @@ class UploadPartCopyCommand extends smithyClient.Command
 })
     .s("AmazonS3", "UploadPartCopy", {})
     .n("S3Client", "UploadPartCopyCommand")
-    .f(UploadPartCopyRequestFilterSensitiveLog, UploadPartCopyOutputFilterSensitiveLog)
-    .ser(se_UploadPartCopyCommand)
-    .de(de_UploadPartCopyCommand)
+    .sc(UploadPartCopy$)
     .build() {
 }
 
@@ -15602,16 +10739,11 @@ class WriteGetObjectResponseCommand extends smithyClient.Command
     UseObjectLambdaEndpoint: { type: "staticContextParams", value: true },
 })
     .m(function (Command, cs, config, o) {
-    return [
-        middlewareSerde.getSerdePlugin(config, this.serialize, this.deserialize),
-        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
-    ];
+    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
     .s("AmazonS3", "WriteGetObjectResponse", {})
     .n("S3Client", "WriteGetObjectResponseCommand")
-    .f(WriteGetObjectResponseRequestFilterSensitiveLog, void 0)
-    .ser(se_WriteGetObjectResponseCommand)
-    .de(de_WriteGetObjectResponseCommand)
+    .sc(WriteGetObjectResponse$)
     .build() {
 }
 
@@ -15643,6 +10775,7 @@ const commands = {
     DeleteObjectsCommand,
     DeleteObjectTaggingCommand,
     DeletePublicAccessBlockCommand,
+    GetBucketAbacCommand,
     GetBucketAccelerateConfigurationCommand,
     GetBucketAclCommand,
     GetBucketAnalyticsConfigurationCommand,
@@ -15687,6 +10820,7 @@ const commands = {
     ListObjectsV2Command,
     ListObjectVersionsCommand,
     ListPartsCommand,
+    PutBucketAbacCommand,
     PutBucketAccelerateConfigurationCommand,
     PutBucketAclCommand,
     PutBucketAnalyticsConfigurationCommand,
@@ -15831,6 +10965,406 @@ const waitUntilObjectNotExists = async (params, input) => {
     return utilWaiter.checkExceptions(result);
 };
 
+const BucketAbacStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const RequestCharged = {
+    requester: "requester",
+};
+const RequestPayer = {
+    requester: "requester",
+};
+const BucketAccelerateStatus = {
+    Enabled: "Enabled",
+    Suspended: "Suspended",
+};
+const Type = {
+    AmazonCustomerByEmail: "AmazonCustomerByEmail",
+    CanonicalUser: "CanonicalUser",
+    Group: "Group",
+};
+const Permission = {
+    FULL_CONTROL: "FULL_CONTROL",
+    READ: "READ",
+    READ_ACP: "READ_ACP",
+    WRITE: "WRITE",
+    WRITE_ACP: "WRITE_ACP",
+};
+const OwnerOverride = {
+    Destination: "Destination",
+};
+const ChecksumType = {
+    COMPOSITE: "COMPOSITE",
+    FULL_OBJECT: "FULL_OBJECT",
+};
+const ServerSideEncryption = {
+    AES256: "AES256",
+    aws_fsx: "aws:fsx",
+    aws_kms: "aws:kms",
+    aws_kms_dsse: "aws:kms:dsse",
+};
+const ObjectCannedACL = {
+    authenticated_read: "authenticated-read",
+    aws_exec_read: "aws-exec-read",
+    bucket_owner_full_control: "bucket-owner-full-control",
+    bucket_owner_read: "bucket-owner-read",
+    private: "private",
+    public_read: "public-read",
+    public_read_write: "public-read-write",
+};
+const ChecksumAlgorithm = {
+    CRC32: "CRC32",
+    CRC32C: "CRC32C",
+    CRC64NVME: "CRC64NVME",
+    SHA1: "SHA1",
+    SHA256: "SHA256",
+};
+const MetadataDirective = {
+    COPY: "COPY",
+    REPLACE: "REPLACE",
+};
+const ObjectLockLegalHoldStatus = {
+    OFF: "OFF",
+    ON: "ON",
+};
+const ObjectLockMode = {
+    COMPLIANCE: "COMPLIANCE",
+    GOVERNANCE: "GOVERNANCE",
+};
+const StorageClass = {
+    DEEP_ARCHIVE: "DEEP_ARCHIVE",
+    EXPRESS_ONEZONE: "EXPRESS_ONEZONE",
+    FSX_ONTAP: "FSX_ONTAP",
+    FSX_OPENZFS: "FSX_OPENZFS",
+    GLACIER: "GLACIER",
+    GLACIER_IR: "GLACIER_IR",
+    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
+    ONEZONE_IA: "ONEZONE_IA",
+    OUTPOSTS: "OUTPOSTS",
+    REDUCED_REDUNDANCY: "REDUCED_REDUNDANCY",
+    SNOW: "SNOW",
+    STANDARD: "STANDARD",
+    STANDARD_IA: "STANDARD_IA",
+};
+const TaggingDirective = {
+    COPY: "COPY",
+    REPLACE: "REPLACE",
+};
+const BucketCannedACL = {
+    authenticated_read: "authenticated-read",
+    private: "private",
+    public_read: "public-read",
+    public_read_write: "public-read-write",
+};
+const DataRedundancy = {
+    SingleAvailabilityZone: "SingleAvailabilityZone",
+    SingleLocalZone: "SingleLocalZone",
+};
+const BucketType = {
+    Directory: "Directory",
+};
+const LocationType = {
+    AvailabilityZone: "AvailabilityZone",
+    LocalZone: "LocalZone",
+};
+const BucketLocationConstraint = {
+    EU: "EU",
+    af_south_1: "af-south-1",
+    ap_east_1: "ap-east-1",
+    ap_northeast_1: "ap-northeast-1",
+    ap_northeast_2: "ap-northeast-2",
+    ap_northeast_3: "ap-northeast-3",
+    ap_south_1: "ap-south-1",
+    ap_south_2: "ap-south-2",
+    ap_southeast_1: "ap-southeast-1",
+    ap_southeast_2: "ap-southeast-2",
+    ap_southeast_3: "ap-southeast-3",
+    ap_southeast_4: "ap-southeast-4",
+    ap_southeast_5: "ap-southeast-5",
+    ca_central_1: "ca-central-1",
+    cn_north_1: "cn-north-1",
+    cn_northwest_1: "cn-northwest-1",
+    eu_central_1: "eu-central-1",
+    eu_central_2: "eu-central-2",
+    eu_north_1: "eu-north-1",
+    eu_south_1: "eu-south-1",
+    eu_south_2: "eu-south-2",
+    eu_west_1: "eu-west-1",
+    eu_west_2: "eu-west-2",
+    eu_west_3: "eu-west-3",
+    il_central_1: "il-central-1",
+    me_central_1: "me-central-1",
+    me_south_1: "me-south-1",
+    sa_east_1: "sa-east-1",
+    us_east_2: "us-east-2",
+    us_gov_east_1: "us-gov-east-1",
+    us_gov_west_1: "us-gov-west-1",
+    us_west_1: "us-west-1",
+    us_west_2: "us-west-2",
+};
+const ObjectOwnership = {
+    BucketOwnerEnforced: "BucketOwnerEnforced",
+    BucketOwnerPreferred: "BucketOwnerPreferred",
+    ObjectWriter: "ObjectWriter",
+};
+const InventoryConfigurationState = {
+    DISABLED: "DISABLED",
+    ENABLED: "ENABLED",
+};
+const TableSseAlgorithm = {
+    AES256: "AES256",
+    aws_kms: "aws:kms",
+};
+const ExpirationState = {
+    DISABLED: "DISABLED",
+    ENABLED: "ENABLED",
+};
+const SessionMode = {
+    ReadOnly: "ReadOnly",
+    ReadWrite: "ReadWrite",
+};
+const AnalyticsS3ExportFileFormat = {
+    CSV: "CSV",
+};
+const StorageClassAnalysisSchemaVersion = {
+    V_1: "V_1",
+};
+const EncryptionType = {
+    NONE: "NONE",
+    SSE_C: "SSE-C",
+};
+const IntelligentTieringStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const IntelligentTieringAccessTier = {
+    ARCHIVE_ACCESS: "ARCHIVE_ACCESS",
+    DEEP_ARCHIVE_ACCESS: "DEEP_ARCHIVE_ACCESS",
+};
+const InventoryFormat = {
+    CSV: "CSV",
+    ORC: "ORC",
+    Parquet: "Parquet",
+};
+const InventoryIncludedObjectVersions = {
+    All: "All",
+    Current: "Current",
+};
+const InventoryOptionalField = {
+    BucketKeyStatus: "BucketKeyStatus",
+    ChecksumAlgorithm: "ChecksumAlgorithm",
+    ETag: "ETag",
+    EncryptionStatus: "EncryptionStatus",
+    IntelligentTieringAccessTier: "IntelligentTieringAccessTier",
+    IsMultipartUploaded: "IsMultipartUploaded",
+    LastModifiedDate: "LastModifiedDate",
+    LifecycleExpirationDate: "LifecycleExpirationDate",
+    ObjectAccessControlList: "ObjectAccessControlList",
+    ObjectLockLegalHoldStatus: "ObjectLockLegalHoldStatus",
+    ObjectLockMode: "ObjectLockMode",
+    ObjectLockRetainUntilDate: "ObjectLockRetainUntilDate",
+    ObjectOwner: "ObjectOwner",
+    ReplicationStatus: "ReplicationStatus",
+    Size: "Size",
+    StorageClass: "StorageClass",
+};
+const InventoryFrequency = {
+    Daily: "Daily",
+    Weekly: "Weekly",
+};
+const TransitionStorageClass = {
+    DEEP_ARCHIVE: "DEEP_ARCHIVE",
+    GLACIER: "GLACIER",
+    GLACIER_IR: "GLACIER_IR",
+    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
+    ONEZONE_IA: "ONEZONE_IA",
+    STANDARD_IA: "STANDARD_IA",
+};
+const ExpirationStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const TransitionDefaultMinimumObjectSize = {
+    all_storage_classes_128K: "all_storage_classes_128K",
+    varies_by_storage_class: "varies_by_storage_class",
+};
+const BucketLogsPermission = {
+    FULL_CONTROL: "FULL_CONTROL",
+    READ: "READ",
+    WRITE: "WRITE",
+};
+const PartitionDateSource = {
+    DeliveryTime: "DeliveryTime",
+    EventTime: "EventTime",
+};
+const S3TablesBucketType = {
+    aws: "aws",
+    customer: "customer",
+};
+const Event = {
+    s3_IntelligentTiering: "s3:IntelligentTiering",
+    s3_LifecycleExpiration_: "s3:LifecycleExpiration:*",
+    s3_LifecycleExpiration_Delete: "s3:LifecycleExpiration:Delete",
+    s3_LifecycleExpiration_DeleteMarkerCreated: "s3:LifecycleExpiration:DeleteMarkerCreated",
+    s3_LifecycleTransition: "s3:LifecycleTransition",
+    s3_ObjectAcl_Put: "s3:ObjectAcl:Put",
+    s3_ObjectCreated_: "s3:ObjectCreated:*",
+    s3_ObjectCreated_CompleteMultipartUpload: "s3:ObjectCreated:CompleteMultipartUpload",
+    s3_ObjectCreated_Copy: "s3:ObjectCreated:Copy",
+    s3_ObjectCreated_Post: "s3:ObjectCreated:Post",
+    s3_ObjectCreated_Put: "s3:ObjectCreated:Put",
+    s3_ObjectRemoved_: "s3:ObjectRemoved:*",
+    s3_ObjectRemoved_Delete: "s3:ObjectRemoved:Delete",
+    s3_ObjectRemoved_DeleteMarkerCreated: "s3:ObjectRemoved:DeleteMarkerCreated",
+    s3_ObjectRestore_: "s3:ObjectRestore:*",
+    s3_ObjectRestore_Completed: "s3:ObjectRestore:Completed",
+    s3_ObjectRestore_Delete: "s3:ObjectRestore:Delete",
+    s3_ObjectRestore_Post: "s3:ObjectRestore:Post",
+    s3_ObjectTagging_: "s3:ObjectTagging:*",
+    s3_ObjectTagging_Delete: "s3:ObjectTagging:Delete",
+    s3_ObjectTagging_Put: "s3:ObjectTagging:Put",
+    s3_ReducedRedundancyLostObject: "s3:ReducedRedundancyLostObject",
+    s3_Replication_: "s3:Replication:*",
+    s3_Replication_OperationFailedReplication: "s3:Replication:OperationFailedReplication",
+    s3_Replication_OperationMissedThreshold: "s3:Replication:OperationMissedThreshold",
+    s3_Replication_OperationNotTracked: "s3:Replication:OperationNotTracked",
+    s3_Replication_OperationReplicatedAfterThreshold: "s3:Replication:OperationReplicatedAfterThreshold",
+};
+const FilterRuleName = {
+    prefix: "prefix",
+    suffix: "suffix",
+};
+const DeleteMarkerReplicationStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const MetricsStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const ReplicationTimeStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const ExistingObjectReplicationStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const ReplicaModificationsStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const SseKmsEncryptedObjectsStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const ReplicationRuleStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const Payer = {
+    BucketOwner: "BucketOwner",
+    Requester: "Requester",
+};
+const MFADeleteStatus = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const BucketVersioningStatus = {
+    Enabled: "Enabled",
+    Suspended: "Suspended",
+};
+const Protocol = {
+    http: "http",
+    https: "https",
+};
+const ReplicationStatus = {
+    COMPLETE: "COMPLETE",
+    COMPLETED: "COMPLETED",
+    FAILED: "FAILED",
+    PENDING: "PENDING",
+    REPLICA: "REPLICA",
+};
+const ChecksumMode = {
+    ENABLED: "ENABLED",
+};
+const ObjectAttributes = {
+    CHECKSUM: "Checksum",
+    ETAG: "ETag",
+    OBJECT_PARTS: "ObjectParts",
+    OBJECT_SIZE: "ObjectSize",
+    STORAGE_CLASS: "StorageClass",
+};
+const ObjectLockEnabled = {
+    Enabled: "Enabled",
+};
+const ObjectLockRetentionMode = {
+    COMPLIANCE: "COMPLIANCE",
+    GOVERNANCE: "GOVERNANCE",
+};
+const ArchiveStatus = {
+    ARCHIVE_ACCESS: "ARCHIVE_ACCESS",
+    DEEP_ARCHIVE_ACCESS: "DEEP_ARCHIVE_ACCESS",
+};
+const EncodingType = {
+    url: "url",
+};
+const ObjectStorageClass = {
+    DEEP_ARCHIVE: "DEEP_ARCHIVE",
+    EXPRESS_ONEZONE: "EXPRESS_ONEZONE",
+    FSX_ONTAP: "FSX_ONTAP",
+    FSX_OPENZFS: "FSX_OPENZFS",
+    GLACIER: "GLACIER",
+    GLACIER_IR: "GLACIER_IR",
+    INTELLIGENT_TIERING: "INTELLIGENT_TIERING",
+    ONEZONE_IA: "ONEZONE_IA",
+    OUTPOSTS: "OUTPOSTS",
+    REDUCED_REDUNDANCY: "REDUCED_REDUNDANCY",
+    SNOW: "SNOW",
+    STANDARD: "STANDARD",
+    STANDARD_IA: "STANDARD_IA",
+};
+const OptionalObjectAttributes = {
+    RESTORE_STATUS: "RestoreStatus",
+};
+const ObjectVersionStorageClass = {
+    STANDARD: "STANDARD",
+};
+const MFADelete = {
+    Disabled: "Disabled",
+    Enabled: "Enabled",
+};
+const Tier = {
+    Bulk: "Bulk",
+    Expedited: "Expedited",
+    Standard: "Standard",
+};
+const ExpressionType = {
+    SQL: "SQL",
+};
+const CompressionType = {
+    BZIP2: "BZIP2",
+    GZIP: "GZIP",
+    NONE: "NONE",
+};
+const FileHeaderInfo = {
+    IGNORE: "IGNORE",
+    NONE: "NONE",
+    USE: "USE",
+};
+const JSONType = {
+    DOCUMENT: "DOCUMENT",
+    LINES: "LINES",
+};
+const QuoteFields = {
+    ALWAYS: "ALWAYS",
+    ASNEEDED: "ASNEEDED",
+};
+const RestoreRequestType = {
+    SELECT: "SELECT",
+};
+
 Object.defineProperty(exports, "$Command", ({
     enumerable: true,
     get: function () { return smithyClient.Command; }
@@ -15839,241 +11373,651 @@ Object.defineProperty(exports, "__Client", ({
     enumerable: true,
     get: function () { return smithyClient.Client; }
 }));
+exports.AbacStatus$ = AbacStatus$;
+exports.AbortIncompleteMultipartUpload$ = AbortIncompleteMultipartUpload$;
+exports.AbortMultipartUpload$ = AbortMultipartUpload$;
 exports.AbortMultipartUploadCommand = AbortMultipartUploadCommand;
+exports.AbortMultipartUploadOutput$ = AbortMultipartUploadOutput$;
+exports.AbortMultipartUploadRequest$ = AbortMultipartUploadRequest$;
+exports.AccelerateConfiguration$ = AccelerateConfiguration$;
+exports.AccessControlPolicy$ = AccessControlPolicy$;
+exports.AccessControlTranslation$ = AccessControlTranslation$;
+exports.AnalyticsAndOperator$ = AnalyticsAndOperator$;
+exports.AnalyticsConfiguration$ = AnalyticsConfiguration$;
+exports.AnalyticsExportDestination$ = AnalyticsExportDestination$;
+exports.AnalyticsFilter$ = AnalyticsFilter$;
+exports.AnalyticsS3BucketDestination$ = AnalyticsS3BucketDestination$;
 exports.AnalyticsS3ExportFileFormat = AnalyticsS3ExportFileFormat;
 exports.ArchiveStatus = ArchiveStatus;
+exports.BlockedEncryptionTypes$ = BlockedEncryptionTypes$;
+exports.Bucket$ = Bucket$;
+exports.BucketAbacStatus = BucketAbacStatus;
 exports.BucketAccelerateStatus = BucketAccelerateStatus;
 exports.BucketAlreadyExists = BucketAlreadyExists;
+exports.BucketAlreadyExists$ = BucketAlreadyExists$;
 exports.BucketAlreadyOwnedByYou = BucketAlreadyOwnedByYou;
+exports.BucketAlreadyOwnedByYou$ = BucketAlreadyOwnedByYou$;
 exports.BucketCannedACL = BucketCannedACL;
+exports.BucketInfo$ = BucketInfo$;
+exports.BucketLifecycleConfiguration$ = BucketLifecycleConfiguration$;
 exports.BucketLocationConstraint = BucketLocationConstraint;
+exports.BucketLoggingStatus$ = BucketLoggingStatus$;
 exports.BucketLogsPermission = BucketLogsPermission;
 exports.BucketType = BucketType;
 exports.BucketVersioningStatus = BucketVersioningStatus;
+exports.CORSConfiguration$ = CORSConfiguration$;
+exports.CORSRule$ = CORSRule$;
+exports.CSVInput$ = CSVInput$;
+exports.CSVOutput$ = CSVOutput$;
+exports.Checksum$ = Checksum$;
 exports.ChecksumAlgorithm = ChecksumAlgorithm;
 exports.ChecksumMode = ChecksumMode;
 exports.ChecksumType = ChecksumType;
+exports.CommonPrefix$ = CommonPrefix$;
+exports.CompleteMultipartUpload$ = CompleteMultipartUpload$;
 exports.CompleteMultipartUploadCommand = CompleteMultipartUploadCommand;
-exports.CompleteMultipartUploadOutputFilterSensitiveLog = CompleteMultipartUploadOutputFilterSensitiveLog;
-exports.CompleteMultipartUploadRequestFilterSensitiveLog = CompleteMultipartUploadRequestFilterSensitiveLog;
+exports.CompleteMultipartUploadOutput$ = CompleteMultipartUploadOutput$;
+exports.CompleteMultipartUploadRequest$ = CompleteMultipartUploadRequest$;
+exports.CompletedMultipartUpload$ = CompletedMultipartUpload$;
+exports.CompletedPart$ = CompletedPart$;
 exports.CompressionType = CompressionType;
+exports.Condition$ = Condition$;
+exports.ContinuationEvent$ = ContinuationEvent$;
+exports.CopyObject$ = CopyObject$;
 exports.CopyObjectCommand = CopyObjectCommand;
-exports.CopyObjectOutputFilterSensitiveLog = CopyObjectOutputFilterSensitiveLog;
-exports.CopyObjectRequestFilterSensitiveLog = CopyObjectRequestFilterSensitiveLog;
+exports.CopyObjectOutput$ = CopyObjectOutput$;
+exports.CopyObjectRequest$ = CopyObjectRequest$;
+exports.CopyObjectResult$ = CopyObjectResult$;
+exports.CopyPartResult$ = CopyPartResult$;
+exports.CreateBucket$ = CreateBucket$;
 exports.CreateBucketCommand = CreateBucketCommand;
+exports.CreateBucketConfiguration$ = CreateBucketConfiguration$;
+exports.CreateBucketMetadataConfiguration$ = CreateBucketMetadataConfiguration$;
 exports.CreateBucketMetadataConfigurationCommand = CreateBucketMetadataConfigurationCommand;
+exports.CreateBucketMetadataConfigurationRequest$ = CreateBucketMetadataConfigurationRequest$;
+exports.CreateBucketMetadataTableConfiguration$ = CreateBucketMetadataTableConfiguration$;
 exports.CreateBucketMetadataTableConfigurationCommand = CreateBucketMetadataTableConfigurationCommand;
+exports.CreateBucketMetadataTableConfigurationRequest$ = CreateBucketMetadataTableConfigurationRequest$;
+exports.CreateBucketOutput$ = CreateBucketOutput$;
+exports.CreateBucketRequest$ = CreateBucketRequest$;
+exports.CreateMultipartUpload$ = CreateMultipartUpload$;
 exports.CreateMultipartUploadCommand = CreateMultipartUploadCommand;
-exports.CreateMultipartUploadOutputFilterSensitiveLog = CreateMultipartUploadOutputFilterSensitiveLog;
-exports.CreateMultipartUploadRequestFilterSensitiveLog = CreateMultipartUploadRequestFilterSensitiveLog;
+exports.CreateMultipartUploadOutput$ = CreateMultipartUploadOutput$;
+exports.CreateMultipartUploadRequest$ = CreateMultipartUploadRequest$;
+exports.CreateSession$ = CreateSession$;
 exports.CreateSessionCommand = CreateSessionCommand;
-exports.CreateSessionOutputFilterSensitiveLog = CreateSessionOutputFilterSensitiveLog;
-exports.CreateSessionRequestFilterSensitiveLog = CreateSessionRequestFilterSensitiveLog;
+exports.CreateSessionOutput$ = CreateSessionOutput$;
+exports.CreateSessionRequest$ = CreateSessionRequest$;
 exports.DataRedundancy = DataRedundancy;
+exports.DefaultRetention$ = DefaultRetention$;
+exports.Delete$ = Delete$;
+exports.DeleteBucket$ = DeleteBucket$;
+exports.DeleteBucketAnalyticsConfiguration$ = DeleteBucketAnalyticsConfiguration$;
 exports.DeleteBucketAnalyticsConfigurationCommand = DeleteBucketAnalyticsConfigurationCommand;
+exports.DeleteBucketAnalyticsConfigurationRequest$ = DeleteBucketAnalyticsConfigurationRequest$;
 exports.DeleteBucketCommand = DeleteBucketCommand;
+exports.DeleteBucketCors$ = DeleteBucketCors$;
 exports.DeleteBucketCorsCommand = DeleteBucketCorsCommand;
+exports.DeleteBucketCorsRequest$ = DeleteBucketCorsRequest$;
+exports.DeleteBucketEncryption$ = DeleteBucketEncryption$;
 exports.DeleteBucketEncryptionCommand = DeleteBucketEncryptionCommand;
+exports.DeleteBucketEncryptionRequest$ = DeleteBucketEncryptionRequest$;
+exports.DeleteBucketIntelligentTieringConfiguration$ = DeleteBucketIntelligentTieringConfiguration$;
 exports.DeleteBucketIntelligentTieringConfigurationCommand = DeleteBucketIntelligentTieringConfigurationCommand;
+exports.DeleteBucketIntelligentTieringConfigurationRequest$ = DeleteBucketIntelligentTieringConfigurationRequest$;
+exports.DeleteBucketInventoryConfiguration$ = DeleteBucketInventoryConfiguration$;
 exports.DeleteBucketInventoryConfigurationCommand = DeleteBucketInventoryConfigurationCommand;
+exports.DeleteBucketInventoryConfigurationRequest$ = DeleteBucketInventoryConfigurationRequest$;
+exports.DeleteBucketLifecycle$ = DeleteBucketLifecycle$;
 exports.DeleteBucketLifecycleCommand = DeleteBucketLifecycleCommand;
+exports.DeleteBucketLifecycleRequest$ = DeleteBucketLifecycleRequest$;
+exports.DeleteBucketMetadataConfiguration$ = DeleteBucketMetadataConfiguration$;
 exports.DeleteBucketMetadataConfigurationCommand = DeleteBucketMetadataConfigurationCommand;
+exports.DeleteBucketMetadataConfigurationRequest$ = DeleteBucketMetadataConfigurationRequest$;
+exports.DeleteBucketMetadataTableConfiguration$ = DeleteBucketMetadataTableConfiguration$;
 exports.DeleteBucketMetadataTableConfigurationCommand = DeleteBucketMetadataTableConfigurationCommand;
+exports.DeleteBucketMetadataTableConfigurationRequest$ = DeleteBucketMetadataTableConfigurationRequest$;
+exports.DeleteBucketMetricsConfiguration$ = DeleteBucketMetricsConfiguration$;
 exports.DeleteBucketMetricsConfigurationCommand = DeleteBucketMetricsConfigurationCommand;
+exports.DeleteBucketMetricsConfigurationRequest$ = DeleteBucketMetricsConfigurationRequest$;
+exports.DeleteBucketOwnershipControls$ = DeleteBucketOwnershipControls$;
 exports.DeleteBucketOwnershipControlsCommand = DeleteBucketOwnershipControlsCommand;
+exports.DeleteBucketOwnershipControlsRequest$ = DeleteBucketOwnershipControlsRequest$;
+exports.DeleteBucketPolicy$ = DeleteBucketPolicy$;
 exports.DeleteBucketPolicyCommand = DeleteBucketPolicyCommand;
+exports.DeleteBucketPolicyRequest$ = DeleteBucketPolicyRequest$;
+exports.DeleteBucketReplication$ = DeleteBucketReplication$;
 exports.DeleteBucketReplicationCommand = DeleteBucketReplicationCommand;
+exports.DeleteBucketReplicationRequest$ = DeleteBucketReplicationRequest$;
+exports.DeleteBucketRequest$ = DeleteBucketRequest$;
+exports.DeleteBucketTagging$ = DeleteBucketTagging$;
 exports.DeleteBucketTaggingCommand = DeleteBucketTaggingCommand;
+exports.DeleteBucketTaggingRequest$ = DeleteBucketTaggingRequest$;
+exports.DeleteBucketWebsite$ = DeleteBucketWebsite$;
 exports.DeleteBucketWebsiteCommand = DeleteBucketWebsiteCommand;
+exports.DeleteBucketWebsiteRequest$ = DeleteBucketWebsiteRequest$;
+exports.DeleteMarkerEntry$ = DeleteMarkerEntry$;
+exports.DeleteMarkerReplication$ = DeleteMarkerReplication$;
 exports.DeleteMarkerReplicationStatus = DeleteMarkerReplicationStatus;
+exports.DeleteObject$ = DeleteObject$;
 exports.DeleteObjectCommand = DeleteObjectCommand;
+exports.DeleteObjectOutput$ = DeleteObjectOutput$;
+exports.DeleteObjectRequest$ = DeleteObjectRequest$;
+exports.DeleteObjectTagging$ = DeleteObjectTagging$;
 exports.DeleteObjectTaggingCommand = DeleteObjectTaggingCommand;
+exports.DeleteObjectTaggingOutput$ = DeleteObjectTaggingOutput$;
+exports.DeleteObjectTaggingRequest$ = DeleteObjectTaggingRequest$;
+exports.DeleteObjects$ = DeleteObjects$;
 exports.DeleteObjectsCommand = DeleteObjectsCommand;
+exports.DeleteObjectsOutput$ = DeleteObjectsOutput$;
+exports.DeleteObjectsRequest$ = DeleteObjectsRequest$;
+exports.DeletePublicAccessBlock$ = DeletePublicAccessBlock$;
 exports.DeletePublicAccessBlockCommand = DeletePublicAccessBlockCommand;
+exports.DeletePublicAccessBlockRequest$ = DeletePublicAccessBlockRequest$;
+exports.DeletedObject$ = DeletedObject$;
+exports.Destination$ = Destination$;
+exports.DestinationResult$ = DestinationResult$;
 exports.EncodingType = EncodingType;
-exports.EncryptionFilterSensitiveLog = EncryptionFilterSensitiveLog;
+exports.Encryption$ = Encryption$;
+exports.EncryptionConfiguration$ = EncryptionConfiguration$;
+exports.EncryptionType = EncryptionType;
 exports.EncryptionTypeMismatch = EncryptionTypeMismatch;
+exports.EncryptionTypeMismatch$ = EncryptionTypeMismatch$;
+exports.EndEvent$ = EndEvent$;
+exports.ErrorDetails$ = ErrorDetails$;
+exports.ErrorDocument$ = ErrorDocument$;
 exports.Event = Event;
+exports.EventBridgeConfiguration$ = EventBridgeConfiguration$;
+exports.ExistingObjectReplication$ = ExistingObjectReplication$;
 exports.ExistingObjectReplicationStatus = ExistingObjectReplicationStatus;
 exports.ExpirationState = ExpirationState;
 exports.ExpirationStatus = ExpirationStatus;
 exports.ExpressionType = ExpressionType;
 exports.FileHeaderInfo = FileHeaderInfo;
+exports.FilterRule$ = FilterRule$;
 exports.FilterRuleName = FilterRuleName;
+exports.GetBucketAbac$ = GetBucketAbac$;
+exports.GetBucketAbacCommand = GetBucketAbacCommand;
+exports.GetBucketAbacOutput$ = GetBucketAbacOutput$;
+exports.GetBucketAbacRequest$ = GetBucketAbacRequest$;
+exports.GetBucketAccelerateConfiguration$ = GetBucketAccelerateConfiguration$;
 exports.GetBucketAccelerateConfigurationCommand = GetBucketAccelerateConfigurationCommand;
+exports.GetBucketAccelerateConfigurationOutput$ = GetBucketAccelerateConfigurationOutput$;
+exports.GetBucketAccelerateConfigurationRequest$ = GetBucketAccelerateConfigurationRequest$;
+exports.GetBucketAcl$ = GetBucketAcl$;
 exports.GetBucketAclCommand = GetBucketAclCommand;
+exports.GetBucketAclOutput$ = GetBucketAclOutput$;
+exports.GetBucketAclRequest$ = GetBucketAclRequest$;
+exports.GetBucketAnalyticsConfiguration$ = GetBucketAnalyticsConfiguration$;
 exports.GetBucketAnalyticsConfigurationCommand = GetBucketAnalyticsConfigurationCommand;
+exports.GetBucketAnalyticsConfigurationOutput$ = GetBucketAnalyticsConfigurationOutput$;
+exports.GetBucketAnalyticsConfigurationRequest$ = GetBucketAnalyticsConfigurationRequest$;
+exports.GetBucketCors$ = GetBucketCors$;
 exports.GetBucketCorsCommand = GetBucketCorsCommand;
+exports.GetBucketCorsOutput$ = GetBucketCorsOutput$;
+exports.GetBucketCorsRequest$ = GetBucketCorsRequest$;
+exports.GetBucketEncryption$ = GetBucketEncryption$;
 exports.GetBucketEncryptionCommand = GetBucketEncryptionCommand;
-exports.GetBucketEncryptionOutputFilterSensitiveLog = GetBucketEncryptionOutputFilterSensitiveLog;
+exports.GetBucketEncryptionOutput$ = GetBucketEncryptionOutput$;
+exports.GetBucketEncryptionRequest$ = GetBucketEncryptionRequest$;
+exports.GetBucketIntelligentTieringConfiguration$ = GetBucketIntelligentTieringConfiguration$;
 exports.GetBucketIntelligentTieringConfigurationCommand = GetBucketIntelligentTieringConfigurationCommand;
+exports.GetBucketIntelligentTieringConfigurationOutput$ = GetBucketIntelligentTieringConfigurationOutput$;
+exports.GetBucketIntelligentTieringConfigurationRequest$ = GetBucketIntelligentTieringConfigurationRequest$;
+exports.GetBucketInventoryConfiguration$ = GetBucketInventoryConfiguration$;
 exports.GetBucketInventoryConfigurationCommand = GetBucketInventoryConfigurationCommand;
-exports.GetBucketInventoryConfigurationOutputFilterSensitiveLog = GetBucketInventoryConfigurationOutputFilterSensitiveLog;
+exports.GetBucketInventoryConfigurationOutput$ = GetBucketInventoryConfigurationOutput$;
+exports.GetBucketInventoryConfigurationRequest$ = GetBucketInventoryConfigurationRequest$;
+exports.GetBucketLifecycleConfiguration$ = GetBucketLifecycleConfiguration$;
 exports.GetBucketLifecycleConfigurationCommand = GetBucketLifecycleConfigurationCommand;
+exports.GetBucketLifecycleConfigurationOutput$ = GetBucketLifecycleConfigurationOutput$;
+exports.GetBucketLifecycleConfigurationRequest$ = GetBucketLifecycleConfigurationRequest$;
+exports.GetBucketLocation$ = GetBucketLocation$;
 exports.GetBucketLocationCommand = GetBucketLocationCommand;
+exports.GetBucketLocationOutput$ = GetBucketLocationOutput$;
+exports.GetBucketLocationRequest$ = GetBucketLocationRequest$;
+exports.GetBucketLogging$ = GetBucketLogging$;
 exports.GetBucketLoggingCommand = GetBucketLoggingCommand;
+exports.GetBucketLoggingOutput$ = GetBucketLoggingOutput$;
+exports.GetBucketLoggingRequest$ = GetBucketLoggingRequest$;
+exports.GetBucketMetadataConfiguration$ = GetBucketMetadataConfiguration$;
 exports.GetBucketMetadataConfigurationCommand = GetBucketMetadataConfigurationCommand;
+exports.GetBucketMetadataConfigurationOutput$ = GetBucketMetadataConfigurationOutput$;
+exports.GetBucketMetadataConfigurationRequest$ = GetBucketMetadataConfigurationRequest$;
+exports.GetBucketMetadataConfigurationResult$ = GetBucketMetadataConfigurationResult$;
+exports.GetBucketMetadataTableConfiguration$ = GetBucketMetadataTableConfiguration$;
 exports.GetBucketMetadataTableConfigurationCommand = GetBucketMetadataTableConfigurationCommand;
+exports.GetBucketMetadataTableConfigurationOutput$ = GetBucketMetadataTableConfigurationOutput$;
+exports.GetBucketMetadataTableConfigurationRequest$ = GetBucketMetadataTableConfigurationRequest$;
+exports.GetBucketMetadataTableConfigurationResult$ = GetBucketMetadataTableConfigurationResult$;
+exports.GetBucketMetricsConfiguration$ = GetBucketMetricsConfiguration$;
 exports.GetBucketMetricsConfigurationCommand = GetBucketMetricsConfigurationCommand;
+exports.GetBucketMetricsConfigurationOutput$ = GetBucketMetricsConfigurationOutput$;
+exports.GetBucketMetricsConfigurationRequest$ = GetBucketMetricsConfigurationRequest$;
+exports.GetBucketNotificationConfiguration$ = GetBucketNotificationConfiguration$;
 exports.GetBucketNotificationConfigurationCommand = GetBucketNotificationConfigurationCommand;
+exports.GetBucketNotificationConfigurationRequest$ = GetBucketNotificationConfigurationRequest$;
+exports.GetBucketOwnershipControls$ = GetBucketOwnershipControls$;
 exports.GetBucketOwnershipControlsCommand = GetBucketOwnershipControlsCommand;
+exports.GetBucketOwnershipControlsOutput$ = GetBucketOwnershipControlsOutput$;
+exports.GetBucketOwnershipControlsRequest$ = GetBucketOwnershipControlsRequest$;
+exports.GetBucketPolicy$ = GetBucketPolicy$;
 exports.GetBucketPolicyCommand = GetBucketPolicyCommand;
+exports.GetBucketPolicyOutput$ = GetBucketPolicyOutput$;
+exports.GetBucketPolicyRequest$ = GetBucketPolicyRequest$;
+exports.GetBucketPolicyStatus$ = GetBucketPolicyStatus$;
 exports.GetBucketPolicyStatusCommand = GetBucketPolicyStatusCommand;
+exports.GetBucketPolicyStatusOutput$ = GetBucketPolicyStatusOutput$;
+exports.GetBucketPolicyStatusRequest$ = GetBucketPolicyStatusRequest$;
+exports.GetBucketReplication$ = GetBucketReplication$;
 exports.GetBucketReplicationCommand = GetBucketReplicationCommand;
+exports.GetBucketReplicationOutput$ = GetBucketReplicationOutput$;
+exports.GetBucketReplicationRequest$ = GetBucketReplicationRequest$;
+exports.GetBucketRequestPayment$ = GetBucketRequestPayment$;
 exports.GetBucketRequestPaymentCommand = GetBucketRequestPaymentCommand;
+exports.GetBucketRequestPaymentOutput$ = GetBucketRequestPaymentOutput$;
+exports.GetBucketRequestPaymentRequest$ = GetBucketRequestPaymentRequest$;
+exports.GetBucketTagging$ = GetBucketTagging$;
 exports.GetBucketTaggingCommand = GetBucketTaggingCommand;
+exports.GetBucketTaggingOutput$ = GetBucketTaggingOutput$;
+exports.GetBucketTaggingRequest$ = GetBucketTaggingRequest$;
+exports.GetBucketVersioning$ = GetBucketVersioning$;
 exports.GetBucketVersioningCommand = GetBucketVersioningCommand;
+exports.GetBucketVersioningOutput$ = GetBucketVersioningOutput$;
+exports.GetBucketVersioningRequest$ = GetBucketVersioningRequest$;
+exports.GetBucketWebsite$ = GetBucketWebsite$;
 exports.GetBucketWebsiteCommand = GetBucketWebsiteCommand;
+exports.GetBucketWebsiteOutput$ = GetBucketWebsiteOutput$;
+exports.GetBucketWebsiteRequest$ = GetBucketWebsiteRequest$;
+exports.GetObject$ = GetObject$;
+exports.GetObjectAcl$ = GetObjectAcl$;
 exports.GetObjectAclCommand = GetObjectAclCommand;
+exports.GetObjectAclOutput$ = GetObjectAclOutput$;
+exports.GetObjectAclRequest$ = GetObjectAclRequest$;
+exports.GetObjectAttributes$ = GetObjectAttributes$;
 exports.GetObjectAttributesCommand = GetObjectAttributesCommand;
-exports.GetObjectAttributesRequestFilterSensitiveLog = GetObjectAttributesRequestFilterSensitiveLog;
+exports.GetObjectAttributesOutput$ = GetObjectAttributesOutput$;
+exports.GetObjectAttributesParts$ = GetObjectAttributesParts$;
+exports.GetObjectAttributesRequest$ = GetObjectAttributesRequest$;
 exports.GetObjectCommand = GetObjectCommand;
+exports.GetObjectLegalHold$ = GetObjectLegalHold$;
 exports.GetObjectLegalHoldCommand = GetObjectLegalHoldCommand;
+exports.GetObjectLegalHoldOutput$ = GetObjectLegalHoldOutput$;
+exports.GetObjectLegalHoldRequest$ = GetObjectLegalHoldRequest$;
+exports.GetObjectLockConfiguration$ = GetObjectLockConfiguration$;
 exports.GetObjectLockConfigurationCommand = GetObjectLockConfigurationCommand;
-exports.GetObjectOutputFilterSensitiveLog = GetObjectOutputFilterSensitiveLog;
-exports.GetObjectRequestFilterSensitiveLog = GetObjectRequestFilterSensitiveLog;
+exports.GetObjectLockConfigurationOutput$ = GetObjectLockConfigurationOutput$;
+exports.GetObjectLockConfigurationRequest$ = GetObjectLockConfigurationRequest$;
+exports.GetObjectOutput$ = GetObjectOutput$;
+exports.GetObjectRequest$ = GetObjectRequest$;
+exports.GetObjectRetention$ = GetObjectRetention$;
 exports.GetObjectRetentionCommand = GetObjectRetentionCommand;
+exports.GetObjectRetentionOutput$ = GetObjectRetentionOutput$;
+exports.GetObjectRetentionRequest$ = GetObjectRetentionRequest$;
+exports.GetObjectTagging$ = GetObjectTagging$;
 exports.GetObjectTaggingCommand = GetObjectTaggingCommand;
+exports.GetObjectTaggingOutput$ = GetObjectTaggingOutput$;
+exports.GetObjectTaggingRequest$ = GetObjectTaggingRequest$;
+exports.GetObjectTorrent$ = GetObjectTorrent$;
 exports.GetObjectTorrentCommand = GetObjectTorrentCommand;
-exports.GetObjectTorrentOutputFilterSensitiveLog = GetObjectTorrentOutputFilterSensitiveLog;
+exports.GetObjectTorrentOutput$ = GetObjectTorrentOutput$;
+exports.GetObjectTorrentRequest$ = GetObjectTorrentRequest$;
+exports.GetPublicAccessBlock$ = GetPublicAccessBlock$;
 exports.GetPublicAccessBlockCommand = GetPublicAccessBlockCommand;
+exports.GetPublicAccessBlockOutput$ = GetPublicAccessBlockOutput$;
+exports.GetPublicAccessBlockRequest$ = GetPublicAccessBlockRequest$;
+exports.GlacierJobParameters$ = GlacierJobParameters$;
+exports.Grant$ = Grant$;
+exports.Grantee$ = Grantee$;
+exports.HeadBucket$ = HeadBucket$;
 exports.HeadBucketCommand = HeadBucketCommand;
+exports.HeadBucketOutput$ = HeadBucketOutput$;
+exports.HeadBucketRequest$ = HeadBucketRequest$;
+exports.HeadObject$ = HeadObject$;
 exports.HeadObjectCommand = HeadObjectCommand;
-exports.HeadObjectOutputFilterSensitiveLog = HeadObjectOutputFilterSensitiveLog;
-exports.HeadObjectRequestFilterSensitiveLog = HeadObjectRequestFilterSensitiveLog;
+exports.HeadObjectOutput$ = HeadObjectOutput$;
+exports.HeadObjectRequest$ = HeadObjectRequest$;
 exports.IdempotencyParameterMismatch = IdempotencyParameterMismatch;
+exports.IdempotencyParameterMismatch$ = IdempotencyParameterMismatch$;
+exports.IndexDocument$ = IndexDocument$;
+exports.Initiator$ = Initiator$;
+exports.InputSerialization$ = InputSerialization$;
 exports.IntelligentTieringAccessTier = IntelligentTieringAccessTier;
+exports.IntelligentTieringAndOperator$ = IntelligentTieringAndOperator$;
+exports.IntelligentTieringConfiguration$ = IntelligentTieringConfiguration$;
+exports.IntelligentTieringFilter$ = IntelligentTieringFilter$;
 exports.IntelligentTieringStatus = IntelligentTieringStatus;
 exports.InvalidObjectState = InvalidObjectState;
+exports.InvalidObjectState$ = InvalidObjectState$;
 exports.InvalidRequest = InvalidRequest;
+exports.InvalidRequest$ = InvalidRequest$;
 exports.InvalidWriteOffset = InvalidWriteOffset;
-exports.InventoryConfigurationFilterSensitiveLog = InventoryConfigurationFilterSensitiveLog;
+exports.InvalidWriteOffset$ = InvalidWriteOffset$;
+exports.InventoryConfiguration$ = InventoryConfiguration$;
 exports.InventoryConfigurationState = InventoryConfigurationState;
-exports.InventoryDestinationFilterSensitiveLog = InventoryDestinationFilterSensitiveLog;
-exports.InventoryEncryptionFilterSensitiveLog = InventoryEncryptionFilterSensitiveLog;
+exports.InventoryDestination$ = InventoryDestination$;
+exports.InventoryEncryption$ = InventoryEncryption$;
+exports.InventoryFilter$ = InventoryFilter$;
 exports.InventoryFormat = InventoryFormat;
 exports.InventoryFrequency = InventoryFrequency;
 exports.InventoryIncludedObjectVersions = InventoryIncludedObjectVersions;
 exports.InventoryOptionalField = InventoryOptionalField;
-exports.InventoryS3BucketDestinationFilterSensitiveLog = InventoryS3BucketDestinationFilterSensitiveLog;
+exports.InventoryS3BucketDestination$ = InventoryS3BucketDestination$;
+exports.InventorySchedule$ = InventorySchedule$;
+exports.InventoryTableConfiguration$ = InventoryTableConfiguration$;
+exports.InventoryTableConfigurationResult$ = InventoryTableConfigurationResult$;
+exports.InventoryTableConfigurationUpdates$ = InventoryTableConfigurationUpdates$;
+exports.JSONInput$ = JSONInput$;
+exports.JSONOutput$ = JSONOutput$;
 exports.JSONType = JSONType;
+exports.JournalTableConfiguration$ = JournalTableConfiguration$;
+exports.JournalTableConfigurationResult$ = JournalTableConfigurationResult$;
+exports.JournalTableConfigurationUpdates$ = JournalTableConfigurationUpdates$;
+exports.LambdaFunctionConfiguration$ = LambdaFunctionConfiguration$;
+exports.LifecycleExpiration$ = LifecycleExpiration$;
+exports.LifecycleRule$ = LifecycleRule$;
+exports.LifecycleRuleAndOperator$ = LifecycleRuleAndOperator$;
+exports.LifecycleRuleFilter$ = LifecycleRuleFilter$;
+exports.ListBucketAnalyticsConfigurations$ = ListBucketAnalyticsConfigurations$;
 exports.ListBucketAnalyticsConfigurationsCommand = ListBucketAnalyticsConfigurationsCommand;
+exports.ListBucketAnalyticsConfigurationsOutput$ = ListBucketAnalyticsConfigurationsOutput$;
+exports.ListBucketAnalyticsConfigurationsRequest$ = ListBucketAnalyticsConfigurationsRequest$;
+exports.ListBucketIntelligentTieringConfigurations$ = ListBucketIntelligentTieringConfigurations$;
 exports.ListBucketIntelligentTieringConfigurationsCommand = ListBucketIntelligentTieringConfigurationsCommand;
+exports.ListBucketIntelligentTieringConfigurationsOutput$ = ListBucketIntelligentTieringConfigurationsOutput$;
+exports.ListBucketIntelligentTieringConfigurationsRequest$ = ListBucketIntelligentTieringConfigurationsRequest$;
+exports.ListBucketInventoryConfigurations$ = ListBucketInventoryConfigurations$;
 exports.ListBucketInventoryConfigurationsCommand = ListBucketInventoryConfigurationsCommand;
-exports.ListBucketInventoryConfigurationsOutputFilterSensitiveLog = ListBucketInventoryConfigurationsOutputFilterSensitiveLog;
+exports.ListBucketInventoryConfigurationsOutput$ = ListBucketInventoryConfigurationsOutput$;
+exports.ListBucketInventoryConfigurationsRequest$ = ListBucketInventoryConfigurationsRequest$;
+exports.ListBucketMetricsConfigurations$ = ListBucketMetricsConfigurations$;
 exports.ListBucketMetricsConfigurationsCommand = ListBucketMetricsConfigurationsCommand;
+exports.ListBucketMetricsConfigurationsOutput$ = ListBucketMetricsConfigurationsOutput$;
+exports.ListBucketMetricsConfigurationsRequest$ = ListBucketMetricsConfigurationsRequest$;
+exports.ListBuckets$ = ListBuckets$;
 exports.ListBucketsCommand = ListBucketsCommand;
+exports.ListBucketsOutput$ = ListBucketsOutput$;
+exports.ListBucketsRequest$ = ListBucketsRequest$;
+exports.ListDirectoryBuckets$ = ListDirectoryBuckets$;
 exports.ListDirectoryBucketsCommand = ListDirectoryBucketsCommand;
+exports.ListDirectoryBucketsOutput$ = ListDirectoryBucketsOutput$;
+exports.ListDirectoryBucketsRequest$ = ListDirectoryBucketsRequest$;
+exports.ListMultipartUploads$ = ListMultipartUploads$;
 exports.ListMultipartUploadsCommand = ListMultipartUploadsCommand;
+exports.ListMultipartUploadsOutput$ = ListMultipartUploadsOutput$;
+exports.ListMultipartUploadsRequest$ = ListMultipartUploadsRequest$;
+exports.ListObjectVersions$ = ListObjectVersions$;
 exports.ListObjectVersionsCommand = ListObjectVersionsCommand;
+exports.ListObjectVersionsOutput$ = ListObjectVersionsOutput$;
+exports.ListObjectVersionsRequest$ = ListObjectVersionsRequest$;
+exports.ListObjects$ = ListObjects$;
 exports.ListObjectsCommand = ListObjectsCommand;
+exports.ListObjectsOutput$ = ListObjectsOutput$;
+exports.ListObjectsRequest$ = ListObjectsRequest$;
+exports.ListObjectsV2$ = ListObjectsV2$;
 exports.ListObjectsV2Command = ListObjectsV2Command;
+exports.ListObjectsV2Output$ = ListObjectsV2Output$;
+exports.ListObjectsV2Request$ = ListObjectsV2Request$;
+exports.ListParts$ = ListParts$;
 exports.ListPartsCommand = ListPartsCommand;
-exports.ListPartsRequestFilterSensitiveLog = ListPartsRequestFilterSensitiveLog;
+exports.ListPartsOutput$ = ListPartsOutput$;
+exports.ListPartsRequest$ = ListPartsRequest$;
+exports.LocationInfo$ = LocationInfo$;
 exports.LocationType = LocationType;
+exports.LoggingEnabled$ = LoggingEnabled$;
 exports.MFADelete = MFADelete;
 exports.MFADeleteStatus = MFADeleteStatus;
+exports.MetadataConfiguration$ = MetadataConfiguration$;
+exports.MetadataConfigurationResult$ = MetadataConfigurationResult$;
 exports.MetadataDirective = MetadataDirective;
+exports.MetadataEntry$ = MetadataEntry$;
+exports.MetadataTableConfiguration$ = MetadataTableConfiguration$;
+exports.MetadataTableConfigurationResult$ = MetadataTableConfigurationResult$;
+exports.MetadataTableEncryptionConfiguration$ = MetadataTableEncryptionConfiguration$;
+exports.Metrics$ = Metrics$;
+exports.MetricsAndOperator$ = MetricsAndOperator$;
+exports.MetricsConfiguration$ = MetricsConfiguration$;
+exports.MetricsFilter$ = MetricsFilter$;
 exports.MetricsStatus = MetricsStatus;
+exports.MultipartUpload$ = MultipartUpload$;
 exports.NoSuchBucket = NoSuchBucket;
+exports.NoSuchBucket$ = NoSuchBucket$;
 exports.NoSuchKey = NoSuchKey;
+exports.NoSuchKey$ = NoSuchKey$;
 exports.NoSuchUpload = NoSuchUpload;
+exports.NoSuchUpload$ = NoSuchUpload$;
+exports.NoncurrentVersionExpiration$ = NoncurrentVersionExpiration$;
+exports.NoncurrentVersionTransition$ = NoncurrentVersionTransition$;
 exports.NotFound = NotFound;
+exports.NotFound$ = NotFound$;
+exports.NotificationConfiguration$ = NotificationConfiguration$;
+exports.NotificationConfigurationFilter$ = NotificationConfigurationFilter$;
 exports.ObjectAlreadyInActiveTierError = ObjectAlreadyInActiveTierError;
+exports.ObjectAlreadyInActiveTierError$ = ObjectAlreadyInActiveTierError$;
 exports.ObjectAttributes = ObjectAttributes;
 exports.ObjectCannedACL = ObjectCannedACL;
+exports.ObjectIdentifier$ = ObjectIdentifier$;
+exports.ObjectLockConfiguration$ = ObjectLockConfiguration$;
 exports.ObjectLockEnabled = ObjectLockEnabled;
+exports.ObjectLockLegalHold$ = ObjectLockLegalHold$;
 exports.ObjectLockLegalHoldStatus = ObjectLockLegalHoldStatus;
 exports.ObjectLockMode = ObjectLockMode;
+exports.ObjectLockRetention$ = ObjectLockRetention$;
 exports.ObjectLockRetentionMode = ObjectLockRetentionMode;
+exports.ObjectLockRule$ = ObjectLockRule$;
 exports.ObjectNotInActiveTierError = ObjectNotInActiveTierError;
+exports.ObjectNotInActiveTierError$ = ObjectNotInActiveTierError$;
 exports.ObjectOwnership = ObjectOwnership;
+exports.ObjectPart$ = ObjectPart$;
 exports.ObjectStorageClass = ObjectStorageClass;
+exports.ObjectVersion$ = ObjectVersion$;
 exports.ObjectVersionStorageClass = ObjectVersionStorageClass;
 exports.OptionalObjectAttributes = OptionalObjectAttributes;
-exports.OutputLocationFilterSensitiveLog = OutputLocationFilterSensitiveLog;
+exports.OutputLocation$ = OutputLocation$;
+exports.OutputSerialization$ = OutputSerialization$;
+exports.Owner$ = Owner$;
 exports.OwnerOverride = OwnerOverride;
+exports.OwnershipControls$ = OwnershipControls$;
+exports.OwnershipControlsRule$ = OwnershipControlsRule$;
+exports.ParquetInput$ = ParquetInput$;
+exports.Part$ = Part$;
 exports.PartitionDateSource = PartitionDateSource;
+exports.PartitionedPrefix$ = PartitionedPrefix$;
 exports.Payer = Payer;
 exports.Permission = Permission;
+exports.PolicyStatus$ = PolicyStatus$;
+exports.Progress$ = Progress$;
+exports.ProgressEvent$ = ProgressEvent$;
 exports.Protocol = Protocol;
+exports.PublicAccessBlockConfiguration$ = PublicAccessBlockConfiguration$;
+exports.PutBucketAbac$ = PutBucketAbac$;
+exports.PutBucketAbacCommand = PutBucketAbacCommand;
+exports.PutBucketAbacRequest$ = PutBucketAbacRequest$;
+exports.PutBucketAccelerateConfiguration$ = PutBucketAccelerateConfiguration$;
 exports.PutBucketAccelerateConfigurationCommand = PutBucketAccelerateConfigurationCommand;
+exports.PutBucketAccelerateConfigurationRequest$ = PutBucketAccelerateConfigurationRequest$;
+exports.PutBucketAcl$ = PutBucketAcl$;
 exports.PutBucketAclCommand = PutBucketAclCommand;
+exports.PutBucketAclRequest$ = PutBucketAclRequest$;
+exports.PutBucketAnalyticsConfiguration$ = PutBucketAnalyticsConfiguration$;
 exports.PutBucketAnalyticsConfigurationCommand = PutBucketAnalyticsConfigurationCommand;
+exports.PutBucketAnalyticsConfigurationRequest$ = PutBucketAnalyticsConfigurationRequest$;
+exports.PutBucketCors$ = PutBucketCors$;
 exports.PutBucketCorsCommand = PutBucketCorsCommand;
+exports.PutBucketCorsRequest$ = PutBucketCorsRequest$;
+exports.PutBucketEncryption$ = PutBucketEncryption$;
 exports.PutBucketEncryptionCommand = PutBucketEncryptionCommand;
-exports.PutBucketEncryptionRequestFilterSensitiveLog = PutBucketEncryptionRequestFilterSensitiveLog;
+exports.PutBucketEncryptionRequest$ = PutBucketEncryptionRequest$;
+exports.PutBucketIntelligentTieringConfiguration$ = PutBucketIntelligentTieringConfiguration$;
 exports.PutBucketIntelligentTieringConfigurationCommand = PutBucketIntelligentTieringConfigurationCommand;
+exports.PutBucketIntelligentTieringConfigurationRequest$ = PutBucketIntelligentTieringConfigurationRequest$;
+exports.PutBucketInventoryConfiguration$ = PutBucketInventoryConfiguration$;
 exports.PutBucketInventoryConfigurationCommand = PutBucketInventoryConfigurationCommand;
-exports.PutBucketInventoryConfigurationRequestFilterSensitiveLog = PutBucketInventoryConfigurationRequestFilterSensitiveLog;
+exports.PutBucketInventoryConfigurationRequest$ = PutBucketInventoryConfigurationRequest$;
+exports.PutBucketLifecycleConfiguration$ = PutBucketLifecycleConfiguration$;
 exports.PutBucketLifecycleConfigurationCommand = PutBucketLifecycleConfigurationCommand;
+exports.PutBucketLifecycleConfigurationOutput$ = PutBucketLifecycleConfigurationOutput$;
+exports.PutBucketLifecycleConfigurationRequest$ = PutBucketLifecycleConfigurationRequest$;
+exports.PutBucketLogging$ = PutBucketLogging$;
 exports.PutBucketLoggingCommand = PutBucketLoggingCommand;
+exports.PutBucketLoggingRequest$ = PutBucketLoggingRequest$;
+exports.PutBucketMetricsConfiguration$ = PutBucketMetricsConfiguration$;
 exports.PutBucketMetricsConfigurationCommand = PutBucketMetricsConfigurationCommand;
+exports.PutBucketMetricsConfigurationRequest$ = PutBucketMetricsConfigurationRequest$;
+exports.PutBucketNotificationConfiguration$ = PutBucketNotificationConfiguration$;
 exports.PutBucketNotificationConfigurationCommand = PutBucketNotificationConfigurationCommand;
+exports.PutBucketNotificationConfigurationRequest$ = PutBucketNotificationConfigurationRequest$;
+exports.PutBucketOwnershipControls$ = PutBucketOwnershipControls$;
 exports.PutBucketOwnershipControlsCommand = PutBucketOwnershipControlsCommand;
+exports.PutBucketOwnershipControlsRequest$ = PutBucketOwnershipControlsRequest$;
+exports.PutBucketPolicy$ = PutBucketPolicy$;
 exports.PutBucketPolicyCommand = PutBucketPolicyCommand;
+exports.PutBucketPolicyRequest$ = PutBucketPolicyRequest$;
+exports.PutBucketReplication$ = PutBucketReplication$;
 exports.PutBucketReplicationCommand = PutBucketReplicationCommand;
+exports.PutBucketReplicationRequest$ = PutBucketReplicationRequest$;
+exports.PutBucketRequestPayment$ = PutBucketRequestPayment$;
 exports.PutBucketRequestPaymentCommand = PutBucketRequestPaymentCommand;
+exports.PutBucketRequestPaymentRequest$ = PutBucketRequestPaymentRequest$;
+exports.PutBucketTagging$ = PutBucketTagging$;
 exports.PutBucketTaggingCommand = PutBucketTaggingCommand;
+exports.PutBucketTaggingRequest$ = PutBucketTaggingRequest$;
+exports.PutBucketVersioning$ = PutBucketVersioning$;
 exports.PutBucketVersioningCommand = PutBucketVersioningCommand;
+exports.PutBucketVersioningRequest$ = PutBucketVersioningRequest$;
+exports.PutBucketWebsite$ = PutBucketWebsite$;
 exports.PutBucketWebsiteCommand = PutBucketWebsiteCommand;
+exports.PutBucketWebsiteRequest$ = PutBucketWebsiteRequest$;
+exports.PutObject$ = PutObject$;
+exports.PutObjectAcl$ = PutObjectAcl$;
 exports.PutObjectAclCommand = PutObjectAclCommand;
+exports.PutObjectAclOutput$ = PutObjectAclOutput$;
+exports.PutObjectAclRequest$ = PutObjectAclRequest$;
 exports.PutObjectCommand = PutObjectCommand;
+exports.PutObjectLegalHold$ = PutObjectLegalHold$;
 exports.PutObjectLegalHoldCommand = PutObjectLegalHoldCommand;
+exports.PutObjectLegalHoldOutput$ = PutObjectLegalHoldOutput$;
+exports.PutObjectLegalHoldRequest$ = PutObjectLegalHoldRequest$;
+exports.PutObjectLockConfiguration$ = PutObjectLockConfiguration$;
 exports.PutObjectLockConfigurationCommand = PutObjectLockConfigurationCommand;
-exports.PutObjectOutputFilterSensitiveLog = PutObjectOutputFilterSensitiveLog;
-exports.PutObjectRequestFilterSensitiveLog = PutObjectRequestFilterSensitiveLog;
+exports.PutObjectLockConfigurationOutput$ = PutObjectLockConfigurationOutput$;
+exports.PutObjectLockConfigurationRequest$ = PutObjectLockConfigurationRequest$;
+exports.PutObjectOutput$ = PutObjectOutput$;
+exports.PutObjectRequest$ = PutObjectRequest$;
+exports.PutObjectRetention$ = PutObjectRetention$;
 exports.PutObjectRetentionCommand = PutObjectRetentionCommand;
+exports.PutObjectRetentionOutput$ = PutObjectRetentionOutput$;
+exports.PutObjectRetentionRequest$ = PutObjectRetentionRequest$;
+exports.PutObjectTagging$ = PutObjectTagging$;
 exports.PutObjectTaggingCommand = PutObjectTaggingCommand;
+exports.PutObjectTaggingOutput$ = PutObjectTaggingOutput$;
+exports.PutObjectTaggingRequest$ = PutObjectTaggingRequest$;
+exports.PutPublicAccessBlock$ = PutPublicAccessBlock$;
 exports.PutPublicAccessBlockCommand = PutPublicAccessBlockCommand;
+exports.PutPublicAccessBlockRequest$ = PutPublicAccessBlockRequest$;
+exports.QueueConfiguration$ = QueueConfiguration$;
 exports.QuoteFields = QuoteFields;
+exports.RecordExpiration$ = RecordExpiration$;
+exports.RecordsEvent$ = RecordsEvent$;
+exports.Redirect$ = Redirect$;
+exports.RedirectAllRequestsTo$ = RedirectAllRequestsTo$;
+exports.RenameObject$ = RenameObject$;
 exports.RenameObjectCommand = RenameObjectCommand;
+exports.RenameObjectOutput$ = RenameObjectOutput$;
+exports.RenameObjectRequest$ = RenameObjectRequest$;
+exports.ReplicaModifications$ = ReplicaModifications$;
 exports.ReplicaModificationsStatus = ReplicaModificationsStatus;
+exports.ReplicationConfiguration$ = ReplicationConfiguration$;
+exports.ReplicationRule$ = ReplicationRule$;
+exports.ReplicationRuleAndOperator$ = ReplicationRuleAndOperator$;
+exports.ReplicationRuleFilter$ = ReplicationRuleFilter$;
 exports.ReplicationRuleStatus = ReplicationRuleStatus;
 exports.ReplicationStatus = ReplicationStatus;
+exports.ReplicationTime$ = ReplicationTime$;
 exports.ReplicationTimeStatus = ReplicationTimeStatus;
+exports.ReplicationTimeValue$ = ReplicationTimeValue$;
 exports.RequestCharged = RequestCharged;
 exports.RequestPayer = RequestPayer;
+exports.RequestPaymentConfiguration$ = RequestPaymentConfiguration$;
+exports.RequestProgress$ = RequestProgress$;
+exports.RestoreObject$ = RestoreObject$;
 exports.RestoreObjectCommand = RestoreObjectCommand;
-exports.RestoreObjectRequestFilterSensitiveLog = RestoreObjectRequestFilterSensitiveLog;
-exports.RestoreRequestFilterSensitiveLog = RestoreRequestFilterSensitiveLog;
+exports.RestoreObjectOutput$ = RestoreObjectOutput$;
+exports.RestoreObjectRequest$ = RestoreObjectRequest$;
+exports.RestoreRequest$ = RestoreRequest$;
 exports.RestoreRequestType = RestoreRequestType;
+exports.RestoreStatus$ = RestoreStatus$;
+exports.RoutingRule$ = RoutingRule$;
 exports.S3 = S3;
 exports.S3Client = S3Client;
-exports.S3LocationFilterSensitiveLog = S3LocationFilterSensitiveLog;
+exports.S3KeyFilter$ = S3KeyFilter$;
+exports.S3Location$ = S3Location$;
 exports.S3ServiceException = S3ServiceException;
+exports.S3ServiceException$ = S3ServiceException$;
 exports.S3TablesBucketType = S3TablesBucketType;
-exports.SSEKMSFilterSensitiveLog = SSEKMSFilterSensitiveLog;
+exports.S3TablesDestination$ = S3TablesDestination$;
+exports.S3TablesDestinationResult$ = S3TablesDestinationResult$;
+exports.SSEKMS$ = SSEKMS$;
+exports.SSES3$ = SSES3$;
+exports.ScanRange$ = ScanRange$;
+exports.SelectObjectContent$ = SelectObjectContent$;
 exports.SelectObjectContentCommand = SelectObjectContentCommand;
-exports.SelectObjectContentEventStreamFilterSensitiveLog = SelectObjectContentEventStreamFilterSensitiveLog;
-exports.SelectObjectContentOutputFilterSensitiveLog = SelectObjectContentOutputFilterSensitiveLog;
-exports.SelectObjectContentRequestFilterSensitiveLog = SelectObjectContentRequestFilterSensitiveLog;
+exports.SelectObjectContentEventStream$ = SelectObjectContentEventStream$;
+exports.SelectObjectContentOutput$ = SelectObjectContentOutput$;
+exports.SelectObjectContentRequest$ = SelectObjectContentRequest$;
+exports.SelectParameters$ = SelectParameters$;
 exports.ServerSideEncryption = ServerSideEncryption;
-exports.ServerSideEncryptionByDefaultFilterSensitiveLog = ServerSideEncryptionByDefaultFilterSensitiveLog;
-exports.ServerSideEncryptionConfigurationFilterSensitiveLog = ServerSideEncryptionConfigurationFilterSensitiveLog;
-exports.ServerSideEncryptionRuleFilterSensitiveLog = ServerSideEncryptionRuleFilterSensitiveLog;
-exports.SessionCredentialsFilterSensitiveLog = SessionCredentialsFilterSensitiveLog;
+exports.ServerSideEncryptionByDefault$ = ServerSideEncryptionByDefault$;
+exports.ServerSideEncryptionConfiguration$ = ServerSideEncryptionConfiguration$;
+exports.ServerSideEncryptionRule$ = ServerSideEncryptionRule$;
+exports.SessionCredentials$ = SessionCredentials$;
 exports.SessionMode = SessionMode;
+exports.SimplePrefix$ = SimplePrefix$;
+exports.SourceSelectionCriteria$ = SourceSelectionCriteria$;
+exports.SseKmsEncryptedObjects$ = SseKmsEncryptedObjects$;
 exports.SseKmsEncryptedObjectsStatus = SseKmsEncryptedObjectsStatus;
+exports.Stats$ = Stats$;
+exports.StatsEvent$ = StatsEvent$;
 exports.StorageClass = StorageClass;
+exports.StorageClassAnalysis$ = StorageClassAnalysis$;
+exports.StorageClassAnalysisDataExport$ = StorageClassAnalysisDataExport$;
 exports.StorageClassAnalysisSchemaVersion = StorageClassAnalysisSchemaVersion;
 exports.TableSseAlgorithm = TableSseAlgorithm;
+exports.Tag$ = Tag$;
+exports.Tagging$ = Tagging$;
 exports.TaggingDirective = TaggingDirective;
+exports.TargetGrant$ = TargetGrant$;
+exports.TargetObjectKeyFormat$ = TargetObjectKeyFormat$;
 exports.Tier = Tier;
+exports.Tiering$ = Tiering$;
 exports.TooManyParts = TooManyParts;
+exports.TooManyParts$ = TooManyParts$;
+exports.TopicConfiguration$ = TopicConfiguration$;
+exports.Transition$ = Transition$;
 exports.TransitionDefaultMinimumObjectSize = TransitionDefaultMinimumObjectSize;
 exports.TransitionStorageClass = TransitionStorageClass;
 exports.Type = Type;
+exports.UpdateBucketMetadataInventoryTableConfiguration$ = UpdateBucketMetadataInventoryTableConfiguration$;
 exports.UpdateBucketMetadataInventoryTableConfigurationCommand = UpdateBucketMetadataInventoryTableConfigurationCommand;
+exports.UpdateBucketMetadataInventoryTableConfigurationRequest$ = UpdateBucketMetadataInventoryTableConfigurationRequest$;
+exports.UpdateBucketMetadataJournalTableConfiguration$ = UpdateBucketMetadataJournalTableConfiguration$;
 exports.UpdateBucketMetadataJournalTableConfigurationCommand = UpdateBucketMetadataJournalTableConfigurationCommand;
+exports.UpdateBucketMetadataJournalTableConfigurationRequest$ = UpdateBucketMetadataJournalTableConfigurationRequest$;
+exports.UploadPart$ = UploadPart$;
 exports.UploadPartCommand = UploadPartCommand;
+exports.UploadPartCopy$ = UploadPartCopy$;
 exports.UploadPartCopyCommand = UploadPartCopyCommand;
-exports.UploadPartCopyOutputFilterSensitiveLog = UploadPartCopyOutputFilterSensitiveLog;
-exports.UploadPartCopyRequestFilterSensitiveLog = UploadPartCopyRequestFilterSensitiveLog;
-exports.UploadPartOutputFilterSensitiveLog = UploadPartOutputFilterSensitiveLog;
-exports.UploadPartRequestFilterSensitiveLog = UploadPartRequestFilterSensitiveLog;
+exports.UploadPartCopyOutput$ = UploadPartCopyOutput$;
+exports.UploadPartCopyRequest$ = UploadPartCopyRequest$;
+exports.UploadPartOutput$ = UploadPartOutput$;
+exports.UploadPartRequest$ = UploadPartRequest$;
+exports.VersioningConfiguration$ = VersioningConfiguration$;
+exports.WebsiteConfiguration$ = WebsiteConfiguration$;
+exports.WriteGetObjectResponse$ = WriteGetObjectResponse$;
 exports.WriteGetObjectResponseCommand = WriteGetObjectResponseCommand;
-exports.WriteGetObjectResponseRequestFilterSensitiveLog = WriteGetObjectResponseRequestFilterSensitiveLog;
+exports.WriteGetObjectResponseRequest$ = WriteGetObjectResponseRequest$;
+exports._Error$ = _Error$;
+exports._Object$ = _Object$;
 exports.paginateListBuckets = paginateListBuckets;
 exports.paginateListDirectoryBuckets = paginateListDirectoryBuckets;
 exports.paginateListObjectsV2 = paginateListObjectsV2;
@@ -16112,14 +12056,13 @@ const hash_stream_node_1 = __nccwpck_require__(7698);
 const middleware_retry_1 = __nccwpck_require__(9618);
 const node_config_provider_1 = __nccwpck_require__(5704);
 const node_http_handler_1 = __nccwpck_require__(1279);
+const smithy_client_1 = __nccwpck_require__(1411);
 const util_body_length_node_1 = __nccwpck_require__(3638);
+const util_defaults_mode_node_1 = __nccwpck_require__(5435);
 const util_retry_1 = __nccwpck_require__(5518);
 const runtimeConfig_shared_1 = __nccwpck_require__(4070);
-const smithy_client_1 = __nccwpck_require__(1411);
-const util_defaults_mode_node_1 = __nccwpck_require__(5435);
-const smithy_client_2 = __nccwpck_require__(1411);
 const getRuntimeConfig = (config) => {
-    (0, smithy_client_2.emitWarningIfUnsupportedVersion)(process.version);
+    (0, smithy_client_1.emitWarningIfUnsupportedVersion)(process.version);
     const defaultsMode = (0, util_defaults_mode_node_1.resolveDefaultsModeConfig)(config);
     const defaultConfigProvider = () => defaultsMode().then(smithy_client_1.loadConfigsForDefaultMode);
     const clientSharedValues = (0, runtimeConfig_shared_1.getRuntimeConfig)(config);
@@ -16136,19 +12079,15 @@ const getRuntimeConfig = (config) => {
         authSchemePreference: config?.authSchemePreference ?? (0, node_config_provider_1.loadConfig)(core_1.NODE_AUTH_SCHEME_PREFERENCE_OPTIONS, loaderConfig),
         bodyLengthChecker: config?.bodyLengthChecker ?? util_body_length_node_1.calculateBodyLength,
         credentialDefaultProvider: config?.credentialDefaultProvider ?? credential_provider_node_1.defaultProvider,
-        defaultUserAgentProvider: config?.defaultUserAgentProvider ??
-            (0, util_user_agent_node_1.createDefaultUserAgentProvider)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
+        defaultUserAgentProvider: config?.defaultUserAgentProvider ?? (0, util_user_agent_node_1.createDefaultUserAgentProvider)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
         disableS3ExpressSessionAuth: config?.disableS3ExpressSessionAuth ?? (0, node_config_provider_1.loadConfig)(middleware_sdk_s3_1.NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_OPTIONS, loaderConfig),
         eventStreamSerdeProvider: config?.eventStreamSerdeProvider ?? eventstream_serde_node_1.eventStreamSerdeProvider,
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS, config),
         md5: config?.md5 ?? hash_node_1.Hash.bind(null, "md5"),
-        region: config?.region ??
-            (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, { ...config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS, ...loaderConfig }),
-        requestChecksumCalculation: config?.requestChecksumCalculation ??
-            (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS, loaderConfig),
+        region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, { ...config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS, ...loaderConfig }),
+        requestChecksumCalculation: config?.requestChecksumCalculation ?? (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS, loaderConfig),
         requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
-        responseChecksumValidation: config?.responseChecksumValidation ??
-            (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS, loaderConfig),
+        responseChecksumValidation: config?.responseChecksumValidation ?? (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS, loaderConfig),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -16178,6 +12117,7 @@ exports.getRuntimeConfig = getRuntimeConfig;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getRuntimeConfig = void 0;
 const core_1 = __nccwpck_require__(8704);
+const protocols_1 = __nccwpck_require__(7288);
 const signature_v4_multi_region_1 = __nccwpck_require__(5785);
 const smithy_client_1 = __nccwpck_require__(1411);
 const url_parser_1 = __nccwpck_require__(4494);
@@ -16209,6 +12149,13 @@ const getRuntimeConfig = (config) => {
             },
         ],
         logger: config?.logger ?? new smithy_client_1.NoOpLogger(),
+        protocol: config?.protocol ?? protocols_1.AwsRestXmlProtocol,
+        protocolSettings: config?.protocolSettings ?? {
+            defaultNamespace: "com.amazonaws.s3",
+            xmlNamespace: "http://s3.amazonaws.com/doc/2006-03-01/",
+            version: "2006-03-01",
+            serviceTarget: "AmazonS3",
+        },
         sdkStreamMixin: config?.sdkStreamMixin ?? util_stream_1.sdkStreamMixin,
         serviceId: config?.serviceId ?? "S3",
         signerConstructor: config?.signerConstructor ?? signature_v4_multi_region_1.SignatureV4MultiRegion,
@@ -16237,10 +12184,10 @@ var client = __nccwpck_require__(5152);
 var signatureV4 = __nccwpck_require__(5118);
 var cbor = __nccwpck_require__(4645);
 var schema = __nccwpck_require__(6890);
+var smithyClient = __nccwpck_require__(1411);
 var protocols = __nccwpck_require__(3422);
 var serde = __nccwpck_require__(2430);
 var utilBase64 = __nccwpck_require__(8385);
-var smithyClient = __nccwpck_require__(1411);
 var utilUtf8 = __nccwpck_require__(1577);
 var xmlBuilder = __nccwpck_require__(4274);
 
@@ -16248,15 +12195,15 @@ const state = {
     warningEmitted: false,
 };
 const emitWarningIfUnsupportedVersion = (version) => {
-    if (version && !state.warningEmitted && parseInt(version.substring(1, version.indexOf("."))) < 18) {
+    if (version && !state.warningEmitted && parseInt(version.substring(1, version.indexOf("."))) < 20) {
         state.warningEmitted = true;
         process.emitWarning(`NodeDeprecationWarning: The AWS SDK for JavaScript (v3) will
-no longer support Node.js 16.x on January 6, 2025.
+no longer support Node.js ${version} in January 2026.
 
 To continue receiving updates to AWS services, bug fixes, and security
 updates please upgrade to a supported Node.js LTS version.
 
-More information can be found at: https://a.co/74kJMmI`);
+More information can be found at: https://a.co/c895JFp`);
     }
 };
 
@@ -16570,6 +12517,10 @@ function bindCallerConfig(config, credentialsProvider) {
 }
 
 class ProtocolLib {
+    queryCompat;
+    constructor(queryCompat = false) {
+        this.queryCompat = queryCompat;
+    }
     resolveRestContentType(defaultContentType, inputSchema) {
         const members = inputSchema.getMemberSchemas();
         const httpPayloadMember = Object.values(members).find((m) => {
@@ -16609,7 +12560,6 @@ class ProtocolLib {
         }
         const errorMetadata = {
             $metadata: metadata,
-            $response: response,
             $fault: response.statusCode < 500 ? "client" : "server",
         };
         const registry = schema.TypeRegistry.for(namespace);
@@ -16623,10 +12573,31 @@ class ProtocolLib {
             const baseExceptionSchema = synthetic.getBaseException();
             if (baseExceptionSchema) {
                 const ErrorCtor = synthetic.getErrorCtor(baseExceptionSchema) ?? Error;
-                throw Object.assign(new ErrorCtor({ name: errorName }), errorMetadata, dataObject);
+                throw this.decorateServiceException(Object.assign(new ErrorCtor({ name: errorName }), errorMetadata), dataObject);
             }
-            throw Object.assign(new Error(errorName), errorMetadata, dataObject);
+            throw this.decorateServiceException(Object.assign(new Error(errorName), errorMetadata), dataObject);
         }
+    }
+    decorateServiceException(exception, additions = {}) {
+        if (this.queryCompat) {
+            const msg = exception.Message ?? additions.Message;
+            const error = smithyClient.decorateServiceException(exception, additions);
+            if (msg) {
+                error.message = msg;
+            }
+            error.Error = {
+                ...error.Error,
+                Type: error.Error.Type,
+                Code: error.Error.Code,
+                Message: error.Error.message ?? error.Error.Message ?? msg,
+            };
+            const reqId = error.$metadata.requestId;
+            if (reqId) {
+                error.RequestId = reqId;
+            }
+            return error;
+        }
+        return smithyClient.decorateServiceException(exception, additions);
     }
     setQueryCompatError(output, response) {
         const queryErrorHeader = response.headers?.["x-amzn-query-error"];
@@ -16639,7 +12610,7 @@ class ProtocolLib {
             };
             Object.assign(output, Error);
             for (const [k, v] of entries) {
-                Error[k] = v;
+                Error[k === "message" ? "Message" : k] = v;
             }
             delete Error.__type;
             output.Error = Error;
@@ -16656,14 +12627,23 @@ class ProtocolLib {
             errorData.Code = queryCompatErrorData.Code;
         }
     }
+    findQueryCompatibleError(registry, errorName) {
+        try {
+            return registry.getSchema(errorName);
+        }
+        catch (e) {
+            return registry.find((schema$1) => schema.NormalizedSchema.of(schema$1).getMergedTraits().awsQueryError?.[0] === errorName);
+        }
+    }
 }
 
 class AwsSmithyRpcV2CborProtocol extends cbor.SmithyRpcV2CborProtocol {
     awsQueryCompatible;
-    mixin = new ProtocolLib();
+    mixin;
     constructor({ defaultNamespace, awsQueryCompatible, }) {
         super({ defaultNamespace });
         this.awsQueryCompatible = !!awsQueryCompatible;
+        this.mixin = new ProtocolLib(this.awsQueryCompatible);
     }
     async serializeRequest(operationSchema, input, context) {
         const request = await super.serializeRequest(operationSchema, input, context);
@@ -16676,23 +12656,31 @@ class AwsSmithyRpcV2CborProtocol extends cbor.SmithyRpcV2CborProtocol {
         if (this.awsQueryCompatible) {
             this.mixin.setQueryCompatError(dataObject, response);
         }
-        const errorName = cbor.loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
-        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorName, this.options.defaultNamespace, response, dataObject, metadata);
+        const errorName = (() => {
+            const compatHeader = response.headers["x-amzn-query-error"];
+            if (compatHeader && this.awsQueryCompatible) {
+                return compatHeader.split(";")[0];
+            }
+            return cbor.loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
+        })();
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorName, this.options.defaultNamespace, response, dataObject, metadata, this.awsQueryCompatible ? this.mixin.findQueryCompatibleError : undefined);
         const ns = schema.NormalizedSchema.of(errorSchema);
         const message = dataObject.message ?? dataObject.Message ?? "Unknown";
         const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
         const exception = new ErrorCtor(message);
         const output = {};
         for (const [name, member] of ns.structIterator()) {
-            output[name] = this.deserializer.readValue(member, dataObject[name]);
+            if (dataObject[name] != null) {
+                output[name] = this.deserializer.readValue(member, dataObject[name]);
+            }
         }
         if (this.awsQueryCompatible) {
             this.mixin.queryCompatOutput(dataObject, output);
         }
-        throw Object.assign(exception, errorMetadata, {
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
             $fault: ns.getMergedTraits().error,
             message,
-        }, output);
+        }, output), dataObject);
     }
 }
 
@@ -16750,6 +12738,70 @@ class SerdeContextConfig {
     serdeContext;
     setSerdeContext(serdeContext) {
         this.serdeContext = serdeContext;
+    }
+}
+
+function* serializingStructIterator(ns, sourceObject) {
+    if (ns.isUnitSchema()) {
+        return;
+    }
+    const struct = ns.getSchema();
+    for (let i = 0; i < struct[4].length; ++i) {
+        const key = struct[4][i];
+        const memberSchema = struct[5][i];
+        const memberNs = new schema.NormalizedSchema([memberSchema, 0], key);
+        if (!(key in sourceObject) && !memberNs.isIdempotencyToken()) {
+            continue;
+        }
+        yield [key, memberNs];
+    }
+}
+function* deserializingStructIterator(ns, sourceObject, nameTrait) {
+    if (ns.isUnitSchema()) {
+        return;
+    }
+    const struct = ns.getSchema();
+    let keysRemaining = Object.keys(sourceObject).filter((k) => k !== "__type").length;
+    for (let i = 0; i < struct[4].length; ++i) {
+        if (keysRemaining === 0) {
+            break;
+        }
+        const key = struct[4][i];
+        const memberSchema = struct[5][i];
+        const memberNs = new schema.NormalizedSchema([memberSchema, 0], key);
+        let serializationKey = key;
+        if (nameTrait) {
+            serializationKey = memberNs.getMergedTraits()[nameTrait] ?? key;
+        }
+        if (!(serializationKey in sourceObject)) {
+            continue;
+        }
+        yield [key, memberNs];
+        keysRemaining -= 1;
+    }
+}
+
+class UnionSerde {
+    from;
+    to;
+    keys;
+    constructor(from, to) {
+        this.from = from;
+        this.to = to;
+        this.keys = new Set(Object.keys(this.from).filter((k) => k !== "__type"));
+    }
+    mark(key) {
+        this.keys.delete(key);
+    }
+    hasUnknown() {
+        return this.keys.size === 1 && Object.keys(this.to).length === 0;
+    }
+    writeUnknown() {
+        if (this.hasUnknown()) {
+            const k = this.keys.values().next().value;
+            const v = this.from[k];
+            this.to.$unknown = [k, v];
+        }
     }
 }
 
@@ -16842,38 +12894,50 @@ class JsonShapeDeserializer extends SerdeContextConfig {
     _read(schema$1, value) {
         const isObject = value !== null && typeof value === "object";
         const ns = schema.NormalizedSchema.of(schema$1);
-        if (ns.isListSchema() && Array.isArray(value)) {
-            const listMember = ns.getValueSchema();
-            const out = [];
-            const sparse = !!ns.getMergedTraits().sparse;
-            for (const item of value) {
-                if (sparse || item != null) {
-                    out.push(this._read(listMember, item));
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const union = ns.isUnionSchema();
+                const out = {};
+                let unionSerde;
+                if (union) {
+                    unionSerde = new UnionSerde(value, out);
                 }
-            }
-            return out;
-        }
-        else if (ns.isMapSchema() && isObject) {
-            const mapMember = ns.getValueSchema();
-            const out = {};
-            const sparse = !!ns.getMergedTraits().sparse;
-            for (const [_k, _v] of Object.entries(value)) {
-                if (sparse || _v != null) {
-                    out[_k] = this._read(mapMember, _v);
+                for (const [memberName, memberSchema] of deserializingStructIterator(ns, value, this.settings.jsonName ? "jsonName" : false)) {
+                    const fromKey = this.settings.jsonName ? memberSchema.getMergedTraits().jsonName ?? memberName : memberName;
+                    if (union) {
+                        unionSerde.mark(fromKey);
+                    }
+                    if (value[fromKey] != null) {
+                        out[memberName] = this._read(memberSchema, value[fromKey]);
+                    }
                 }
-            }
-            return out;
-        }
-        else if (ns.isStructSchema() && isObject) {
-            const out = {};
-            for (const [memberName, memberSchema] of ns.structIterator()) {
-                const fromKey = this.settings.jsonName ? memberSchema.getMergedTraits().jsonName ?? memberName : memberName;
-                const deserializedValue = this._read(memberSchema, value[fromKey]);
-                if (deserializedValue != null) {
-                    out[memberName] = deserializedValue;
+                if (union) {
+                    unionSerde.writeUnknown();
                 }
+                return out;
             }
-            return out;
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const item of value) {
+                    if (sparse || item != null) {
+                        out.push(this._read(listMember, item));
+                    }
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const [_k, _v] of Object.entries(value)) {
+                    if (sparse || _v != null) {
+                        out[_k] = this._read(mapMember, _v);
+                    }
+                }
+                return out;
+            }
         }
         if (ns.isBlobSchema() && typeof value === "string") {
             return utilBase64.fromBase64(value);
@@ -16884,6 +12948,7 @@ class JsonShapeDeserializer extends SerdeContextConfig {
             if (isJson) {
                 return serde.LazyJsonString.from(value);
             }
+            return value;
         }
         if (ns.isTimestampSchema() && value != null) {
             const format = protocols.determineTimestampFormat(ns, this.settings);
@@ -16921,6 +12986,7 @@ class JsonShapeDeserializer extends SerdeContextConfig {
                 case "NaN":
                     return NaN;
             }
+            return value;
         }
         if (ns.isDocumentSchema()) {
             if (isObject) {
@@ -16992,6 +13058,7 @@ class JsonReplacer {
 class JsonShapeSerializer extends SerdeContextConfig {
     settings;
     buffer;
+    useReplacer = false;
     rootSchema;
     constructor(settings) {
         super();
@@ -17008,9 +13075,13 @@ class JsonShapeSerializer extends SerdeContextConfig {
         }
     }
     flush() {
-        const { rootSchema } = this;
+        const { rootSchema, useReplacer } = this;
         this.rootSchema = undefined;
+        this.useReplacer = false;
         if (rootSchema?.isStructSchema() || rootSchema?.isDocumentSchema()) {
+            if (!useReplacer) {
+                return JSON.stringify(this.buffer);
+            }
             const replacer = new JsonReplacer();
             return replacer.replaceInJson(JSON.stringify(this.buffer, replacer.createReplacer(), 0));
         }
@@ -17019,67 +13090,74 @@ class JsonShapeSerializer extends SerdeContextConfig {
     _write(schema$1, value, container) {
         const isObject = value !== null && typeof value === "object";
         const ns = schema.NormalizedSchema.of(schema$1);
-        if (ns.isListSchema() && Array.isArray(value)) {
-            const listMember = ns.getValueSchema();
-            const out = [];
-            const sparse = !!ns.getMergedTraits().sparse;
-            for (const item of value) {
-                if (sparse || item != null) {
-                    out.push(this._write(listMember, item));
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const out = {};
+                for (const [memberName, memberSchema] of serializingStructIterator(ns, value)) {
+                    const serializableValue = this._write(memberSchema, value[memberName], ns);
+                    if (serializableValue !== undefined) {
+                        const jsonName = memberSchema.getMergedTraits().jsonName;
+                        const targetKey = this.settings.jsonName ? jsonName ?? memberName : memberName;
+                        out[targetKey] = serializableValue;
+                    }
+                }
+                if (ns.isUnionSchema() && Object.keys(out).length === 0) {
+                    const { $unknown } = value;
+                    if (Array.isArray($unknown)) {
+                        const [k, v] = $unknown;
+                        out[k] = this._write(15, v);
+                    }
+                }
+                return out;
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const item of value) {
+                    if (sparse || item != null) {
+                        out.push(this._write(listMember, item));
+                    }
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const [_k, _v] of Object.entries(value)) {
+                    if (sparse || _v != null) {
+                        out[_k] = this._write(mapMember, _v);
+                    }
+                }
+                return out;
+            }
+            if (value instanceof Uint8Array && (ns.isBlobSchema() || ns.isDocumentSchema())) {
+                if (ns === this.rootSchema) {
+                    return value;
+                }
+                return (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
+            }
+            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
+                const format = protocols.determineTimestampFormat(ns, this.settings);
+                switch (format) {
+                    case 5:
+                        return value.toISOString().replace(".000Z", "Z");
+                    case 6:
+                        return serde.dateToUtcString(value);
+                    case 7:
+                        return value.getTime() / 1000;
+                    default:
+                        console.warn("Missing timestamp format, using epoch seconds", value);
+                        return value.getTime() / 1000;
                 }
             }
-            return out;
-        }
-        else if (ns.isMapSchema() && isObject) {
-            const mapMember = ns.getValueSchema();
-            const out = {};
-            const sparse = !!ns.getMergedTraits().sparse;
-            for (const [_k, _v] of Object.entries(value)) {
-                if (sparse || _v != null) {
-                    out[_k] = this._write(mapMember, _v);
-                }
+            if (value instanceof serde.NumericValue) {
+                this.useReplacer = true;
             }
-            return out;
-        }
-        else if (ns.isStructSchema() && isObject) {
-            const out = {};
-            for (const [memberName, memberSchema] of ns.structIterator()) {
-                const targetKey = this.settings.jsonName ? memberSchema.getMergedTraits().jsonName ?? memberName : memberName;
-                const serializableValue = this._write(memberSchema, value[memberName], ns);
-                if (serializableValue !== undefined) {
-                    out[targetKey] = serializableValue;
-                }
-            }
-            return out;
         }
         if (value === null && container?.isStructSchema()) {
             return void 0;
-        }
-        if ((ns.isBlobSchema() && (value instanceof Uint8Array || typeof value === "string")) ||
-            (ns.isDocumentSchema() && value instanceof Uint8Array)) {
-            if (ns === this.rootSchema) {
-                return value;
-            }
-            return (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
-        }
-        if ((ns.isTimestampSchema() || ns.isDocumentSchema()) && value instanceof Date) {
-            const format = protocols.determineTimestampFormat(ns, this.settings);
-            switch (format) {
-                case 5:
-                    return value.toISOString().replace(".000Z", "Z");
-                case 6:
-                    return serde.dateToUtcString(value);
-                case 7:
-                    return value.getTime() / 1000;
-                default:
-                    console.warn("Missing timestamp format, using epoch seconds", value);
-                    return value.getTime() / 1000;
-            }
-        }
-        if (ns.isNumericSchema() && typeof value === "number") {
-            if (Math.abs(value) === Infinity || isNaN(value)) {
-                return String(value);
-            }
         }
         if (ns.isStringSchema()) {
             if (typeof value === "undefined" && ns.isIdempotencyToken()) {
@@ -17092,12 +13170,29 @@ class JsonShapeSerializer extends SerdeContextConfig {
                     return serde.LazyJsonString.from(value);
                 }
             }
+            return value;
+        }
+        if (typeof value === "number" && ns.isNumericSchema()) {
+            if (Math.abs(value) === Infinity || isNaN(value)) {
+                return String(value);
+            }
+            return value;
+        }
+        if (typeof value === "string" && ns.isBlobSchema()) {
+            if (ns === this.rootSchema) {
+                return value;
+            }
+            return (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
+        }
+        if (typeof value === "bigint") {
+            this.useReplacer = true;
         }
         if (ns.isDocumentSchema()) {
             if (isObject) {
                 const out = Array.isArray(value) ? [] : {};
                 for (const [k, v] of Object.entries(value)) {
                     if (v instanceof serde.NumericValue) {
+                        this.useReplacer = true;
                         out[k] = v;
                     }
                     else {
@@ -17137,23 +13232,26 @@ class AwsJsonRpcProtocol extends protocols.RpcProtocol {
     deserializer;
     serviceTarget;
     codec;
-    mixin = new ProtocolLib();
+    mixin;
     awsQueryCompatible;
-    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, }) {
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
         super({
             defaultNamespace,
         });
         this.serviceTarget = serviceTarget;
-        this.codec = new JsonCodec({
-            timestampFormat: {
-                useTrait: true,
-                default: 7,
-            },
-            jsonName: false,
-        });
+        this.codec =
+            jsonCodec ??
+                new JsonCodec({
+                    timestampFormat: {
+                        useTrait: true,
+                        default: 7,
+                    },
+                    jsonName: false,
+                });
         this.serializer = this.codec.createSerializer();
         this.deserializer = this.codec.createDeserializer();
         this.awsQueryCompatible = !!awsQueryCompatible;
+        this.mixin = new ProtocolLib(this.awsQueryCompatible);
     }
     async serializeRequest(operationSchema, input, context) {
         const request = await super.serializeRequest(operationSchema, input, context);
@@ -17180,32 +13278,34 @@ class AwsJsonRpcProtocol extends protocols.RpcProtocol {
             this.mixin.setQueryCompatError(dataObject, response);
         }
         const errorIdentifier = loadRestJsonErrorCode(response, dataObject) ?? "Unknown";
-        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata);
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata, this.awsQueryCompatible ? this.mixin.findQueryCompatibleError : undefined);
         const ns = schema.NormalizedSchema.of(errorSchema);
         const message = dataObject.message ?? dataObject.Message ?? "Unknown";
         const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
         const exception = new ErrorCtor(message);
         const output = {};
         for (const [name, member] of ns.structIterator()) {
-            const target = member.getMergedTraits().jsonName ?? name;
-            output[name] = this.codec.createDeserializer().readObject(member, dataObject[target]);
+            if (dataObject[name] != null) {
+                output[name] = this.codec.createDeserializer().readObject(member, dataObject[name]);
+            }
         }
         if (this.awsQueryCompatible) {
             this.mixin.queryCompatOutput(dataObject, output);
         }
-        throw Object.assign(exception, errorMetadata, {
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
             $fault: ns.getMergedTraits().error,
             message,
-        }, output);
+        }, output), dataObject);
     }
 }
 
 class AwsJson1_0Protocol extends AwsJsonRpcProtocol {
-    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, }) {
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
         super({
             defaultNamespace,
             serviceTarget,
             awsQueryCompatible,
+            jsonCodec,
         });
     }
     getShapeId() {
@@ -17220,11 +13320,12 @@ class AwsJson1_0Protocol extends AwsJsonRpcProtocol {
 }
 
 class AwsJson1_1Protocol extends AwsJsonRpcProtocol {
-    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, }) {
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
         super({
             defaultNamespace,
             serviceTarget,
             awsQueryCompatible,
+            jsonCodec,
         });
     }
     getShapeId() {
@@ -17278,10 +13379,20 @@ class AwsRestJsonProtocol extends protocols.HttpBindingProtocol {
                 request.headers["content-type"] = contentType;
             }
         }
-        if (request.headers["content-type"] && !request.body) {
+        if (request.body == null && request.headers["content-type"] === this.getDefaultContentType()) {
             request.body = "{}";
         }
         return request;
+    }
+    async deserializeResponse(operationSchema, context, response) {
+        const output = await super.deserializeResponse(operationSchema, context, response);
+        const outputSchema = schema.NormalizedSchema.of(operationSchema.output);
+        for (const [name, member] of outputSchema.structIterator()) {
+            if (member.getMemberTraits().httpPayload && !(name in output)) {
+                output[name] = null;
+            }
+        }
+        return output;
     }
     async handleError(operationSchema, context, response, dataObject, metadata) {
         const errorIdentifier = loadRestJsonErrorCode(response, dataObject) ?? "Unknown";
@@ -17296,10 +13407,10 @@ class AwsRestJsonProtocol extends protocols.HttpBindingProtocol {
             const target = member.getMergedTraits().jsonName ?? name;
             output[name] = this.codec.createDeserializer().readObject(member, dataObject[target]);
         }
-        throw Object.assign(exception, errorMetadata, {
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
             $fault: ns.getMergedTraits().error,
             message,
-        }, output);
+        }, output), dataObject);
     }
     getDefaultContentType() {
         return "application/json";
@@ -17403,14 +13514,25 @@ class XmlShapeDeserializer extends SerdeContextConfig {
                 return buffer;
             }
             if (ns.isStructSchema()) {
+                const union = ns.isUnionSchema();
+                let unionSerde;
+                if (union) {
+                    unionSerde = new UnionSerde(value, buffer);
+                }
                 for (const [memberName, memberSchema] of ns.structIterator()) {
                     const memberTraits = memberSchema.getMergedTraits();
                     const xmlObjectKey = !memberTraits.httpPayload
                         ? memberSchema.getMemberTraits().xmlName ?? memberName
                         : memberTraits.xmlName ?? memberSchema.getName();
+                    if (union) {
+                        unionSerde.mark(xmlObjectKey);
+                    }
                     if (value[xmlObjectKey] != null) {
                         buffer[memberName] = this.readSchema(memberSchema, value[xmlObjectKey]);
                     }
+                }
+                if (union) {
+                    unionSerde.writeUnknown();
                 }
                 return buffer;
             }
@@ -17515,7 +13637,22 @@ class QueryShapeSerializer extends SerdeContextConfig {
             }
         }
         else if (ns.isDocumentSchema()) {
-            throw new Error(`@aws-sdk/core/protocols - QuerySerializer unsupported document type ${ns.getName(true)}`);
+            if (Array.isArray(value)) {
+                this.write(64 | 15, value, prefix);
+            }
+            else if (value instanceof Date) {
+                this.write(4, value, prefix);
+            }
+            else if (value instanceof Uint8Array) {
+                this.write(21, value, prefix);
+            }
+            else if (value && typeof value === "object") {
+                this.write(128 | 15, value, prefix);
+            }
+            else {
+                this.writeKey(prefix);
+                this.writeValue(String(value));
+            }
         }
         else if (ns.isListSchema()) {
             if (Array.isArray(value)) {
@@ -17563,13 +13700,23 @@ class QueryShapeSerializer extends SerdeContextConfig {
         }
         else if (ns.isStructSchema()) {
             if (value && typeof value === "object") {
-                for (const [memberName, member] of ns.structIterator()) {
+                let didWriteMember = false;
+                for (const [memberName, member] of serializingStructIterator(ns, value)) {
                     if (value[memberName] == null && !member.isIdempotencyToken()) {
                         continue;
                     }
                     const suffix = this.getKey(memberName, member.getMergedTraits().xmlName);
                     const key = `${prefix}${suffix}`;
                     this.write(member, value[memberName], key);
+                    didWriteMember = true;
+                }
+                if (!didWriteMember && ns.isUnionSchema()) {
+                    const { $unknown } = value;
+                    if (Array.isArray($unknown)) {
+                        const [k, v] = $unknown;
+                        const key = `${prefix}${k}`;
+                        this.write(15, v, key);
+                    }
                 }
             }
         }
@@ -17696,18 +13843,13 @@ class AwsQueryProtocol extends protocols.RpcProtocol {
             Code: errorData.Code,
             Message: message,
         };
-        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, errorData, metadata, (registry, errorName) => {
-            try {
-                return registry.getSchema(errorName);
-            }
-            catch (e) {
-                return registry.find((schema$1) => schema.NormalizedSchema.of(schema$1).getMergedTraits().awsQueryError?.[0] === errorName);
-            }
-        });
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, errorData, metadata, this.mixin.findQueryCompatibleError);
         const ns = schema.NormalizedSchema.of(errorSchema);
         const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
         const exception = new ErrorCtor(message);
         const output = {
+            Type: errorData.Error.Type,
+            Code: errorData.Error.Code,
             Error: errorData.Error,
         };
         for (const [name, member] of ns.structIterator()) {
@@ -17715,10 +13857,10 @@ class AwsQueryProtocol extends protocols.RpcProtocol {
             const value = errorData[target] ?? dataObject[target];
             output[name] = this.deserializer.readSchema(member, value);
         }
-        throw Object.assign(exception, errorMetadata, {
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
             $fault: ns.getMergedTraits().error,
             message,
-        }, output);
+        }, output), dataObject);
     }
     loadQueryErrorCode(output, data) {
         const code = (data.Errors?.[0]?.Error ?? data.Errors?.Error ?? data.Error)?.Code;
@@ -17860,7 +14002,7 @@ class XmlShapeSerializer extends SerdeContextConfig {
         }
         const structXmlNode = xmlBuilder.XmlNode.of(name);
         const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(ns, parentXmlns);
-        for (const [memberName, memberSchema] of ns.structIterator()) {
+        for (const [memberName, memberSchema] of serializingStructIterator(ns, value)) {
             const val = value[memberName];
             if (val != null || memberSchema.isIdempotencyToken()) {
                 if (memberSchema.getMergedTraits().xmlAttribute) {
@@ -17882,6 +14024,22 @@ class XmlShapeSerializer extends SerdeContextConfig {
                     structXmlNode.addChildNode(memberNode);
                 }
             }
+        }
+        const { $unknown } = value;
+        if ($unknown && ns.isUnionSchema() && Array.isArray($unknown) && Object.keys(value).length === 1) {
+            const [k, v] = $unknown;
+            const node = xmlBuilder.XmlNode.of(k);
+            if (typeof v !== "string") {
+                if (value instanceof xmlBuilder.XmlNode || value instanceof xmlBuilder.XmlText) {
+                    structXmlNode.addChildNode(value);
+                }
+                else {
+                    throw new Error(`@aws-sdk - $unknown union member in XML requires ` +
+                        `value of type string, @aws-sdk/xml-builder::XmlNode or XmlText.`);
+                }
+            }
+            this.writeSimpleInto(0, v, node, xmlns);
+            structXmlNode.addChildNode(node);
         }
         if (xmlns) {
             structXmlNode.addAttribute(xmlnsAttr, xmlns);
@@ -18128,10 +14286,11 @@ class AwsRestXmlProtocol extends protocols.HttpBindingProtocol {
                 request.headers["content-type"] = contentType;
             }
         }
-        if (request.headers["content-type"] === this.getDefaultContentType()) {
-            if (typeof request.body === "string") {
-                request.body = '<?xml version="1.0" encoding="UTF-8"?>' + request.body;
-            }
+        if (typeof request.body === "string" &&
+            request.headers["content-type"] === this.getDefaultContentType() &&
+            !request.body.startsWith("<?xml ") &&
+            !this.hasUnstructuredPayloadBinding(inputSchema)) {
+            request.body = '<?xml version="1.0" encoding="UTF-8"?>' + request.body;
         }
         return request;
     }
@@ -18152,13 +14311,21 @@ class AwsRestXmlProtocol extends protocols.HttpBindingProtocol {
             const value = dataObject.Error?.[target] ?? dataObject[target];
             output[name] = this.codec.createDeserializer().readSchema(member, value);
         }
-        throw Object.assign(exception, errorMetadata, {
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
             $fault: ns.getMergedTraits().error,
             message,
-        }, output);
+        }, output), dataObject);
     }
     getDefaultContentType() {
         return "application/xml";
+    }
+    hasUnstructuredPayloadBinding(ns) {
+        for (const [, member] of ns.structIterator()) {
+            if (member.getMergedTraits().httpPayload) {
+                return !(member.isStructSchema() || member.isMapSchema() || member.isListSchema());
+            }
+        }
+        return false;
     }
 }
 
@@ -18215,15 +14382,15 @@ const state = {
     warningEmitted: false,
 };
 const emitWarningIfUnsupportedVersion = (version) => {
-    if (version && !state.warningEmitted && parseInt(version.substring(1, version.indexOf("."))) < 18) {
+    if (version && !state.warningEmitted && parseInt(version.substring(1, version.indexOf("."))) < 20) {
         state.warningEmitted = true;
         process.emitWarning(`NodeDeprecationWarning: The AWS SDK for JavaScript (v3) will
-no longer support Node.js 16.x on January 6, 2025.
+no longer support Node.js ${version} in January 2026.
 
 To continue receiving updates to AWS services, bug fixes, and security
 updates please upgrade to a supported Node.js LTS version.
 
-More information can be found at: https://a.co/74kJMmI`);
+More information can be found at: https://a.co/c895JFp`);
     }
 };
 
@@ -18260,6 +14427,1971 @@ exports.setCredentialFeature = setCredentialFeature;
 exports.setFeature = setFeature;
 exports.setTokenFeature = setTokenFeature;
 exports.state = state;
+
+
+/***/ }),
+
+/***/ 7288:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+var cbor = __nccwpck_require__(4645);
+var schema = __nccwpck_require__(6890);
+var smithyClient = __nccwpck_require__(1411);
+var protocols = __nccwpck_require__(3422);
+var serde = __nccwpck_require__(2430);
+var utilBase64 = __nccwpck_require__(8385);
+var utilUtf8 = __nccwpck_require__(1577);
+var xmlBuilder = __nccwpck_require__(4274);
+
+class ProtocolLib {
+    queryCompat;
+    constructor(queryCompat = false) {
+        this.queryCompat = queryCompat;
+    }
+    resolveRestContentType(defaultContentType, inputSchema) {
+        const members = inputSchema.getMemberSchemas();
+        const httpPayloadMember = Object.values(members).find((m) => {
+            return !!m.getMergedTraits().httpPayload;
+        });
+        if (httpPayloadMember) {
+            const mediaType = httpPayloadMember.getMergedTraits().mediaType;
+            if (mediaType) {
+                return mediaType;
+            }
+            else if (httpPayloadMember.isStringSchema()) {
+                return "text/plain";
+            }
+            else if (httpPayloadMember.isBlobSchema()) {
+                return "application/octet-stream";
+            }
+            else {
+                return defaultContentType;
+            }
+        }
+        else if (!inputSchema.isUnitSchema()) {
+            const hasBody = Object.values(members).find((m) => {
+                const { httpQuery, httpQueryParams, httpHeader, httpLabel, httpPrefixHeaders } = m.getMergedTraits();
+                const noPrefixHeaders = httpPrefixHeaders === void 0;
+                return !httpQuery && !httpQueryParams && !httpHeader && !httpLabel && noPrefixHeaders;
+            });
+            if (hasBody) {
+                return defaultContentType;
+            }
+        }
+    }
+    async getErrorSchemaOrThrowBaseException(errorIdentifier, defaultNamespace, response, dataObject, metadata, getErrorSchema) {
+        let namespace = defaultNamespace;
+        let errorName = errorIdentifier;
+        if (errorIdentifier.includes("#")) {
+            [namespace, errorName] = errorIdentifier.split("#");
+        }
+        const errorMetadata = {
+            $metadata: metadata,
+            $fault: response.statusCode < 500 ? "client" : "server",
+        };
+        const registry = schema.TypeRegistry.for(namespace);
+        try {
+            const errorSchema = getErrorSchema?.(registry, errorName) ?? registry.getSchema(errorIdentifier);
+            return { errorSchema, errorMetadata };
+        }
+        catch (e) {
+            dataObject.message = dataObject.message ?? dataObject.Message ?? "UnknownError";
+            const synthetic = schema.TypeRegistry.for("smithy.ts.sdk.synthetic." + namespace);
+            const baseExceptionSchema = synthetic.getBaseException();
+            if (baseExceptionSchema) {
+                const ErrorCtor = synthetic.getErrorCtor(baseExceptionSchema) ?? Error;
+                throw this.decorateServiceException(Object.assign(new ErrorCtor({ name: errorName }), errorMetadata), dataObject);
+            }
+            throw this.decorateServiceException(Object.assign(new Error(errorName), errorMetadata), dataObject);
+        }
+    }
+    decorateServiceException(exception, additions = {}) {
+        if (this.queryCompat) {
+            const msg = exception.Message ?? additions.Message;
+            const error = smithyClient.decorateServiceException(exception, additions);
+            if (msg) {
+                error.message = msg;
+            }
+            error.Error = {
+                ...error.Error,
+                Type: error.Error.Type,
+                Code: error.Error.Code,
+                Message: error.Error.message ?? error.Error.Message ?? msg,
+            };
+            const reqId = error.$metadata.requestId;
+            if (reqId) {
+                error.RequestId = reqId;
+            }
+            return error;
+        }
+        return smithyClient.decorateServiceException(exception, additions);
+    }
+    setQueryCompatError(output, response) {
+        const queryErrorHeader = response.headers?.["x-amzn-query-error"];
+        if (output !== undefined && queryErrorHeader != null) {
+            const [Code, Type] = queryErrorHeader.split(";");
+            const entries = Object.entries(output);
+            const Error = {
+                Code,
+                Type,
+            };
+            Object.assign(output, Error);
+            for (const [k, v] of entries) {
+                Error[k === "message" ? "Message" : k] = v;
+            }
+            delete Error.__type;
+            output.Error = Error;
+        }
+    }
+    queryCompatOutput(queryCompatErrorData, errorData) {
+        if (queryCompatErrorData.Error) {
+            errorData.Error = queryCompatErrorData.Error;
+        }
+        if (queryCompatErrorData.Type) {
+            errorData.Type = queryCompatErrorData.Type;
+        }
+        if (queryCompatErrorData.Code) {
+            errorData.Code = queryCompatErrorData.Code;
+        }
+    }
+    findQueryCompatibleError(registry, errorName) {
+        try {
+            return registry.getSchema(errorName);
+        }
+        catch (e) {
+            return registry.find((schema$1) => schema.NormalizedSchema.of(schema$1).getMergedTraits().awsQueryError?.[0] === errorName);
+        }
+    }
+}
+
+class AwsSmithyRpcV2CborProtocol extends cbor.SmithyRpcV2CborProtocol {
+    awsQueryCompatible;
+    mixin;
+    constructor({ defaultNamespace, awsQueryCompatible, }) {
+        super({ defaultNamespace });
+        this.awsQueryCompatible = !!awsQueryCompatible;
+        this.mixin = new ProtocolLib(this.awsQueryCompatible);
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        if (this.awsQueryCompatible) {
+            request.headers["x-amzn-query-mode"] = "true";
+        }
+        return request;
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        if (this.awsQueryCompatible) {
+            this.mixin.setQueryCompatError(dataObject, response);
+        }
+        const errorName = (() => {
+            const compatHeader = response.headers["x-amzn-query-error"];
+            if (compatHeader && this.awsQueryCompatible) {
+                return compatHeader.split(";")[0];
+            }
+            return cbor.loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
+        })();
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorName, this.options.defaultNamespace, response, dataObject, metadata, this.awsQueryCompatible ? this.mixin.findQueryCompatibleError : undefined);
+        const ns = schema.NormalizedSchema.of(errorSchema);
+        const message = dataObject.message ?? dataObject.Message ?? "Unknown";
+        const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor(message);
+        const output = {};
+        for (const [name, member] of ns.structIterator()) {
+            if (dataObject[name] != null) {
+                output[name] = this.deserializer.readValue(member, dataObject[name]);
+            }
+        }
+        if (this.awsQueryCompatible) {
+            this.mixin.queryCompatOutput(dataObject, output);
+        }
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
+    }
+}
+
+const _toStr = (val) => {
+    if (val == null) {
+        return val;
+    }
+    if (typeof val === "number" || typeof val === "bigint") {
+        const warning = new Error(`Received number ${val} where a string was expected.`);
+        warning.name = "Warning";
+        console.warn(warning);
+        return String(val);
+    }
+    if (typeof val === "boolean") {
+        const warning = new Error(`Received boolean ${val} where a string was expected.`);
+        warning.name = "Warning";
+        console.warn(warning);
+        return String(val);
+    }
+    return val;
+};
+const _toBool = (val) => {
+    if (val == null) {
+        return val;
+    }
+    if (typeof val === "string") {
+        const lowercase = val.toLowerCase();
+        if (val !== "" && lowercase !== "false" && lowercase !== "true") {
+            const warning = new Error(`Received string "${val}" where a boolean was expected.`);
+            warning.name = "Warning";
+            console.warn(warning);
+        }
+        return val !== "" && lowercase !== "false";
+    }
+    return val;
+};
+const _toNum = (val) => {
+    if (val == null) {
+        return val;
+    }
+    if (typeof val === "string") {
+        const num = Number(val);
+        if (num.toString() !== val) {
+            const warning = new Error(`Received string "${val}" where a number was expected.`);
+            warning.name = "Warning";
+            console.warn(warning);
+            return val;
+        }
+        return num;
+    }
+    return val;
+};
+
+class SerdeContextConfig {
+    serdeContext;
+    setSerdeContext(serdeContext) {
+        this.serdeContext = serdeContext;
+    }
+}
+
+function* serializingStructIterator(ns, sourceObject) {
+    if (ns.isUnitSchema()) {
+        return;
+    }
+    const struct = ns.getSchema();
+    for (let i = 0; i < struct[4].length; ++i) {
+        const key = struct[4][i];
+        const memberSchema = struct[5][i];
+        const memberNs = new schema.NormalizedSchema([memberSchema, 0], key);
+        if (!(key in sourceObject) && !memberNs.isIdempotencyToken()) {
+            continue;
+        }
+        yield [key, memberNs];
+    }
+}
+function* deserializingStructIterator(ns, sourceObject, nameTrait) {
+    if (ns.isUnitSchema()) {
+        return;
+    }
+    const struct = ns.getSchema();
+    let keysRemaining = Object.keys(sourceObject).filter((k) => k !== "__type").length;
+    for (let i = 0; i < struct[4].length; ++i) {
+        if (keysRemaining === 0) {
+            break;
+        }
+        const key = struct[4][i];
+        const memberSchema = struct[5][i];
+        const memberNs = new schema.NormalizedSchema([memberSchema, 0], key);
+        let serializationKey = key;
+        if (nameTrait) {
+            serializationKey = memberNs.getMergedTraits()[nameTrait] ?? key;
+        }
+        if (!(serializationKey in sourceObject)) {
+            continue;
+        }
+        yield [key, memberNs];
+        keysRemaining -= 1;
+    }
+}
+
+class UnionSerde {
+    from;
+    to;
+    keys;
+    constructor(from, to) {
+        this.from = from;
+        this.to = to;
+        this.keys = new Set(Object.keys(this.from).filter((k) => k !== "__type"));
+    }
+    mark(key) {
+        this.keys.delete(key);
+    }
+    hasUnknown() {
+        return this.keys.size === 1 && Object.keys(this.to).length === 0;
+    }
+    writeUnknown() {
+        if (this.hasUnknown()) {
+            const k = this.keys.values().next().value;
+            const v = this.from[k];
+            this.to.$unknown = [k, v];
+        }
+    }
+}
+
+function jsonReviver(key, value, context) {
+    if (context?.source) {
+        const numericString = context.source;
+        if (typeof value === "number") {
+            if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER || numericString !== String(value)) {
+                const isFractional = numericString.includes(".");
+                if (isFractional) {
+                    return new serde.NumericValue(numericString, "bigDecimal");
+                }
+                else {
+                    return BigInt(numericString);
+                }
+            }
+        }
+    }
+    return value;
+}
+
+const collectBodyString = (streamBody, context) => smithyClient.collectBody(streamBody, context).then((body) => (context?.utf8Encoder ?? utilUtf8.toUtf8)(body));
+
+const parseJsonBody = (streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
+    if (encoded.length) {
+        try {
+            return JSON.parse(encoded);
+        }
+        catch (e) {
+            if (e?.name === "SyntaxError") {
+                Object.defineProperty(e, "$responseBodyText", {
+                    value: encoded,
+                });
+            }
+            throw e;
+        }
+    }
+    return {};
+});
+const parseJsonErrorBody = async (errorBody, context) => {
+    const value = await parseJsonBody(errorBody, context);
+    value.message = value.message ?? value.Message;
+    return value;
+};
+const loadRestJsonErrorCode = (output, data) => {
+    const findKey = (object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());
+    const sanitizeErrorCode = (rawValue) => {
+        let cleanValue = rawValue;
+        if (typeof cleanValue === "number") {
+            cleanValue = cleanValue.toString();
+        }
+        if (cleanValue.indexOf(",") >= 0) {
+            cleanValue = cleanValue.split(",")[0];
+        }
+        if (cleanValue.indexOf(":") >= 0) {
+            cleanValue = cleanValue.split(":")[0];
+        }
+        if (cleanValue.indexOf("#") >= 0) {
+            cleanValue = cleanValue.split("#")[1];
+        }
+        return cleanValue;
+    };
+    const headerKey = findKey(output.headers, "x-amzn-errortype");
+    if (headerKey !== undefined) {
+        return sanitizeErrorCode(output.headers[headerKey]);
+    }
+    if (data && typeof data === "object") {
+        const codeKey = findKey(data, "code");
+        if (codeKey && data[codeKey] !== undefined) {
+            return sanitizeErrorCode(data[codeKey]);
+        }
+        if (data["__type"] !== undefined) {
+            return sanitizeErrorCode(data["__type"]);
+        }
+    }
+};
+
+class JsonShapeDeserializer extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    async read(schema, data) {
+        return this._read(schema, typeof data === "string" ? JSON.parse(data, jsonReviver) : await parseJsonBody(data, this.serdeContext));
+    }
+    readObject(schema, data) {
+        return this._read(schema, data);
+    }
+    _read(schema$1, value) {
+        const isObject = value !== null && typeof value === "object";
+        const ns = schema.NormalizedSchema.of(schema$1);
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const union = ns.isUnionSchema();
+                const out = {};
+                let unionSerde;
+                if (union) {
+                    unionSerde = new UnionSerde(value, out);
+                }
+                for (const [memberName, memberSchema] of deserializingStructIterator(ns, value, this.settings.jsonName ? "jsonName" : false)) {
+                    const fromKey = this.settings.jsonName ? memberSchema.getMergedTraits().jsonName ?? memberName : memberName;
+                    if (union) {
+                        unionSerde.mark(fromKey);
+                    }
+                    if (value[fromKey] != null) {
+                        out[memberName] = this._read(memberSchema, value[fromKey]);
+                    }
+                }
+                if (union) {
+                    unionSerde.writeUnknown();
+                }
+                return out;
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const item of value) {
+                    if (sparse || item != null) {
+                        out.push(this._read(listMember, item));
+                    }
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const [_k, _v] of Object.entries(value)) {
+                    if (sparse || _v != null) {
+                        out[_k] = this._read(mapMember, _v);
+                    }
+                }
+                return out;
+            }
+        }
+        if (ns.isBlobSchema() && typeof value === "string") {
+            return utilBase64.fromBase64(value);
+        }
+        const mediaType = ns.getMergedTraits().mediaType;
+        if (ns.isStringSchema() && typeof value === "string" && mediaType) {
+            const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+            if (isJson) {
+                return serde.LazyJsonString.from(value);
+            }
+            return value;
+        }
+        if (ns.isTimestampSchema() && value != null) {
+            const format = protocols.determineTimestampFormat(ns, this.settings);
+            switch (format) {
+                case 5:
+                    return serde.parseRfc3339DateTimeWithOffset(value);
+                case 6:
+                    return serde.parseRfc7231DateTime(value);
+                case 7:
+                    return serde.parseEpochTimestamp(value);
+                default:
+                    console.warn("Missing timestamp format, parsing value with Date constructor:", value);
+                    return new Date(value);
+            }
+        }
+        if (ns.isBigIntegerSchema() && (typeof value === "number" || typeof value === "string")) {
+            return BigInt(value);
+        }
+        if (ns.isBigDecimalSchema() && value != undefined) {
+            if (value instanceof serde.NumericValue) {
+                return value;
+            }
+            const untyped = value;
+            if (untyped.type === "bigDecimal" && "string" in untyped) {
+                return new serde.NumericValue(untyped.string, untyped.type);
+            }
+            return new serde.NumericValue(String(value), "bigDecimal");
+        }
+        if (ns.isNumericSchema() && typeof value === "string") {
+            switch (value) {
+                case "Infinity":
+                    return Infinity;
+                case "-Infinity":
+                    return -Infinity;
+                case "NaN":
+                    return NaN;
+            }
+            return value;
+        }
+        if (ns.isDocumentSchema()) {
+            if (isObject) {
+                const out = Array.isArray(value) ? [] : {};
+                for (const [k, v] of Object.entries(value)) {
+                    if (v instanceof serde.NumericValue) {
+                        out[k] = v;
+                    }
+                    else {
+                        out[k] = this._read(ns, v);
+                    }
+                }
+                return out;
+            }
+            else {
+                return structuredClone(value);
+            }
+        }
+        return value;
+    }
+}
+
+const NUMERIC_CONTROL_CHAR = String.fromCharCode(925);
+class JsonReplacer {
+    values = new Map();
+    counter = 0;
+    stage = 0;
+    createReplacer() {
+        if (this.stage === 1) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer already created.");
+        }
+        if (this.stage === 2) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
+        }
+        this.stage = 1;
+        return (key, value) => {
+            if (value instanceof serde.NumericValue) {
+                const v = `${NUMERIC_CONTROL_CHAR + "nv" + this.counter++}_` + value.string;
+                this.values.set(`"${v}"`, value.string);
+                return v;
+            }
+            if (typeof value === "bigint") {
+                const s = value.toString();
+                const v = `${NUMERIC_CONTROL_CHAR + "b" + this.counter++}_` + s;
+                this.values.set(`"${v}"`, s);
+                return v;
+            }
+            return value;
+        };
+    }
+    replaceInJson(json) {
+        if (this.stage === 0) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer not created yet.");
+        }
+        if (this.stage === 2) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
+        }
+        this.stage = 2;
+        if (this.counter === 0) {
+            return json;
+        }
+        for (const [key, value] of this.values) {
+            json = json.replace(key, value);
+        }
+        return json;
+    }
+}
+
+class JsonShapeSerializer extends SerdeContextConfig {
+    settings;
+    buffer;
+    useReplacer = false;
+    rootSchema;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    write(schema$1, value) {
+        this.rootSchema = schema.NormalizedSchema.of(schema$1);
+        this.buffer = this._write(this.rootSchema, value);
+    }
+    writeDiscriminatedDocument(schema$1, value) {
+        this.write(schema$1, value);
+        if (typeof this.buffer === "object") {
+            this.buffer.__type = schema.NormalizedSchema.of(schema$1).getName(true);
+        }
+    }
+    flush() {
+        const { rootSchema, useReplacer } = this;
+        this.rootSchema = undefined;
+        this.useReplacer = false;
+        if (rootSchema?.isStructSchema() || rootSchema?.isDocumentSchema()) {
+            if (!useReplacer) {
+                return JSON.stringify(this.buffer);
+            }
+            const replacer = new JsonReplacer();
+            return replacer.replaceInJson(JSON.stringify(this.buffer, replacer.createReplacer(), 0));
+        }
+        return this.buffer;
+    }
+    _write(schema$1, value, container) {
+        const isObject = value !== null && typeof value === "object";
+        const ns = schema.NormalizedSchema.of(schema$1);
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const out = {};
+                for (const [memberName, memberSchema] of serializingStructIterator(ns, value)) {
+                    const serializableValue = this._write(memberSchema, value[memberName], ns);
+                    if (serializableValue !== undefined) {
+                        const jsonName = memberSchema.getMergedTraits().jsonName;
+                        const targetKey = this.settings.jsonName ? jsonName ?? memberName : memberName;
+                        out[targetKey] = serializableValue;
+                    }
+                }
+                if (ns.isUnionSchema() && Object.keys(out).length === 0) {
+                    const { $unknown } = value;
+                    if (Array.isArray($unknown)) {
+                        const [k, v] = $unknown;
+                        out[k] = this._write(15, v);
+                    }
+                }
+                return out;
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const item of value) {
+                    if (sparse || item != null) {
+                        out.push(this._write(listMember, item));
+                    }
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const [_k, _v] of Object.entries(value)) {
+                    if (sparse || _v != null) {
+                        out[_k] = this._write(mapMember, _v);
+                    }
+                }
+                return out;
+            }
+            if (value instanceof Uint8Array && (ns.isBlobSchema() || ns.isDocumentSchema())) {
+                if (ns === this.rootSchema) {
+                    return value;
+                }
+                return (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
+            }
+            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
+                const format = protocols.determineTimestampFormat(ns, this.settings);
+                switch (format) {
+                    case 5:
+                        return value.toISOString().replace(".000Z", "Z");
+                    case 6:
+                        return serde.dateToUtcString(value);
+                    case 7:
+                        return value.getTime() / 1000;
+                    default:
+                        console.warn("Missing timestamp format, using epoch seconds", value);
+                        return value.getTime() / 1000;
+                }
+            }
+            if (value instanceof serde.NumericValue) {
+                this.useReplacer = true;
+            }
+        }
+        if (value === null && container?.isStructSchema()) {
+            return void 0;
+        }
+        if (ns.isStringSchema()) {
+            if (typeof value === "undefined" && ns.isIdempotencyToken()) {
+                return serde.generateIdempotencyToken();
+            }
+            const mediaType = ns.getMergedTraits().mediaType;
+            if (value != null && mediaType) {
+                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+                if (isJson) {
+                    return serde.LazyJsonString.from(value);
+                }
+            }
+            return value;
+        }
+        if (typeof value === "number" && ns.isNumericSchema()) {
+            if (Math.abs(value) === Infinity || isNaN(value)) {
+                return String(value);
+            }
+            return value;
+        }
+        if (typeof value === "string" && ns.isBlobSchema()) {
+            if (ns === this.rootSchema) {
+                return value;
+            }
+            return (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
+        }
+        if (typeof value === "bigint") {
+            this.useReplacer = true;
+        }
+        if (ns.isDocumentSchema()) {
+            if (isObject) {
+                const out = Array.isArray(value) ? [] : {};
+                for (const [k, v] of Object.entries(value)) {
+                    if (v instanceof serde.NumericValue) {
+                        this.useReplacer = true;
+                        out[k] = v;
+                    }
+                    else {
+                        out[k] = this._write(ns, v);
+                    }
+                }
+                return out;
+            }
+            else {
+                return structuredClone(value);
+            }
+        }
+        return value;
+    }
+}
+
+class JsonCodec extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    createSerializer() {
+        const serializer = new JsonShapeSerializer(this.settings);
+        serializer.setSerdeContext(this.serdeContext);
+        return serializer;
+    }
+    createDeserializer() {
+        const deserializer = new JsonShapeDeserializer(this.settings);
+        deserializer.setSerdeContext(this.serdeContext);
+        return deserializer;
+    }
+}
+
+class AwsJsonRpcProtocol extends protocols.RpcProtocol {
+    serializer;
+    deserializer;
+    serviceTarget;
+    codec;
+    mixin;
+    awsQueryCompatible;
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
+        super({
+            defaultNamespace,
+        });
+        this.serviceTarget = serviceTarget;
+        this.codec =
+            jsonCodec ??
+                new JsonCodec({
+                    timestampFormat: {
+                        useTrait: true,
+                        default: 7,
+                    },
+                    jsonName: false,
+                });
+        this.serializer = this.codec.createSerializer();
+        this.deserializer = this.codec.createDeserializer();
+        this.awsQueryCompatible = !!awsQueryCompatible;
+        this.mixin = new ProtocolLib(this.awsQueryCompatible);
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        if (!request.path.endsWith("/")) {
+            request.path += "/";
+        }
+        Object.assign(request.headers, {
+            "content-type": `application/x-amz-json-${this.getJsonRpcVersion()}`,
+            "x-amz-target": `${this.serviceTarget}.${operationSchema.name}`,
+        });
+        if (this.awsQueryCompatible) {
+            request.headers["x-amzn-query-mode"] = "true";
+        }
+        if (schema.deref(operationSchema.input) === "unit" || !request.body) {
+            request.body = "{}";
+        }
+        return request;
+    }
+    getPayloadCodec() {
+        return this.codec;
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        if (this.awsQueryCompatible) {
+            this.mixin.setQueryCompatError(dataObject, response);
+        }
+        const errorIdentifier = loadRestJsonErrorCode(response, dataObject) ?? "Unknown";
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata, this.awsQueryCompatible ? this.mixin.findQueryCompatibleError : undefined);
+        const ns = schema.NormalizedSchema.of(errorSchema);
+        const message = dataObject.message ?? dataObject.Message ?? "Unknown";
+        const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor(message);
+        const output = {};
+        for (const [name, member] of ns.structIterator()) {
+            if (dataObject[name] != null) {
+                output[name] = this.codec.createDeserializer().readObject(member, dataObject[name]);
+            }
+        }
+        if (this.awsQueryCompatible) {
+            this.mixin.queryCompatOutput(dataObject, output);
+        }
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
+    }
+}
+
+class AwsJson1_0Protocol extends AwsJsonRpcProtocol {
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
+        super({
+            defaultNamespace,
+            serviceTarget,
+            awsQueryCompatible,
+            jsonCodec,
+        });
+    }
+    getShapeId() {
+        return "aws.protocols#awsJson1_0";
+    }
+    getJsonRpcVersion() {
+        return "1.0";
+    }
+    getDefaultContentType() {
+        return "application/x-amz-json-1.0";
+    }
+}
+
+class AwsJson1_1Protocol extends AwsJsonRpcProtocol {
+    constructor({ defaultNamespace, serviceTarget, awsQueryCompatible, jsonCodec, }) {
+        super({
+            defaultNamespace,
+            serviceTarget,
+            awsQueryCompatible,
+            jsonCodec,
+        });
+    }
+    getShapeId() {
+        return "aws.protocols#awsJson1_1";
+    }
+    getJsonRpcVersion() {
+        return "1.1";
+    }
+    getDefaultContentType() {
+        return "application/x-amz-json-1.1";
+    }
+}
+
+class AwsRestJsonProtocol extends protocols.HttpBindingProtocol {
+    serializer;
+    deserializer;
+    codec;
+    mixin = new ProtocolLib();
+    constructor({ defaultNamespace }) {
+        super({
+            defaultNamespace,
+        });
+        const settings = {
+            timestampFormat: {
+                useTrait: true,
+                default: 7,
+            },
+            httpBindings: true,
+            jsonName: true,
+        };
+        this.codec = new JsonCodec(settings);
+        this.serializer = new protocols.HttpInterceptingShapeSerializer(this.codec.createSerializer(), settings);
+        this.deserializer = new protocols.HttpInterceptingShapeDeserializer(this.codec.createDeserializer(), settings);
+    }
+    getShapeId() {
+        return "aws.protocols#restJson1";
+    }
+    getPayloadCodec() {
+        return this.codec;
+    }
+    setSerdeContext(serdeContext) {
+        this.codec.setSerdeContext(serdeContext);
+        super.setSerdeContext(serdeContext);
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        const inputSchema = schema.NormalizedSchema.of(operationSchema.input);
+        if (!request.headers["content-type"]) {
+            const contentType = this.mixin.resolveRestContentType(this.getDefaultContentType(), inputSchema);
+            if (contentType) {
+                request.headers["content-type"] = contentType;
+            }
+        }
+        if (request.body == null && request.headers["content-type"] === this.getDefaultContentType()) {
+            request.body = "{}";
+        }
+        return request;
+    }
+    async deserializeResponse(operationSchema, context, response) {
+        const output = await super.deserializeResponse(operationSchema, context, response);
+        const outputSchema = schema.NormalizedSchema.of(operationSchema.output);
+        for (const [name, member] of outputSchema.structIterator()) {
+            if (member.getMemberTraits().httpPayload && !(name in output)) {
+                output[name] = null;
+            }
+        }
+        return output;
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        const errorIdentifier = loadRestJsonErrorCode(response, dataObject) ?? "Unknown";
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata);
+        const ns = schema.NormalizedSchema.of(errorSchema);
+        const message = dataObject.message ?? dataObject.Message ?? "Unknown";
+        const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor(message);
+        await this.deserializeHttpMessage(errorSchema, context, response, dataObject);
+        const output = {};
+        for (const [name, member] of ns.structIterator()) {
+            const target = member.getMergedTraits().jsonName ?? name;
+            output[name] = this.codec.createDeserializer().readObject(member, dataObject[target]);
+        }
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
+    }
+    getDefaultContentType() {
+        return "application/json";
+    }
+}
+
+const awsExpectUnion = (value) => {
+    if (value == null) {
+        return undefined;
+    }
+    if (typeof value === "object" && "__type" in value) {
+        delete value.__type;
+    }
+    return smithyClient.expectUnion(value);
+};
+
+class XmlShapeDeserializer extends SerdeContextConfig {
+    settings;
+    stringDeserializer;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+        this.stringDeserializer = new protocols.FromStringShapeDeserializer(settings);
+    }
+    setSerdeContext(serdeContext) {
+        this.serdeContext = serdeContext;
+        this.stringDeserializer.setSerdeContext(serdeContext);
+    }
+    read(schema$1, bytes, key) {
+        const ns = schema.NormalizedSchema.of(schema$1);
+        const memberSchemas = ns.getMemberSchemas();
+        const isEventPayload = ns.isStructSchema() &&
+            ns.isMemberSchema() &&
+            !!Object.values(memberSchemas).find((memberNs) => {
+                return !!memberNs.getMemberTraits().eventPayload;
+            });
+        if (isEventPayload) {
+            const output = {};
+            const memberName = Object.keys(memberSchemas)[0];
+            const eventMemberSchema = memberSchemas[memberName];
+            if (eventMemberSchema.isBlobSchema()) {
+                output[memberName] = bytes;
+            }
+            else {
+                output[memberName] = this.read(memberSchemas[memberName], bytes);
+            }
+            return output;
+        }
+        const xmlString = (this.serdeContext?.utf8Encoder ?? utilUtf8.toUtf8)(bytes);
+        const parsedObject = this.parseXml(xmlString);
+        return this.readSchema(schema$1, key ? parsedObject[key] : parsedObject);
+    }
+    readSchema(_schema, value) {
+        const ns = schema.NormalizedSchema.of(_schema);
+        if (ns.isUnitSchema()) {
+            return;
+        }
+        const traits = ns.getMergedTraits();
+        if (ns.isListSchema() && !Array.isArray(value)) {
+            return this.readSchema(ns, [value]);
+        }
+        if (value == null) {
+            return value;
+        }
+        if (typeof value === "object") {
+            const sparse = !!traits.sparse;
+            const flat = !!traits.xmlFlattened;
+            if (ns.isListSchema()) {
+                const listValue = ns.getValueSchema();
+                const buffer = [];
+                const sourceKey = listValue.getMergedTraits().xmlName ?? "member";
+                const source = flat ? value : (value[0] ?? value)[sourceKey];
+                const sourceArray = Array.isArray(source) ? source : [source];
+                for (const v of sourceArray) {
+                    if (v != null || sparse) {
+                        buffer.push(this.readSchema(listValue, v));
+                    }
+                }
+                return buffer;
+            }
+            const buffer = {};
+            if (ns.isMapSchema()) {
+                const keyNs = ns.getKeySchema();
+                const memberNs = ns.getValueSchema();
+                let entries;
+                if (flat) {
+                    entries = Array.isArray(value) ? value : [value];
+                }
+                else {
+                    entries = Array.isArray(value.entry) ? value.entry : [value.entry];
+                }
+                const keyProperty = keyNs.getMergedTraits().xmlName ?? "key";
+                const valueProperty = memberNs.getMergedTraits().xmlName ?? "value";
+                for (const entry of entries) {
+                    const key = entry[keyProperty];
+                    const value = entry[valueProperty];
+                    if (value != null || sparse) {
+                        buffer[key] = this.readSchema(memberNs, value);
+                    }
+                }
+                return buffer;
+            }
+            if (ns.isStructSchema()) {
+                const union = ns.isUnionSchema();
+                let unionSerde;
+                if (union) {
+                    unionSerde = new UnionSerde(value, buffer);
+                }
+                for (const [memberName, memberSchema] of ns.structIterator()) {
+                    const memberTraits = memberSchema.getMergedTraits();
+                    const xmlObjectKey = !memberTraits.httpPayload
+                        ? memberSchema.getMemberTraits().xmlName ?? memberName
+                        : memberTraits.xmlName ?? memberSchema.getName();
+                    if (union) {
+                        unionSerde.mark(xmlObjectKey);
+                    }
+                    if (value[xmlObjectKey] != null) {
+                        buffer[memberName] = this.readSchema(memberSchema, value[xmlObjectKey]);
+                    }
+                }
+                if (union) {
+                    unionSerde.writeUnknown();
+                }
+                return buffer;
+            }
+            if (ns.isDocumentSchema()) {
+                return value;
+            }
+            throw new Error(`@aws-sdk/core/protocols - xml deserializer unhandled schema type for ${ns.getName(true)}`);
+        }
+        if (ns.isListSchema()) {
+            return [];
+        }
+        if (ns.isMapSchema() || ns.isStructSchema()) {
+            return {};
+        }
+        return this.stringDeserializer.read(ns, value);
+    }
+    parseXml(xml) {
+        if (xml.length) {
+            let parsedObj;
+            try {
+                parsedObj = xmlBuilder.parseXML(xml);
+            }
+            catch (e) {
+                if (e && typeof e === "object") {
+                    Object.defineProperty(e, "$responseBodyText", {
+                        value: xml,
+                    });
+                }
+                throw e;
+            }
+            const textNodeName = "#text";
+            const key = Object.keys(parsedObj)[0];
+            const parsedObjToReturn = parsedObj[key];
+            if (parsedObjToReturn[textNodeName]) {
+                parsedObjToReturn[key] = parsedObjToReturn[textNodeName];
+                delete parsedObjToReturn[textNodeName];
+            }
+            return smithyClient.getValueFromTextNode(parsedObjToReturn);
+        }
+        return {};
+    }
+}
+
+class QueryShapeSerializer extends SerdeContextConfig {
+    settings;
+    buffer;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    write(schema$1, value, prefix = "") {
+        if (this.buffer === undefined) {
+            this.buffer = "";
+        }
+        const ns = schema.NormalizedSchema.of(schema$1);
+        if (prefix && !prefix.endsWith(".")) {
+            prefix += ".";
+        }
+        if (ns.isBlobSchema()) {
+            if (typeof value === "string" || value instanceof Uint8Array) {
+                this.writeKey(prefix);
+                this.writeValue((this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value));
+            }
+        }
+        else if (ns.isBooleanSchema() || ns.isNumericSchema() || ns.isStringSchema()) {
+            if (value != null) {
+                this.writeKey(prefix);
+                this.writeValue(String(value));
+            }
+            else if (ns.isIdempotencyToken()) {
+                this.writeKey(prefix);
+                this.writeValue(serde.generateIdempotencyToken());
+            }
+        }
+        else if (ns.isBigIntegerSchema()) {
+            if (value != null) {
+                this.writeKey(prefix);
+                this.writeValue(String(value));
+            }
+        }
+        else if (ns.isBigDecimalSchema()) {
+            if (value != null) {
+                this.writeKey(prefix);
+                this.writeValue(value instanceof serde.NumericValue ? value.string : String(value));
+            }
+        }
+        else if (ns.isTimestampSchema()) {
+            if (value instanceof Date) {
+                this.writeKey(prefix);
+                const format = protocols.determineTimestampFormat(ns, this.settings);
+                switch (format) {
+                    case 5:
+                        this.writeValue(value.toISOString().replace(".000Z", "Z"));
+                        break;
+                    case 6:
+                        this.writeValue(smithyClient.dateToUtcString(value));
+                        break;
+                    case 7:
+                        this.writeValue(String(value.getTime() / 1000));
+                        break;
+                }
+            }
+        }
+        else if (ns.isDocumentSchema()) {
+            if (Array.isArray(value)) {
+                this.write(64 | 15, value, prefix);
+            }
+            else if (value instanceof Date) {
+                this.write(4, value, prefix);
+            }
+            else if (value instanceof Uint8Array) {
+                this.write(21, value, prefix);
+            }
+            else if (value && typeof value === "object") {
+                this.write(128 | 15, value, prefix);
+            }
+            else {
+                this.writeKey(prefix);
+                this.writeValue(String(value));
+            }
+        }
+        else if (ns.isListSchema()) {
+            if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    if (this.settings.serializeEmptyLists) {
+                        this.writeKey(prefix);
+                        this.writeValue("");
+                    }
+                }
+                else {
+                    const member = ns.getValueSchema();
+                    const flat = this.settings.flattenLists || ns.getMergedTraits().xmlFlattened;
+                    let i = 1;
+                    for (const item of value) {
+                        if (item == null) {
+                            continue;
+                        }
+                        const suffix = this.getKey("member", member.getMergedTraits().xmlName);
+                        const key = flat ? `${prefix}${i}` : `${prefix}${suffix}.${i}`;
+                        this.write(member, item, key);
+                        ++i;
+                    }
+                }
+            }
+        }
+        else if (ns.isMapSchema()) {
+            if (value && typeof value === "object") {
+                const keySchema = ns.getKeySchema();
+                const memberSchema = ns.getValueSchema();
+                const flat = ns.getMergedTraits().xmlFlattened;
+                let i = 1;
+                for (const [k, v] of Object.entries(value)) {
+                    if (v == null) {
+                        continue;
+                    }
+                    const keySuffix = this.getKey("key", keySchema.getMergedTraits().xmlName);
+                    const key = flat ? `${prefix}${i}.${keySuffix}` : `${prefix}entry.${i}.${keySuffix}`;
+                    const valueSuffix = this.getKey("value", memberSchema.getMergedTraits().xmlName);
+                    const valueKey = flat ? `${prefix}${i}.${valueSuffix}` : `${prefix}entry.${i}.${valueSuffix}`;
+                    this.write(keySchema, k, key);
+                    this.write(memberSchema, v, valueKey);
+                    ++i;
+                }
+            }
+        }
+        else if (ns.isStructSchema()) {
+            if (value && typeof value === "object") {
+                let didWriteMember = false;
+                for (const [memberName, member] of serializingStructIterator(ns, value)) {
+                    if (value[memberName] == null && !member.isIdempotencyToken()) {
+                        continue;
+                    }
+                    const suffix = this.getKey(memberName, member.getMergedTraits().xmlName);
+                    const key = `${prefix}${suffix}`;
+                    this.write(member, value[memberName], key);
+                    didWriteMember = true;
+                }
+                if (!didWriteMember && ns.isUnionSchema()) {
+                    const { $unknown } = value;
+                    if (Array.isArray($unknown)) {
+                        const [k, v] = $unknown;
+                        const key = `${prefix}${k}`;
+                        this.write(15, v, key);
+                    }
+                }
+            }
+        }
+        else if (ns.isUnitSchema()) ;
+        else {
+            throw new Error(`@aws-sdk/core/protocols - QuerySerializer unrecognized schema type ${ns.getName(true)}`);
+        }
+    }
+    flush() {
+        if (this.buffer === undefined) {
+            throw new Error("@aws-sdk/core/protocols - QuerySerializer cannot flush with nothing written to buffer.");
+        }
+        const str = this.buffer;
+        delete this.buffer;
+        return str;
+    }
+    getKey(memberName, xmlName) {
+        const key = xmlName ?? memberName;
+        if (this.settings.capitalizeKeys) {
+            return key[0].toUpperCase() + key.slice(1);
+        }
+        return key;
+    }
+    writeKey(key) {
+        if (key.endsWith(".")) {
+            key = key.slice(0, key.length - 1);
+        }
+        this.buffer += `&${protocols.extendedEncodeURIComponent(key)}=`;
+    }
+    writeValue(value) {
+        this.buffer += protocols.extendedEncodeURIComponent(value);
+    }
+}
+
+class AwsQueryProtocol extends protocols.RpcProtocol {
+    options;
+    serializer;
+    deserializer;
+    mixin = new ProtocolLib();
+    constructor(options) {
+        super({
+            defaultNamespace: options.defaultNamespace,
+        });
+        this.options = options;
+        const settings = {
+            timestampFormat: {
+                useTrait: true,
+                default: 5,
+            },
+            httpBindings: false,
+            xmlNamespace: options.xmlNamespace,
+            serviceNamespace: options.defaultNamespace,
+            serializeEmptyLists: true,
+        };
+        this.serializer = new QueryShapeSerializer(settings);
+        this.deserializer = new XmlShapeDeserializer(settings);
+    }
+    getShapeId() {
+        return "aws.protocols#awsQuery";
+    }
+    setSerdeContext(serdeContext) {
+        this.serializer.setSerdeContext(serdeContext);
+        this.deserializer.setSerdeContext(serdeContext);
+    }
+    getPayloadCodec() {
+        throw new Error("AWSQuery protocol has no payload codec.");
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        if (!request.path.endsWith("/")) {
+            request.path += "/";
+        }
+        Object.assign(request.headers, {
+            "content-type": `application/x-www-form-urlencoded`,
+        });
+        if (schema.deref(operationSchema.input) === "unit" || !request.body) {
+            request.body = "";
+        }
+        const action = operationSchema.name.split("#")[1] ?? operationSchema.name;
+        request.body = `Action=${action}&Version=${this.options.version}` + request.body;
+        if (request.body.endsWith("&")) {
+            request.body = request.body.slice(-1);
+        }
+        return request;
+    }
+    async deserializeResponse(operationSchema, context, response) {
+        const deserializer = this.deserializer;
+        const ns = schema.NormalizedSchema.of(operationSchema.output);
+        const dataObject = {};
+        if (response.statusCode >= 300) {
+            const bytes = await protocols.collectBody(response.body, context);
+            if (bytes.byteLength > 0) {
+                Object.assign(dataObject, await deserializer.read(15, bytes));
+            }
+            await this.handleError(operationSchema, context, response, dataObject, this.deserializeMetadata(response));
+        }
+        for (const header in response.headers) {
+            const value = response.headers[header];
+            delete response.headers[header];
+            response.headers[header.toLowerCase()] = value;
+        }
+        const shortName = operationSchema.name.split("#")[1] ?? operationSchema.name;
+        const awsQueryResultKey = ns.isStructSchema() && this.useNestedResult() ? shortName + "Result" : undefined;
+        const bytes = await protocols.collectBody(response.body, context);
+        if (bytes.byteLength > 0) {
+            Object.assign(dataObject, await deserializer.read(ns, bytes, awsQueryResultKey));
+        }
+        const output = {
+            $metadata: this.deserializeMetadata(response),
+            ...dataObject,
+        };
+        return output;
+    }
+    useNestedResult() {
+        return true;
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        const errorIdentifier = this.loadQueryErrorCode(response, dataObject) ?? "Unknown";
+        const errorData = this.loadQueryError(dataObject);
+        const message = this.loadQueryErrorMessage(dataObject);
+        errorData.message = message;
+        errorData.Error = {
+            Type: errorData.Type,
+            Code: errorData.Code,
+            Message: message,
+        };
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, errorData, metadata, this.mixin.findQueryCompatibleError);
+        const ns = schema.NormalizedSchema.of(errorSchema);
+        const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor(message);
+        const output = {
+            Type: errorData.Error.Type,
+            Code: errorData.Error.Code,
+            Error: errorData.Error,
+        };
+        for (const [name, member] of ns.structIterator()) {
+            const target = member.getMergedTraits().xmlName ?? name;
+            const value = errorData[target] ?? dataObject[target];
+            output[name] = this.deserializer.readSchema(member, value);
+        }
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
+    }
+    loadQueryErrorCode(output, data) {
+        const code = (data.Errors?.[0]?.Error ?? data.Errors?.Error ?? data.Error)?.Code;
+        if (code !== undefined) {
+            return code;
+        }
+        if (output.statusCode == 404) {
+            return "NotFound";
+        }
+    }
+    loadQueryError(data) {
+        return data.Errors?.[0]?.Error ?? data.Errors?.Error ?? data.Error;
+    }
+    loadQueryErrorMessage(data) {
+        const errorData = this.loadQueryError(data);
+        return errorData?.message ?? errorData?.Message ?? data.message ?? data.Message ?? "Unknown";
+    }
+    getDefaultContentType() {
+        return "application/x-www-form-urlencoded";
+    }
+}
+
+class AwsEc2QueryProtocol extends AwsQueryProtocol {
+    options;
+    constructor(options) {
+        super(options);
+        this.options = options;
+        const ec2Settings = {
+            capitalizeKeys: true,
+            flattenLists: true,
+            serializeEmptyLists: false,
+        };
+        Object.assign(this.serializer.settings, ec2Settings);
+    }
+    useNestedResult() {
+        return false;
+    }
+}
+
+const parseXmlBody = (streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
+    if (encoded.length) {
+        let parsedObj;
+        try {
+            parsedObj = xmlBuilder.parseXML(encoded);
+        }
+        catch (e) {
+            if (e && typeof e === "object") {
+                Object.defineProperty(e, "$responseBodyText", {
+                    value: encoded,
+                });
+            }
+            throw e;
+        }
+        const textNodeName = "#text";
+        const key = Object.keys(parsedObj)[0];
+        const parsedObjToReturn = parsedObj[key];
+        if (parsedObjToReturn[textNodeName]) {
+            parsedObjToReturn[key] = parsedObjToReturn[textNodeName];
+            delete parsedObjToReturn[textNodeName];
+        }
+        return smithyClient.getValueFromTextNode(parsedObjToReturn);
+    }
+    return {};
+});
+const parseXmlErrorBody = async (errorBody, context) => {
+    const value = await parseXmlBody(errorBody, context);
+    if (value.Error) {
+        value.Error.message = value.Error.message ?? value.Error.Message;
+    }
+    return value;
+};
+const loadRestXmlErrorCode = (output, data) => {
+    if (data?.Error?.Code !== undefined) {
+        return data.Error.Code;
+    }
+    if (data?.Code !== undefined) {
+        return data.Code;
+    }
+    if (output.statusCode == 404) {
+        return "NotFound";
+    }
+};
+
+class XmlShapeSerializer extends SerdeContextConfig {
+    settings;
+    stringBuffer;
+    byteBuffer;
+    buffer;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    write(schema$1, value) {
+        const ns = schema.NormalizedSchema.of(schema$1);
+        if (ns.isStringSchema() && typeof value === "string") {
+            this.stringBuffer = value;
+        }
+        else if (ns.isBlobSchema()) {
+            this.byteBuffer =
+                "byteLength" in value
+                    ? value
+                    : (this.serdeContext?.base64Decoder ?? utilBase64.fromBase64)(value);
+        }
+        else {
+            this.buffer = this.writeStruct(ns, value, undefined);
+            const traits = ns.getMergedTraits();
+            if (traits.httpPayload && !traits.xmlName) {
+                this.buffer.withName(ns.getName());
+            }
+        }
+    }
+    flush() {
+        if (this.byteBuffer !== undefined) {
+            const bytes = this.byteBuffer;
+            delete this.byteBuffer;
+            return bytes;
+        }
+        if (this.stringBuffer !== undefined) {
+            const str = this.stringBuffer;
+            delete this.stringBuffer;
+            return str;
+        }
+        const buffer = this.buffer;
+        if (this.settings.xmlNamespace) {
+            if (!buffer?.attributes?.["xmlns"]) {
+                buffer.addAttribute("xmlns", this.settings.xmlNamespace);
+            }
+        }
+        delete this.buffer;
+        return buffer.toString();
+    }
+    writeStruct(ns, value, parentXmlns) {
+        const traits = ns.getMergedTraits();
+        const name = ns.isMemberSchema() && !traits.httpPayload
+            ? ns.getMemberTraits().xmlName ?? ns.getMemberName()
+            : traits.xmlName ?? ns.getName();
+        if (!name || !ns.isStructSchema()) {
+            throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write struct with empty name or non-struct, schema=${ns.getName(true)}.`);
+        }
+        const structXmlNode = xmlBuilder.XmlNode.of(name);
+        const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(ns, parentXmlns);
+        for (const [memberName, memberSchema] of serializingStructIterator(ns, value)) {
+            const val = value[memberName];
+            if (val != null || memberSchema.isIdempotencyToken()) {
+                if (memberSchema.getMergedTraits().xmlAttribute) {
+                    structXmlNode.addAttribute(memberSchema.getMergedTraits().xmlName ?? memberName, this.writeSimple(memberSchema, val));
+                    continue;
+                }
+                if (memberSchema.isListSchema()) {
+                    this.writeList(memberSchema, val, structXmlNode, xmlns);
+                }
+                else if (memberSchema.isMapSchema()) {
+                    this.writeMap(memberSchema, val, structXmlNode, xmlns);
+                }
+                else if (memberSchema.isStructSchema()) {
+                    structXmlNode.addChildNode(this.writeStruct(memberSchema, val, xmlns));
+                }
+                else {
+                    const memberNode = xmlBuilder.XmlNode.of(memberSchema.getMergedTraits().xmlName ?? memberSchema.getMemberName());
+                    this.writeSimpleInto(memberSchema, val, memberNode, xmlns);
+                    structXmlNode.addChildNode(memberNode);
+                }
+            }
+        }
+        const { $unknown } = value;
+        if ($unknown && ns.isUnionSchema() && Array.isArray($unknown) && Object.keys(value).length === 1) {
+            const [k, v] = $unknown;
+            const node = xmlBuilder.XmlNode.of(k);
+            if (typeof v !== "string") {
+                if (value instanceof xmlBuilder.XmlNode || value instanceof xmlBuilder.XmlText) {
+                    structXmlNode.addChildNode(value);
+                }
+                else {
+                    throw new Error(`@aws-sdk - $unknown union member in XML requires ` +
+                        `value of type string, @aws-sdk/xml-builder::XmlNode or XmlText.`);
+                }
+            }
+            this.writeSimpleInto(0, v, node, xmlns);
+            structXmlNode.addChildNode(node);
+        }
+        if (xmlns) {
+            structXmlNode.addAttribute(xmlnsAttr, xmlns);
+        }
+        return structXmlNode;
+    }
+    writeList(listMember, array, container, parentXmlns) {
+        if (!listMember.isMemberSchema()) {
+            throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write non-member list: ${listMember.getName(true)}`);
+        }
+        const listTraits = listMember.getMergedTraits();
+        const listValueSchema = listMember.getValueSchema();
+        const listValueTraits = listValueSchema.getMergedTraits();
+        const sparse = !!listValueTraits.sparse;
+        const flat = !!listTraits.xmlFlattened;
+        const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(listMember, parentXmlns);
+        const writeItem = (container, value) => {
+            if (listValueSchema.isListSchema()) {
+                this.writeList(listValueSchema, Array.isArray(value) ? value : [value], container, xmlns);
+            }
+            else if (listValueSchema.isMapSchema()) {
+                this.writeMap(listValueSchema, value, container, xmlns);
+            }
+            else if (listValueSchema.isStructSchema()) {
+                const struct = this.writeStruct(listValueSchema, value, xmlns);
+                container.addChildNode(struct.withName(flat ? listTraits.xmlName ?? listMember.getMemberName() : listValueTraits.xmlName ?? "member"));
+            }
+            else {
+                const listItemNode = xmlBuilder.XmlNode.of(flat ? listTraits.xmlName ?? listMember.getMemberName() : listValueTraits.xmlName ?? "member");
+                this.writeSimpleInto(listValueSchema, value, listItemNode, xmlns);
+                container.addChildNode(listItemNode);
+            }
+        };
+        if (flat) {
+            for (const value of array) {
+                if (sparse || value != null) {
+                    writeItem(container, value);
+                }
+            }
+        }
+        else {
+            const listNode = xmlBuilder.XmlNode.of(listTraits.xmlName ?? listMember.getMemberName());
+            if (xmlns) {
+                listNode.addAttribute(xmlnsAttr, xmlns);
+            }
+            for (const value of array) {
+                if (sparse || value != null) {
+                    writeItem(listNode, value);
+                }
+            }
+            container.addChildNode(listNode);
+        }
+    }
+    writeMap(mapMember, map, container, parentXmlns, containerIsMap = false) {
+        if (!mapMember.isMemberSchema()) {
+            throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write non-member map: ${mapMember.getName(true)}`);
+        }
+        const mapTraits = mapMember.getMergedTraits();
+        const mapKeySchema = mapMember.getKeySchema();
+        const mapKeyTraits = mapKeySchema.getMergedTraits();
+        const keyTag = mapKeyTraits.xmlName ?? "key";
+        const mapValueSchema = mapMember.getValueSchema();
+        const mapValueTraits = mapValueSchema.getMergedTraits();
+        const valueTag = mapValueTraits.xmlName ?? "value";
+        const sparse = !!mapValueTraits.sparse;
+        const flat = !!mapTraits.xmlFlattened;
+        const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(mapMember, parentXmlns);
+        const addKeyValue = (entry, key, val) => {
+            const keyNode = xmlBuilder.XmlNode.of(keyTag, key);
+            const [keyXmlnsAttr, keyXmlns] = this.getXmlnsAttribute(mapKeySchema, xmlns);
+            if (keyXmlns) {
+                keyNode.addAttribute(keyXmlnsAttr, keyXmlns);
+            }
+            entry.addChildNode(keyNode);
+            let valueNode = xmlBuilder.XmlNode.of(valueTag);
+            if (mapValueSchema.isListSchema()) {
+                this.writeList(mapValueSchema, val, valueNode, xmlns);
+            }
+            else if (mapValueSchema.isMapSchema()) {
+                this.writeMap(mapValueSchema, val, valueNode, xmlns, true);
+            }
+            else if (mapValueSchema.isStructSchema()) {
+                valueNode = this.writeStruct(mapValueSchema, val, xmlns);
+            }
+            else {
+                this.writeSimpleInto(mapValueSchema, val, valueNode, xmlns);
+            }
+            entry.addChildNode(valueNode);
+        };
+        if (flat) {
+            for (const [key, val] of Object.entries(map)) {
+                if (sparse || val != null) {
+                    const entry = xmlBuilder.XmlNode.of(mapTraits.xmlName ?? mapMember.getMemberName());
+                    addKeyValue(entry, key, val);
+                    container.addChildNode(entry);
+                }
+            }
+        }
+        else {
+            let mapNode;
+            if (!containerIsMap) {
+                mapNode = xmlBuilder.XmlNode.of(mapTraits.xmlName ?? mapMember.getMemberName());
+                if (xmlns) {
+                    mapNode.addAttribute(xmlnsAttr, xmlns);
+                }
+                container.addChildNode(mapNode);
+            }
+            for (const [key, val] of Object.entries(map)) {
+                if (sparse || val != null) {
+                    const entry = xmlBuilder.XmlNode.of("entry");
+                    addKeyValue(entry, key, val);
+                    (containerIsMap ? container : mapNode).addChildNode(entry);
+                }
+            }
+        }
+    }
+    writeSimple(_schema, value) {
+        if (null === value) {
+            throw new Error("@aws-sdk/core/protocols - (XML serializer) cannot write null value.");
+        }
+        const ns = schema.NormalizedSchema.of(_schema);
+        let nodeContents = null;
+        if (value && typeof value === "object") {
+            if (ns.isBlobSchema()) {
+                nodeContents = (this.serdeContext?.base64Encoder ?? utilBase64.toBase64)(value);
+            }
+            else if (ns.isTimestampSchema() && value instanceof Date) {
+                const format = protocols.determineTimestampFormat(ns, this.settings);
+                switch (format) {
+                    case 5:
+                        nodeContents = value.toISOString().replace(".000Z", "Z");
+                        break;
+                    case 6:
+                        nodeContents = smithyClient.dateToUtcString(value);
+                        break;
+                    case 7:
+                        nodeContents = String(value.getTime() / 1000);
+                        break;
+                    default:
+                        console.warn("Missing timestamp format, using http date", value);
+                        nodeContents = smithyClient.dateToUtcString(value);
+                        break;
+                }
+            }
+            else if (ns.isBigDecimalSchema() && value) {
+                if (value instanceof serde.NumericValue) {
+                    return value.string;
+                }
+                return String(value);
+            }
+            else if (ns.isMapSchema() || ns.isListSchema()) {
+                throw new Error("@aws-sdk/core/protocols - xml serializer, cannot call _write() on List/Map schema, call writeList or writeMap() instead.");
+            }
+            else {
+                throw new Error(`@aws-sdk/core/protocols - xml serializer, unhandled schema type for object value and schema: ${ns.getName(true)}`);
+            }
+        }
+        if (ns.isBooleanSchema() || ns.isNumericSchema() || ns.isBigIntegerSchema() || ns.isBigDecimalSchema()) {
+            nodeContents = String(value);
+        }
+        if (ns.isStringSchema()) {
+            if (value === undefined && ns.isIdempotencyToken()) {
+                nodeContents = serde.generateIdempotencyToken();
+            }
+            else {
+                nodeContents = String(value);
+            }
+        }
+        if (nodeContents === null) {
+            throw new Error(`Unhandled schema-value pair ${ns.getName(true)}=${value}`);
+        }
+        return nodeContents;
+    }
+    writeSimpleInto(_schema, value, into, parentXmlns) {
+        const nodeContents = this.writeSimple(_schema, value);
+        const ns = schema.NormalizedSchema.of(_schema);
+        const content = new xmlBuilder.XmlText(nodeContents);
+        const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(ns, parentXmlns);
+        if (xmlns) {
+            into.addAttribute(xmlnsAttr, xmlns);
+        }
+        into.addChildNode(content);
+    }
+    getXmlnsAttribute(ns, parentXmlns) {
+        const traits = ns.getMergedTraits();
+        const [prefix, xmlns] = traits.xmlNamespace ?? [];
+        if (xmlns && xmlns !== parentXmlns) {
+            return [prefix ? `xmlns:${prefix}` : "xmlns", xmlns];
+        }
+        return [void 0, void 0];
+    }
+}
+
+class XmlCodec extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    createSerializer() {
+        const serializer = new XmlShapeSerializer(this.settings);
+        serializer.setSerdeContext(this.serdeContext);
+        return serializer;
+    }
+    createDeserializer() {
+        const deserializer = new XmlShapeDeserializer(this.settings);
+        deserializer.setSerdeContext(this.serdeContext);
+        return deserializer;
+    }
+}
+
+class AwsRestXmlProtocol extends protocols.HttpBindingProtocol {
+    codec;
+    serializer;
+    deserializer;
+    mixin = new ProtocolLib();
+    constructor(options) {
+        super(options);
+        const settings = {
+            timestampFormat: {
+                useTrait: true,
+                default: 5,
+            },
+            httpBindings: true,
+            xmlNamespace: options.xmlNamespace,
+            serviceNamespace: options.defaultNamespace,
+        };
+        this.codec = new XmlCodec(settings);
+        this.serializer = new protocols.HttpInterceptingShapeSerializer(this.codec.createSerializer(), settings);
+        this.deserializer = new protocols.HttpInterceptingShapeDeserializer(this.codec.createDeserializer(), settings);
+    }
+    getPayloadCodec() {
+        return this.codec;
+    }
+    getShapeId() {
+        return "aws.protocols#restXml";
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        const inputSchema = schema.NormalizedSchema.of(operationSchema.input);
+        if (!request.headers["content-type"]) {
+            const contentType = this.mixin.resolveRestContentType(this.getDefaultContentType(), inputSchema);
+            if (contentType) {
+                request.headers["content-type"] = contentType;
+            }
+        }
+        if (typeof request.body === "string" &&
+            request.headers["content-type"] === this.getDefaultContentType() &&
+            !request.body.startsWith("<?xml ") &&
+            !this.hasUnstructuredPayloadBinding(inputSchema)) {
+            request.body = '<?xml version="1.0" encoding="UTF-8"?>' + request.body;
+        }
+        return request;
+    }
+    async deserializeResponse(operationSchema, context, response) {
+        return super.deserializeResponse(operationSchema, context, response);
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        const errorIdentifier = loadRestXmlErrorCode(response, dataObject) ?? "Unknown";
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata);
+        const ns = schema.NormalizedSchema.of(errorSchema);
+        const message = dataObject.Error?.message ?? dataObject.Error?.Message ?? dataObject.message ?? dataObject.Message ?? "Unknown";
+        const ErrorCtor = schema.TypeRegistry.for(errorSchema[1]).getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor(message);
+        await this.deserializeHttpMessage(errorSchema, context, response, dataObject);
+        const output = {};
+        for (const [name, member] of ns.structIterator()) {
+            const target = member.getMergedTraits().xmlName ?? name;
+            const value = dataObject.Error?.[target] ?? dataObject[target];
+            output[name] = this.codec.createDeserializer().readSchema(member, value);
+        }
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
+    }
+    getDefaultContentType() {
+        return "application/xml";
+    }
+    hasUnstructuredPayloadBinding(ns) {
+        for (const [, member] of ns.structIterator()) {
+            if (member.getMergedTraits().httpPayload) {
+                return !(member.isStructSchema() || member.isMapSchema() || member.isListSchema());
+            }
+        }
+        return false;
+    }
+}
+
+exports.AwsEc2QueryProtocol = AwsEc2QueryProtocol;
+exports.AwsJson1_0Protocol = AwsJson1_0Protocol;
+exports.AwsJson1_1Protocol = AwsJson1_1Protocol;
+exports.AwsJsonRpcProtocol = AwsJsonRpcProtocol;
+exports.AwsQueryProtocol = AwsQueryProtocol;
+exports.AwsRestJsonProtocol = AwsRestJsonProtocol;
+exports.AwsRestXmlProtocol = AwsRestXmlProtocol;
+exports.AwsSmithyRpcV2CborProtocol = AwsSmithyRpcV2CborProtocol;
+exports.JsonCodec = JsonCodec;
+exports.JsonShapeDeserializer = JsonShapeDeserializer;
+exports.JsonShapeSerializer = JsonShapeSerializer;
+exports.XmlCodec = XmlCodec;
+exports.XmlShapeDeserializer = XmlShapeDeserializer;
+exports.XmlShapeSerializer = XmlShapeSerializer;
+exports._toBool = _toBool;
+exports._toNum = _toNum;
+exports._toStr = _toStr;
+exports.awsExpectUnion = awsExpectUnion;
+exports.loadRestJsonErrorCode = loadRestJsonErrorCode;
+exports.loadRestXmlErrorCode = loadRestXmlErrorCode;
+exports.parseJsonBody = parseJsonBody;
+exports.parseJsonErrorBody = parseJsonErrorBody;
+exports.parseXmlBody = parseXmlBody;
+exports.parseXmlErrorBody = parseXmlErrorBody;
+
+
+/***/ }),
+
+/***/ 7122:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+const generateCRC64NVMETable = () => {
+    const sliceLength = 8;
+    const tables = new Array(sliceLength);
+    for (let slice = 0; slice < sliceLength; slice++) {
+        const table = new Array(512);
+        for (let i = 0; i < 256; i++) {
+            let crc = BigInt(i);
+            for (let j = 0; j < 8 * (slice + 1); j++) {
+                if (crc & 1n) {
+                    crc = (crc >> 1n) ^ 0x9a6c9329ac4bc9b5n;
+                }
+                else {
+                    crc = crc >> 1n;
+                }
+            }
+            table[i * 2] = Number((crc >> 32n) & 0xffffffffn);
+            table[i * 2 + 1] = Number(crc & 0xffffffffn);
+        }
+        tables[slice] = new Uint32Array(table);
+    }
+    return tables;
+};
+let CRC64_NVME_REVERSED_TABLE;
+let t0, t1, t2, t3;
+let t4, t5, t6, t7;
+const ensureTablesInitialized = () => {
+    if (!CRC64_NVME_REVERSED_TABLE) {
+        CRC64_NVME_REVERSED_TABLE = generateCRC64NVMETable();
+        [t0, t1, t2, t3, t4, t5, t6, t7] = CRC64_NVME_REVERSED_TABLE;
+    }
+};
+class Crc64Nvme {
+    c1 = 0;
+    c2 = 0;
+    constructor() {
+        ensureTablesInitialized();
+        this.reset();
+    }
+    update(data) {
+        const len = data.length;
+        let i = 0;
+        let crc1 = this.c1;
+        let crc2 = this.c2;
+        while (i + 8 <= len) {
+            const idx0 = ((crc2 ^ data[i++]) & 255) << 1;
+            const idx1 = (((crc2 >>> 8) ^ data[i++]) & 255) << 1;
+            const idx2 = (((crc2 >>> 16) ^ data[i++]) & 255) << 1;
+            const idx3 = (((crc2 >>> 24) ^ data[i++]) & 255) << 1;
+            const idx4 = ((crc1 ^ data[i++]) & 255) << 1;
+            const idx5 = (((crc1 >>> 8) ^ data[i++]) & 255) << 1;
+            const idx6 = (((crc1 >>> 16) ^ data[i++]) & 255) << 1;
+            const idx7 = (((crc1 >>> 24) ^ data[i++]) & 255) << 1;
+            crc1 = t7[idx0] ^ t6[idx1] ^ t5[idx2] ^ t4[idx3] ^ t3[idx4] ^ t2[idx5] ^ t1[idx6] ^ t0[idx7];
+            crc2 =
+                t7[idx0 + 1] ^
+                    t6[idx1 + 1] ^
+                    t5[idx2 + 1] ^
+                    t4[idx3 + 1] ^
+                    t3[idx4 + 1] ^
+                    t2[idx5 + 1] ^
+                    t1[idx6 + 1] ^
+                    t0[idx7 + 1];
+        }
+        while (i < len) {
+            const idx = ((crc2 ^ data[i]) & 255) << 1;
+            crc2 = ((crc2 >>> 8) | ((crc1 & 255) << 24)) >>> 0;
+            crc1 = (crc1 >>> 8) ^ t0[idx];
+            crc2 ^= t0[idx + 1];
+            i++;
+        }
+        this.c1 = crc1;
+        this.c2 = crc2;
+    }
+    async digest() {
+        const c1 = this.c1 ^ 4294967295;
+        const c2 = this.c2 ^ 4294967295;
+        return new Uint8Array([
+            c1 >>> 24,
+            (c1 >>> 16) & 255,
+            (c1 >>> 8) & 255,
+            c1 & 255,
+            c2 >>> 24,
+            (c2 >>> 16) & 255,
+            (c2 >>> 8) & 255,
+            c2 & 255,
+        ]);
+    }
+    reset() {
+        this.c1 = 4294967295;
+        this.c2 = 4294967295;
+    }
+}
+
+const crc64NvmeCrtContainer = {
+    CrtCrc64Nvme: null,
+};
+
+exports.Crc64Nvme = Crc64Nvme;
+exports.crc64NvmeCrtContainer = crc64NvmeCrtContainer;
 
 
 /***/ }),
@@ -18447,7 +16579,7 @@ const defaultProvider = (init = {}) => memoizeChain([
     },
     async (awsIdentityProperties) => {
         init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromTokenFile");
-        const { fromTokenFile } = await Promise.all(/* import() */[__nccwpck_require__.e(136), __nccwpck_require__.e(956)]).then(__nccwpck_require__.t.bind(__nccwpck_require__, 9956, 23));
+        const { fromTokenFile } = await __nccwpck_require__.e(/* import() */ 956).then(__nccwpck_require__.t.bind(__nccwpck_require__, 9956, 23));
         return fromTokenFile(init)(awsIdentityProperties);
     },
     async () => {
@@ -18932,6 +17064,7 @@ var protocolHttp = __nccwpck_require__(2356);
 var utilStream = __nccwpck_require__(4252);
 var isArrayBuffer = __nccwpck_require__(6130);
 var crc32c = __nccwpck_require__(1491);
+var crc64Nvme = __nccwpck_require__(7122);
 var getCrc32ChecksumAlgorithmFunction = __nccwpck_require__(3321);
 var utilUtf8 = __nccwpck_require__(1577);
 var utilMiddleware = __nccwpck_require__(6324);
@@ -18991,10 +17124,6 @@ const NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS = {
     environmentVariableSelector: (env) => stringUnionSelector(env, ENV_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.ENV),
     configFileSelector: (profile) => stringUnionSelector(profile, CONFIG_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.CONFIG),
     default: DEFAULT_RESPONSE_CHECKSUM_VALIDATION,
-};
-
-const crc64NvmeCrtContainer = {
-    CrtCrc64Nvme: null,
 };
 
 const CLIENT_SUPPORTED_ALGORITHMS = [
@@ -19062,14 +17191,10 @@ const selectChecksumAlgorithmFunction = (checksumAlgorithm, config) => {
         case exports.ChecksumAlgorithm.CRC32C:
             return crc32c.AwsCrc32c;
         case exports.ChecksumAlgorithm.CRC64NVME:
-            if (typeof crc64NvmeCrtContainer.CrtCrc64Nvme !== "function") {
-                throw new Error(`Please check whether you have installed the "@aws-sdk/crc64-nvme-crt" package explicitly. \n` +
-                    `You must also register the package by calling [require("@aws-sdk/crc64-nvme-crt");] ` +
-                    `or an ESM equivalent such as [import "@aws-sdk/crc64-nvme-crt";]. \n` +
-                    "For more information please go to " +
-                    "https://github.com/aws/aws-sdk-js-v3#functionality-requiring-aws-common-runtime-crt");
+            if (typeof crc64Nvme.crc64NvmeCrtContainer.CrtCrc64Nvme !== "function") {
+                return crc64Nvme.Crc64Nvme;
             }
-            return crc64NvmeCrtContainer.CrtCrc64Nvme;
+            return crc64Nvme.crc64NvmeCrtContainer.CrtCrc64Nvme;
         case exports.ChecksumAlgorithm.SHA1:
             return config.sha1;
         case exports.ChecksumAlgorithm.SHA256:
@@ -19171,15 +17296,31 @@ const flexibleChecksumsMiddleware = (config, middlewareConfig) => (next, context
             };
         }
     }
-    const result = await next({
-        ...args,
-        request: {
-            ...request,
-            headers: updatedHeaders,
-            body: updatedBody,
-        },
-    });
-    return result;
+    try {
+        const result = await next({
+            ...args,
+            request: {
+                ...request,
+                headers: updatedHeaders,
+                body: updatedBody,
+            },
+        });
+        return result;
+    }
+    catch (e) {
+        if (e instanceof Error && e.name === "InvalidChunkSizeError") {
+            try {
+                if (!e.message.endsWith(".")) {
+                    e.message += ".";
+                }
+                e.message +=
+                    " Set [requestStreamBufferSize=number e.g. 65_536] in client constructor to instruct AWS SDK to buffer your input stream.";
+            }
+            catch (ignored) {
+            }
+        }
+        throw e;
+    }
 };
 
 const flexibleChecksumsInputMiddlewareOptions = {
@@ -19348,7 +17489,6 @@ exports.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS = NODE_REQUEST_CHECKSUM
 exports.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS = NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS;
 exports.RequestChecksumCalculation = RequestChecksumCalculation;
 exports.ResponseChecksumValidation = ResponseChecksumValidation;
-exports.crc64NvmeCrtContainer = crc64NvmeCrtContainer;
 exports.flexibleChecksumsMiddleware = flexibleChecksumsMiddleware;
 exports.flexibleChecksumsMiddlewareOptions = flexibleChecksumsMiddlewareOptions;
 exports.getFlexibleChecksumsPlugin = getFlexibleChecksumsPlugin;
@@ -19557,7 +17697,8 @@ const recursionDetectionMiddleware = () => (next) => async (args) => {
     }
     const functionName = process.env[ENV_LAMBDA_FUNCTION_NAME];
     const traceIdFromEnv = process.env[ENV_TRACE_ID];
-    const traceIdFromInvokeStore = lambda_invoke_store_1.InvokeStore.getXRayTraceId();
+    const invokeStore = await lambda_invoke_store_1.InvokeStore.getInstanceAsync();
+    const traceIdFromInvokeStore = invokeStore?.getXRayTraceId();
     const traceId = traceIdFromInvokeStore ?? traceIdFromEnv;
     const nonEmptyString = (str) => typeof str === "string" && str.length > 0;
     if (nonEmptyString(functionName) && nonEmptyString(traceId)) {
@@ -19581,14 +17722,14 @@ exports.recursionDetectionMiddleware = recursionDetectionMiddleware;
 
 var protocolHttp = __nccwpck_require__(2356);
 var smithyClient = __nccwpck_require__(1411);
+var utilStream = __nccwpck_require__(4252);
+var utilArnParser = __nccwpck_require__(6369);
 var signatureV4 = __nccwpck_require__(5118);
 var utilConfigProvider = __nccwpck_require__(6716);
 var core = __nccwpck_require__(8704);
 var core$1 = __nccwpck_require__(402);
 __nccwpck_require__(690);
 var utilMiddleware = __nccwpck_require__(6324);
-var utilStream = __nccwpck_require__(4252);
-var utilArnParser = __nccwpck_require__(6369);
 
 const CONTENT_LENGTH_HEADER = "content-length";
 const DECODED_CONTENT_LENGTH_HEADER = "x-amz-decoded-content-length";
@@ -20441,8 +18582,8 @@ exports.userAgentMiddleware = userAgentMiddleware;
 "use strict";
 
 
-var configResolver = __nccwpck_require__(9316);
 var stsRegionDefaultResolver = __nccwpck_require__(5779);
+var configResolver = __nccwpck_require__(9316);
 
 const getAwsRegionExtensionConfiguration = (runtimeConfig) => {
     return {
@@ -20650,69 +18791,36 @@ exports.signatureV4CrtContainer = signatureV4CrtContainer;
 /***/ }),
 
 /***/ 6369:
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+
+const validate = (str) => typeof str === "string" && str.indexOf("arn:") === 0 && str.split(":").length >= 6;
+const parse = (arn) => {
+    const segments = arn.split(":");
+    if (segments.length < 6 || segments[0] !== "arn")
+        throw new Error("Malformed ARN");
+    const [, partition, service, region, accountId, ...resource] = segments;
+    return {
+        partition,
+        service,
+        region,
+        accountId,
+        resource: resource.join(":"),
+    };
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
+const build = (arnObject) => {
+    const { partition = "aws", service, region, accountId, resource } = arnObject;
+    if ([service, region, accountId, resource].some((segment) => typeof segment !== "string")) {
+        throw new Error("Input ARN object is invalid");
+    }
+    return `arn:${partition}:${service}:${region}:${accountId}:${resource}`;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/index.ts
-var index_exports = {};
-__export(index_exports, {
-  build: () => build,
-  parse: () => parse,
-  validate: () => validate
-});
-module.exports = __toCommonJS(index_exports);
-var validate = /* @__PURE__ */ __name((str) => typeof str === "string" && str.indexOf("arn:") === 0 && str.split(":").length >= 6, "validate");
-var parse = /* @__PURE__ */ __name((arn) => {
-  const segments = arn.split(":");
-  if (segments.length < 6 || segments[0] !== "arn") throw new Error("Malformed ARN");
-  const [
-    ,
-    //Skip "arn" literal
-    partition,
-    service,
-    region,
-    accountId,
-    ...resource
-  ] = segments;
-  return {
-    partition,
-    service,
-    region,
-    accountId,
-    resource: resource.join(":")
-  };
-}, "parse");
-var build = /* @__PURE__ */ __name((arnObject) => {
-  const { partition = "aws", service, region, accountId, resource } = arnObject;
-  if ([service, region, accountId, resource].some((segment) => typeof segment !== "string")) {
-    throw new Error("Input ARN object is invalid");
-  }
-  return `arn:${partition}:${service}:${region}:${accountId}:${resource}`;
-}, "build");
-// Annotate the CommonJS export names for ESM import in node:
-
-0 && (0);
-
+exports.build = build;
+exports.parse = parse;
+exports.validate = validate;
 
 
 /***/ }),
@@ -21370,70 +19478,123 @@ function parseXML(xmlString) {
 "use strict";
 
 
-var async_hooks = __nccwpck_require__(290);
-
-const noGlobalAwsLambda = process.env["AWS_LAMBDA_NODEJS_NO_GLOBAL_AWSLAMBDA"] === "1" ||
-    process.env["AWS_LAMBDA_NODEJS_NO_GLOBAL_AWSLAMBDA"] === "true";
-if (!noGlobalAwsLambda) {
+const PROTECTED_KEYS = {
+    REQUEST_ID: Symbol.for("_AWS_LAMBDA_REQUEST_ID"),
+    X_RAY_TRACE_ID: Symbol.for("_AWS_LAMBDA_X_RAY_TRACE_ID"),
+    TENANT_ID: Symbol.for("_AWS_LAMBDA_TENANT_ID"),
+};
+const NO_GLOBAL_AWS_LAMBDA = ["true", "1"].includes(process.env?.AWS_LAMBDA_NODEJS_NO_GLOBAL_AWSLAMBDA ?? "");
+if (!NO_GLOBAL_AWS_LAMBDA) {
     globalThis.awslambda = globalThis.awslambda || {};
 }
-const PROTECTED_KEYS = {
-    REQUEST_ID: Symbol("_AWS_LAMBDA_REQUEST_ID"),
-    X_RAY_TRACE_ID: Symbol("_AWS_LAMBDA_X_RAY_TRACE_ID"),
-    TENANT_ID: Symbol("_AWS_LAMBDA_TENANT_ID"),
-};
-class InvokeStoreImpl {
-    static storage = new async_hooks.AsyncLocalStorage();
+class InvokeStoreBase {
     static PROTECTED_KEYS = PROTECTED_KEYS;
-    static run(context, fn) {
-        return this.storage.run({ ...context }, fn);
+    isProtectedKey(key) {
+        return Object.values(PROTECTED_KEYS).includes(key);
     }
-    static getContext() {
-        return this.storage.getStore();
+    getRequestId() {
+        return this.get(PROTECTED_KEYS.REQUEST_ID) ?? "-";
     }
-    static get(key) {
-        const context = this.storage.getStore();
-        return context?.[key];
+    getXRayTraceId() {
+        return this.get(PROTECTED_KEYS.X_RAY_TRACE_ID);
     }
-    static set(key, value) {
+    getTenantId() {
+        return this.get(PROTECTED_KEYS.TENANT_ID);
+    }
+}
+class InvokeStoreSingle extends InvokeStoreBase {
+    currentContext;
+    getContext() {
+        return this.currentContext;
+    }
+    hasContext() {
+        return this.currentContext !== undefined;
+    }
+    get(key) {
+        return this.currentContext?.[key];
+    }
+    set(key, value) {
         if (this.isProtectedKey(key)) {
-            throw new Error(`Cannot modify protected Lambda context field`);
+            throw new Error(`Cannot modify protected Lambda context field: ${String(key)}`);
         }
-        const context = this.storage.getStore();
-        if (context) {
-            context[key] = value;
+        this.currentContext = this.currentContext || {};
+        this.currentContext[key] = value;
+    }
+    run(context, fn) {
+        this.currentContext = context;
+        return fn();
+    }
+}
+class InvokeStoreMulti extends InvokeStoreBase {
+    als;
+    static async create() {
+        const instance = new InvokeStoreMulti();
+        const asyncHooks = await Promise.resolve(/* import() */).then(__nccwpck_require__.t.bind(__nccwpck_require__, 6698, 23));
+        instance.als = new asyncHooks.AsyncLocalStorage();
+        return instance;
+    }
+    getContext() {
+        return this.als.getStore();
+    }
+    hasContext() {
+        return this.als.getStore() !== undefined;
+    }
+    get(key) {
+        return this.als.getStore()?.[key];
+    }
+    set(key, value) {
+        if (this.isProtectedKey(key)) {
+            throw new Error(`Cannot modify protected Lambda context field: ${String(key)}`);
         }
+        const store = this.als.getStore();
+        if (!store) {
+            throw new Error("No context available");
+        }
+        store[key] = value;
     }
-    static getRequestId() {
-        return this.get(this.PROTECTED_KEYS.REQUEST_ID) ?? "-";
-    }
-    static getXRayTraceId() {
-        return this.get(this.PROTECTED_KEYS.X_RAY_TRACE_ID);
-    }
-    static getTenantId() {
-        return this.get(this.PROTECTED_KEYS.TENANT_ID);
-    }
-    static hasContext() {
-        return this.storage.getStore() !== undefined;
-    }
-    static isProtectedKey(key) {
-        return (key === this.PROTECTED_KEYS.REQUEST_ID ||
-            key === this.PROTECTED_KEYS.X_RAY_TRACE_ID);
+    run(context, fn) {
+        return this.als.run(context, fn);
     }
 }
-let instance;
-if (!noGlobalAwsLambda && globalThis.awslambda?.InvokeStore) {
-    instance = globalThis.awslambda.InvokeStore;
-}
-else {
-    instance = InvokeStoreImpl;
-    if (!noGlobalAwsLambda && globalThis.awslambda) {
-        globalThis.awslambda.InvokeStore = instance;
+exports.InvokeStore = void 0;
+(function (InvokeStore) {
+    let instance = null;
+    async function getInstanceAsync() {
+        if (!instance) {
+            instance = (async () => {
+                const isMulti = "AWS_LAMBDA_MAX_CONCURRENCY" in process.env;
+                const newInstance = isMulti
+                    ? await InvokeStoreMulti.create()
+                    : new InvokeStoreSingle();
+                if (!NO_GLOBAL_AWS_LAMBDA && globalThis.awslambda?.InvokeStore) {
+                    return globalThis.awslambda.InvokeStore;
+                }
+                else if (!NO_GLOBAL_AWS_LAMBDA && globalThis.awslambda) {
+                    globalThis.awslambda.InvokeStore = newInstance;
+                    return newInstance;
+                }
+                else {
+                    return newInstance;
+                }
+            })();
+        }
+        return instance;
     }
-}
-const InvokeStore = instance;
+    InvokeStore.getInstanceAsync = getInstanceAsync;
+    InvokeStore._testing = process.env.AWS_LAMBDA_BENCHMARK_MODE === "1"
+        ? {
+            reset: () => {
+                instance = null;
+                if (globalThis.awslambda?.InvokeStore) {
+                    delete globalThis.awslambda.InvokeStore;
+                }
+                globalThis.awslambda = {};
+            },
+        }
+        : undefined;
+})(exports.InvokeStore || (exports.InvokeStore = {}));
 
-exports.InvokeStore = InvokeStore;
+exports.InvokeStoreBase = InvokeStoreBase;
 
 
 /***/ }),
@@ -26547,6 +24708,11 @@ class CborShapeSerializer extends protocols.SerdeContext {
                         newObject[key] = value;
                     }
                 }
+                const isUnion = ns.isUnionSchema();
+                if (isUnion && Array.isArray(sourceObject.$unknown)) {
+                    const [k, v] = sourceObject.$unknown;
+                    newObject[k] = v;
+                }
             }
             else if (ns.isDocumentSchema()) {
                 for (const key of Object.keys(sourceObject)) {
@@ -26570,8 +24736,15 @@ class CborShapeDeserializer extends protocols.SerdeContext {
     }
     readValue(_schema, value) {
         const ns = schema.NormalizedSchema.of(_schema);
-        if (ns.isTimestampSchema() && typeof value === "number") {
-            return serde._parseEpochTimestamp(value);
+        if (ns.isTimestampSchema()) {
+            if (typeof value === "number") {
+                return serde._parseEpochTimestamp(value);
+            }
+            if (typeof value === "object") {
+                if (value.tag === 1 && "value" in value) {
+                    return serde._parseEpochTimestamp(value.value);
+                }
+            }
         }
         if (ns.isBlobSchema()) {
             if (typeof value === "string") {
@@ -26587,7 +24760,7 @@ class CborShapeDeserializer extends protocols.SerdeContext {
             typeof value === "symbol") {
             return value;
         }
-        else if (typeof value === "function" || typeof value === "object") {
+        else if (typeof value === "object") {
             if (value === null) {
                 return null;
             }
@@ -26624,8 +24797,22 @@ class CborShapeDeserializer extends protocols.SerdeContext {
                 }
             }
             else if (ns.isStructSchema()) {
+                const isUnion = ns.isUnionSchema();
+                let keys;
+                if (isUnion) {
+                    keys = new Set(Object.keys(value).filter((k) => k !== "__type"));
+                }
                 for (const [key, memberSchema] of ns.structIterator()) {
-                    newObject[key] = this.readValue(memberSchema, value[key]);
+                    if (isUnion) {
+                        keys.delete(key);
+                    }
+                    if (value[key] != null) {
+                        newObject[key] = this.readValue(memberSchema, value[key]);
+                    }
+                }
+                if (isUnion && keys?.size === 1 && Object.keys(newObject).length === 0) {
+                    const k = keys.values().next().value;
+                    newObject.$unknown = [k, value[k]];
                 }
             }
             return newObject;
@@ -26691,7 +24878,6 @@ class SmithyRpcV2CborProtocol extends protocols.RpcProtocol {
         }
         const errorMetadata = {
             $metadata: metadata,
-            $response: response,
             $fault: response.statusCode <= 500 ? "client" : "server",
         };
         const registry = schema.TypeRegistry.for(namespace);
@@ -26941,7 +25127,7 @@ class HttpBindingProtocol extends HttpProtocol {
         for (const [memberName, memberNs] of ns.structIterator()) {
             const memberTraits = memberNs.getMergedTraits() ?? {};
             const inputMemberValue = input[memberName];
-            if (inputMemberValue == null) {
+            if (inputMemberValue == null && !memberNs.isIdempotencyToken()) {
                 continue;
             }
             if (memberTraits.httpPayload) {
@@ -27068,6 +25254,9 @@ class HttpBindingProtocol extends HttpProtocol {
                 }
             }
         }
+        else if (nonHttpBindingMembers.discardResponseBody) {
+            await collectBody(response.body, context);
+        }
         dataObject.$metadata = this.deserializeMetadata(response);
         return dataObject;
     }
@@ -27079,12 +25268,14 @@ class HttpBindingProtocol extends HttpProtocol {
         else {
             dataObject = arg4;
         }
+        let discardResponseBody = true;
         const deserializer = this.deserializer;
         const ns = schema.NormalizedSchema.of(schema$1);
         const nonHttpBindingMembers = [];
         for (const [memberName, memberSchema] of ns.structIterator()) {
             const memberTraits = memberSchema.getMemberTraits();
             if (memberTraits.httpPayload) {
+                discardResponseBody = false;
                 const isStreaming = memberSchema.isStreaming();
                 if (isStreaming) {
                     const isEventStream = memberSchema.isStructSchema();
@@ -27148,6 +25339,7 @@ class HttpBindingProtocol extends HttpProtocol {
                 nonHttpBindingMembers.push(memberName);
             }
         }
+        nonHttpBindingMembers.discardResponseBody = discardResponseBody;
         return nonHttpBindingMembers;
     }
 }
@@ -27522,7 +25714,12 @@ class ToStringShapeSerializer extends SerdeContext {
                 this.stringBuffer = value;
                 break;
             default:
-                this.stringBuffer = String(value);
+                if (ns.isIdempotencyToken()) {
+                    this.stringBuffer = serde.generateIdempotencyToken();
+                }
+                else {
+                    this.stringBuffer = String(value);
+                }
         }
     }
     flush() {
@@ -27623,6 +25820,9 @@ const schemaDeserializationMiddleware = (config) => (next, context) => async (ar
     catch (error) {
         Object.defineProperty(error, "$response", {
             value: response,
+            enumerable: false,
+            writable: false,
+            configurable: false,
         });
         if (!("$metadata" in error)) {
             const hint = `Deserialization error: to see the raw response, inspect the hidden field {error}.$response on this object.`;
@@ -27935,8 +26135,14 @@ class NormalizedSchema {
     }
     isStructSchema() {
         const sc = this.getSchema();
-        return (sc[0] === 3 ||
-            sc[0] === -3);
+        const id = sc[0];
+        return (id === 3 ||
+            id === -3 ||
+            id === 4);
+    }
+    isUnionSchema() {
+        const sc = this.getSchema();
+        return sc[0] === 4;
     }
     isBlobSchema() {
         const sc = this.getSchema();
@@ -30047,9 +28253,17 @@ const isArnBucketName = (bucketName) => {
     return isValidArn;
 };
 
-const createConfigValueProvider = (configKey, canonicalEndpointParamKey, config) => {
+const createConfigValueProvider = (configKey, canonicalEndpointParamKey, config, isClientContextParam = false) => {
     const configProvider = async () => {
-        const configValue = config[configKey] ?? config[canonicalEndpointParamKey];
+        let configValue;
+        if (isClientContextParam) {
+            const clientContextParams = config.clientContextParams;
+            const nestedValue = clientContextParams?.[configKey];
+            configValue = nestedValue ?? config[configKey] ?? config[canonicalEndpointParamKey];
+        }
+        else {
+            configValue = config[configKey] ?? config[canonicalEndpointParamKey];
+        }
         if (typeof configValue === "function") {
             return configValue();
         }
@@ -30134,7 +28348,7 @@ const resolveParams = async (commandInput, instructionsSupplier, clientConfig) =
                 break;
             case "clientContextParams":
             case "builtInParams":
-                endpointParams[name] = await createConfigValueProvider(instruction.name, name, clientConfig)();
+                endpointParams[name] = await createConfigValueProvider(instruction.name, name, clientConfig, instruction.type !== "builtInParams")();
                 break;
             case "operationContextParams":
                 endpointParams[name] = instruction.get(commandInput);
@@ -30648,6 +28862,9 @@ const deserializerMiddleware = (options, deserializer) => (next, context) => asy
     catch (error) {
         Object.defineProperty(error, "$response", {
             value: response,
+            enumerable: false,
+            writable: false,
+            configurable: false,
         });
         if (!("$metadata" in error)) {
             const hint = `Deserialization error: to see the raw response, inspect the hidden field {error}.$response on this object.`;
@@ -32356,16 +30573,15 @@ exports.getSSOTokenFilepath = getSSOTokenFilepath;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getSSOTokenFromFile = exports.tokenIntercept = void 0;
-const fs_1 = __nccwpck_require__(9896);
+const promises_1 = __nccwpck_require__(1943);
 const getSSOTokenFilepath_1 = __nccwpck_require__(269);
-const { readFile } = fs_1.promises;
 exports.tokenIntercept = {};
 const getSSOTokenFromFile = async (id) => {
     if (exports.tokenIntercept[id]) {
         return exports.tokenIntercept[id];
     }
     const ssoTokenFilepath = (0, getSSOTokenFilepath_1.getSSOTokenFilepath)(id);
-    const ssoTokenText = await readFile(ssoTokenFilepath, "utf8");
+    const ssoTokenText = await (0, promises_1.readFile)(ssoTokenFilepath, "utf8");
     return JSON.parse(ssoTokenText);
 };
 exports.getSSOTokenFromFile = getSSOTokenFromFile;
@@ -32384,7 +30600,7 @@ var getSSOTokenFilepath = __nccwpck_require__(269);
 var getSSOTokenFromFile = __nccwpck_require__(1326);
 var path = __nccwpck_require__(6928);
 var types = __nccwpck_require__(690);
-var slurpFile = __nccwpck_require__(4246);
+var readFile = __nccwpck_require__(6684);
 
 const ENV_PROFILE = "AWS_PROFILE";
 const DEFAULT_PROFILE = "default";
@@ -32480,13 +30696,13 @@ const loadSharedConfigFiles = async (init = {}) => {
         resolvedConfigFilepath = path.join(homeDir, configFilepath.slice(2));
     }
     const parsedFiles = await Promise.all([
-        slurpFile.slurpFile(resolvedConfigFilepath, {
+        readFile.readFile(resolvedConfigFilepath, {
             ignoreCache: init.ignoreCache,
         })
             .then(parseIni)
             .then(getConfigData)
             .catch(swallowError$1),
-        slurpFile.slurpFile(resolvedFilepath, {
+        readFile.readFile(resolvedFilepath, {
             ignoreCache: init.ignoreCache,
         })
             .then(parseIni)
@@ -32503,7 +30719,7 @@ const getSsoSessionData = (data) => Object.entries(data)
     .reduce((acc, [key, value]) => ({ ...acc, [key.substring(key.indexOf(CONFIG_PREFIX_SEPARATOR) + 1)]: value }), {});
 
 const swallowError = () => ({});
-const loadSsoSessionData = async (init = {}) => slurpFile.slurpFile(init.configFilepath ?? getConfigFilepath())
+const loadSsoSessionData = async (init = {}) => readFile.readFile(init.configFilepath ?? getConfigFilepath())
     .then(parseIni)
     .then(getSsoSessionData)
     .catch(swallowError);
@@ -32530,10 +30746,10 @@ const parseKnownFiles = async (init) => {
 
 const externalDataInterceptor = {
     getFileRecord() {
-        return slurpFile.fileIntercept;
+        return readFile.fileIntercept;
     },
     interceptFile(path, contents) {
-        slurpFile.fileIntercept[path] = Promise.resolve(contents);
+        readFile.fileIntercept[path] = Promise.resolve(contents);
     },
     getTokenRecord() {
         return getSSOTokenFromFile.tokenIntercept;
@@ -32546,6 +30762,10 @@ const externalDataInterceptor = {
 Object.defineProperty(exports, "getSSOTokenFromFile", ({
     enumerable: true,
     get: function () { return getSSOTokenFromFile.getSSOTokenFromFile; }
+}));
+Object.defineProperty(exports, "readFile", ({
+    enumerable: true,
+    get: function () { return readFile.readFile; }
 }));
 exports.CONFIG_PREFIX_SEPARATOR = CONFIG_PREFIX_SEPARATOR;
 exports.DEFAULT_PROFILE = DEFAULT_PROFILE;
@@ -32571,27 +30791,26 @@ Object.keys(getSSOTokenFilepath).forEach(function (k) {
 
 /***/ }),
 
-/***/ 4246:
+/***/ 6684:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.slurpFile = exports.fileIntercept = exports.filePromisesHash = void 0;
-const fs_1 = __nccwpck_require__(9896);
-const { readFile } = fs_1.promises;
-exports.filePromisesHash = {};
+exports.readFile = exports.fileIntercept = exports.filePromises = void 0;
+const promises_1 = __nccwpck_require__(1455);
+exports.filePromises = {};
 exports.fileIntercept = {};
-const slurpFile = (path, options) => {
+const readFile = (path, options) => {
     if (exports.fileIntercept[path] !== undefined) {
         return exports.fileIntercept[path];
     }
-    if (!exports.filePromisesHash[path] || options?.ignoreCache) {
-        exports.filePromisesHash[path] = readFile(path, "utf8");
+    if (!exports.filePromises[path] || options?.ignoreCache) {
+        exports.filePromises[path] = (0, promises_1.readFile)(path, "utf8");
     }
-    return exports.filePromisesHash[path];
+    return exports.filePromises[path];
 };
-exports.slurpFile = slurpFile;
+exports.readFile = readFile;
 
 
 /***/ }),
@@ -33179,6 +31398,12 @@ class Client {
     handlers;
     constructor(config) {
         this.config = config;
+        const { protocol, protocolSettings } = config;
+        if (protocolSettings) {
+            if (typeof protocol === "function") {
+                config.protocol = new protocol(protocolSettings);
+            }
+        }
     }
     send(command, optionsOrCb, cb) {
         const options = typeof optionsOrCb !== "function" ? optionsOrCb : undefined;
@@ -36393,7 +34618,7 @@ populateMaps(exports.extensions, exports.types)
  * Get the default charset for a MIME type.
  *
  * @param {string} type
- * @return {boolean|string}
+ * @return {false|string}
  */
 
 function charset (type) {
@@ -36421,7 +34646,7 @@ function charset (type) {
  * Create a full Content-Type header given a MIME type or extension.
  *
  * @param {string} str
- * @return {boolean|string}
+ * @return {false|string}
  */
 
 function contentType (str) {
@@ -36449,7 +34674,7 @@ function contentType (str) {
  * Get the default extension for a MIME type.
  *
  * @param {string} type
- * @return {boolean|string}
+ * @return {false|string}
  */
 
 function extension (type) {
@@ -36474,7 +34699,7 @@ function extension (type) {
  * Lookup the MIME type for a file path/extension.
  *
  * @param {string} path
- * @return {boolean|string}
+ * @return {false|string}
  */
 
 function lookup (path) {
@@ -36590,6 +34815,11 @@ var TYPE_SCORES = {
 
   // prefer font/woff over application/font-woff
   font: 2,
+
+  // prefer video/mp4 over audio/mp4 over application/mp4
+  // See https://www.rfc-editor.org/rfc/rfc4337.html#section-2
+  audio: 2,
+  video: 3,
 
   default: 0
 }
@@ -60341,6 +58571,14 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ 6698:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:async_hooks");
+
+/***/ }),
+
 /***/ 7598:
 /***/ ((module) => {
 
@@ -60365,6 +58603,14 @@ module.exports = require("node:fs");
 
 /***/ }),
 
+/***/ 1455:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
+
+/***/ }),
+
 /***/ 7067:
 /***/ ((module) => {
 
@@ -60378,6 +58624,14 @@ module.exports = require("node:http");
 
 "use strict";
 module.exports = require("node:https");
+
+/***/ }),
+
+/***/ 8161:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:os");
 
 /***/ }),
 
@@ -62161,7 +60415,7 @@ module.exports = parseParams
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.927.0","scripts":{"build":"concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn g:vitest run","test:browser":"node ./test/browser-build/esbuild && yarn g:vitest run -c vitest.config.browser.mts","test:browser:watch":"node ./test/browser-build/esbuild && yarn g:vitest watch -c vitest.config.browser.mts","test:e2e":"yarn g:vitest run -c vitest.config.e2e.mts && yarn test:browser","test:e2e:watch":"yarn g:vitest watch -c vitest.config.e2e.mts","test:integration":"yarn g:vitest run -c vitest.config.integ.mts","test:integration:watch":"yarn g:vitest watch -c vitest.config.integ.mts","test:watch":"yarn g:vitest watch"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"5.2.0","@aws-crypto/sha256-browser":"5.2.0","@aws-crypto/sha256-js":"5.2.0","@aws-sdk/core":"3.927.0","@aws-sdk/credential-provider-node":"3.927.0","@aws-sdk/middleware-bucket-endpoint":"3.922.0","@aws-sdk/middleware-expect-continue":"3.922.0","@aws-sdk/middleware-flexible-checksums":"3.927.0","@aws-sdk/middleware-host-header":"3.922.0","@aws-sdk/middleware-location-constraint":"3.922.0","@aws-sdk/middleware-logger":"3.922.0","@aws-sdk/middleware-recursion-detection":"3.922.0","@aws-sdk/middleware-sdk-s3":"3.927.0","@aws-sdk/middleware-ssec":"3.922.0","@aws-sdk/middleware-user-agent":"3.927.0","@aws-sdk/region-config-resolver":"3.925.0","@aws-sdk/signature-v4-multi-region":"3.927.0","@aws-sdk/types":"3.922.0","@aws-sdk/util-endpoints":"3.922.0","@aws-sdk/util-user-agent-browser":"3.922.0","@aws-sdk/util-user-agent-node":"3.927.0","@aws-sdk/xml-builder":"3.921.0","@smithy/config-resolver":"^4.4.2","@smithy/core":"^3.17.2","@smithy/eventstream-serde-browser":"^4.2.4","@smithy/eventstream-serde-config-resolver":"^4.3.4","@smithy/eventstream-serde-node":"^4.2.4","@smithy/fetch-http-handler":"^5.3.5","@smithy/hash-blob-browser":"^4.2.5","@smithy/hash-node":"^4.2.4","@smithy/hash-stream-node":"^4.2.4","@smithy/invalid-dependency":"^4.2.4","@smithy/md5-js":"^4.2.4","@smithy/middleware-content-length":"^4.2.4","@smithy/middleware-endpoint":"^4.3.6","@smithy/middleware-retry":"^4.4.6","@smithy/middleware-serde":"^4.2.4","@smithy/middleware-stack":"^4.2.4","@smithy/node-config-provider":"^4.3.4","@smithy/node-http-handler":"^4.4.4","@smithy/protocol-http":"^5.3.4","@smithy/smithy-client":"^4.9.2","@smithy/types":"^4.8.1","@smithy/url-parser":"^4.2.4","@smithy/util-base64":"^4.3.0","@smithy/util-body-length-browser":"^4.2.0","@smithy/util-body-length-node":"^4.2.1","@smithy/util-defaults-mode-browser":"^4.3.5","@smithy/util-defaults-mode-node":"^4.2.8","@smithy/util-endpoints":"^3.2.4","@smithy/util-middleware":"^4.2.4","@smithy/util-retry":"^4.2.4","@smithy/util-stream":"^4.5.5","@smithy/util-utf8":"^4.2.0","@smithy/util-waiter":"^4.2.4","@smithy/uuid":"^1.1.0","tslib":"^2.6.2"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.927.0","@tsconfig/node18":"18.2.4","@types/node":"^18.19.69","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~5.8.3"},"engines":{"node":">=18.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.958.0","scripts":{"build":"concurrently \'yarn:build:types\' \'yarn:build:es\' && yarn build:cjs","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"yarn g:turbo run build -F=\\"$npm_package_name\\"","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn g:vitest run","test:browser":"node ./test/browser-build/esbuild && yarn g:vitest run -c vitest.config.browser.mts","test:browser:watch":"node ./test/browser-build/esbuild && yarn g:vitest watch -c vitest.config.browser.mts","test:e2e":"yarn g:vitest run -c vitest.config.e2e.mts && yarn test:browser","test:e2e:watch":"yarn g:vitest watch -c vitest.config.e2e.mts","test:index":"tsc --noEmit ./test/index-types.ts && node ./test/index-objects.spec.mjs","test:integration":"yarn g:vitest run -c vitest.config.integ.mts","test:integration:watch":"yarn g:vitest watch -c vitest.config.integ.mts","test:watch":"yarn g:vitest watch"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"5.2.0","@aws-crypto/sha256-browser":"5.2.0","@aws-crypto/sha256-js":"5.2.0","@aws-sdk/core":"3.957.0","@aws-sdk/credential-provider-node":"3.958.0","@aws-sdk/middleware-bucket-endpoint":"3.957.0","@aws-sdk/middleware-expect-continue":"3.957.0","@aws-sdk/middleware-flexible-checksums":"3.957.0","@aws-sdk/middleware-host-header":"3.957.0","@aws-sdk/middleware-location-constraint":"3.957.0","@aws-sdk/middleware-logger":"3.957.0","@aws-sdk/middleware-recursion-detection":"3.957.0","@aws-sdk/middleware-sdk-s3":"3.957.0","@aws-sdk/middleware-ssec":"3.957.0","@aws-sdk/middleware-user-agent":"3.957.0","@aws-sdk/region-config-resolver":"3.957.0","@aws-sdk/signature-v4-multi-region":"3.957.0","@aws-sdk/types":"3.957.0","@aws-sdk/util-endpoints":"3.957.0","@aws-sdk/util-user-agent-browser":"3.957.0","@aws-sdk/util-user-agent-node":"3.957.0","@smithy/config-resolver":"^4.4.5","@smithy/core":"^3.20.0","@smithy/eventstream-serde-browser":"^4.2.7","@smithy/eventstream-serde-config-resolver":"^4.3.7","@smithy/eventstream-serde-node":"^4.2.7","@smithy/fetch-http-handler":"^5.3.8","@smithy/hash-blob-browser":"^4.2.8","@smithy/hash-node":"^4.2.7","@smithy/hash-stream-node":"^4.2.7","@smithy/invalid-dependency":"^4.2.7","@smithy/md5-js":"^4.2.7","@smithy/middleware-content-length":"^4.2.7","@smithy/middleware-endpoint":"^4.4.1","@smithy/middleware-retry":"^4.4.17","@smithy/middleware-serde":"^4.2.8","@smithy/middleware-stack":"^4.2.7","@smithy/node-config-provider":"^4.3.7","@smithy/node-http-handler":"^4.4.7","@smithy/protocol-http":"^5.3.7","@smithy/smithy-client":"^4.10.2","@smithy/types":"^4.11.0","@smithy/url-parser":"^4.2.7","@smithy/util-base64":"^4.3.0","@smithy/util-body-length-browser":"^4.2.0","@smithy/util-body-length-node":"^4.2.1","@smithy/util-defaults-mode-browser":"^4.3.16","@smithy/util-defaults-mode-node":"^4.2.19","@smithy/util-endpoints":"^3.2.7","@smithy/util-middleware":"^4.2.7","@smithy/util-retry":"^4.2.7","@smithy/util-stream":"^4.5.8","@smithy/util-utf8":"^4.2.0","@smithy/util-waiter":"^4.2.7","tslib":"^2.6.2"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.957.0","@tsconfig/node18":"18.2.4","@types/node":"^18.19.69","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~5.8.3"},"engines":{"node":">=18.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
 
 /***/ }),
 
