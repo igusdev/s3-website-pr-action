@@ -57932,7 +57932,7 @@ exports.requiredEnvVars = [
     'AWS_SECRET_ACCESS_KEY',
     'GITHUB_TOKEN',
 ];
-const prUpdated = (bucketName, uploadDir, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+const prUpdated = (bucketName, uploadDir, environmentPrefix, skipSourceMaps) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     const region = (0, aws_1.getAwsRegion)();
     const websiteUrl = `http://${bucketName}.${aws_1.websiteEndpoint[region]}`;
@@ -57947,7 +57947,7 @@ const prUpdated = (bucketName, uploadDir, environmentPrefix) => __awaiter(void 0
         if ('id' in deployment.data) {
             yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'in_progress' }));
             console.log('Uploading files...');
-            yield (0, s3_1.uploadDirectory)(bucketName, uploadDir);
+            yield (0, s3_1.uploadDirectory)(bucketName, uploadDir, skipSourceMaps);
             yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.data.id, state: 'success', environment_url: websiteUrl, description: `Deployed to: ${websiteUrl}` }));
             console.log(`Website URL: ${websiteUrl}`);
         }
@@ -58064,6 +58064,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         const bucketPrefix = (0, core_1.getInput)('bucket-prefix').toLowerCase();
         const folderToCopy = (0, core_1.getInput)('folder-to-copy');
         const environmentPrefix = (0, core_1.getInput)('environment-prefix').toLowerCase();
+        const skipSourceMaps = (0, core_1.getBooleanInput)('skip-source-maps');
         const prNumber = (_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
         const bucketName = `${bucketPrefix}-pr${prNumber}`;
         console.log(`Bucket Name: ${bucketName}`);
@@ -58073,7 +58074,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 case 'opened':
                 case 'reopened':
                 case 'synchronize':
-                    yield (0, pr_updated_1.prUpdated)(bucketName, folderToCopy, environmentPrefix);
+                    yield (0, pr_updated_1.prUpdated)(bucketName, folderToCopy, environmentPrefix, skipSourceMaps);
                     break;
                 case 'closed':
                     yield (0, pr_closed_1.prClosed)(bucketName, environmentPrefix);
@@ -58422,9 +58423,12 @@ const createBucket = (bucketName, region) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.createBucket = createBucket;
-const uploadDirectory = (bucketName, directory) => __awaiter(void 0, void 0, void 0, function* () {
+const uploadDirectory = (bucketName_1, directory_1, ...args_1) => __awaiter(void 0, [bucketName_1, directory_1, ...args_1], void 0, function* (bucketName, directory, skipSourceMaps = true) {
     const normalizedPath = (0, node_path_1.normalize)(directory);
-    const files = yield (0, fs_1.readRecursively)(normalizedPath);
+    const allFiles = yield (0, fs_1.readRecursively)(normalizedPath);
+    const files = skipSourceMaps
+        ? allFiles.filter((f) => !f.endsWith('.map'))
+        : allFiles;
     yield Promise.all(files.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
         const s3Key = (0, exports.filePathToS3Key)(filePath.replace(normalizedPath, ''));
         console.log(`Uploading ${s3Key} to ${bucketName}`);
