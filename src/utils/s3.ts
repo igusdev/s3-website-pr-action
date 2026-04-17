@@ -134,10 +134,14 @@ export const createBucket = async (bucketName: string, region: KnownRegion) => {
 export const uploadDirectory = async (
   bucketName: string,
   directory: string,
+  skipSourceMaps = true,
 ) => {
   const normalizedPath = normalize(directory);
 
-  const files = await readRecursively(normalizedPath);
+  const allFiles = await readRecursively(normalizedPath);
+  const files = skipSourceMaps
+    ? allFiles.filter((f) => !f.endsWith('.map'))
+    : allFiles;
 
   await Promise.all(
     files.map(async (filePath) => {

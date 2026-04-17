@@ -1,4 +1,4 @@
-import { getInput, setFailed } from '@actions/core';
+import { getBooleanInput, getInput, setFailed } from '@actions/core';
 import { context } from '@actions/github';
 import { prClosed } from './actions/pr-closed';
 import { prUpdated } from './actions/pr-updated';
@@ -11,6 +11,7 @@ const main = async () => {
     const bucketPrefix = getInput('bucket-prefix').toLowerCase();
     const folderToCopy = getInput('folder-to-copy');
     const environmentPrefix = getInput('environment-prefix').toLowerCase();
+    const skipSourceMaps = getBooleanInput('skip-source-maps');
 
     const prNumber = context.payload.pull_request?.number;
     const bucketName = `${bucketPrefix}-pr${prNumber}`;
@@ -24,7 +25,12 @@ const main = async () => {
         case 'opened':
         case 'reopened':
         case 'synchronize':
-          await prUpdated(bucketName, folderToCopy, environmentPrefix);
+          await prUpdated(
+            bucketName,
+            folderToCopy,
+            environmentPrefix,
+            skipSourceMaps,
+          );
           break;
 
         case 'closed':

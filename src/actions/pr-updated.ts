@@ -15,6 +15,7 @@ export const prUpdated = async (
   bucketName: string,
   uploadDir: string,
   environmentPrefix: string,
+  skipSourceMaps: boolean,
 ) => {
   const region = getAwsRegion();
   const websiteUrl = `http://${bucketName}.${websiteEndpoint[region]}`;
@@ -49,7 +50,7 @@ export const prUpdated = async (
       });
 
       console.log('Uploading files...');
-      await uploadDirectory(bucketName, uploadDir);
+      await uploadDirectory(bucketName, uploadDir, skipSourceMaps);
 
       await githubClient.rest.repos.createDeploymentStatus({
         ...repo,

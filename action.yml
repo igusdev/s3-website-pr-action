@@ -13,6 +13,10 @@ inputs:
   environment-prefix:
     description: 'Prefix of the GitHub Deployment Environment. The PR number will be appended to this value.'
     required: false
+  skip-source-maps:
+    description: 'Skip uploading source map files (*.map) to S3.'
+    required: false
+    default: 'true'
 runs:
   using: 'node20'
   main: 'dist/index.js'
