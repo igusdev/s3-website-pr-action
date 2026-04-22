@@ -10,8 +10,11 @@ inputs:
   folder-to-copy:
     description: 'Folder to copy assets from into S3.'
     required: false
+  environment-name:
+    description: 'Name of the shared GitHub Deployment Environment used for all PR previews. Defaults to "pr-preview"'
+    required: false
   environment-prefix:
-    description: 'Prefix of the GitHub Deployment Environment. The PR number will be appended to this value.'
+    description: 'Prefix used as the deployment task identifier. The PR number will be appended to this value. Defaults to "pr-".'
     required: false
   skip-source-maps:
     description: 'Skip uploading source map files (*.map) to S3.'

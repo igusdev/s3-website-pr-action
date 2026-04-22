@@ -2,7 +2,7 @@ import { context } from '@actions/github';
 import { githubClient } from '../clients/github';
 import { getAwsRegion, websiteEndpoint } from '../utils/aws';
 import { validateEnvVars } from '../utils/env';
-import { deactivateDeployments } from '../utils/github';
+import { buildDeploymentTask, deactivateDeployments } from '../utils/github';
 import { createBucket, deleteBucket, uploadDirectory } from '../utils/s3';
 
 export const requiredEnvVars = [
@@ -15,6 +15,7 @@ export const prUpdated = async (
   bucketName: string,
   uploadDir: string,
   environmentPrefix: string,
+  environmentName: string,
   skipSourceMaps: boolean,
 ) => {
   const region = getAwsRegion();
@@ -22,21 +23,24 @@ export const prUpdated = async (
   const { repo, payload } = context;
   const branchName = (payload.pull_request?.head as Record<string, string>)
     ?.ref;
+  const task = buildDeploymentTask(
+    environmentPrefix,
+    payload.pull_request?.number,
+  );
 
   console.log('PR Updated');
 
   validateEnvVars(requiredEnvVars);
 
   await createBucket(bucketName, region);
-  await deactivateDeployments(repo, environmentPrefix);
+  await deactivateDeployments(repo, environmentName, task);
 
   try {
     const deployment = await githubClient.rest.repos.createDeployment({
       ...repo,
       ref: `refs/heads/${branchName}`,
-      environment: `${environmentPrefix || 'pr-'}${
-        payload.pull_request?.number
-      }`,
+      environment: environmentName,
+      task,
       auto_merge: false,
       transient_environment: true,
       required_contexts: [],
@@ -65,6 +69,6 @@ export const prUpdated = async (
   } catch (error) {
     console.error(`Couldn't deploy website`, error);
     await deleteBucket(bucketName);
-    await deactivateDeployments(repo, environmentPrefix);
+    await deactivateDeployments(repo, environmentName, task);
   }
 };

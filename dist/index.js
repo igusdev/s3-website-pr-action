@@ -62950,12 +62950,11 @@ const githubClient = getOctokit(GITHUB_TOKEN, {
 
 ;// CONCATENATED MODULE: ./src/utils/github.ts
 
-
-const deactivateDeployments = async (repo, environmentPrefix) => {
-    const environment = `${environmentPrefix || 'pr-'}${github_context.payload.pull_request?.number}`;
+const deactivateDeployments = async (repo, environment, task) => {
     const deployments = await githubClient.rest.repos.listDeployments({
         ...repo,
         environment,
+        task,
     });
     const existing = deployments.data.length;
     if (existing < 1) {
@@ -62976,11 +62975,11 @@ const deactivateDeployments = async (repo, environmentPrefix) => {
         }
     }
 };
-const deleteDeployments = async (repo, environmentPrefix) => {
-    const environment = `${environmentPrefix || 'pr-'}${github_context.payload.pull_request?.number}`;
+const deleteDeployments = async (repo, environment, task) => {
     const deployments = await githubClient.rest.repos.listDeployments({
         ...repo,
         environment,
+        task,
     });
     const existing = deployments.data.length;
     if (existing < 1) {
@@ -62999,6 +62998,9 @@ const deleteDeployments = async (repo, environmentPrefix) => {
             console.error(`Failed to delete deployment ${deployment.id}:`, error);
         }
     }
+};
+const buildDeploymentTask = (environmentPrefix, prNumber) => {
+    return `${environmentPrefix}${prNumber}`;
 };
 
 // EXTERNAL MODULE: ./node_modules/@aws-sdk/client-s3/dist-cjs/index.js
@@ -63185,12 +63187,13 @@ const getCacheControl = (fileName) => {
 
 
 const requiredEnvVars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
-const prClosed = async (bucketName, environmentPrefix) => {
-    const { repo } = github_context;
+const prClosed = async (bucketName, environmentPrefix, environmentName) => {
+    const { repo, payload } = github_context;
+    const task = buildDeploymentTask(environmentPrefix, payload.pull_request?.number);
     validateEnvVars(requiredEnvVars);
     await deleteBucket(bucketName);
-    await deactivateDeployments(repo, environmentPrefix);
-    await deleteDeployments(repo, environmentPrefix);
+    await deactivateDeployments(repo, environmentName, task);
+    await deleteDeployments(repo, environmentName, task);
     console.log('S3 bucket removed');
 };
 
@@ -63258,21 +63261,23 @@ const pr_updated_requiredEnvVars = [
     'AWS_SECRET_ACCESS_KEY',
     'GITHUB_TOKEN',
 ];
-const prUpdated = async (bucketName, uploadDir, environmentPrefix, skipSourceMaps) => {
+const prUpdated = async (bucketName, uploadDir, environmentPrefix, environmentName, skipSourceMaps) => {
     const region = getAwsRegion();
     const websiteUrl = `http://${bucketName}.${websiteEndpoint[region]}`;
     const { repo, payload } = github_context;
     const branchName = payload.pull_request?.head
         ?.ref;
+    const task = buildDeploymentTask(environmentPrefix, payload.pull_request?.number);
     console.log('PR Updated');
     validateEnvVars(pr_updated_requiredEnvVars);
     await createBucket(bucketName, region);
-    await deactivateDeployments(repo, environmentPrefix);
+    await deactivateDeployments(repo, environmentName, task);
     try {
         const deployment = await githubClient.rest.repos.createDeployment({
             ...repo,
             ref: `refs/heads/${branchName}`,
-            environment: `${environmentPrefix || 'pr-'}${payload.pull_request?.number}`,
+            environment: environmentName,
+            task,
             auto_merge: false,
             transient_environment: true,
             required_contexts: [],
@@ -63298,7 +63303,7 @@ const prUpdated = async (bucketName, uploadDir, environmentPrefix, skipSourceMap
     catch (error) {
         console.error(`Couldn't deploy website`, error);
         await deleteBucket(bucketName);
-        await deactivateDeployments(repo, environmentPrefix);
+        await deactivateDeployments(repo, environmentName, task);
     }
 };
 
@@ -63313,7 +63318,8 @@ const main = async () => {
     try {
         const bucketPrefix = getInput('bucket-prefix').toLowerCase();
         const folderToCopy = getInput('folder-to-copy');
-        const environmentPrefix = getInput('environment-prefix').toLowerCase();
+        const environmentPrefix = getInput('environment-prefix').toLowerCase() || 'pr-';
+        const environmentName = getInput('environment-name').toLowerCase() || 'pr-preview';
         const skipSourceMaps = getBooleanInput('skip-source-maps');
         const prNumber = github_context.payload.pull_request?.number;
         const bucketName = `${bucketPrefix}-pr${prNumber}`;
@@ -63324,10 +63330,10 @@ const main = async () => {
                 case 'opened':
                 case 'reopened':
                 case 'synchronize':
-                    await prUpdated(bucketName, folderToCopy, environmentPrefix, skipSourceMaps);
+                    await prUpdated(bucketName, folderToCopy, environmentPrefix, environmentName, skipSourceMaps);
                     break;
                 case 'closed':
-                    await prClosed(bucketName, environmentPrefix);
+                    await prClosed(bucketName, environmentPrefix, environmentName);
                     break;
                 default:
                     console.log('PR not created, modified or deleted. Skipping...');

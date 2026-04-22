@@ -10,7 +10,10 @@ const main = async () => {
   try {
     const bucketPrefix = getInput('bucket-prefix').toLowerCase();
     const folderToCopy = getInput('folder-to-copy');
-    const environmentPrefix = getInput('environment-prefix').toLowerCase();
+    const environmentPrefix =
+      getInput('environment-prefix').toLowerCase() || 'pr-';
+    const environmentName =
+      getInput('environment-name').toLowerCase() || 'pr-preview';
     const skipSourceMaps = getBooleanInput('skip-source-maps');
 
     const prNumber = context.payload.pull_request?.number;
@@ -29,12 +32,13 @@ const main = async () => {
             bucketName,
             folderToCopy,
             environmentPrefix,
+            environmentName,
             skipSourceMaps,
           );
           break;
 
         case 'closed':
-          await prClosed(bucketName, environmentPrefix);
+          await prClosed(bucketName, environmentPrefix, environmentName);
           break;
 
         default:

@@ -71,6 +71,7 @@ Note: By default, workflows using the `pull_request` activity type will include 
 
 | Parameter          | Description                                        |
 | ------------------ | -------------------------------------------------- |
+| environment-name   | Github environment name. Defaults to 'pr-preview'  |
 | environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-' |
 
 ### PR closed
@@ -122,6 +123,7 @@ Execute the `s3-website-pr-action` action on pull request `closed` events. This 
 
 | Parameter          | Description                                        |
 | ------------------ | -------------------------------------------------- |
+| environment-name   | Github environment name. Defaults to 'pr-preview'  |
 | environment-prefix | Prefix to the GitHub Deployment. Defaults to 'PR-' |
 
 ## IAM 🔐

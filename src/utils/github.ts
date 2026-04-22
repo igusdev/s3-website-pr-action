@@ -1,4 +1,3 @@
-import { context } from '@actions/github';
 import { githubClient } from '../clients/github';
 
 export const deactivateDeployments = async (
@@ -6,15 +5,13 @@ export const deactivateDeployments = async (
     owner: string;
     repo: string;
   },
-  environmentPrefix: string,
+  environment: string,
+  task: string,
 ) => {
-  const environment = `${environmentPrefix || 'pr-'}${
-    context.payload.pull_request?.number
-  }`;
-
   const deployments = await githubClient.rest.repos.listDeployments({
     ...repo,
     environment,
+    task,
   });
 
   const existing = deployments.data.length;
@@ -43,15 +40,13 @@ export const deleteDeployments = async (
     owner: string;
     repo: string;
   },
-  environmentPrefix: string,
+  environment: string,
+  task: string,
 ) => {
-  const environment = `${environmentPrefix || 'pr-'}${
-    context.payload.pull_request?.number
-  }`;
-
   const deployments = await githubClient.rest.repos.listDeployments({
     ...repo,
     environment,
+    task,
   });
 
   const existing = deployments.data.length;
@@ -72,4 +67,11 @@ export const deleteDeployments = async (
       console.error(`Failed to delete deployment ${deployment.id}:`, error);
     }
   }
+};
+
+export const buildDeploymentTask = (
+  environmentPrefix: string,
+  prNumber: number | undefined,
+): string => {
+  return `${environmentPrefix}${prNumber}`;
 };
