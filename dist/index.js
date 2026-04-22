@@ -58238,11 +58238,7 @@ const github_2 = __nccwpck_require__(705);
 const deactivateDeployments = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const environment = `${environmentPrefix || 'pr-'}${(_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number}`;
-    const deployments = yield github_2.githubClient.rest.repos.listDeployments({
-        repo: repo.repo,
-        owner: repo.owner,
-        environment,
-    });
+    const deployments = yield github_2.githubClient.rest.repos.listDeployments(Object.assign(Object.assign({}, repo), { environment }));
     const existing = deployments.data.length;
     if (existing < 1) {
         console.log('No exiting deployments found for pull request');
@@ -58250,38 +58246,32 @@ const deactivateDeployments = (repo, environmentPrefix) => __awaiter(void 0, voi
     }
     for (const deployment of deployments.data) {
         console.log(`Deactivating existing deployment - ${deployment.id}`);
-        yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.id, state: 'inactive' }));
+        try {
+            yield github_2.githubClient.rest.repos.createDeploymentStatus(Object.assign(Object.assign({}, repo), { deployment_id: deployment.id, state: 'inactive' }));
+        }
+        catch (error) {
+            console.error(`Failed to deactivate deployment ${deployment.id}:`, error);
+        }
     }
 });
 exports.deactivateDeployments = deactivateDeployments;
 const deleteDeployments = (repo, environmentPrefix) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a;
     const environment = `${environmentPrefix || 'pr-'}${(_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number}`;
-    const deployments = yield github_2.githubClient.graphql(`
-        query GetDeployments($owner: String!, $repo: String!, $environments: [String!]) {
-          repository(owner: $owner, name: $repo) {
-            deployments(first: 100, environments: $environments) {
-              nodes {
-                id
-              }
-            }
-          }
-        }`, Object.assign(Object.assign({}, repo), { environments: [environment] }));
-    const nodes = (_c = (_b = deployments.repository) === null || _b === void 0 ? void 0 : _b.deployments) === null || _c === void 0 ? void 0 : _c.nodes;
-    console.log(JSON.stringify(deployments));
-    if (!nodes || nodes.length <= 0) {
+    const deployments = yield github_2.githubClient.rest.repos.listDeployments(Object.assign(Object.assign({}, repo), { environment }));
+    const existing = deployments.data.length;
+    if (existing < 1) {
         console.log('No exiting deployments found for pull request');
         return;
     }
-    for (const node of nodes) {
-        console.log(`Deleting existing deployment - ${node.id}`);
-        yield github_2.githubClient.graphql(`
-            mutation DeleteDeployment($id: ID!) {
-              deleteDeployment(input: {id: $id} ) {
-                clientMutationId
-              }
-            }
-          `, { id: node.id });
+    for (const deployment of deployments.data) {
+        console.log(`Deleting existing deployment - ${deployment.id}`);
+        try {
+            yield github_2.githubClient.rest.repos.deleteDeployment(Object.assign(Object.assign({}, repo), { deployment_id: deployment.id }));
+        }
+        catch (error) {
+            console.error(`Failed to delete deployment ${deployment.id}:`, error);
+        }
     }
 });
 exports.deleteDeployments = deleteDeployments;
