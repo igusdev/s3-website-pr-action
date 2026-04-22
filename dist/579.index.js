@@ -1,7 +1,6 @@
-"use strict";
-exports.id = 579;
-exports.ids = [579];
-exports.modules = {
+export const id = 579;
+export const ids = [579];
+export const modules = {
 
 /***/ 6579:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
@@ -58,9 +57,13 @@ class EventStreamSerde {
                     body: event.body,
                 };
             }
-            const unionMember = Object.keys(event).find((key) => {
-                return key !== "__type";
-            }) ?? "";
+            let unionMember = "";
+            for (const key in event) {
+                if (key !== "__type") {
+                    unionMember = key;
+                    break;
+                }
+            }
             const { additionalHeaders, body, eventType, explicitPayloadContentType } = this.writeEventBody(unionMember, unionSchema, event);
             const headers = {
                 ":event-type": { type: "string", value: eventType },
@@ -81,9 +84,13 @@ class EventStreamSerde {
         const memberSchemas = unionSchema.getMemberSchemas();
         const initialResponseMarker = Symbol("initialResponseMarker");
         const asyncIterable = marshaller.deserialize(response.body, async (event) => {
-            const unionMember = Object.keys(event).find((key) => {
-                return key !== "__type";
-            }) ?? "";
+            let unionMember = "";
+            for (const key in event) {
+                if (key !== "__type") {
+                    unionMember = key;
+                    break;
+                }
+            }
             const body = event[unionMember].body;
             if (unionMember === "initial-response") {
                 const dataObject = await this.deserializer.read(responseSchema, body);
@@ -134,6 +141,11 @@ class EventStreamSerde {
                             [unionMember]: out,
                         };
                     }
+                    if (body.byteLength === 0) {
+                        return {
+                            [unionMember]: {},
+                        };
+                    }
                 }
                 return {
                     [unionMember]: await this.deserializer.read(eventStreamSchema, body),
@@ -154,8 +166,8 @@ class EventStreamSerde {
             if (!responseSchema) {
                 throw new Error("@smithy::core/protocols - initial-response event encountered in event stream but no response schema given.");
             }
-            for (const [key, value] of Object.entries(firstEvent.value)) {
-                initialResponseContainer[key] = value;
+            for (const key in firstEvent.value) {
+                initialResponseContainer[key] = firstEvent.value[key];
             }
         }
         return {
@@ -239,11 +251,14 @@ class EventStreamSerde {
                     serializer.write(eventSchema, event[unionMember]);
                 }
             }
+            else if (eventSchema.isUnitSchema()) {
+                serializer.write(eventSchema, {});
+            }
             else {
                 throw new Error("@smithy/core/event-streams - non-struct member not supported in event stream union.");
             }
         }
-        const messageSerialization = serializer.flush();
+        const messageSerialization = serializer.flush() ?? new Uint8Array();
         const body = typeof messageSerialization === "string"
             ? (this.serdeContext?.utf8Decoder ?? utilUtf8.fromUtf8)(messageSerialization)
             : messageSerialization;
@@ -262,5 +277,5 @@ exports.EventStreamSerde = EventStreamSerde;
 /***/ })
 
 };
-;
+
 //# sourceMappingURL=579.index.js.map

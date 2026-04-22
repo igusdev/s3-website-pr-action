@@ -1,7 +1,8 @@
 {
   "name": "s3-website-pr-action",
-  "version": "2.3.1",
+  "version": "3.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "start": "ncc run src/index.ts",
     "build": "ncc build src/index.ts --source-map",
@@ -14,30 +15,30 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^2.0.1",
-    "@actions/github": "^6.0.1",
-    "@aws-sdk/client-s3": "^3.958.0",
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1",
+    "@aws-sdk/client-s3": "^3.1034.0",
     "@octokit/types": "^16.0.0",
-    "@smithy/node-http-handler": "^4.4.7",
+    "@smithy/node-http-handler": "^4.6.0",
     "mime-types": "^3.0.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/mime-types": "^3.0.1",
-    "@types/node": "^24.10.4",
+    "@types/node": "^25.6.0",
     "@types/recursive-readdir": "^2.2.4",
     "@vercel/ncc": "^0.38.4",
-    "eslint": "^9.39.2",
+    "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-unicorn": "^62.0.0",
+    "eslint-plugin-unicorn": "^64.0.0",
     "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
-    "ts-jest": "^29.4.6",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.51.0"
+    "jest": "^30.3.0",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "ts-jest": "^29.4.9",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0"
   },
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.14.1"
 }

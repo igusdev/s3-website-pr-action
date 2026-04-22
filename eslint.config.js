@@ -1,9 +1,9 @@
-const tsEslint = require('typescript-eslint');
-const eslintConfigPrettier = require('eslint-config-prettier');
-const { default: eslintPluginUnicorn } = require('eslint-plugin-unicorn');
-const globals = require('globals');
+import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import globals from 'globals';
+import tsEslint from 'typescript-eslint';
 
-module.exports = [
+export default [
   ...[
     ...tsEslint.configs.recommended,
     ...tsEslint.configs.recommendedTypeChecked,
@@ -50,7 +50,7 @@ module.exports = [
   {
     files: ['**/*.ts'],
     languageOptions: {
-      parserOptions: { project: ['./tsconfig.json'] },
+      parserOptions: { project: ['./tsconfig.json', './tsconfig.*.json'] },
     },
   },
 ];
