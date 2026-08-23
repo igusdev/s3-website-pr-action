@@ -27,7 +27,7 @@
     "@types/mime-types": "^3.0.1",
     "@types/node": "^26.1.1",
     "@types/recursive-readdir": "^2.2.4",
-    "@vercel/ncc": "^0.44.1",
+    "@vercel/ncc": "^0.45.0",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
