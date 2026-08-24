@@ -17,28 +17,28 @@
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.1",
-    "@aws-sdk/client-s3": "^3.1081.0",
-    "@octokit/types": "^16.0.0",
-    "@smithy/node-http-handler": "^4.9.3",
+    "@aws-sdk/client-s3": "^3.1116.0",
+    "@octokit/types": "^17.0.0",
+    "@smithy/node-http-handler": "^4.11.3",
     "mime-types": "^3.0.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/mime-types": "^3.0.1",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.2.0",
     "@types/recursive-readdir": "^2.2.4",
-    "@vercel/ncc": "^0.44.1",
-    "eslint": "^10.6.0",
+    "@vercel/ncc": "^0.45.0",
+    "eslint": "^10.9.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-unicorn": "^72.0.0",
+    "eslint-plugin-unicorn": "^73.0.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
-    "lint-staged": "^17.0.8",
-    "prettier": "^3.9.4",
-    "ts-jest": "^29.4.11",
+    "lint-staged": "^17.3.0",
+    "prettier": "^3.9.6",
+    "ts-jest": "^29.4.12",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.63.0"
+    "typescript-eslint": "^8.67.0"
   },
-  "packageManager": "yarn@4.17.1"
+  "packageManager": "yarn@4.18.0"
 }
