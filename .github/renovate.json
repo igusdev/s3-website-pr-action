@@ -15,6 +15,5 @@
   "lockFileMaintenance": {
     "semanticCommitType": "build"
   },
-  "platformCommit": true,
-  "postUpdateOptions": ["yarnDedupeHighest"],
+  "postUpdateOptions": ["yarnDedupeHighest"]
 }

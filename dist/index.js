@@ -1051,8 +1051,9 @@ var SelectorType;
     SelectorType["CONFIG"] = "shared config entry";
 })(SelectorType || (SelectorType = {}));
 const stringUnionSelector = (obj, key, union, type) => {
-    if (!(key in obj))
+    if (!(key in obj)) {
         return undefined;
+    }
     const value = obj[key].toUpperCase();
     if (!Object.values(union).includes(value)) {
         throw new TypeError(`Cannot load ${type} '${key}'. Expected one of ${Object.values(union)}, got '${obj[key]}'.`);
@@ -1471,15 +1472,15 @@ exports.Sha256 = Sha256;
 exports.Sha256Js = Sha256Js;
 exports.Sha256Node = Sha256Node;
 
-const BLOCK = 64;
-const DIGEST_LENGTH = 20;
-const INIT = new Int32Array([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0]);
-const K = new Int32Array([0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6]);
+const BLOCK$1 = 64;
+const DIGEST_LENGTH$1 = 20;
+const INIT$1 = new Int32Array([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0]);
+const K$1 = new Int32Array([0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6]);
 class Sha1Js {
-    digestLength = DIGEST_LENGTH;
-    state = Int32Array.from(INIT);
+    digestLength = DIGEST_LENGTH$1;
+    state = Int32Array.from(INIT$1);
     w;
-    buffer = new Uint8Array(BLOCK);
+    buffer = new Uint8Array(BLOCK$1);
     bufferLength = 0;
     bytesHashed = 0;
     finished = false;
@@ -1490,13 +1491,13 @@ class Sha1Js {
             const key = Sha1Js.normalizeKey(secret);
             this.inner = new Sha1Js();
             this.outer = new Sha1Js();
-            const pad = new Uint8Array(BLOCK * 2);
-            for (let i = 0; i < BLOCK; ++i) {
+            const pad = new Uint8Array(BLOCK$1 * 2);
+            for (let i = 0; i < BLOCK$1; ++i) {
                 pad[i] = 0x36 ^ key[i];
-                pad[i + BLOCK] = 0x5c ^ key[i];
+                pad[i + BLOCK$1] = 0x5c ^ key[i];
             }
-            this.inner.update(pad.subarray(0, BLOCK));
-            this.outer.update(pad.subarray(BLOCK));
+            this.inner.update(pad.subarray(0, BLOCK$1));
+            this.outer.update(pad.subarray(BLOCK$1));
         }
     }
     update(data) {
@@ -1511,19 +1512,19 @@ class Sha1Js {
         let { length } = data;
         this.bytesHashed += length;
         if (this.bufferLength > 0) {
-            while (length > 0 && this.bufferLength < BLOCK) {
+            while (length > 0 && this.bufferLength < BLOCK$1) {
                 this.buffer[this.bufferLength++] = data[pos++];
                 --length;
             }
-            if (this.bufferLength === BLOCK) {
+            if (this.bufferLength === BLOCK$1) {
                 this.hashBuffer(this.buffer, 0);
                 this.bufferLength = 0;
             }
         }
-        while (length >= BLOCK) {
+        while (length >= BLOCK$1) {
             this.hashBuffer(data, pos);
-            pos += BLOCK;
-            length -= BLOCK;
+            pos += BLOCK$1;
+            length -= BLOCK$1;
         }
         while (length > 0) {
             this.buffer[this.bufferLength++] = data[pos++];
@@ -1543,8 +1544,8 @@ class Sha1Js {
         return this.digestSync();
     }
     reset() {
-        this.state = Int32Array.from(INIT);
-        this.buffer = new Uint8Array(BLOCK);
+        this.state = Int32Array.from(INIT$1);
+        this.buffer = new Uint8Array(BLOCK$1);
         this.bufferLength = 0;
         this.bytesHashed = 0;
     }
@@ -1555,21 +1556,21 @@ class Sha1Js {
         const bitsHi = (this.bytesHashed / 0x20000000) | 0;
         const bitsLo = this.bytesHashed << 3;
         buffer[bufferLength++] = 0x80;
-        if (bufferLength > BLOCK - 8) {
-            for (let i = bufferLength; i < BLOCK; ++i) {
+        if (bufferLength > BLOCK$1 - 8) {
+            for (let i = bufferLength; i < BLOCK$1; ++i) {
                 buffer[i] = 0;
             }
             this.hashBufferWith(state, buffer, 0);
             bufferLength = 0;
         }
-        for (let i = bufferLength; i < BLOCK - 8; ++i) {
+        for (let i = bufferLength; i < BLOCK$1 - 8; ++i) {
             buffer[i] = 0;
         }
-        const v = new DataView(buffer.buffer, buffer.byteOffset, BLOCK);
-        v.setUint32(BLOCK - 8, bitsHi, false);
-        v.setUint32(BLOCK - 4, bitsLo, false);
+        const v = new DataView(buffer.buffer, buffer.byteOffset, BLOCK$1);
+        v.setUint32(BLOCK$1 - 8, bitsHi, false);
+        v.setUint32(BLOCK$1 - 4, bitsLo, false);
         this.hashBufferWith(state, buffer, 0);
-        const out = new Uint8Array(DIGEST_LENGTH);
+        const out = new Uint8Array(DIGEST_LENGTH$1);
         out[0] = (state[0] >>> 24) & 0xff;
         out[1] = (state[0] >>> 16) & 0xff;
         out[2] = (state[0] >>> 8) & 0xff;
@@ -1594,15 +1595,15 @@ class Sha1Js {
     }
     static normalizeKey(secret) {
         const key = toUint8Array(secret);
-        if (key.byteLength > BLOCK) {
+        if (key.byteLength > BLOCK$1) {
             const h = new Sha1Js();
             h.update(key);
             const digest = h.digestSync();
-            const padded = new Uint8Array(BLOCK);
+            const padded = new Uint8Array(BLOCK$1);
             padded.set(digest);
             return padded;
         }
-        const padded = new Uint8Array(BLOCK);
+        const padded = new Uint8Array(BLOCK$1);
         padded.set(key);
         return padded;
     }
@@ -1628,7 +1629,7 @@ class Sha1Js {
             const temp = (((((s0 << 5) | (s0 >>> 27)) +
                 (r === 0 ? (s1 & s2) ^ (~s1 & s3) : r === 2 ? (s1 & s2) ^ (s1 & s3) ^ (s2 & s3) : s1 ^ s2 ^ s3)) |
                 0) +
-                ((s4 + ((K[r] + w[t]) | 0)) | 0)) |
+                ((s4 + ((K$1[r] + w[t]) | 0)) | 0)) |
                 0;
             s4 = s3;
             s3 = s2;
@@ -1688,9 +1689,425 @@ function buildNativeClass() {
             this.finished = false;
         }
         createHash() {
-            return this.secret ? createHmac("sha1", toBuffer(this.secret)) : createHash("sha1");
+            return this.secret ? createHmac("sha1", toBuffer$1(this.secret)) : createHash("sha1");
         }
     };
+}
+function toBuffer$1(data) {
+    if (typeof data === "string") {
+        return data;
+    }
+    if (ArrayBuffer.isView(data)) {
+        return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+    }
+    return Buffer.from(data);
+}
+
+const { digest: digest$1, sign: sign$1, importKey: importKey$1 } = globalThis?.crypto?.subtle ?? {};
+const subtle$1 = typeof digest$1 === "function" && typeof sign$1 === "function" && typeof importKey$1 === "function"
+    ? globalThis.crypto.subtle
+    : undefined;
+const MAX_PENDING_BYTES$1 = 8 * 1024 * 1024;
+class Sha1WebCrypto {
+    digestLength = 20;
+    secret;
+    pending = [];
+    pendingBytes = 0;
+    fallback;
+    finished = false;
+    constructor(secret) {
+        if (secret) {
+            this.secret = toUint8Array(secret);
+        }
+    }
+    update(data) {
+        if (this.finished) {
+            throw new Error("Attempted to update an already finished HMAC.");
+        }
+        if (this.fallback) {
+            this.fallback.update(data);
+            return;
+        }
+        this.pending.push(data.slice());
+        this.pendingBytes += data.byteLength;
+        if (this.pendingBytes >= MAX_PENDING_BYTES$1) {
+            this.switchToFallback();
+        }
+    }
+    async digest() {
+        if (this.fallback) {
+            return this.fallback.digest();
+        }
+        if (this.secret && this.finished) {
+            throw new Error("Attempted to digest an already finished HMAC.");
+        }
+        const data = concatBytes(this.pending);
+        if (subtle$1) {
+            if (this.secret) {
+                this.finished = true;
+                const key = await subtle$1.importKey("raw", this.secret, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+                const sig = await subtle$1.sign("HMAC", key, data);
+                return new Uint8Array(sig);
+            }
+            const hash = await subtle$1.digest("SHA-1", data);
+            return new Uint8Array(hash);
+        }
+        const sha1 = new Sha1Js(this.secret);
+        sha1.update(data);
+        return sha1.digest();
+    }
+    reset() {
+        this.pending = [];
+        this.pendingBytes = 0;
+        this.fallback = undefined;
+        this.finished = false;
+    }
+    switchToFallback() {
+        const sha1Js = new Sha1Js(this.secret);
+        for (const chunk of this.pending) {
+            sha1Js.update(chunk);
+        }
+        this.fallback = sha1Js;
+        this.pending = [];
+        this.pendingBytes = 0;
+    }
+}
+
+const BLOCK = 128;
+const DIGEST_LENGTH = 64;
+const MAX_HASHABLE_LENGTH = 2 ** 53 - 1;
+const INIT = new Uint32Array([
+    0x6a09e667, 0xf3bcc908, 0xbb67ae85, 0x84caa73b, 0x3c6ef372, 0xfe94f82b, 0xa54ff53a, 0x5f1d36f1, 0x510e527f,
+    0xade682d1, 0x9b05688c, 0x2b3e6c1f, 0x1f83d9ab, 0xfb41bd6b, 0x5be0cd19, 0x137e2179,
+]);
+const K = new Uint32Array([
+    0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd, 0xb5c0fbcf, 0xec4d3b2f, 0xe9b5dba5, 0x8189dbbc,
+    0x3956c25b, 0xf348b538, 0x59f111f1, 0xb605d019, 0x923f82a4, 0xaf194f9b, 0xab1c5ed5, 0xda6d8118,
+    0xd807aa98, 0xa3030242, 0x12835b01, 0x45706fbe, 0x243185be, 0x4ee4b28c, 0x550c7dc3, 0xd5ffb4e2,
+    0x72be5d74, 0xf27b896f, 0x80deb1fe, 0x3b1696b1, 0x9bdc06a7, 0x25c71235, 0xc19bf174, 0xcf692694,
+    0xe49b69c1, 0x9ef14ad2, 0xefbe4786, 0x384f25e3, 0x0fc19dc6, 0x8b8cd5b5, 0x240ca1cc, 0x77ac9c65,
+    0x2de92c6f, 0x592b0275, 0x4a7484aa, 0x6ea6e483, 0x5cb0a9dc, 0xbd41fbd4, 0x76f988da, 0x831153b5,
+    0x983e5152, 0xee66dfab, 0xa831c66d, 0x2db43210, 0xb00327c8, 0x98fb213f, 0xbf597fc7, 0xbeef0ee4,
+    0xc6e00bf3, 0x3da88fc2, 0xd5a79147, 0x930aa725, 0x06ca6351, 0xe003826f, 0x14292967, 0x0a0e6e70,
+    0x27b70a85, 0x46d22ffc, 0x2e1b2138, 0x5c26c926, 0x4d2c6dfc, 0x5ac42aed, 0x53380d13, 0x9d95b3df,
+    0x650a7354, 0x8baf63de, 0x766a0abb, 0x3c77b2a8, 0x81c2c92e, 0x47edaee6, 0x92722c85, 0x1482353b,
+    0xa2bfe8a1, 0x4cf10364, 0xa81a664b, 0xbc423001, 0xc24b8b70, 0xd0f89791, 0xc76c51a3, 0x0654be30,
+    0xd192e819, 0xd6ef5218, 0xd6990624, 0x5565a910, 0xf40e3585, 0x5771202a, 0x106aa070, 0x32bbd1b8,
+    0x19a4c116, 0xb8d2d0c8, 0x1e376c08, 0x5141ab53, 0x2748774c, 0xdf8eeb99, 0x34b0bcb5, 0xe19b48a8,
+    0x391c0cb3, 0xc5c95a63, 0x4ed8aa4a, 0xe3418acb, 0x5b9cca4f, 0x7763e373, 0x682e6ff3, 0xd6b2b8a3,
+    0x748f82ee, 0x5defb2fc, 0x78a5636f, 0x43172f60, 0x84c87814, 0xa1f0ab72, 0x8cc70208, 0x1a6439ec,
+    0x90befffa, 0x23631e28, 0xa4506ceb, 0xde82bde9, 0xbef9a3f7, 0xb2c67915, 0xc67178f2, 0xe372532b,
+    0xca273ece, 0xea26619c, 0xd186b8c7, 0x21c0c207, 0xeada7dd6, 0xcde0eb1e, 0xf57d4f7f, 0xee6ed178,
+    0x06f067aa, 0x72176fba, 0x0a637dc5, 0xa2c898a6, 0x113f9804, 0xbef90dae, 0x1b710b35, 0x131c471b,
+    0x28db77f5, 0x23047d84, 0x32caab7b, 0x40c72493, 0x3c9ebe0a, 0x15c9bebc, 0x431d67c4, 0x9c100d4c,
+    0x4cc5d4be, 0xcb3e42b6, 0x597f299c, 0xfc657e2a, 0x5fcb6fab, 0x3ad6faec, 0x6c44198c, 0x4a475817,
+]);
+class Sha512Js {
+    digestLength = DIGEST_LENGTH;
+    state = Uint32Array.from(INIT);
+    w;
+    buffer = new Uint8Array(BLOCK);
+    bufferLength = 0;
+    bytesHashed = 0;
+    finished = false;
+    key;
+    inner;
+    outer;
+    constructor(secret) {
+        if (secret !== undefined) {
+            this.key = Sha512Js.normalizeKey(secret);
+            this.initHmac();
+        }
+    }
+    update(data) {
+        if (this.finished) {
+            throw new Error("Attempted to update an already finished HMAC.");
+        }
+        if (this.inner) {
+            this.inner.update(data);
+            return;
+        }
+        const chunk = toUint8Array(data);
+        let position = 0;
+        let { byteLength } = chunk;
+        this.bytesHashed += byteLength;
+        if (this.bytesHashed * 8 > MAX_HASHABLE_LENGTH) {
+            throw new Error("Cannot hash more than 2^53 - 1 bits");
+        }
+        while (byteLength > 0) {
+            this.buffer[this.bufferLength++] = chunk[position++];
+            byteLength--;
+            if (this.bufferLength === BLOCK) {
+                this.hashBuffer();
+                this.bufferLength = 0;
+            }
+        }
+    }
+    async digest() {
+        if (this.inner && this.outer) {
+            if (this.finished) {
+                throw new Error("Attempted to digest an already finished HMAC.");
+            }
+            this.finished = true;
+            const innerDigest = this.inner.digestSync();
+            this.outer.update(innerDigest);
+            return this.outer.digestSync();
+        }
+        return this.digestSync();
+    }
+    reset() {
+        this.state = Uint32Array.from(INIT);
+        this.buffer = new Uint8Array(BLOCK);
+        this.bufferLength = 0;
+        this.bytesHashed = 0;
+        this.finished = false;
+        if (this.key) {
+            this.initHmac();
+        }
+    }
+    initHmac() {
+        const key = this.key;
+        this.inner = new Sha512Js();
+        this.outer = new Sha512Js();
+        const pad = new Uint8Array(BLOCK * 2);
+        for (let i = 0; i < BLOCK; ++i) {
+            pad[i] = 0x36 ^ key[i];
+            pad[i + BLOCK] = 0x5c ^ key[i];
+        }
+        this.inner.update(pad.subarray(0, BLOCK));
+        this.outer.update(pad.subarray(BLOCK));
+    }
+    digestSync() {
+        const state = this.state.slice();
+        const buffer = this.buffer.slice();
+        let bufferLength = this.bufferLength;
+        const bitsHashed = this.bytesHashed * 8;
+        const bitsHi = Math.floor(bitsHashed / 0x100000000);
+        const bitsLo = bitsHashed >>> 0;
+        buffer[bufferLength++] = 0x80;
+        if (bufferLength > BLOCK - 16) {
+            for (let i = bufferLength; i < BLOCK; ++i) {
+                buffer[i] = 0;
+            }
+            this.hashBufferWith(state, buffer);
+            bufferLength = 0;
+        }
+        for (let i = bufferLength; i < BLOCK - 8; ++i) {
+            buffer[i] = 0;
+        }
+        const v = new DataView(buffer.buffer, buffer.byteOffset, BLOCK);
+        v.setUint32(BLOCK - 8, bitsHi, false);
+        v.setUint32(BLOCK - 4, bitsLo, false);
+        this.hashBufferWith(state, buffer);
+        const out = new Uint8Array(DIGEST_LENGTH);
+        const dv = new DataView(out.buffer);
+        for (let i = 0; i < 16; ++i) {
+            dv.setUint32(i * 4, state[i], false);
+        }
+        return out;
+    }
+    static normalizeKey(secret) {
+        const key = toUint8Array(secret);
+        if (key.byteLength > BLOCK) {
+            const h = new Sha512Js();
+            h.update(key);
+            const padded = new Uint8Array(BLOCK);
+            padded.set(h.digestSync());
+            return padded;
+        }
+        const padded = new Uint8Array(BLOCK);
+        padded.set(key);
+        return padded;
+    }
+    hashBuffer() {
+        this.hashBufferWith(this.state, this.buffer);
+    }
+    hashBufferWith(state, buffer) {
+        const w = (this.w ??= new Uint32Array(160));
+        const v = new Uint32Array(16);
+        for (let i = 0; i < 16; ++i) {
+            v[i] = state[i];
+        }
+        for (let i = 0; i < 16; ++i) {
+            const o = i * 8;
+            w[i * 2] = ((buffer[o] << 24) | (buffer[o + 1] << 16) | (buffer[o + 2] << 8) | buffer[o + 3]) >>> 0;
+            w[i * 2 + 1] = ((buffer[o + 4] << 24) | (buffer[o + 5] << 16) | (buffer[o + 6] << 8) | buffer[o + 7]) >>> 0;
+        }
+        for (let i = 16; i < 80; ++i) {
+            const g15h = w[(i - 15) * 2];
+            const g15l = w[(i - 15) * 2 + 1];
+            const s0h = rotrH(g15h, g15l, 1) ^ rotrH(g15h, g15l, 8) ^ shrH(g15h, 7);
+            const s0l = rotrL(g15h, g15l, 1) ^ rotrL(g15h, g15l, 8) ^ shrL(g15h, g15l, 7);
+            const g2h = w[(i - 2) * 2];
+            const g2l = w[(i - 2) * 2 + 1];
+            const s1h = rotrH(g2h, g2l, 19) ^ rotrH(g2h, g2l, 61) ^ shrH(g2h, 6);
+            const s1l = rotrL(g2h, g2l, 19) ^ rotrL(g2h, g2l, 61) ^ shrL(g2h, g2l, 6);
+            const w7h = w[(i - 7) * 2];
+            const w7l = w[(i - 7) * 2 + 1];
+            const w16h = w[(i - 16) * 2];
+            const w16l = w[(i - 16) * 2 + 1];
+            let lo = (w16l >>> 0) + (s0l >>> 0);
+            let hi = (w16h >>> 0) + (s0h >>> 0) + (lo > 0xffffffff ? 1 : 0);
+            lo = (lo >>> 0) + (w7l >>> 0);
+            hi = (hi >>> 0) + (w7h >>> 0) + (lo > 0xffffffff ? 1 : 0);
+            lo = (lo >>> 0) + (s1l >>> 0);
+            hi = (hi >>> 0) + (s1h >>> 0) + (lo > 0xffffffff ? 1 : 0);
+            w[i * 2] = hi >>> 0;
+            w[i * 2 + 1] = lo >>> 0;
+        }
+        let ah = v[0], al = v[1], bh = v[2], bl = v[3], ch = v[4], cl = v[5], dh = v[6], dl = v[7], eh = v[8], el = v[9], fh = v[10], fl = v[11], gh = v[12], gl = v[13], hh = v[14], hl = v[15];
+        for (let i = 0; i < 80; ++i) {
+            const s1h = rotrH(eh, el, 14) ^ rotrH(eh, el, 18) ^ rotrH(eh, el, 41);
+            const s1l = rotrL(eh, el, 14) ^ rotrL(eh, el, 18) ^ rotrL(eh, el, 41);
+            const chh = (eh & fh) ^ (~eh & gh);
+            const chl = (el & fl) ^ (~el & gl);
+            let t1l = (hl >>> 0) + (s1l >>> 0);
+            let t1h = (hh >>> 0) + (s1h >>> 0) + (t1l > 0xffffffff ? 1 : 0);
+            t1l = (t1l >>> 0) + (chl >>> 0);
+            t1h = (t1h >>> 0) + (chh >>> 0) + (t1l > 0xffffffff ? 1 : 0);
+            t1l = (t1l >>> 0) + (K[i * 2 + 1] >>> 0);
+            t1h = (t1h >>> 0) + (K[i * 2] >>> 0) + (t1l > 0xffffffff ? 1 : 0);
+            t1l = (t1l >>> 0) + (w[i * 2 + 1] >>> 0);
+            t1h = (t1h >>> 0) + (w[i * 2] >>> 0) + (t1l > 0xffffffff ? 1 : 0);
+            const s0h = rotrH(ah, al, 28) ^ rotrH(ah, al, 34) ^ rotrH(ah, al, 39);
+            const s0l = rotrL(ah, al, 28) ^ rotrL(ah, al, 34) ^ rotrL(ah, al, 39);
+            const majh = (ah & bh) ^ (ah & ch) ^ (bh & ch);
+            const majl = (al & bl) ^ (al & cl) ^ (bl & cl);
+            let t2l = (s0l >>> 0) + (majl >>> 0);
+            let t2h = (s0h >>> 0) + (majh >>> 0) + (t2l > 0xffffffff ? 1 : 0);
+            t2l = t2l >>> 0;
+            t2h = t2h >>> 0;
+            hh = gh;
+            hl = gl;
+            gh = fh;
+            gl = fl;
+            fh = eh;
+            fl = el;
+            let el2 = (dl >>> 0) + (t1l >>> 0);
+            let eh2 = (dh >>> 0) + (t1h >>> 0) + (el2 > 0xffffffff ? 1 : 0);
+            eh = eh2 >>> 0;
+            el = el2 >>> 0;
+            dh = ch;
+            dl = cl;
+            ch = bh;
+            cl = bl;
+            bh = ah;
+            bl = al;
+            let al2 = (t1l >>> 0) + (t2l >>> 0);
+            let ah2 = (t1h >>> 0) + (t2h >>> 0) + (al2 > 0xffffffff ? 1 : 0);
+            ah = ah2 >>> 0;
+            al = al2 >>> 0;
+        }
+        addInto(state, 0, ah, al);
+        addInto(state, 1, bh, bl);
+        addInto(state, 2, ch, cl);
+        addInto(state, 3, dh, dl);
+        addInto(state, 4, eh, el);
+        addInto(state, 5, fh, fl);
+        addInto(state, 6, gh, gl);
+        addInto(state, 7, hh, hl);
+    }
+}
+function addInto(state, slot, vh, vl) {
+    const i = slot * 2;
+    const lo = (state[i + 1] >>> 0) + (vl >>> 0);
+    const hi = (state[i] >>> 0) + (vh >>> 0) + (lo > 0xffffffff ? 1 : 0);
+    state[i] = hi >>> 0;
+    state[i + 1] = lo >>> 0;
+}
+function rotrH(hi, lo, n) {
+    if (n < 32) {
+        return ((hi >>> n) | (lo << (32 - n))) >>> 0;
+    }
+    if (n === 32) {
+        return lo >>> 0;
+    }
+    return ((lo >>> (n - 32)) | (hi << (64 - n))) >>> 0;
+}
+function rotrL(hi, lo, n) {
+    if (n < 32) {
+        return ((lo >>> n) | (hi << (32 - n))) >>> 0;
+    }
+    if (n === 32) {
+        return hi >>> 0;
+    }
+    return ((hi >>> (n - 32)) | (lo << (64 - n))) >>> 0;
+}
+function shrH(hi, n) {
+    if (n < 32) {
+        return hi >>> n;
+    }
+    return 0;
+}
+function shrL(hi, lo, n) {
+    if (n < 32) {
+        return ((lo >>> n) | (hi << (32 - n))) >>> 0;
+    }
+    if (n === 32) {
+        return hi >>> 0;
+    }
+    return hi >>> (n - 32);
+}
+
+let nativeSupported;
+function detectNative() {
+    if (nativeSupported === undefined) {
+        try {
+            createHash("sha512");
+            nativeSupported = true;
+        }
+        catch {
+            nativeSupported = false;
+        }
+    }
+    return nativeSupported;
+}
+class Sha512 extends Sha512Js {
+    native;
+    nativeSecret;
+    nativeFinished = false;
+    constructor(secret) {
+        super(secret);
+        this.nativeSecret = secret;
+        if (detectNative()) {
+            this.native = this.createNative();
+        }
+    }
+    update(data) {
+        if (!this.native) {
+            super.update(data);
+            return;
+        }
+        if (this.nativeFinished) {
+            throw new Error("Attempted to update an already finished hash.");
+        }
+        this.native.update(data);
+    }
+    async digest() {
+        if (!this.native) {
+            return super.digest();
+        }
+        let buf;
+        if (this.nativeSecret !== undefined) {
+            this.nativeFinished = true;
+            buf = this.native.digest();
+        }
+        else {
+            buf = this.native.copy().digest();
+        }
+        return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+    }
+    reset() {
+        if (!this.native) {
+            super.reset();
+            return;
+        }
+        this.native = this.createNative();
+        this.nativeFinished = false;
+    }
+    createNative() {
+        return this.nativeSecret !== undefined ? createHmac("sha512", toBuffer(this.nativeSecret)) : createHash("sha512");
+    }
 }
 function toBuffer(data) {
     if (typeof data === "string") {
@@ -1707,16 +2124,21 @@ const subtle = typeof digest === "function" && typeof sign === "function" && typ
     ? globalThis.crypto.subtle
     : undefined;
 const MAX_PENDING_BYTES = 8 * 1024 * 1024;
-class Sha1WebCrypto {
-    digestLength = 20;
+const BLOCK_SIZE = 128;
+class Sha512WebCrypto {
+    digestLength = 64;
     secret;
     pending = [];
     pendingBytes = 0;
     fallback;
     finished = false;
     constructor(secret) {
-        if (secret) {
-            this.secret = toUint8Array(secret);
+        if (secret !== undefined) {
+            const key = toUint8Array(secret);
+            this.secret = key.byteLength === 0 ? new Uint8Array(BLOCK_SIZE) : key;
+        }
+        if (!subtle) {
+            this.fallback = new Sha512Js(secret);
         }
     }
     update(data) {
@@ -1741,32 +2163,32 @@ class Sha1WebCrypto {
             throw new Error("Attempted to digest an already finished HMAC.");
         }
         const data = concatBytes(this.pending);
-        if (subtle) {
-            if (this.secret) {
-                this.finished = true;
-                const key = await subtle.importKey("raw", this.secret, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
-                const sig = await subtle.sign("HMAC", key, data);
-                return new Uint8Array(sig);
-            }
-            const hash = await subtle.digest("SHA-1", data);
-            return new Uint8Array(hash);
+        if (this.secret) {
+            this.finished = true;
+            const key = await subtle.importKey("raw", this.secret, { name: "HMAC", hash: "SHA-512" }, false, ["sign"]);
+            const sig = await subtle.sign("HMAC", key, data);
+            return new Uint8Array(sig);
         }
-        const sha1 = new Sha1Js(this.secret);
-        sha1.update(data);
-        return sha1.digest();
+        const hash = await subtle.digest("SHA-512", data);
+        return new Uint8Array(hash);
     }
     reset() {
         this.pending = [];
         this.pendingBytes = 0;
-        this.fallback = undefined;
         this.finished = false;
+        if (subtle) {
+            this.fallback = undefined;
+        }
+        else {
+            this.fallback = new Sha512Js(this.secret);
+        }
     }
     switchToFallback() {
-        const sha1Js = new Sha1Js(this.secret);
+        const sha512Js = new Sha512Js(this.secret);
         for (const chunk of this.pending) {
-            sha1Js.update(chunk);
+            sha512Js.update(chunk);
         }
-        this.fallback = sha1Js;
+        this.fallback = sha512Js;
         this.pending = [];
         this.pendingBytes = 0;
     }
@@ -1776,6 +2198,9 @@ exports.Sha1 = Sha1Node;
 exports.Sha1Js = Sha1Js;
 exports.Sha1Node = Sha1Node;
 exports.Sha1WebCrypto = Sha1WebCrypto;
+exports.Sha512 = Sha512;
+exports.Sha512Js = Sha512Js;
+exports.Sha512WebCrypto = Sha512WebCrypto;
 
 
 /***/ }),
@@ -2853,6 +3278,7 @@ const _mw13 = (Command, cs, config, o) => [
 ];
 
 class S3ServiceException extends ServiceException {
+    static shapeId = "smithy.ts.sdk.synthetic.com.amazonaws.s3#S3ServiceException";
     constructor(options) {
         super(options);
         Object.setPrototypeOf(this, S3ServiceException.prototype);
@@ -2860,6 +3286,7 @@ class S3ServiceException extends ServiceException {
 }
 
 class NoSuchUpload extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#NoSuchUpload";
     name = "NoSuchUpload";
     $fault = "client";
     constructor(opts) {
@@ -2872,6 +3299,7 @@ class NoSuchUpload extends S3ServiceException {
     }
 }
 class AccessDenied extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#AccessDenied";
     name = "AccessDenied";
     $fault = "client";
     constructor(opts) {
@@ -2884,6 +3312,7 @@ class AccessDenied extends S3ServiceException {
     }
 }
 class ObjectNotInActiveTierError extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#ObjectNotInActiveTierError";
     name = "ObjectNotInActiveTierError";
     $fault = "client";
     constructor(opts) {
@@ -2896,6 +3325,7 @@ class ObjectNotInActiveTierError extends S3ServiceException {
     }
 }
 class BucketAlreadyExists extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#BucketAlreadyExists";
     name = "BucketAlreadyExists";
     $fault = "client";
     constructor(opts) {
@@ -2908,6 +3338,7 @@ class BucketAlreadyExists extends S3ServiceException {
     }
 }
 class BucketAlreadyOwnedByYou extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#BucketAlreadyOwnedByYou";
     name = "BucketAlreadyOwnedByYou";
     $fault = "client";
     constructor(opts) {
@@ -2920,6 +3351,7 @@ class BucketAlreadyOwnedByYou extends S3ServiceException {
     }
 }
 class NoSuchBucket extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#NoSuchBucket";
     name = "NoSuchBucket";
     $fault = "client";
     constructor(opts) {
@@ -2932,6 +3364,7 @@ class NoSuchBucket extends S3ServiceException {
     }
 }
 class NoSuchKey extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#NoSuchKey";
     name = "NoSuchKey";
     $fault = "client";
     constructor(opts) {
@@ -2944,6 +3377,7 @@ class NoSuchKey extends S3ServiceException {
     }
 }
 class InvalidObjectState extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#InvalidObjectState";
     name = "InvalidObjectState";
     $fault = "client";
     StorageClass;
@@ -2960,6 +3394,7 @@ class InvalidObjectState extends S3ServiceException {
     }
 }
 class NoSuchAnnotation extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#NoSuchAnnotation";
     name = "NoSuchAnnotation";
     $fault = "client";
     constructor(opts) {
@@ -2972,6 +3407,7 @@ class NoSuchAnnotation extends S3ServiceException {
     }
 }
 class NotFound extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#NotFound";
     name = "NotFound";
     $fault = "client";
     constructor(opts) {
@@ -2984,6 +3420,7 @@ class NotFound extends S3ServiceException {
     }
 }
 class InvalidPrefix extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#InvalidPrefix";
     name = "InvalidPrefix";
     $fault = "client";
     constructor(opts) {
@@ -2996,6 +3433,7 @@ class InvalidPrefix extends S3ServiceException {
     }
 }
 class EncryptionTypeMismatch extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#EncryptionTypeMismatch";
     name = "EncryptionTypeMismatch";
     $fault = "client";
     constructor(opts) {
@@ -3008,6 +3446,7 @@ class EncryptionTypeMismatch extends S3ServiceException {
     }
 }
 class InvalidRequest extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#InvalidRequest";
     name = "InvalidRequest";
     $fault = "client";
     constructor(opts) {
@@ -3020,6 +3459,7 @@ class InvalidRequest extends S3ServiceException {
     }
 }
 class InvalidWriteOffset extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#InvalidWriteOffset";
     name = "InvalidWriteOffset";
     $fault = "client";
     constructor(opts) {
@@ -3032,6 +3472,7 @@ class InvalidWriteOffset extends S3ServiceException {
     }
 }
 class TooManyParts extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#TooManyParts";
     name = "TooManyParts";
     $fault = "client";
     constructor(opts) {
@@ -3044,6 +3485,7 @@ class TooManyParts extends S3ServiceException {
     }
 }
 class AnnotationLimitExceeded extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#AnnotationLimitExceeded";
     name = "AnnotationLimitExceeded";
     $fault = "client";
     constructor(opts) {
@@ -3056,6 +3498,7 @@ class AnnotationLimitExceeded extends S3ServiceException {
     }
 }
 class AnnotationNameTooLong extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#AnnotationNameTooLong";
     name = "AnnotationNameTooLong";
     $fault = "client";
     constructor(opts) {
@@ -3068,6 +3511,7 @@ class AnnotationNameTooLong extends S3ServiceException {
     }
 }
 class InvalidAnnotationName extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#InvalidAnnotationName";
     name = "InvalidAnnotationName";
     $fault = "client";
     constructor(opts) {
@@ -3080,6 +3524,7 @@ class InvalidAnnotationName extends S3ServiceException {
     }
 }
 class UnsupportedMediaType extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#UnsupportedMediaType";
     name = "UnsupportedMediaType";
     $fault = "client";
     constructor(opts) {
@@ -3092,6 +3537,7 @@ class UnsupportedMediaType extends S3ServiceException {
     }
 }
 class IdempotencyParameterMismatch extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#IdempotencyParameterMismatch";
     name = "IdempotencyParameterMismatch";
     $fault = "client";
     constructor(opts) {
@@ -3104,6 +3550,7 @@ class IdempotencyParameterMismatch extends S3ServiceException {
     }
 }
 class ObjectAlreadyInActiveTierError extends S3ServiceException {
+    static shapeId = "com.amazonaws.s3#ObjectAlreadyInActiveTierError";
     name = "ObjectAlreadyInActiveTierError";
     $fault = "client";
     constructor(opts) {
@@ -6543,7 +6990,7 @@ var WriteGetObjectResponse$ = [9, n0, _WGOR,
 class CreateSessionCommand extends command(_ep4, _mw0, "CreateSession", CreateSession$) {
 }
 
-var version = "3.1140.0";
+var version = "3.1160.0";
 var packageInfo = {
 	version: version};
 
@@ -7515,6 +7962,7 @@ const InventoryOptionalField = {
     ETag: "ETag",
     EncryptionStatus: "EncryptionStatus",
     IntelligentTieringAccessTier: "IntelligentTieringAccessTier",
+    IntelligentTieringReferenceDate: "IntelligentTieringReferenceDate",
     IsMultipartUploaded: "IsMultipartUploaded",
     LastModifiedDate: "LastModifiedDate",
     LifecycleExpirationDate: "LifecycleExpirationDate",
@@ -8538,8 +8986,9 @@ function resolveHostHeaderConfig(input) {
     return input;
 }
 const hostHeaderMiddleware = (options) => (next) => async (args) => {
-    if (!HttpRequest.isInstance(args.request))
+    if (!HttpRequest.isInstance(args.request)) {
         return next(args);
+    }
     const { request } = args;
     const { handlerProtocol = "" } = options.requestHandler.metadata || {};
     if (handlerProtocol.indexOf("h2") >= 0 && !request.headers[":authority"]) {
@@ -8548,8 +8997,9 @@ const hostHeaderMiddleware = (options) => (next) => async (args) => {
     }
     else if (!request.headers["host"]) {
         let host = request.hostname;
-        if (request.port != null)
+        if (request.port != null) {
             host += `:${request.port}`;
+        }
         request.headers["host"] = host;
     }
     return next(args);
@@ -9260,27 +9710,36 @@ const createUserAgentStringParsingProvider = ({ serviceId, clientVersion }) => a
 
 const fallback = {
     os(ua) {
-        if (/iPhone|iPad|iPod/.test(ua))
+        if (/iPhone|iPad|iPod/.test(ua)) {
             return "iOS";
-        if (/Macintosh|Mac OS X/.test(ua))
+        }
+        if (/Macintosh|Mac OS X/.test(ua)) {
             return "macOS";
-        if (/Windows NT/.test(ua))
+        }
+        if (/Windows NT/.test(ua)) {
             return "Windows";
-        if (/Android/.test(ua))
+        }
+        if (/Android/.test(ua)) {
             return "Android";
-        if (/Linux/.test(ua))
+        }
+        if (/Linux/.test(ua)) {
             return "Linux";
+        }
         return undefined;
     },
     browser(ua) {
-        if (/EdgiOS|EdgA|Edg\//.test(ua))
+        if (/EdgiOS|EdgA|Edg\//.test(ua)) {
             return "Microsoft Edge";
-        if (/Firefox\//.test(ua))
+        }
+        if (/Firefox\//.test(ua)) {
             return "Firefox";
-        if (/Chrome\//.test(ua))
+        }
+        if (/Chrome\//.test(ua)) {
             return "Chrome";
-        if (/Safari\//.test(ua))
+        }
+        if (/Safari\//.test(ua)) {
             return "Safari";
+        }
         return undefined;
     },
 };
@@ -9313,11 +9772,13 @@ const ARN_DELIMITER = ":";
 const RESOURCE_DELIMITER = "/";
 const parseArn = (value) => {
     const segments = value.split(ARN_DELIMITER);
-    if (segments.length < 6)
+    if (segments.length < 6) {
         return null;
+    }
     const [arn, partition, service, region, accountId, ...resourcePath] = segments;
-    if (arn !== "arn" || partition === "" || service === "" || resourcePath.join(ARN_DELIMITER) === "")
+    if (arn !== "arn" || partition === "" || service === "" || resourcePath.join(ARN_DELIMITER) === "") {
         return null;
+    }
     const resourceId = resourcePath.map((resource) => resource.split(RESOURCE_DELIMITER)).flat();
     return {
         partition,
@@ -9441,6 +9902,7 @@ const { setCredentialFeature } = __nccwpck_require__(5152);
 const { normalizeProvider, memoizeIdentityProvider, isIdentityExpired, doesIdentityRequireRefresh } = __nccwpck_require__(402);
 const { SignatureV4 } = __nccwpck_require__(5118);
 const { HttpResponse, HttpRequest } = __nccwpck_require__(3422);
+const { SMITHY_CONTEXT_KEY } = __nccwpck_require__(690);
 
 const getDateHeader = (response) => HttpResponse.isInstance(response) ? (response.headers?.date ?? response.headers?.Date) : undefined;
 const getAgeHeader = (response) => HttpResponse.isInstance(response) ? (response.headers?.age ?? response.headers?.Age) : undefined;
@@ -9456,10 +9918,7 @@ const getUpdatedSystemClockOffset = (clockTime, currentSystemClockOffset, timeRe
     if (timeRequestSent !== undefined && timeResponseReceived - timeRequestSent > 900_000) {
         return currentSystemClockOffset;
     }
-    const candidateSkew = timeRequestSent !== undefined
-        ? serverTime - (timeRequestSent + timeResponseReceived) / 2
-        : serverTime - timeResponseReceived;
-    return candidateSkew;
+    return serverTime - timeResponseReceived;
 };
 
 const throwSigningPropertyError = (name, property) => {
@@ -9467,6 +9926,12 @@ const throwSigningPropertyError = (name, property) => {
         throw new Error(`Property \`${name}\` is not resolved for AWS SDK SigV4Auth`);
     }
     return property;
+};
+const hasEventStreamOutput = (signingProperties) => {
+    const context = signingProperties.context;
+    const eventStream = context?.[SMITHY_CONTEXT_KEY]
+        ?.eventStream;
+    return eventStream?.output === true;
 };
 const validateSigningProperties = async (signingProperties) => {
     const context = throwSigningPropertyError("context", signingProperties.context);
@@ -9503,7 +9968,9 @@ class AwsSdkSigV4Signer {
         }
         const noSkewCorrection = (await config.disableClockSkewCorrection?.()) === true;
         signingProperties._disableClockSkewCorrection = noSkewCorrection;
-        if (!noSkewCorrection) {
+        const skipSkewSampling = noSkewCorrection || hasEventStreamOutput(signingProperties);
+        signingProperties._skipClockSkewSampling = skipSkewSampling;
+        if (!skipSkewSampling) {
             signingProperties._preRequestSystemClockOffset = config.systemClockOffset;
             signingProperties._requestSentAt = Date.now();
         }
@@ -9517,7 +9984,7 @@ class AwsSdkSigV4Signer {
     errorHandler(signingProperties) {
         return (error) => {
             const errorException = error;
-            if (!signingProperties._disableClockSkewCorrection) {
+            if (!signingProperties._skipClockSkewSampling && !signingProperties._disableClockSkewCorrection) {
                 const serverTime = errorException.ServerTime ?? getDateHeader(errorException.$response);
                 if (serverTime) {
                     const config = throwSigningPropertyError("config", signingProperties.config);
@@ -9538,7 +10005,7 @@ class AwsSdkSigV4Signer {
         };
     }
     successHandler(httpResponse, signingProperties) {
-        if (signingProperties._disableClockSkewCorrection) {
+        if (signingProperties._skipClockSkewSampling || signingProperties._disableClockSkewCorrection) {
             return;
         }
         const dateHeader = getDateHeader(httpResponse);
@@ -9586,16 +10053,19 @@ const NODE_AUTH_SCHEME_PREFERENCE_OPTIONS = {
     environmentVariableSelector: (env, options) => {
         if (options?.signingName) {
             const bearerTokenKey = getBearerTokenEnvKey(options.signingName);
-            if (bearerTokenKey in env)
+            if (bearerTokenKey in env) {
                 return ["httpBearerAuth"];
+            }
         }
-        if (!(NODE_AUTH_SCHEME_PREFERENCE_ENV_KEY in env))
+        if (!(NODE_AUTH_SCHEME_PREFERENCE_ENV_KEY in env)) {
             return undefined;
+        }
         return getArrayForCommaSeparatedString(env[NODE_AUTH_SCHEME_PREFERENCE_ENV_KEY]);
     },
     configFileSelector: (profile) => {
-        if (!(NODE_AUTH_SCHEME_PREFERENCE_CONFIG_KEY in profile))
+        if (!(NODE_AUTH_SCHEME_PREFERENCE_CONFIG_KEY in profile)) {
             return undefined;
+        }
         return getArrayForCommaSeparatedString(profile[NODE_AUTH_SCHEME_PREFERENCE_CONFIG_KEY]);
     },
     default: [],
@@ -9795,9 +10265,20 @@ exports.validateSigningProperties = validateSigningProperties;
 const { SmithyRpcV2CborProtocol, loadSmithyRpcV2CborErrorCode } = __nccwpck_require__(4645);
 const { TypeRegistry, NormalizedSchema, deref } = __nccwpck_require__(6890);
 const { decorateServiceException, getValueFromTextNode } = __nccwpck_require__(2658);
-const { collectBody, determineTimestampFormat, RpcProtocol, HttpBindingProtocol, HttpInterceptingShapeSerializer, HttpInterceptingShapeDeserializer, FromStringShapeDeserializer, extendedEncodeURIComponent } = __nccwpck_require__(3422);
-const { NumericValue, toUtf8, fromBase64, LazyJsonString, parseEpochTimestamp, parseRfc7231DateTime, parseRfc3339DateTimeWithOffset, generateIdempotencyToken, toBase64, dateToUtcString, expectUnion } = __nccwpck_require__(2430);
+const { RpcProtocol, JsonCodec2, loadJsonRpcErrorCode, HttpBindingProtocol, HttpInterceptingShapeSerializer, HttpInterceptingShapeDeserializer, loadRestJsonErrorCode, SmithyRpcV2JsonProtocol, loadSmithyRpcV2JsonErrorCode, FromStringShapeDeserializer, determineTimestampFormat, extendedEncodeURIComponent, collectBody } = __nccwpck_require__(3422);
+const { JsonCodec, JsonShapeDeserializer, JsonShapeDeserializer2, JsonShapeSerializer, JsonShapeSerializer2, parseJsonBody, parseJsonErrorBody } = __nccwpck_require__(3422);
+exports.JsonCodec = JsonCodec;
+exports.JsonCodec2 = JsonCodec2;
+exports.JsonShapeDeserializer = JsonShapeDeserializer;
+exports.JsonShapeDeserializer2 = JsonShapeDeserializer2;
+exports.JsonShapeSerializer = JsonShapeSerializer;
+exports.JsonShapeSerializer2 = JsonShapeSerializer2;
+exports.loadJsonRpcErrorCode = loadJsonRpcErrorCode;
+exports.loadRestJsonErrorCode = loadRestJsonErrorCode;
+exports.parseJsonBody = parseJsonBody;
+exports.parseJsonErrorBody = parseJsonErrorBody;
 const { parseXML, XmlNode, XmlText } = __nccwpck_require__(4274);
+const { toUtf8, toBase64, generateIdempotencyToken, NumericValue, dateToUtcString, fromBase64, expectUnion } = __nccwpck_require__(2430);
 
 class ProtocolLib {
     queryCompat;
@@ -9984,1139 +10465,6 @@ class AwsSmithyRpcV2CborProtocol extends SmithyRpcV2CborProtocol {
             $fault: ns.getMergedTraits().error,
             message,
         }, output), dataObject);
-    }
-}
-
-class SerdeContextConfig {
-    serdeContext;
-    setSerdeContext(serdeContext) {
-        this.serdeContext = serdeContext;
-    }
-}
-
-class UnionSerde {
-    from;
-    to;
-    keys;
-    constructor(from, to) {
-        this.from = from;
-        this.to = to;
-        const keys = Object.keys(this.from);
-        const set = new Set(keys);
-        set.delete("__type");
-        this.keys = set;
-    }
-    mark(key) {
-        this.keys.delete(key);
-    }
-    hasUnknown() {
-        return this.keys.size === 1 && Object.keys(this.to).length === 0;
-    }
-    writeUnknown() {
-        if (this.hasUnknown()) {
-            const k = this.keys.values().next().value;
-            const v = this.from[k];
-            this.to.$unknown = [k, v];
-        }
-    }
-}
-
-let canParseBuffer;
-function detectBufferParsing() {
-    if (canParseBuffer === undefined) {
-        try {
-            if (typeof Buffer !== "function") {
-                canParseBuffer = false;
-            }
-            else {
-                const result = JSON.parse(Buffer.from([0x7b, 0x7d]));
-                canParseBuffer = result !== null && typeof result === "object";
-            }
-        }
-        catch {
-            canParseBuffer = false;
-        }
-    }
-    return canParseBuffer;
-}
-
-function jsonReviver(key, value, context) {
-    if (context?.source) {
-        const numericString = context.source;
-        if (typeof value === "number") {
-            const inSafeRange = value <= Number.MAX_SAFE_INTEGER && value >= Number.MIN_SAFE_INTEGER;
-            if (inSafeRange) {
-                if (isRepresentable(numericString, value)) {
-                    return value;
-                }
-                return new NumericValue(numericString, "bigDecimal");
-            }
-            else {
-                if (isFractionalBigNumeric(numericString)) {
-                    return new NumericValue(numericString, "bigDecimal");
-                }
-                if (/[eE]/.test(numericString)) {
-                    return expandExponentToBigInt(numericString);
-                }
-                return BigInt(numericString);
-            }
-        }
-    }
-    return value;
-}
-function isFractionalBigNumeric(s) {
-    const dotIndex = s.indexOf(".");
-    if (dotIndex === -1) {
-        return false;
-    }
-    const eIndex = s.search(/[eE]/);
-    if (eIndex === -1) {
-        return true;
-    }
-    const fracDigits = eIndex - dotIndex - 1;
-    const exp = parseInt(s.slice(eIndex + 1), 10);
-    return exp < fracDigits;
-}
-function isRepresentable(numericString, value) {
-    if (numericString === String(value)) {
-        return true;
-    }
-    if (Object.is(value, -0)) {
-        return true;
-    }
-    if (/[eE]/.test(numericString)) {
-        return expandToDecimal(numericString) === expandToDecimal(String(value));
-    }
-    const normalized = numericString.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
-    const canonical = String(value);
-    if (normalized === canonical) {
-        return true;
-    }
-    if (/[eE]/.test(canonical)) {
-        return normalized === expandToDecimal(canonical);
-    }
-    return false;
-}
-function expandToDecimal(s) {
-    const negative = s.startsWith("-");
-    const abs = negative ? s.slice(1) : s;
-    const eIndex = abs.search(/[eE]/);
-    let result;
-    if (eIndex === -1) {
-        result = abs;
-    }
-    else {
-        const exp = parseInt(abs.slice(eIndex + 1), 10);
-        const mantissa = abs.slice(0, eIndex);
-        const dotIndex = mantissa.indexOf(".");
-        let digits;
-        let intLen;
-        if (dotIndex === -1) {
-            digits = mantissa;
-            intLen = mantissa.length;
-        }
-        else {
-            digits = mantissa.slice(0, dotIndex) + mantissa.slice(dotIndex + 1);
-            intLen = dotIndex;
-        }
-        digits = digits.replace(/0+$/, "") || "0";
-        const newDotPos = intLen + exp;
-        if (digits === "0") {
-            result = "0";
-        }
-        else if (newDotPos <= 0) {
-            result = "0." + "0".repeat(-newDotPos) + digits;
-        }
-        else if (newDotPos >= digits.length) {
-            result = digits + "0".repeat(newDotPos - digits.length);
-        }
-        else {
-            result = digits.slice(0, newDotPos) + "." + digits.slice(newDotPos);
-        }
-    }
-    if (result.includes(".")) {
-        result = result.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
-    }
-    return (negative ? "-" : "") + result;
-}
-function expandExponentToBigInt(s) {
-    const eIndex = s.search(/[eE]/);
-    const exp = parseInt(s.slice(eIndex + 1), 10);
-    const negative = s.startsWith("-");
-    const mantissa = s.slice(negative ? 1 : 0, eIndex);
-    const dotIndex = mantissa.indexOf(".");
-    let digits;
-    let shift;
-    if (dotIndex === -1) {
-        digits = mantissa;
-        shift = exp;
-    }
-    else {
-        digits = mantissa.slice(0, dotIndex) + mantissa.slice(dotIndex + 1);
-        const fracDigits = mantissa.length - dotIndex - 1;
-        shift = exp - fracDigits;
-    }
-    digits = digits.replace(/0+$/, "") || "0";
-    const result = BigInt(digits) * 10n ** BigInt(shift + (mantissa.replace(".", "").length - digits.length));
-    return negative ? -result : result;
-}
-
-const REVIVER_SYMBOL = Symbol.for("@aws-sdk/reviver");
-function needsReviver(schema) {
-    const ns = NormalizedSchema.of(schema);
-    const raw = ns.getSchema();
-    if (Array.isArray(raw) && ns.isStructSchema()) {
-        if (REVIVER_SYMBOL in raw) {
-            return raw[REVIVER_SYMBOL];
-        }
-        const result = _check(ns, new Set());
-        raw[REVIVER_SYMBOL] = result;
-        return result;
-    }
-    return _check(ns, new Set());
-}
-function _check(ns, seen) {
-    const raw = ns.getSchema();
-    if (seen.has(raw)) {
-        return false;
-    }
-    seen.add(raw);
-    if (ns.isBigIntegerSchema() || ns.isBigDecimalSchema()) {
-        return true;
-    }
-    if (ns.isStructSchema()) {
-        for (const [, memberSchema] of ns.structIterator()) {
-            if (_check(memberSchema, seen)) {
-                return true;
-            }
-        }
-    }
-    else if (ns.isListSchema() || ns.isMapSchema()) {
-        if (_check(ns.getValueSchema(), seen)) {
-            return true;
-        }
-    }
-    else if (ns.isDocumentSchema()) {
-        return true;
-    }
-    return false;
-}
-
-const collectBodyString = (streamBody, context) => collectBody(streamBody, context).then((body) => (context?.utf8Encoder ?? toUtf8)(body));
-
-async function parseJsonBody(streamBody, context, schema) {
-    let parsingInput;
-    if (detectBufferParsing() && typeof streamBody?.[Symbol.asyncIterator] === "function") {
-        const buffer = await collectBody(streamBody, context);
-        if (typeof Buffer === "function") {
-            if (Buffer.isBuffer(buffer)) {
-                parsingInput = buffer;
-            }
-            else {
-                parsingInput = Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-            }
-        }
-    }
-    if (!parsingInput) {
-        parsingInput = await collectBodyString(streamBody, context);
-    }
-    if (parsingInput.length === 0) {
-        return {};
-    }
-    const reviver = schema && needsReviver(schema) ? jsonReviver : undefined;
-    try {
-        return JSON.parse(parsingInput, reviver);
-    }
-    catch (e) {
-        if (e?.name === "SyntaxError") {
-            Object.defineProperty(e, "$responseBodyText", {
-                value: typeof parsingInput === "string" ? parsingInput : parsingInput.toString("utf8"),
-            });
-        }
-        throw e;
-    }
-}
-const parseJsonErrorBody = async (errorBody, context) => {
-    const value = await parseJsonBody(errorBody, context);
-    value.message = value.message ?? value.Message;
-    return value;
-};
-const findKey = (object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());
-const sanitizeErrorCode = (rawValue) => {
-    let cleanValue = rawValue;
-    if (typeof cleanValue === "number") {
-        cleanValue = cleanValue.toString();
-    }
-    if (cleanValue.indexOf(",") >= 0) {
-        cleanValue = cleanValue.split(",")[0];
-    }
-    if (cleanValue.indexOf(":") >= 0) {
-        cleanValue = cleanValue.split(":")[0];
-    }
-    if (cleanValue.indexOf("#") >= 0) {
-        cleanValue = cleanValue.split("#")[1];
-    }
-    return cleanValue;
-};
-const loadRestJsonErrorCode = (output, data) => {
-    return loadErrorCode(output, data, ["header", "code", "type"]);
-};
-const loadJsonRpcErrorCode = (output, data, queryCompat = false) => {
-    return loadErrorCode(output, data, queryCompat ? ["code", "header", "type"] : ["type", "code", "header"]);
-};
-const loadErrorCode = ({ headers }, data, order) => {
-    while (order.length > 0) {
-        const location = order.shift();
-        switch (location) {
-            case "header":
-                const headerKey = findKey(headers ?? {}, "x-amzn-errortype");
-                if (headerKey !== undefined) {
-                    return sanitizeErrorCode(headers[headerKey]);
-                }
-                break;
-            case "code":
-                const codeKey = findKey(data ?? {}, "code");
-                if (codeKey && data[codeKey] !== undefined) {
-                    return sanitizeErrorCode(data[codeKey]);
-                }
-                break;
-            case "type":
-                if (data?.__type !== undefined) {
-                    return sanitizeErrorCode(data.__type);
-                }
-                break;
-        }
-    }
-};
-
-function writeKey(obj) {
-    Object.defineProperty(obj, "__proto__", { value: undefined, writable: true, enumerable: true, configurable: true });
-}
-
-class JsonShapeDeserializer2 extends SerdeContextConfig {
-    settings;
-    constructor(settings) {
-        super();
-        this.settings = settings;
-    }
-    async read(schema, data) {
-        const reviver = needsReviver(schema) ? jsonReviver : undefined;
-        let parsed;
-        if (typeof data === "string") {
-            if (data.length === 0) {
-                return {};
-            }
-            parsed = JSON.parse(data, reviver);
-        }
-        else if (data instanceof Uint8Array && detectBufferParsing()) {
-            if (data.byteLength === 0) {
-                return {};
-            }
-            const buf = Buffer.isBuffer(data) ? data : Buffer.from(data.buffer, data.byteOffset, data.byteLength);
-            parsed = JSON.parse(buf, reviver);
-        }
-        else {
-            parsed = await parseJsonBody(data, this.serdeContext, schema);
-        }
-        return this._read(schema, parsed);
-    }
-    readObject(schema, data) {
-        return this._read(schema, data);
-    }
-    _read(schema, value) {
-        const isObject = value !== null && typeof value === "object";
-        const ns = NormalizedSchema.of(schema);
-        if (isObject) {
-            if (ns.isStructSchema()) {
-                return this._readStruct(ns, value);
-            }
-            if (Array.isArray(value) && ns.isListSchema()) {
-                const listMember = ns.getValueSchema();
-                if (this.needsTransform(listMember)) {
-                    for (let i = 0; i < value.length; ++i) {
-                        value[i] = this._read(listMember, value[i]);
-                    }
-                }
-                return value;
-            }
-            if (ns.isMapSchema()) {
-                const mapMember = ns.getValueSchema();
-                const map = value;
-                if (this.needsTransform(mapMember)) {
-                    for (const k in map) {
-                        if (k === "__proto__") {
-                            writeKey(map);
-                        }
-                        map[k] = this._read(mapMember, map[k]);
-                    }
-                }
-                return map;
-            }
-        }
-        if (ns.isBlobSchema() && typeof value === "string") {
-            return fromBase64(value);
-        }
-        const mediaType = ns.getMergedTraits().mediaType;
-        if (ns.isStringSchema() && typeof value === "string" && mediaType) {
-            const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-            if (isJson) {
-                return LazyJsonString.from(value);
-            }
-            return value;
-        }
-        if (ns.isTimestampSchema() && value != null) {
-            const format = determineTimestampFormat(ns, this.settings);
-            switch (format) {
-                case 5:
-                    return parseRfc3339DateTimeWithOffset(value);
-                case 6:
-                    return parseRfc7231DateTime(value);
-                case 7:
-                    return parseEpochTimestamp(value);
-                default:
-                    console.warn("Missing timestamp format, parsing value with Date constructor:", value);
-                    return new Date(value);
-            }
-        }
-        if (ns.isBigIntegerSchema() && (typeof value === "number" || typeof value === "string")) {
-            return BigInt(value);
-        }
-        if (ns.isBigDecimalSchema() && value != undefined) {
-            if (value instanceof NumericValue) {
-                return value;
-            }
-            const untyped = value;
-            if (untyped.type === "bigDecimal" && "string" in untyped) {
-                return new NumericValue(untyped.string, untyped.type);
-            }
-            return new NumericValue(String(value), "bigDecimal");
-        }
-        if (ns.isNumericSchema() && typeof value === "string") {
-            switch (value) {
-                case "Infinity":
-                    return Infinity;
-                case "-Infinity":
-                    return -Infinity;
-                case "NaN":
-                    return NaN;
-            }
-            return value;
-        }
-        if (ns.isDocumentSchema()) {
-            if (isObject) {
-                if (Array.isArray(value)) {
-                    for (let i = 0; i < value.length; ++i) {
-                        const v = value[i];
-                        if (!(v instanceof NumericValue)) {
-                            value[i] = this._read(ns, v);
-                        }
-                    }
-                }
-                else {
-                    const doc = value;
-                    for (const k in doc) {
-                        if (k === "__proto__") {
-                            writeKey(doc);
-                        }
-                        const v = doc[k];
-                        if (!(v instanceof NumericValue)) {
-                            doc[k] = this._read(ns, v);
-                        }
-                    }
-                }
-            }
-        }
-        return value;
-    }
-    _readStruct(ns, record) {
-        const union = ns.isUnionSchema();
-        const out = {};
-        let nameMap;
-        const hasType = typeof record.__type === "string";
-        const { jsonName } = this.settings;
-        if (jsonName && hasType) {
-            nameMap = {};
-        }
-        let unionSerde;
-        if (union) {
-            unionSerde = new UnionSerde(record, out);
-        }
-        for (const [memberName, memberSchema] of ns.structIterator()) {
-            let fromKey = memberName;
-            if (jsonName) {
-                fromKey = memberSchema.getMergedTraits().jsonName ?? fromKey;
-                if (hasType) {
-                    nameMap[fromKey] = memberName;
-                }
-            }
-            if (union) {
-                unionSerde.mark(fromKey);
-            }
-            if (record[fromKey] != null) {
-                out[memberName] = this._read(memberSchema, record[fromKey]);
-            }
-        }
-        if (union) {
-            unionSerde.writeUnknown();
-        }
-        else if (hasType) {
-            for (const k in record) {
-                const v = record[k];
-                const t = jsonName ? (nameMap[k] ?? k) : k;
-                if (!(t in out)) {
-                    out[t] = v;
-                }
-            }
-        }
-        return out;
-    }
-    needsTransform(ns) {
-        if (ns.isBlobSchema() || ns.isTimestampSchema() || ns.isBigIntegerSchema() || ns.isBigDecimalSchema()) {
-            return true;
-        }
-        if (ns.isDocumentSchema() || ns.isStructSchema() || ns.isListSchema() || ns.isMapSchema()) {
-            return true;
-        }
-        if (ns.isStringSchema() && ns.getMergedTraits().mediaType) {
-            return true;
-        }
-        return false;
-    }
-}
-
-class JsonBytesStringAdapter extends Uint8Array {
-    string = null;
-    static allocUnsafe(bytes) {
-        if (typeof Buffer === "function") {
-            const buffer = Buffer.allocUnsafe(bytes);
-            return new JsonBytesStringAdapter(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-        }
-        return new JsonBytesStringAdapter(bytes);
-    }
-    toString() {
-        return this.s();
-    }
-    valueOf() {
-        return this.s();
-    }
-    includes(searchString, position) {
-        if (typeof searchString === "string") {
-            return this.s().includes(searchString, position);
-        }
-        return Uint8Array.prototype.includes.call(this, searchString, position);
-    }
-    indexOf(searchString, position) {
-        if (typeof searchString === "string") {
-            return this.s().indexOf(searchString, position);
-        }
-        return Uint8Array.prototype.indexOf.call(this, searchString, position);
-    }
-    lastIndexOf(searchString, position) {
-        if (typeof searchString === "string") {
-            return this.s().lastIndexOf(searchString, position);
-        }
-        const fn = Uint8Array.prototype.lastIndexOf;
-        if (position !== undefined) {
-            return fn.call(this, searchString, position);
-        }
-        return fn.call(this, searchString);
-    }
-    startsWith(searchString, position) {
-        return this.s().startsWith(searchString, position);
-    }
-    endsWith(searchString, endPosition) {
-        return this.s().endsWith(searchString, endPosition);
-    }
-    match(regexp) {
-        return this.s().match(regexp);
-    }
-    replace(searchValue, replaceValue) {
-        return this.s().replace(searchValue, replaceValue);
-    }
-    search(regexp) {
-        return this.s().search(regexp);
-    }
-    split(separator, limit) {
-        return this.s().split(separator, limit);
-    }
-    substring(start, end) {
-        return this.s().substring(start, end);
-    }
-    trim() {
-        return this.s().trim();
-    }
-    trimStart() {
-        return this.s().trimStart();
-    }
-    trimEnd() {
-        return this.s().trimEnd();
-    }
-    charAt(pos) {
-        return this.s().charAt(pos);
-    }
-    charCodeAt(index) {
-        return this.s().charCodeAt(index);
-    }
-    padStart(maxLength, fillString) {
-        return this.s().padStart(maxLength, fillString);
-    }
-    padEnd(maxLength, fillString) {
-        return this.s().padEnd(maxLength, fillString);
-    }
-    repeat(count) {
-        return this.s().repeat(count);
-    }
-    toUpperCase() {
-        return this.s().toUpperCase();
-    }
-    toLowerCase() {
-        return this.s().toLowerCase();
-    }
-    s() {
-        if (this.string == null) {
-            const n = Date.now();
-            if (n > warned + 60_000) {
-                console.warn("@aws-sdk/core/protocols - WARN - JsonCodec2: you have called a string method on a Uint8Array request body. " +
-                    "It has been automatically converted to string. In a future version this will throw an error.");
-                warned = n;
-            }
-            this.string = toUtf8(this);
-        }
-        return this.string;
-    }
-}
-var warned = 0;
-
-const encoder = new TextEncoder();
-const OPEN_BRACE = 0x7b;
-const CLOSE_BRACE = 0x7d;
-const OPEN_BRACKET = 0x5b;
-const CLOSE_BRACKET = 0x5d;
-const QUOTE = 0x22;
-const COLON = 0x3a;
-const COMMA = 0x2c;
-const BACKSLASH = 0x5c;
-const TRUE = new Uint8Array([0x74, 0x72, 0x75, 0x65]);
-const FALSE = new Uint8Array([0x66, 0x61, 0x6c, 0x73, 0x65]);
-const NULL = new Uint8Array([0x6e, 0x75, 0x6c, 0x6c]);
-const ESCAPE_TABLE = new Array(128).fill(null);
-ESCAPE_TABLE[0x08] = "b";
-ESCAPE_TABLE[0x09] = "t";
-ESCAPE_TABLE[0x0a] = "n";
-ESCAPE_TABLE[0x0c] = "f";
-ESCAPE_TABLE[0x0d] = "r";
-ESCAPE_TABLE[0x22] = '"';
-ESCAPE_TABLE[0x5c] = "\\";
-for (let i = 0; i < 0x20; i++) {
-    if (ESCAPE_TABLE[i] === null) {
-        ESCAPE_TABLE[i] = "u00" + i.toString(16).padStart(2, "0");
-    }
-}
-const INITIAL_BUFFER_SIZE = 2048;
-function alloc(size) {
-    return JsonBytesStringAdapter.allocUnsafe(size);
-}
-class JsonShapeSerializer2 extends SerdeContextConfig {
-    settings;
-    json;
-    i = 0;
-    rootSchema;
-    rawValue;
-    passthrough = false;
-    constructor(settings) {
-        super();
-        this.settings = settings;
-        this.json = alloc(INITIAL_BUFFER_SIZE);
-    }
-    write(schema, value) {
-        this.i = 0;
-        this.rawValue = value;
-        this.rootSchema = NormalizedSchema.of(schema);
-        this.passthrough = this.rootSchema.isBlobSchema() || this.rootSchema.isStringSchema();
-        if (!this.passthrough) {
-            this.writeValue(this.rootSchema, value, undefined);
-        }
-    }
-    writeDiscriminatedDocument(schema, value) {
-        this.i = 0;
-        this.rootSchema = NormalizedSchema.of(schema);
-        const ns = this.rootSchema;
-        if (ns.isStructSchema() && value != null && typeof value === "object") {
-            this.writeValue(ns, value, undefined);
-            const prefix = `"__type":"${ns.getName(true) ?? "Unknown"}",`;
-            const z = prefix.length;
-            this.ensure(z);
-            this.json.copyWithin(1 + z, 1, this.i);
-            encoder.encodeInto(prefix, this.json.subarray(1));
-            this.i += z;
-        }
-        else {
-            this.writeValue(ns, value, undefined);
-        }
-    }
-    flush() {
-        this.rootSchema = undefined;
-        const finalPosition = this.i;
-        this.i = 0;
-        const raw = this.rawValue;
-        this.rawValue = undefined;
-        if (finalPosition === 0) {
-            return raw;
-        }
-        const result = this.json.subarray(0, finalPosition);
-        this.json = alloc(INITIAL_BUFFER_SIZE);
-        return result;
-    }
-    ensure(byteCount) {
-        const { i, json } = this;
-        if (i + byteCount > json.length) {
-            let newSize = json.length * 2;
-            while (newSize < i + byteCount) {
-                newSize *= 2;
-            }
-            const next = alloc(newSize);
-            next.set(this.json);
-            this.json = next;
-        }
-    }
-    writeAscii(s) {
-        const z = s.length;
-        this.ensure(z);
-        let { i, json } = this;
-        for (let j = 0; j < z; ++j) {
-            json[i] = s.charCodeAt(j);
-            i += 1;
-        }
-        this.i = i;
-    }
-    writeAsciiQuoted(s) {
-        const z = s.length;
-        this.ensure(z + 4);
-        let { json, i } = this;
-        json[i++] = QUOTE;
-        for (let j = 0; j < z; ++j) {
-            json[i++] = s.charCodeAt(j);
-        }
-        json[i++] = QUOTE;
-        this.i = i;
-    }
-    writeJsonString(s) {
-        this.ensure(s.length * 3 + 2);
-        this.json[this.i++] = QUOTE;
-        const z = s.length;
-        for (let j = 0; j < z; ++j) {
-            const c = s.charCodeAt(j);
-            if (c > 0x22 && c < 0x5c) {
-                this.json[this.i++] = c;
-            }
-            else if (c < 0x80) {
-                const esc = ESCAPE_TABLE[c];
-                if (esc !== null) {
-                    this.ensure(esc.length + 1);
-                    this.json[this.i++] = BACKSLASH;
-                    for (let k = 0; k < esc.length; k++) {
-                        this.json[this.i++] = esc.charCodeAt(k);
-                    }
-                }
-                else {
-                    this.json[this.i++] = c;
-                }
-            }
-            else if (c >= 0xd800 && c <= 0xdbff) {
-                const next = j + 1 < z ? s.charCodeAt(j + 1) : 0;
-                if (next >= 0xdc00 && next <= 0xdfff) {
-                    this.ensure(4);
-                    const { written } = encoder.encodeInto(s.substring(j, j + 2), this.json.subarray(this.i));
-                    this.i += written;
-                    ++j;
-                }
-                else {
-                    this.ensure(6);
-                    this.writeUnicodeEscape(c);
-                }
-            }
-            else if (c >= 0xdc00 && c <= 0xdfff) {
-                this.ensure(6);
-                this.writeUnicodeEscape(c);
-            }
-            else {
-                let { i, json } = this;
-                if (c < 0x800) {
-                    json[i++] = 0xc0 | (c >> 6);
-                    json[i++] = 0x80 | (c & 0x3f);
-                }
-                else {
-                    json[i++] = 0xe0 | (c >> 12);
-                    json[i++] = 0x80 | ((c >> 6) & 0x3f);
-                    json[i++] = 0x80 | (c & 0x3f);
-                }
-                this.i = i;
-            }
-        }
-        this.json[this.i++] = QUOTE;
-    }
-    writeUnicodeEscape(code) {
-        let { json, i } = this;
-        json[i++] = BACKSLASH;
-        json[i++] = 0x75;
-        const hex = code.toString(16).padStart(4, "0");
-        for (let j = 0; j < 4; ++j) {
-            json[i++] = hex.charCodeAt(j);
-        }
-        this.i = i;
-    }
-    static B64 = (() => {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        const table = new Uint8Array(64);
-        for (let i = 0; i < 64; ++i) {
-            table[i] = chars.charCodeAt(i);
-        }
-        return table;
-    })();
-    writeBase64(data) {
-        const b64Len = Math.ceil(data.length / 3) * 4;
-        this.ensure(b64Len + 2);
-        const json = this.json;
-        const B64 = JsonShapeSerializer2.B64;
-        let i = this.i;
-        json[i++] = QUOTE;
-        const len = data.length;
-        const remainder = len % 3;
-        const mainLen = len - remainder;
-        for (let j = 0; j < mainLen; j += 3) {
-            const a = data[j];
-            const b = data[j + 1];
-            const c = data[j + 2];
-            json[i++] = B64[a >> 2];
-            json[i++] = B64[((a & 0x03) << 4) | (b >> 4)];
-            json[i++] = B64[((b & 0x0f) << 2) | (c >> 6)];
-            json[i++] = B64[c & 0x3f];
-        }
-        if (remainder === 2) {
-            const a = data[mainLen];
-            const b = data[mainLen + 1];
-            json[i++] = B64[a >> 2];
-            json[i++] = B64[((a & 0x03) << 4) | (b >> 4)];
-            json[i++] = B64[(b & 0x0f) << 2];
-            json[i++] = 0x3d;
-        }
-        else if (remainder === 1) {
-            const a = data[mainLen];
-            json[i++] = B64[a >> 2];
-            json[i++] = B64[(a & 0x03) << 4];
-            json[i++] = 0x3d;
-            json[i++] = 0x3d;
-        }
-        json[i++] = QUOTE;
-        this.i = i;
-    }
-    writeValue(schema, value, container) {
-        if (value == null) {
-            if (container?.isStructSchema()) {
-                if (value === undefined) {
-                    const ns = NormalizedSchema.of(schema);
-                    if (ns.isIdempotencyToken()) {
-                        this.writeAsciiQuoted(generateIdempotencyToken());
-                        return;
-                    }
-                }
-                return;
-            }
-            this.ensure(4);
-            this.json.set(NULL, this.i);
-            this.i += 4;
-            return;
-        }
-        const ns = NormalizedSchema.of(schema);
-        const isObject = typeof value === "object";
-        if (ns.isStringSchema()) {
-            const mediaType = ns.getMergedTraits().mediaType;
-            if (mediaType) {
-                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-                if (isJson) {
-                    this.writeJsonString(LazyJsonString.from(value).toString());
-                    return;
-                }
-            }
-        }
-        if (isObject) {
-            if (ns.isStructSchema()) {
-                this.writeStruct(ns, value);
-                return;
-            }
-            if (Array.isArray(value) && (ns.isListSchema() || ns.isDocumentSchema())) {
-                this.writeList(ns, value, ns.isDocumentSchema());
-                return;
-            }
-            if (ns.isMapSchema()) {
-                this.writeMap(ns, value, false);
-                return;
-            }
-            if (value instanceof Uint8Array && (ns.isBlobSchema() || ns.isDocumentSchema())) {
-                this.writeBase64(value);
-                return;
-            }
-            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
-                this.writeTimestamp(ns, value);
-                return;
-            }
-            if (value instanceof NumericValue) {
-                this.writeAscii(value.string);
-                return;
-            }
-            if (ns.isDocumentSchema()) {
-                if (Array.isArray(value)) {
-                    this.writeList(ns, value, true);
-                }
-                else {
-                    this.writeMap(ns, value, true);
-                }
-                return;
-            }
-            const json = JSON.stringify(value);
-            this.writeAscii(json);
-            return;
-        }
-        if (typeof value === "string") {
-            if (ns.isBlobSchema()) {
-                const b64 = (this.serdeContext?.base64Encoder ?? toBase64)(value);
-                this.writeAsciiQuoted(b64);
-                return;
-            }
-            this.writeJsonString(value);
-            return;
-        }
-        if (typeof value === "number") {
-            if (Math.abs(value) === Infinity || Number.isNaN(value)) {
-                this.writeAsciiQuoted(String(value));
-                return;
-            }
-            const numStr = String(value);
-            this.writeAscii(numStr);
-            return;
-        }
-        if (typeof value === "boolean") {
-            this.ensure(5);
-            let { i, json } = this;
-            if (value) {
-                json.set(TRUE, i);
-                i += 4;
-            }
-            else {
-                json.set(FALSE, i);
-                i += 5;
-            }
-            this.i = i;
-            return;
-        }
-        if (typeof value === "bigint") {
-            this.writeAscii(value.toString());
-            return;
-        }
-        this.writeAscii(String(value));
-    }
-    writeStruct(ns, value) {
-        this.ensure(2);
-        this.json[this.i++] = OPEN_BRACE;
-        let wroteAny = false;
-        const hasType = typeof value.__type === "string";
-        let writtenKeys;
-        if (hasType) {
-            writtenKeys = new Set();
-        }
-        for (const [memberName, memberSchema] of ns.structIterator()) {
-            const item = value[memberName];
-            if (item == null && !memberSchema.isIdempotencyToken()) {
-                continue;
-            }
-            if (wroteAny) {
-                this.ensure(1);
-                this.json[this.i++] = COMMA;
-            }
-            wroteAny = true;
-            const targetKey = this.settings.jsonName ? (memberSchema.getMergedTraits().jsonName ?? memberName) : memberName;
-            if (writtenKeys) {
-                writtenKeys.add(memberName);
-                writtenKeys.add(targetKey);
-            }
-            this.writeAsciiQuoted(targetKey);
-            this.json[this.i++] = COLON;
-            this.writeValue(memberSchema, item, ns);
-        }
-        if (!wroteAny && ns.isUnionSchema()) {
-            const { $unknown } = value;
-            if (Array.isArray($unknown)) {
-                const [k, v] = $unknown;
-                this.writeAsciiQuoted(k);
-                this.ensure(1);
-                this.json[this.i++] = COLON;
-                this.writeValue(15, v, ns);
-            }
-        }
-        else if (hasType) {
-            for (const k in value) {
-                if (writtenKeys.has(k)) {
-                    continue;
-                }
-                writtenKeys.add(k);
-                const v = value[k];
-                if (wroteAny) {
-                    this.ensure(1);
-                    this.json[this.i++] = COMMA;
-                }
-                wroteAny = true;
-                this.writeAsciiQuoted(k);
-                this.ensure(1);
-                this.json[this.i++] = COLON;
-                this.writeValue(15, v, undefined);
-            }
-        }
-        this.ensure(1);
-        this.json[this.i++] = CLOSE_BRACE;
-    }
-    writeList(ns, value, isDocument) {
-        const sparse = !!ns.getMergedTraits().sparse;
-        const valueSchema = ns.getValueSchema();
-        if (!isDocument) {
-            if (valueSchema.isStringSchema() || valueSchema.isNumericSchema() || valueSchema.isBooleanSchema()) {
-                let hasSpecials = false;
-                for (let i = 0; i < value.length; ++i) {
-                    const v = value[i];
-                    if (Number.isNaN(v) || v === Infinity || v === -Infinity || (v == null && !sparse)) {
-                        hasSpecials = true;
-                        break;
-                    }
-                }
-                let json;
-                if (!hasSpecials) {
-                    json = JSON.stringify(value);
-                }
-                else {
-                    const out = [];
-                    for (let i = 0; i < value.length; ++i) {
-                        const v = value[i];
-                        if (v == null && !sparse)
-                            continue;
-                        if (Number.isNaN(v) || v === Infinity || v === -Infinity) {
-                            out.push(String(v));
-                        }
-                        else {
-                            out.push(v);
-                        }
-                    }
-                    json = JSON.stringify(out);
-                }
-                this.ensure(json.length * 3);
-                this.i += encoder.encodeInto(json, this.json.subarray(this.i)).written;
-                return;
-            }
-        }
-        this.ensure(2);
-        this.json[this.i++] = OPEN_BRACKET;
-        let wroteFirstItem = false;
-        for (let i = 0; i < value.length; ++i) {
-            const item = value[i];
-            if (isDocument ? item === undefined : item == null && !sparse) {
-                continue;
-            }
-            if (wroteFirstItem) {
-                this.ensure(1);
-                this.json[this.i++] = COMMA;
-            }
-            this.writeValue(valueSchema, item, undefined);
-            wroteFirstItem = true;
-        }
-        this.ensure(1);
-        this.json[this.i++] = CLOSE_BRACKET;
-    }
-    writeMap(ns, value, isDocument) {
-        const sparse = !!ns.getMergedTraits().sparse;
-        const valueSchema = ns.getValueSchema();
-        if (!isDocument) {
-            if (valueSchema.isStringSchema() || valueSchema.isNumericSchema() || valueSchema.isBooleanSchema()) {
-                let modifications;
-                for (const k in value) {
-                    const v = value[k];
-                    if (Number.isNaN(v) || v === Infinity || v === -Infinity) {
-                        (modifications ??= {})[k] = v;
-                        value[k] = String(v);
-                    }
-                    else if (v === null && !sparse) {
-                        (modifications ??= {})[k] = null;
-                        value[k] = undefined;
-                    }
-                }
-                const json = JSON.stringify(value);
-                if (modifications) {
-                    Object.assign(value, modifications);
-                }
-                this.ensure(json.length * 3);
-                this.i += encoder.encodeInto(json, this.json.subarray(this.i)).written;
-                return;
-            }
-        }
-        this.ensure(2);
-        this.json[this.i++] = OPEN_BRACE;
-        let first = true;
-        for (const k in value) {
-            const v = value[k];
-            if (isDocument ? v === undefined : v == null && !sparse) {
-                continue;
-            }
-            if (!first) {
-                this.ensure(1);
-                this.json[this.i++] = COMMA;
-            }
-            first = false;
-            this.writeJsonString(k);
-            this.ensure(1);
-            this.json[this.i++] = COLON;
-            this.writeValue(valueSchema, v, undefined);
-        }
-        this.ensure(1);
-        this.json[this.i++] = CLOSE_BRACE;
-    }
-    writeTimestamp(ns, value) {
-        const format = determineTimestampFormat(ns, this.settings);
-        switch (format) {
-            case 5: {
-                const iso = value.toISOString().replace(".000Z", "Z");
-                this.writeAsciiQuoted(iso);
-                return;
-            }
-            case 6: {
-                this.writeAsciiQuoted(dateToUtcString(value));
-                return;
-            }
-            case 7: {
-                const epochSecs = String(value.getTime() / 1000);
-                this.writeAscii(epochSecs);
-                return;
-            }
-            default: {
-                const epochSecs = String(value.getTime() / 1000);
-                this.writeAscii(epochSecs);
-                return;
-            }
-        }
-    }
-}
-
-class JsonCodec2 extends SerdeContextConfig {
-    settings;
-    constructor(settings) {
-        super();
-        this.settings = settings;
-    }
-    createSerializer() {
-        const serializer = new JsonShapeSerializer2(this.settings);
-        serializer.setSerdeContext(this.serdeContext);
-        return serializer;
-    }
-    createDeserializer() {
-        const deserializer = new JsonShapeDeserializer2(this.settings);
-        deserializer.setSerdeContext(this.serdeContext);
-        return deserializer;
     }
 }
 
@@ -11317,407 +10665,91 @@ class AwsRestJsonProtocol extends HttpBindingProtocol {
     }
 }
 
-class JsonShapeDeserializer extends SerdeContextConfig {
-    settings;
-    constructor(settings) {
-        super();
-        this.settings = settings;
+class AwsSmithyRpcV2JsonProtocol extends SmithyRpcV2JsonProtocol {
+    awsQueryCompatible;
+    mixin;
+    constructor({ defaultNamespace, errorTypeRegistries, awsQueryCompatible, }) {
+        super({ defaultNamespace, errorTypeRegistries });
+        this.awsQueryCompatible = !!awsQueryCompatible;
+        this.mixin = new ProtocolLib(this.awsQueryCompatible);
     }
-    async read(schema, data) {
-        const reviver = needsReviver(schema) ? jsonReviver : undefined;
-        return this._read(schema, typeof data === "string" ? JSON.parse(data, reviver) : await parseJsonBody(data, this.serdeContext, schema));
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        if (this.awsQueryCompatible) {
+            request.headers["x-amzn-query-mode"] = "true";
+        }
+        return request;
     }
-    readObject(schema, data) {
-        return this._read(schema, data);
-    }
-    _read(schema, value) {
-        const isObject = value !== null && typeof value === "object";
-        const ns = NormalizedSchema.of(schema);
-        if (isObject) {
-            if (ns.isStructSchema()) {
-                const record = value;
-                const union = ns.isUnionSchema();
-                const out = {};
-                let nameMap = void 0;
-                const { jsonName } = this.settings;
-                if (jsonName) {
-                    nameMap = {};
-                }
-                let unionSerde;
-                if (union) {
-                    unionSerde = new UnionSerde(record, out);
-                }
-                for (const [memberName, memberSchema] of ns.structIterator()) {
-                    let fromKey = memberName;
-                    if (jsonName) {
-                        fromKey = memberSchema.getMergedTraits().jsonName ?? fromKey;
-                        nameMap[fromKey] = memberName;
-                    }
-                    if (union) {
-                        unionSerde.mark(fromKey);
-                    }
-                    if (record[fromKey] != null) {
-                        out[memberName] = this._read(memberSchema, record[fromKey]);
-                    }
-                }
-                if (union) {
-                    unionSerde.writeUnknown();
-                }
-                else if (typeof record.__type === "string") {
-                    for (const k in record) {
-                        const v = record[k];
-                        const t = jsonName ? (nameMap[k] ?? k) : k;
-                        if (!(t in out)) {
-                            out[t] = v;
-                        }
-                    }
-                }
-                return out;
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        if (this.awsQueryCompatible) {
+            this.mixin.setQueryCompatError(dataObject, response);
+        }
+        const errorName = (() => {
+            const compatHeader = response.headers["x-amzn-query-error"];
+            if (compatHeader && this.awsQueryCompatible) {
+                return compatHeader.split(";")[0];
             }
-            if (Array.isArray(value) && ns.isListSchema()) {
-                const listMember = ns.getValueSchema();
-                const out = [];
-                for (const item of value) {
-                    out.push(this._read(listMember, item));
-                }
-                return out;
-            }
-            if (ns.isMapSchema()) {
-                const mapMember = ns.getValueSchema();
-                const out = {};
-                for (const _k in value) {
-                    if (_k === "__proto__") {
-                        writeKey(out);
-                    }
-                    out[_k] = this._read(mapMember, value[_k]);
-                }
-                return out;
+            return loadSmithyRpcV2JsonErrorCode(response, dataObject) ?? "Unknown";
+        })();
+        this.mixin.compose(this.compositeErrorRegistry, errorName, this.options.defaultNamespace);
+        const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorName, this.options.defaultNamespace, response, dataObject, metadata, this.awsQueryCompatible ? this.mixin.findQueryCompatibleError : undefined);
+        const ns = NormalizedSchema.of(errorSchema);
+        const message = dataObject.message ?? dataObject.Message ?? "UnknownError";
+        const ErrorCtor = this.compositeErrorRegistry.getErrorCtor(errorSchema) ?? Error;
+        const exception = new ErrorCtor({});
+        const output = {};
+        const errorDeserializer = this.getPayloadCodec().createDeserializer();
+        for (const [name, member] of ns.structIterator()) {
+            if (dataObject[name] != null) {
+                output[name] = errorDeserializer.readObject(member, dataObject[name]);
             }
         }
-        if (ns.isBlobSchema() && typeof value === "string") {
-            return fromBase64(value);
+        if (this.awsQueryCompatible) {
+            this.mixin.queryCompatOutput(dataObject, output);
         }
-        const mediaType = ns.getMergedTraits().mediaType;
-        if (ns.isStringSchema() && typeof value === "string" && mediaType) {
-            const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-            if (isJson) {
-                return LazyJsonString.from(value);
-            }
-            return value;
-        }
-        if (ns.isTimestampSchema() && value != null) {
-            const format = determineTimestampFormat(ns, this.settings);
-            switch (format) {
-                case 5:
-                    return parseRfc3339DateTimeWithOffset(value);
-                case 6:
-                    return parseRfc7231DateTime(value);
-                case 7:
-                    return parseEpochTimestamp(value);
-                default:
-                    console.warn("Missing timestamp format, parsing value with Date constructor:", value);
-                    return new Date(value);
-            }
-        }
-        if (ns.isBigIntegerSchema() && (typeof value === "number" || typeof value === "string")) {
-            return BigInt(value);
-        }
-        if (ns.isBigDecimalSchema() && value != undefined) {
-            if (value instanceof NumericValue) {
-                return value;
-            }
-            const untyped = value;
-            if (untyped.type === "bigDecimal" && "string" in untyped) {
-                return new NumericValue(untyped.string, untyped.type);
-            }
-            return new NumericValue(String(value), "bigDecimal");
-        }
-        if (ns.isNumericSchema() && typeof value === "string") {
-            switch (value) {
-                case "Infinity":
-                    return Infinity;
-                case "-Infinity":
-                    return -Infinity;
-                case "NaN":
-                    return NaN;
-            }
-            return value;
-        }
-        if (ns.isDocumentSchema()) {
-            if (isObject) {
-                const out = Array.isArray(value) ? [] : {};
-                for (const k in value) {
-                    if (k === "__proto__") {
-                        writeKey(out);
-                    }
-                    const v = value[k];
-                    if (v instanceof NumericValue) {
-                        out[k] = v;
-                    }
-                    else {
-                        out[k] = this._read(ns, v);
-                    }
-                }
-                return out;
-            }
-            else {
-                return structuredClone(value);
-            }
-        }
-        return value;
+        throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output), dataObject);
     }
 }
 
-const NUMERIC_CONTROL_CHAR = String.fromCharCode(925);
-class JsonReplacer {
-    values = new Map();
-    counter = 0;
-    stage = 0;
-    createReplacer() {
-        if (this.stage === 1) {
-            throw new Error("@aws-sdk/core/protocols - JsonReplacer already created.");
-        }
-        if (this.stage === 2) {
-            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
-        }
-        this.stage = 1;
-        return (key, value) => {
-            if (value instanceof NumericValue) {
-                const v = `${NUMERIC_CONTROL_CHAR + "nv" + this.counter++}_` + value.string;
-                this.values.set(`"${v}"`, value.string);
-                return v;
-            }
-            if (typeof value === "bigint") {
-                const s = value.toString();
-                const v = `${NUMERIC_CONTROL_CHAR + "b" + this.counter++}_` + s;
-                this.values.set(`"${v}"`, s);
-                return v;
-            }
-            return value;
-        };
-    }
-    replaceInJson(json) {
-        if (this.stage === 0) {
-            throw new Error("@aws-sdk/core/protocols - JsonReplacer not created yet.");
-        }
-        if (this.stage === 2) {
-            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
-        }
-        this.stage = 2;
-        if (this.counter === 0) {
-            return json;
-        }
-        for (const [key, value] of this.values) {
-            json = json.replace(key, value);
-        }
-        return json;
+class SerdeContextConfig {
+    serdeContext;
+    setSerdeContext(serdeContext) {
+        this.serdeContext = serdeContext;
     }
 }
 
-class JsonShapeSerializer extends SerdeContextConfig {
-    settings;
-    buffer;
-    useReplacer = false;
-    rootSchema;
-    constructor(settings) {
-        super();
-        this.settings = settings;
+class UnionSerde {
+    from;
+    to;
+    keys;
+    constructor(from, to) {
+        this.from = from;
+        this.to = to;
+        const keys = Object.keys(this.from);
+        const set = new Set(keys);
+        set.delete("__type");
+        this.keys = set;
     }
-    write(schema, value) {
-        this.rootSchema = NormalizedSchema.of(schema);
-        this.buffer = this._write(this.rootSchema, value);
+    mark(key) {
+        this.keys.delete(key);
     }
-    flush() {
-        const { rootSchema, useReplacer } = this;
-        this.rootSchema = undefined;
-        this.useReplacer = false;
-        if (rootSchema?.isStructSchema() || rootSchema?.isDocumentSchema()) {
-            if (!useReplacer) {
-                return JSON.stringify(this.buffer);
-            }
-            const replacer = new JsonReplacer();
-            return replacer.replaceInJson(JSON.stringify(this.buffer, replacer.createReplacer(), 0));
-        }
-        return this.buffer;
+    hasUnknown() {
+        return this.keys.size === 1 && Object.keys(this.to).length === 0;
     }
-    writeDiscriminatedDocument(schema, value) {
-        this.write(schema, value);
-        if (typeof this.buffer === "object") {
-            this.buffer.__type = NormalizedSchema.of(schema).getName(true);
+    writeUnknown() {
+        if (this.hasUnknown()) {
+            const k = this.keys.values().next().value;
+            const v = this.from[k];
+            this.to.$unknown = [k, v];
         }
-    }
-    _write(schema, value, container) {
-        const isObject = value !== null && typeof value === "object";
-        const ns = NormalizedSchema.of(schema);
-        if (isObject) {
-            if (ns.isStructSchema()) {
-                const record = value;
-                const out = {};
-                const { jsonName } = this.settings;
-                let nameMap = void 0;
-                if (jsonName) {
-                    nameMap = {};
-                }
-                let outCount = 0;
-                for (const [memberName, memberSchema] of ns.structIterator()) {
-                    const serializableValue = this._write(memberSchema, record[memberName], ns);
-                    if (serializableValue !== undefined) {
-                        let targetKey = memberName;
-                        if (jsonName) {
-                            targetKey = memberSchema.getMergedTraits().jsonName ?? memberName;
-                            nameMap[memberName] = targetKey;
-                        }
-                        out[targetKey] = serializableValue;
-                        outCount++;
-                    }
-                }
-                if (ns.isUnionSchema() && outCount === 0) {
-                    const { $unknown } = record;
-                    if (Array.isArray($unknown)) {
-                        const [k, v] = $unknown;
-                        if (k === "__proto__") {
-                            writeKey(out);
-                        }
-                        out[k] = this._write(15, v);
-                    }
-                }
-                else if (typeof record.__type === "string") {
-                    for (const k in record) {
-                        const v = record[k];
-                        const targetKey = jsonName ? (nameMap[k] ?? k) : k;
-                        if (!(targetKey in out)) {
-                            out[targetKey] = this._write(15, v);
-                        }
-                    }
-                }
-                return out;
-            }
-            if (Array.isArray(value) && ns.isListSchema()) {
-                const listMember = ns.getValueSchema();
-                const out = [];
-                const sparse = !!ns.getMergedTraits().sparse;
-                for (const item of value) {
-                    if (sparse || item != null) {
-                        out.push(this._write(listMember, item));
-                    }
-                }
-                return out;
-            }
-            if (ns.isMapSchema()) {
-                const mapMember = ns.getValueSchema();
-                const out = {};
-                const sparse = !!ns.getMergedTraits().sparse;
-                for (const _k in value) {
-                    const _v = value[_k];
-                    if (sparse || _v != null) {
-                        if (_k === "__proto__") {
-                            writeKey(out);
-                        }
-                        out[_k] = this._write(mapMember, _v);
-                    }
-                }
-                return out;
-            }
-            if (value instanceof Uint8Array && ns.isBlobSchema()) {
-                if (ns === this.rootSchema) {
-                    return value;
-                }
-                return (this.serdeContext?.base64Encoder ?? toBase64)(value);
-            }
-            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
-                const format = determineTimestampFormat(ns, this.settings);
-                switch (format) {
-                    case 5:
-                        return value.toISOString().replace(".000Z", "Z");
-                    case 6:
-                        return dateToUtcString(value);
-                    case 7:
-                        return value.getTime() / 1000;
-                    default:
-                        console.warn("Missing timestamp format, using epoch seconds", value);
-                        return value.getTime() / 1000;
-                }
-            }
-            if (value instanceof NumericValue) {
-                this.useReplacer = true;
-            }
-        }
-        if (value === null && container?.isStructSchema()) {
-            return void 0;
-        }
-        if (ns.isStringSchema()) {
-            if (typeof value === "undefined" && ns.isIdempotencyToken()) {
-                return generateIdempotencyToken();
-            }
-            const mediaType = ns.getMergedTraits().mediaType;
-            if (value != null && mediaType) {
-                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-                if (isJson) {
-                    return LazyJsonString.from(value);
-                }
-            }
-            return value;
-        }
-        if (typeof value === "number") {
-            if (Math.abs(value) === Infinity || isNaN(value)) {
-                return String(value);
-            }
-            return value;
-        }
-        if (typeof value === "string" && ns.isBlobSchema()) {
-            if (ns === this.rootSchema) {
-                return value;
-            }
-            return (this.serdeContext?.base64Encoder ?? toBase64)(value);
-        }
-        if (typeof value === "bigint") {
-            this.useReplacer = true;
-        }
-        if (ns.isDocumentSchema()) {
-            if (isObject) {
-                if (value instanceof Uint8Array) {
-                    return (this.serdeContext?.base64Encoder ?? toBase64)(value);
-                }
-                const out = Array.isArray(value) ? [] : {};
-                for (const k in value) {
-                    const v = value[k];
-                    if (k === "__proto__") {
-                        writeKey(out);
-                    }
-                    if (v instanceof NumericValue) {
-                        this.useReplacer = true;
-                        out[k] = v;
-                    }
-                    else {
-                        out[k] = this._write(ns, v);
-                    }
-                }
-                return out;
-            }
-            else {
-                return structuredClone(value);
-            }
-        }
-        return value;
     }
 }
 
-class JsonCodec extends SerdeContextConfig {
-    settings;
-    constructor(settings) {
-        super();
-        this.settings = settings;
-    }
-    createSerializer() {
-        const serializer = new JsonShapeSerializer(this.settings);
-        serializer.setSerdeContext(this.serdeContext);
-        return serializer;
-    }
-    createDeserializer() {
-        const deserializer = new JsonShapeDeserializer(this.settings);
-        deserializer.setSerdeContext(this.serdeContext);
-        return deserializer;
-    }
+function writeKey(obj) {
+    Object.defineProperty(obj, "__proto__", { value: undefined, writable: true, enumerable: true, configurable: true });
 }
 
 class XmlShapeDeserializer extends SerdeContextConfig {
@@ -12203,6 +11235,8 @@ class AwsEc2QueryProtocol extends AwsQueryProtocol {
         return false;
     }
 }
+
+const collectBodyString = (streamBody, context) => collectBody(streamBody, context).then((body) => (context?.utf8Encoder ?? toUtf8)(body));
 
 const parseXmlBody = (streamBody, context) => collectBodyString(streamBody, context).then((encoded) => {
     if (encoded.length) {
@@ -12720,12 +11754,7 @@ exports.AwsQueryProtocol = AwsQueryProtocol;
 exports.AwsRestJsonProtocol = AwsRestJsonProtocol;
 exports.AwsRestXmlProtocol = AwsRestXmlProtocol;
 exports.AwsSmithyRpcV2CborProtocol = AwsSmithyRpcV2CborProtocol;
-exports.JsonCodec = JsonCodec;
-exports.JsonCodec2 = JsonCodec2;
-exports.JsonShapeDeserializer = JsonShapeDeserializer;
-exports.JsonShapeDeserializer2 = JsonShapeDeserializer2;
-exports.JsonShapeSerializer = JsonShapeSerializer;
-exports.JsonShapeSerializer2 = JsonShapeSerializer2;
+exports.AwsSmithyRpcV2JsonProtocol = AwsSmithyRpcV2JsonProtocol;
 exports.QueryShapeSerializer = QueryShapeSerializer;
 exports.XmlCodec = XmlCodec;
 exports.XmlShapeDeserializer = XmlShapeDeserializer;
@@ -12734,11 +11763,7 @@ exports._toBool = _toBool;
 exports._toNum = _toNum;
 exports._toStr = _toStr;
 exports.awsExpectUnion = awsExpectUnion;
-exports.loadJsonRpcErrorCode = loadJsonRpcErrorCode;
-exports.loadRestJsonErrorCode = loadRestJsonErrorCode;
 exports.loadRestXmlErrorCode = loadRestXmlErrorCode;
-exports.parseJsonBody = parseJsonBody;
-exports.parseJsonErrorBody = parseJsonErrorBody;
 exports.parseXmlBody = parseXmlBody;
 exports.parseXmlErrorBody = parseXmlErrorBody;
 
@@ -12753,8 +11778,9 @@ const { buildQueryString } = __nccwpck_require__(3422);
 const validate = (str) => typeof str === "string" && str.indexOf("arn:") === 0 && str.split(":").length >= 6;
 const parse = (arn) => {
     const segments = arn.split(":");
-    if (segments.length < 6 || segments[0] !== "arn")
+    if (segments.length < 6 || segments[0] !== "arn") {
         throw new Error("Malformed ARN");
+    }
     const [, partition, service, region, accountId, ...resource] = segments;
     return {
         partition,
@@ -14261,18 +13287,22 @@ class S3ExpressIdentityCache {
     delete(key) {
         delete this.data[key];
     }
+    clear() {
+        this.data = {};
+    }
     async purgeExpired() {
         const now = Date.now();
         if (this.lastPurgeTime + S3ExpressIdentityCache.EXPIRED_CREDENTIAL_PURGE_INTERVAL_MS > now) {
             return;
         }
-        for (const key in this.data) {
-            const entry = this.data[key];
+        const data = this.data;
+        for (const key in data) {
+            const entry = data[key];
             if (!entry.isRefreshing) {
                 const credential = await entry.identity;
                 if (credential.expiration) {
-                    if (credential.expiration.getTime() < now) {
-                        delete this.data[key];
+                    if (credential.expiration.getTime() < now && data[key] === entry) {
+                        delete data[key];
                     }
                 }
             }
@@ -14299,37 +13329,47 @@ class S3ExpressIdentityProviderImpl {
     createSessionFn;
     cache;
     static REFRESH_WINDOW_MS = 60_000;
+    accessKeyId;
+    cacheGeneration = 0;
     constructor(createSessionFn, cache = new S3ExpressIdentityCache()) {
         this.createSessionFn = createSessionFn;
         this.cache = cache;
     }
     async getS3ExpressIdentity(awsIdentity, identityProperties) {
-        const key = identityProperties.Bucket;
+        const bucket = identityProperties.Bucket;
         const { cache } = this;
-        const entry = cache.get(key);
+        if (awsIdentity.accessKeyId !== this.accessKeyId) {
+            this.accessKeyId = awsIdentity.accessKeyId;
+            this.cacheGeneration++;
+            cache.clear();
+        }
+        const cacheGeneration = this.cacheGeneration;
+        const entry = cache.get(bucket);
         if (entry) {
             return entry.identity.then((identity) => {
                 const isExpired = (identity.expiration?.getTime() ?? 0) < Date.now();
                 if (isExpired) {
-                    return cache.set(key, new S3ExpressIdentityCacheEntry(this.getIdentity(key))).identity;
+                    return cache.set(bucket, new S3ExpressIdentityCacheEntry(this.getIdentity(bucket))).identity;
                 }
                 const isExpiringSoon = (identity.expiration?.getTime() ?? 0) < Date.now() + S3ExpressIdentityProviderImpl.REFRESH_WINDOW_MS;
                 if (isExpiringSoon && !entry.isRefreshing) {
                     entry.isRefreshing = true;
-                    this.getIdentity(key).then((id) => {
-                        cache.set(key, new S3ExpressIdentityCacheEntry(Promise.resolve(id)));
+                    this.getIdentity(bucket).then((id) => {
+                        if (cacheGeneration === this.cacheGeneration) {
+                            cache.set(bucket, new S3ExpressIdentityCacheEntry(Promise.resolve(id)));
+                        }
                     });
                 }
                 return identity;
             });
         }
-        return cache.set(key, new S3ExpressIdentityCacheEntry(this.getIdentity(key))).identity;
+        return cache.set(bucket, new S3ExpressIdentityCacheEntry(this.getIdentity(bucket))).identity;
     }
-    async getIdentity(key) {
+    async getIdentity(bucket) {
         await this.cache.purgeExpired().catch((error) => {
             console.warn("Error while clearing expired entries in S3ExpressIdentityCache: \n" + error);
         });
-        const session = await this.createSessionFn(key);
+        const session = await this.createSessionFn(bucket);
         if (!session.Credentials?.AccessKeyId || !session.Credentials?.SecretAccessKey) {
             throw new Error("s3#createSession response credential missing AccessKeyId or SecretAccessKey.");
         }
@@ -14715,10 +13755,12 @@ const validateDNSHostLabel = (label, options = { tlsCompatible: true }) => {
 };
 const validateCustomEndpoint = (options) => {
     if (options.isCustomEndpoint) {
-        if (options.dualstackEndpoint)
+        if (options.dualstackEndpoint) {
             throw new Error("Dualstack endpoint is not supported with custom endpoint");
-        if (options.accelerateEndpoint)
+        }
+        if (options.accelerateEndpoint) {
             throw new Error("Accelerate endpoint is not supported with custom endpoint");
+        }
     }
 };
 const getArnResources = (resource) => {
@@ -14743,8 +13785,9 @@ const getArnResources = (resource) => {
 };
 const validateNoDualstack = (dualstackEndpoint) => { };
 const validateNoFIPS = (useFipsEndpoint) => {
-    if (useFipsEndpoint)
+    if (useFipsEndpoint) {
         throw new Error(`FIPS region is not supported with Outpost.`);
+    }
 };
 const validateMrapAlias = (name) => {
     try {
@@ -15081,8 +14124,9 @@ const getSsecPlugin = (config) => ({
 });
 function isValidBase64EncodedSSECustomerKey(str, options) {
     const base64Regex = /^(?:[A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
-    if (!base64Regex.test(str))
+    if (!base64Regex.test(str)) {
         return false;
+    }
     try {
         const decodedBytes = options.base64Decoder(str);
         return decodedBytes.length === 32;
@@ -15240,7 +14284,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.45";
+var version = "3.997.53";
 var packageInfo = {
 	version: version};
 
@@ -15357,6 +14401,7 @@ const defaultEndpointResolver = (endpointParams, context = {}) => {
 customEndpointFunctions.aws = awsEndpointFunctions;
 
 class SigninServiceException extends ServiceException {
+    static shapeId = "smithy.ts.sdk.synthetic.com.amazonaws.signin#SigninServiceException";
     constructor(options) {
         super(options);
         Object.setPrototypeOf(this, SigninServiceException.prototype);
@@ -15364,6 +14409,7 @@ class SigninServiceException extends ServiceException {
 }
 
 class AccessDeniedException extends SigninServiceException {
+    static shapeId = "com.amazonaws.signin#AccessDeniedException";
     name = "AccessDeniedException";
     $fault = "client";
     error;
@@ -15378,6 +14424,7 @@ class AccessDeniedException extends SigninServiceException {
     }
 }
 class InternalServerException extends SigninServiceException {
+    static shapeId = "com.amazonaws.signin#InternalServerException";
     name = "InternalServerException";
     $fault = "server";
     error;
@@ -15392,6 +14439,7 @@ class InternalServerException extends SigninServiceException {
     }
 }
 class TooManyRequestsError extends SigninServiceException {
+    static shapeId = "com.amazonaws.signin#TooManyRequestsError";
     name = "TooManyRequestsError";
     $fault = "client";
     error;
@@ -15406,6 +14454,7 @@ class TooManyRequestsError extends SigninServiceException {
     }
 }
 class ValidationException extends SigninServiceException {
+    static shapeId = "com.amazonaws.signin#ValidationException";
     name = "ValidationException";
     $fault = "client";
     error;
@@ -15718,6 +14767,13 @@ const OAuth2ErrorCode = {
     CONFLICT: "CONFLICT",
     INSUFFICIENT_PERMISSIONS: "INSUFFICIENT_PERMISSIONS",
     INVALID_REQUEST: "INVALID_REQUEST",
+    OAUTH_INVALID_GRANT: "invalid_grant",
+    OAUTH_INVALID_REQUEST: "invalid_request",
+    OAUTH_INVALID_SCOPE: "invalid_scope",
+    OAUTH_INVALID_TARGET: "invalid_target",
+    OAUTH_RATE_EXCEEDED: "rate_exceeded",
+    OAUTH_SERVICE_UNAVAILABLE: "service_unavailable",
+    OAUTH_UNSUPPORTED_GRANT_TYPE: "unsupported_grant_type",
     RESOURCE_NOT_FOUND: "RESOURCE_NOT_FOUND",
     SERVER_ERROR: "server_error",
     SERVICE_QUOTA_EXCEEDED: "SERVICE_QUOTA_EXCEEDED",
@@ -15837,7 +14893,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.45";
+var version = "3.997.53";
 var packageInfo = {
 	version: version};
 
@@ -15903,6 +14959,7 @@ const defaultEndpointResolver = (endpointParams, context = {}) => {
 customEndpointFunctions.aws = awsEndpointFunctions;
 
 class SSOOIDCServiceException extends ServiceException {
+    static shapeId = "smithy.ts.sdk.synthetic.com.amazonaws.ssooidc#SSOOIDCServiceException";
     constructor(options) {
         super(options);
         Object.setPrototypeOf(this, SSOOIDCServiceException.prototype);
@@ -15910,6 +14967,7 @@ class SSOOIDCServiceException extends ServiceException {
 }
 
 class AccessDeniedException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#AccessDeniedException";
     name = "AccessDeniedException";
     $fault = "client";
     error;
@@ -15928,6 +14986,7 @@ class AccessDeniedException extends SSOOIDCServiceException {
     }
 }
 class AuthorizationPendingException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#AuthorizationPendingException";
     name = "AuthorizationPendingException";
     $fault = "client";
     error;
@@ -15944,6 +15003,7 @@ class AuthorizationPendingException extends SSOOIDCServiceException {
     }
 }
 class ExpiredTokenException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#ExpiredTokenException";
     name = "ExpiredTokenException";
     $fault = "client";
     error;
@@ -15960,6 +15020,7 @@ class ExpiredTokenException extends SSOOIDCServiceException {
     }
 }
 class InternalServerException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#InternalServerException";
     name = "InternalServerException";
     $fault = "server";
     error;
@@ -15976,6 +15037,7 @@ class InternalServerException extends SSOOIDCServiceException {
     }
 }
 class InvalidClientException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#InvalidClientException";
     name = "InvalidClientException";
     $fault = "client";
     error;
@@ -15992,6 +15054,7 @@ class InvalidClientException extends SSOOIDCServiceException {
     }
 }
 class InvalidGrantException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#InvalidGrantException";
     name = "InvalidGrantException";
     $fault = "client";
     error;
@@ -16008,6 +15071,7 @@ class InvalidGrantException extends SSOOIDCServiceException {
     }
 }
 class InvalidRequestException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#InvalidRequestException";
     name = "InvalidRequestException";
     $fault = "client";
     error;
@@ -16026,6 +15090,7 @@ class InvalidRequestException extends SSOOIDCServiceException {
     }
 }
 class InvalidScopeException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#InvalidScopeException";
     name = "InvalidScopeException";
     $fault = "client";
     error;
@@ -16042,6 +15107,7 @@ class InvalidScopeException extends SSOOIDCServiceException {
     }
 }
 class SlowDownException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#SlowDownException";
     name = "SlowDownException";
     $fault = "client";
     error;
@@ -16058,6 +15124,7 @@ class SlowDownException extends SSOOIDCServiceException {
     }
 }
 class UnauthorizedClientException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#UnauthorizedClientException";
     name = "UnauthorizedClientException";
     $fault = "client";
     error;
@@ -16074,6 +15141,7 @@ class UnauthorizedClientException extends SSOOIDCServiceException {
     }
 }
 class UnsupportedGrantTypeException extends SSOOIDCServiceException {
+    static shapeId = "com.amazonaws.ssooidc#UnsupportedGrantTypeException";
     name = "UnsupportedGrantTypeException";
     $fault = "client";
     error;
@@ -16518,7 +15586,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.45";
+var version = "3.997.53";
 var packageInfo = {
 	version: version};
 
@@ -16584,6 +15652,7 @@ const defaultEndpointResolver = (endpointParams, context = {}) => {
 customEndpointFunctions.aws = awsEndpointFunctions;
 
 class SSOServiceException extends ServiceException {
+    static shapeId = "smithy.ts.sdk.synthetic.com.amazonaws.sso#SSOServiceException";
     constructor(options) {
         super(options);
         Object.setPrototypeOf(this, SSOServiceException.prototype);
@@ -16591,6 +15660,7 @@ class SSOServiceException extends ServiceException {
 }
 
 class InvalidRequestException extends SSOServiceException {
+    static shapeId = "com.amazonaws.sso#InvalidRequestException";
     name = "InvalidRequestException";
     $fault = "client";
     constructor(opts) {
@@ -16603,6 +15673,7 @@ class InvalidRequestException extends SSOServiceException {
     }
 }
 class ResourceNotFoundException extends SSOServiceException {
+    static shapeId = "com.amazonaws.sso#ResourceNotFoundException";
     name = "ResourceNotFoundException";
     $fault = "client";
     constructor(opts) {
@@ -16615,6 +15686,7 @@ class ResourceNotFoundException extends SSOServiceException {
     }
 }
 class TooManyRequestsException extends SSOServiceException {
+    static shapeId = "com.amazonaws.sso#TooManyRequestsException";
     name = "TooManyRequestsException";
     $fault = "client";
     constructor(opts) {
@@ -16627,6 +15699,7 @@ class TooManyRequestsException extends SSOServiceException {
     }
 }
 class UnauthorizedException extends SSOServiceException {
+    static shapeId = "com.amazonaws.sso#UnauthorizedException";
     name = "UnauthorizedException";
     $fault = "client";
     constructor(opts) {
@@ -17173,11 +16246,12 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.45";
+var version = "3.997.53";
 var packageInfo = {
 	version: version};
 
 class STSServiceException extends ServiceException {
+    static shapeId = "smithy.ts.sdk.synthetic.com.amazonaws.sts#STSServiceException";
     constructor(options) {
         super(options);
         Object.setPrototypeOf(this, STSServiceException.prototype);
@@ -17185,6 +16259,7 @@ class STSServiceException extends ServiceException {
 }
 
 class ExpiredTokenException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#ExpiredTokenException";
     name = "ExpiredTokenException";
     $fault = "client";
     constructor(opts) {
@@ -17197,6 +16272,7 @@ class ExpiredTokenException extends STSServiceException {
     }
 }
 class MalformedPolicyDocumentException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#MalformedPolicyDocumentException";
     name = "MalformedPolicyDocumentException";
     $fault = "client";
     constructor(opts) {
@@ -17209,6 +16285,7 @@ class MalformedPolicyDocumentException extends STSServiceException {
     }
 }
 class PackedPolicyTooLargeException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#PackedPolicyTooLargeException";
     name = "PackedPolicyTooLargeException";
     $fault = "client";
     constructor(opts) {
@@ -17221,6 +16298,7 @@ class PackedPolicyTooLargeException extends STSServiceException {
     }
 }
 class RegionDisabledException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#RegionDisabledException";
     name = "RegionDisabledException";
     $fault = "client";
     constructor(opts) {
@@ -17233,6 +16311,7 @@ class RegionDisabledException extends STSServiceException {
     }
 }
 class IDPRejectedClaimException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#IDPRejectedClaimException";
     name = "IDPRejectedClaimException";
     $fault = "client";
     constructor(opts) {
@@ -17245,6 +16324,7 @@ class IDPRejectedClaimException extends STSServiceException {
     }
 }
 class InvalidIdentityTokenException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#InvalidIdentityTokenException";
     name = "InvalidIdentityTokenException";
     $fault = "client";
     constructor(opts) {
@@ -17257,6 +16337,7 @@ class InvalidIdentityTokenException extends STSServiceException {
     }
 }
 class IDPCommunicationErrorException extends STSServiceException {
+    static shapeId = "com.amazonaws.sts#IDPCommunicationErrorException";
     name = "IDPCommunicationErrorException";
     $fault = "client";
     $retryable = {};
@@ -18027,6 +17108,7 @@ const writeSSOTokenToFile = (id, ssoToken) => {
 };
 
 const lastRefreshAttemptTimes = new Map();
+const inFlightRefreshes = new Map();
 const fromSso = (init = {}) => async ({ callerClientConfig } = {}) => {
     init.logger?.debug("@aws-sdk/token-providers - fromSso");
     const profiles = await parseKnownFiles(init);
@@ -18041,6 +17123,10 @@ const fromSso = (init = {}) => async ({ callerClientConfig } = {}) => {
         throw new TokenProviderError(`Profile '${profileName}' is missing required property 'sso_session'.`);
     }
     const ssoSessionName = profile["sso_session"];
+    const inFlightRefresh = inFlightRefreshes.get(ssoSessionName);
+    if (inFlightRefresh) {
+        return await inFlightRefresh;
+    }
     const ssoSessions = await loadSsoSessionData(init);
     const ssoSession = ssoSessions[ssoSessionName];
     if (!ssoSession) {
@@ -18070,6 +17156,10 @@ const fromSso = (init = {}) => async ({ callerClientConfig } = {}) => {
     if (existingToken.expiration.getTime() - Date.now() > EXPIRE_WINDOW_MS) {
         return existingToken;
     }
+    const inFlightRefreshAfterReadingToken = inFlightRefreshes.get(ssoSessionName);
+    if (inFlightRefreshAfterReadingToken) {
+        return await inFlightRefreshAfterReadingToken;
+    }
     const lastRefreshAttemptTime = lastRefreshAttemptTimes.get(ssoSessionName) ?? 0;
     if (Date.now() - lastRefreshAttemptTime < 30 * 1000) {
         validateTokenExpiry(existingToken);
@@ -18078,30 +17168,39 @@ const fromSso = (init = {}) => async ({ callerClientConfig } = {}) => {
     validateTokenKey("clientId", ssoToken.clientId, true);
     validateTokenKey("clientSecret", ssoToken.clientSecret, true);
     validateTokenKey("refreshToken", ssoToken.refreshToken, true);
-    try {
-        lastRefreshAttemptTimes.set(ssoSessionName, Date.now());
-        const newSsoOidcToken = await getNewSsoOidcToken(ssoToken, ssoRegion, init, callerClientConfig);
-        validateTokenKey("accessToken", newSsoOidcToken.accessToken);
-        validateTokenKey("expiresIn", newSsoOidcToken.expiresIn);
-        const newTokenExpiration = new Date(Date.now() + newSsoOidcToken.expiresIn * 1000);
+    const refresh = (async () => {
         try {
-            await writeSSOTokenToFile(ssoSessionName, {
-                ...ssoToken,
-                accessToken: newSsoOidcToken.accessToken,
-                expiresAt: newTokenExpiration.toISOString(),
-                refreshToken: newSsoOidcToken.refreshToken,
-            });
+            lastRefreshAttemptTimes.set(ssoSessionName, Date.now());
+            const newSsoOidcToken = await getNewSsoOidcToken(ssoToken, ssoRegion, init, callerClientConfig);
+            validateTokenKey("accessToken", newSsoOidcToken.accessToken);
+            validateTokenKey("expiresIn", newSsoOidcToken.expiresIn);
+            const newTokenExpiration = new Date(Date.now() + newSsoOidcToken.expiresIn * 1000);
+            try {
+                await writeSSOTokenToFile(ssoSessionName, {
+                    ...ssoToken,
+                    accessToken: newSsoOidcToken.accessToken,
+                    expiresAt: newTokenExpiration.toISOString(),
+                    refreshToken: newSsoOidcToken.refreshToken,
+                });
+            }
+            catch (error) {
+            }
+            return {
+                token: newSsoOidcToken.accessToken,
+                expiration: newTokenExpiration,
+            };
         }
         catch (error) {
+            validateTokenExpiry(existingToken);
+            return existingToken;
         }
-        return {
-            token: newSsoOidcToken.accessToken,
-            expiration: newTokenExpiration,
-        };
+    })();
+    inFlightRefreshes.set(ssoSessionName, refresh);
+    try {
+        return await refresh;
     }
-    catch (error) {
-        validateTokenExpiry(existingToken);
-        return existingToken;
+    finally {
+        inFlightRefreshes.delete(ssoSessionName);
     }
 };
 
@@ -18786,8 +17885,9 @@ const getHttpSigningPlugin = (config) => ({
 });
 
 const normalizeProvider = (input) => {
-    if (typeof input === "function")
+    if (typeof input === "function") {
         return input;
+    }
     const promisified = Promise.resolve(input);
     return () => promisified;
 };
@@ -18850,8 +17950,9 @@ class DefaultIdentityProviderConfig {
     authSchemes = new Map();
     constructor(config) {
         for (const key in config) {
-            if (!hasOwn(config, key))
+            if (!hasOwn(config, key)) {
                 continue;
+            }
             const value = config[key];
             if (value !== undefined) {
                 this.authSchemes.set(key, value);
@@ -18997,9 +18098,9 @@ exports.setFeature = setFeature;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 const { nv, NumericValue, calculateBodyLength, generateIdempotencyToken, fromBase64, _parseEpochTimestamp } = __nccwpck_require__(2430);
-const { hasOwn, getSmithyContext } = __nccwpck_require__(4534);
-const { HttpRequest, collectBody, SerdeContext, RpcProtocol } = __nccwpck_require__(3422);
-const { NormalizedSchema, deref, TypeRegistry } = __nccwpck_require__(6890);
+const { hasOwn } = __nccwpck_require__(4534);
+const { HttpRequest, collectBody, SerdeContext, AbstractRpcV2Protocol } = __nccwpck_require__(3422);
+const { NormalizedSchema, TypeRegistry } = __nccwpck_require__(6890);
 
 const majorUint64 = 0;
 const majorNegativeInt64 = 1;
@@ -19929,8 +19030,9 @@ const buildHttpRpcRequest = async (context, headers, path, resolvedHostname, bod
     }
     if (endpoint.headers) {
         for (const name in endpoint.headers) {
-            if (!hasOwn(endpoint.headers, name))
+            if (!hasOwn(endpoint.headers, name)) {
                 continue;
+            }
             contents.headers[name] = endpoint.headers[name];
         }
     }
@@ -20191,8 +19293,9 @@ function writeStruct(ns, value, serdeContext) {
     }
     if (typeof value.__type === "string") {
         for (const k in value) {
-            if (!hasOwn(value, k))
+            if (!hasOwn(value, k)) {
                 continue;
+            }
             if (!memberNames.includes(k)) {
                 writeString(k);
                 writeUntypedValue(value[k]);
@@ -20258,8 +19361,9 @@ function writeMap(ns, value, isDocument, serdeContext) {
     const valueSchema = ns.getValueSchema();
     const keys = [];
     for (const k in value) {
-        if (!hasOwn(value, k))
+        if (!hasOwn(value, k)) {
             continue;
+        }
         const v = value[k];
         if (isDocument ? v !== undefined : v != null || sparse) {
             keys.push(k);
@@ -20673,8 +19777,9 @@ function readStruct(ns, count, startPos) {
     if (isUnion) {
         let resultEmpty = true;
         for (const _ in result) {
-            if (!hasOwn(result, _))
+            if (!hasOwn(result, _)) {
                 continue;
+            }
             resultEmpty = false;
             break;
         }
@@ -20843,8 +19948,9 @@ function readMapIndefinite(ns) {
                 if (isUnion) {
                     let resultEmpty = true;
                     for (const _ in result) {
-                        if (!hasOwn(result, _))
+                        if (!hasOwn(result, _)) {
                             continue;
+                        }
                         resultEmpty = false;
                         break;
                     }
@@ -21149,8 +20255,9 @@ function transformObject(ns, value) {
     if (ns.isMapSchema()) {
         const targetSchema = ns.getValueSchema();
         for (const key in value) {
-            if (!hasOwn(value, key))
+            if (!hasOwn(value, key)) {
                 continue;
+            }
             newObject[key] = transformObject(targetSchema, value[key]);
         }
     }
@@ -21160,8 +20267,9 @@ function transformObject(ns, value) {
         if (isUnion) {
             keys = new Set();
             for (const k in value) {
-                if (!hasOwn(value, k))
+                if (!hasOwn(value, k)) {
                     continue;
+                }
                 if (k !== "__type") {
                     keys.add(k);
                 }
@@ -21178,8 +20286,9 @@ function transformObject(ns, value) {
         if (isUnion && keys?.size === 1) {
             let newObjectEmpty = true;
             for (const _ in newObject) {
-                if (!hasOwn(newObject, _))
+                if (!hasOwn(newObject, _)) {
                     continue;
+                }
                 newObjectEmpty = false;
                 break;
             }
@@ -21190,8 +20299,9 @@ function transformObject(ns, value) {
         }
         else if (typeof value.__type === "string") {
             for (const k in value) {
-                if (!hasOwn(value, k))
+                if (!hasOwn(value, k)) {
                     continue;
+                }
                 if (!(k in newObject)) {
                     newObject[k] = value[k];
                 }
@@ -21214,51 +20324,27 @@ class CborCodec extends SerdeContext {
     }
 }
 
-class SmithyRpcV2CborProtocol extends RpcProtocol {
+class SmithyRpcV2CborProtocol extends AbstractRpcV2Protocol {
     codec = new CborCodec();
     serializer = this.codec.createSerializer();
     deserializer = this.codec.createDeserializer();
-    constructor({ defaultNamespace, errorTypeRegistries, }) {
-        super({ defaultNamespace, errorTypeRegistries });
-    }
     getShapeId() {
         return "smithy.protocols#rpcv2Cbor";
     }
     getPayloadCodec() {
         return this.codec;
     }
-    async serializeRequest(operationSchema, input, context) {
-        const request = await super.serializeRequest(operationSchema, input, context);
-        Object.assign(request.headers, {
-            "content-type": this.getDefaultContentType(),
-            "smithy-protocol": "rpc-v2-cbor",
-            accept: this.getDefaultContentType(),
-        });
-        if (deref(operationSchema.input) === "unit") {
-            delete request.body;
-            delete request.headers["content-type"];
-        }
-        else {
-            if (!request.body) {
-                this.serializer.write(15, {});
-                request.body = this.serializer.flush();
-            }
-            if (request.body instanceof Uint8Array) {
-                request.headers["content-length"] = String(request.body.byteLength);
-            }
-        }
-        const { service, operation } = getSmithyContext(context);
-        const path = `/service/${service}/operation/${operation}`;
-        if (request.path.endsWith("/")) {
-            request.path += path.slice(1);
-        }
-        else {
-            request.path += path;
-        }
-        return request;
+    getSmithyProtocolHeaderValue() {
+        return "rpc-v2-cbor";
     }
-    async deserializeResponse(operationSchema, context, response) {
-        return super.deserializeResponse(operationSchema, context, response);
+    applyEmptyBody(request) {
+        if (!request.body) {
+            this.serializer.write(15, {});
+            request.body = this.serializer.flush();
+        }
+        if (request.body instanceof Uint8Array) {
+            request.headers["content-length"] = String(request.body.byteLength);
+        }
     }
     async handleError(operationSchema, context, response, dataObject, metadata) {
         const errorIdentifier = loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
@@ -21354,8 +20440,9 @@ class CborShapeSerializer extends SerdeContext {
             if (ns.isMapSchema()) {
                 const sparse = !!ns.getMergedTraits().sparse;
                 for (const key in sourceObject) {
-                    if (!hasOwn(sourceObject, key))
+                    if (!hasOwn(sourceObject, key)) {
                         continue;
+                    }
                     const value = this.serialize(ns.getValueSchema(), sourceObject[key]);
                     if (value != null || sparse) {
                         newObject[key] = value;
@@ -21376,8 +20463,9 @@ class CborShapeSerializer extends SerdeContext {
                 }
                 else if (typeof sourceObject.__type === "string") {
                     for (const k in sourceObject) {
-                        if (!hasOwn(sourceObject, k))
+                        if (!hasOwn(sourceObject, k)) {
                             continue;
+                        }
                         if (!(k in newObject)) {
                             newObject[k] = this.serialize(15, sourceObject[k]);
                         }
@@ -21394,8 +20482,9 @@ class CborShapeSerializer extends SerdeContext {
                     return newArray;
                 }
                 for (const key in sourceObject) {
-                    if (!hasOwn(sourceObject, key))
+                    if (!hasOwn(sourceObject, key)) {
                         continue;
+                    }
                     newObject[key] = this.serialize(ns.getValueSchema(), sourceObject[key]);
                 }
             }
@@ -21470,8 +20559,9 @@ class CborShapeDeserializer extends SerdeContext {
             if (ns.isMapSchema()) {
                 const targetSchema = ns.getValueSchema();
                 for (const key in value) {
-                    if (!hasOwn(value, key))
+                    if (!hasOwn(value, key)) {
                         continue;
+                    }
                     const itemValue = this.readValue(targetSchema, value[key]);
                     newObject[key] = itemValue;
                 }
@@ -21482,8 +20572,9 @@ class CborShapeDeserializer extends SerdeContext {
                 if (isUnion) {
                     keys = new Set();
                     for (const k in value) {
-                        if (!hasOwn(value, k))
+                        if (!hasOwn(value, k)) {
                             continue;
+                        }
                         if (k !== "__type") {
                             keys.add(k);
                         }
@@ -21500,8 +20591,9 @@ class CborShapeDeserializer extends SerdeContext {
                 if (isUnion && keys?.size === 1) {
                     let newObjectEmpty = true;
                     for (const _ in newObject) {
-                        if (!hasOwn(newObject, _))
+                        if (!hasOwn(newObject, _)) {
                             continue;
+                        }
                         newObjectEmpty = false;
                         break;
                     }
@@ -21512,8 +20604,9 @@ class CborShapeDeserializer extends SerdeContext {
                 }
                 else if (typeof value.__type === "string") {
                     for (const k in value) {
-                        if (!hasOwn(value, k))
+                        if (!hasOwn(value, k)) {
                             continue;
+                        }
                         if (!(k in newObject)) {
                             newObject[k] = value[k];
                         }
@@ -22296,8 +21389,9 @@ const constructStack = () => {
             const aliases = getAllAliases(name, _aliases);
             if (aliases.length > 0) {
                 if (aliases.some((alias) => entriesNameSet.has(alias))) {
-                    if (!override)
+                    if (!override) {
                         throw new Error(`Duplicate middleware name '${getMiddlewareNameWithAliases(name, _aliases)}'`);
+                    }
                     for (const alias of aliases) {
                         const toOverrideIndex = absoluteEntries.findIndex((entry) => entry.name === alias || entry.aliases?.some((a) => a === alias));
                         if (toOverrideIndex === -1) {
@@ -22328,8 +21422,9 @@ const constructStack = () => {
             const aliases = getAllAliases(name, _aliases);
             if (aliases.length > 0) {
                 if (aliases.some((alias) => entriesNameSet.has(alias))) {
-                    if (!override)
+                    if (!override) {
                         throw new Error(`Duplicate middleware name '${getMiddlewareNameWithAliases(name, _aliases)}'`);
+                    }
                     for (const alias of aliases) {
                         const toOverrideIndex = relativeEntries.findIndex((entry) => entry.name === alias || entry.aliases?.some((a) => a === alias));
                         if (toOverrideIndex === -1) {
@@ -22356,10 +21451,12 @@ const constructStack = () => {
             plugin.applyToStack(stack);
         },
         remove: (toRemove) => {
-            if (typeof toRemove === "string")
+            if (typeof toRemove === "string") {
                 return removeByName(toRemove);
-            else
+            }
+            else {
                 return removeByReference(toRemove);
+            }
         },
         removeByTag: (toRemove) => {
             let isRemoved = false;
@@ -22396,8 +21493,9 @@ const constructStack = () => {
             });
         },
         identifyOnResolve(toggle) {
-            if (typeof toggle === "boolean")
+            if (typeof toggle === "boolean") {
                 identifyOnResolve = toggle;
+            }
             return identifyOnResolve;
         },
         resolve: (handler, context) => {
@@ -22693,15 +21791,21 @@ function schemaLogFilter(schema, data) {
         return SENSITIVE_STRING$1;
     }
     if (ns.isListSchema()) {
-        const isSensitive = !!ns.getValueSchema().getMergedTraits().sensitive;
-        if (isSensitive) {
+        const valueSchema = ns.getValueSchema();
+        if (valueSchema.getMergedTraits().sensitive) {
             return SENSITIVE_STRING$1;
+        }
+        if (Array.isArray(data)) {
+            return data.map((value) => schemaLogFilter(valueSchema, value));
         }
     }
     else if (ns.isMapSchema()) {
-        const isSensitive = !!ns.getKeySchema().getMergedTraits().sensitive || !!ns.getValueSchema().getMergedTraits().sensitive;
-        if (isSensitive) {
+        const valueSchema = ns.getValueSchema();
+        if (ns.getKeySchema().getMergedTraits().sensitive || valueSchema.getMergedTraits().sensitive) {
             return SENSITIVE_STRING$1;
+        }
+        if (typeof data === "object") {
+            return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, schemaLogFilter(valueSchema, value)]));
         }
     }
     else if (ns.isStructSchema() && typeof data === "object") {
@@ -22717,6 +21821,7 @@ function schemaLogFilter(schema, data) {
     return data;
 }
 
+const operationEventStreamMarker = Symbol.for("@smithy/op-event-stream");
 class Command {
     middlewareStack = constructStack();
     schema;
@@ -22750,9 +21855,21 @@ class Command {
             requestOptions = { ...requestOptions };
             delete requestOptions.metricsRecorder;
         }
-        if (smithyContext.eventStream) {
+        let isEventStream;
+        const schema = this.schema;
+        const marker = schema?.[operationEventStreamMarker];
+        if (marker !== undefined) {
+            isEventStream = marker;
+        }
+        else if (schema) {
+            if (Array.isArray(schema) && schema[0] === 9) {
+                const [, , , , input$, output$] = schema;
+                isEventStream = schema[operationEventStreamMarker] = Boolean(NormalizedSchema.of(input$).getEventStreamMember() || NormalizedSchema.of(output$).getEventStreamMember());
+            }
+        }
+        if (isEventStream) {
             requestOptions = {
-                isEventStream: true,
+                isEventStream,
                 ...requestOptions,
             };
         }
@@ -22863,8 +21980,9 @@ const createAggregatedClient = (commands, Client, options) => {
                 this.send(command, optionsOrCb);
             }
             else if (typeof cb === "function") {
-                if (typeof optionsOrCb !== "object")
+                if (typeof optionsOrCb !== "object") {
                     throw new Error(`Expected http options but got ${typeof optionsOrCb}`);
+                }
                 this.send(command, optionsOrCb || {}, cb);
             }
             else {
@@ -22904,6 +22022,7 @@ const createAggregatedClient = (commands, Client, options) => {
 };
 
 class ServiceException extends Error {
+    static shapeId = "smithy.ts.sdk.synthetic.nonamespace.client#ServiceException";
     $fault;
     $response;
     $retryable;
@@ -22916,8 +22035,9 @@ class ServiceException extends Error {
         this.$metadata = options.$metadata;
     }
     static isInstance(value) {
-        if (!value)
+        if (!value) {
             return false;
+        }
         const candidate = value;
         return (ServiceException.prototype.isPrototypeOf(candidate) ||
             (Boolean(candidate.$fault) &&
@@ -22925,8 +22045,9 @@ class ServiceException extends Error {
                 (candidate.$fault === "client" || candidate.$fault === "server")));
     }
     static [Symbol.hasInstance](instance) {
-        if (!instance)
+        if (!instance) {
             return false;
+        }
         const candidate = instance;
         if (this === ServiceException) {
             return ServiceException.isInstance(instance);
@@ -22935,22 +22056,43 @@ class ServiceException extends Error {
             if (this.prototype.isPrototypeOf(instance)) {
                 return true;
             }
-            const targetName = this.name;
-            if (!targetName || !candidate.name) {
+            const targetId = Object.prototype.hasOwnProperty.call(this, "shapeId")
+                ? this.shapeId
+                : undefined;
+            let candidateHasShapeId = false;
+            if (targetId) {
+                let proto = Object.getPrototypeOf(candidate);
+                while (proto && proto !== Object.prototype) {
+                    const ctor = proto.constructor;
+                    const candidateId = ctor !== ServiceException && Object.prototype.hasOwnProperty.call(ctor, "shapeId")
+                        ? ctor?.shapeId
+                        : undefined;
+                    if (candidateId) {
+                        candidateHasShapeId = true;
+                        if (candidateId === targetId) {
+                            return true;
+                        }
+                    }
+                    proto = Object.getPrototypeOf(proto);
+                }
+            }
+            if (targetId && candidateHasShapeId) {
                 return false;
             }
-            if (candidate.name === targetName) {
-                return true;
-            }
-            let proto = Object.getPrototypeOf(candidate);
-            while (proto && proto !== Object.prototype) {
-                const ctorName = proto.constructor?.name;
-                if (ctorName && ctorName !== "Error" && ctorName === targetName) {
+            const targetName = this.name;
+            if (targetName && targetName.length >= 6) {
+                if (candidate.name === targetName) {
                     return true;
                 }
-                proto = Object.getPrototypeOf(proto);
+                let proto = Object.getPrototypeOf(candidate);
+                while (proto && proto !== Object.prototype) {
+                    const ctorName = proto.constructor?.name;
+                    if (ctorName && ctorName !== "Error" && ctorName === targetName) {
+                        return true;
+                    }
+                    proto = Object.getPrototypeOf(proto);
+                }
             }
-            return false;
         }
         return false;
     }
@@ -23029,8 +22171,9 @@ const knownAlgorithms = Object.values(AlgorithmId);
 const getChecksumConfiguration = (runtimeConfig) => {
     const checksumAlgorithms = [];
     for (const id in AlgorithmId) {
-        if (!hasOwn(AlgorithmId, id))
+        if (!hasOwn(AlgorithmId, id)) {
             continue;
+        }
         const algorithmId = AlgorithmId[id];
         if (runtimeConfig[algorithmId] === undefined) {
             continue;
@@ -23104,8 +22247,9 @@ const getArrayIfSingleItem = (mayBeArray) => Array.isArray(mayBeArray) ? mayBeAr
 const getValueFromTextNode = (obj) => {
     const textNodeName = "#text";
     for (const key in obj) {
-        if (!hasOwn(obj, key))
+        if (!hasOwn(obj, key)) {
             continue;
+        }
         if (obj[key][textNodeName] !== undefined) {
             obj[key] = obj[key][textNodeName];
         }
@@ -23148,8 +22292,9 @@ function map(arg0, arg1, arg2) {
         }
     }
     for (const key in instructions) {
-        if (!hasOwn(instructions, key))
+        if (!hasOwn(instructions, key)) {
             continue;
+        }
         if (!Array.isArray(instructions[key])) {
             target[key] = instructions[key];
             continue;
@@ -23168,8 +22313,9 @@ const convertMap = (target) => {
 const take = (source, instructions) => {
     const out = {};
     for (const key in instructions) {
-        if (!hasOwn(instructions, key))
+        if (!hasOwn(instructions, key)) {
             continue;
+        }
         applyInstruction(out, source, instructions, key);
     }
     return out;
@@ -23250,8 +22396,9 @@ const _json = (obj) => {
     if (typeof obj === "object") {
         const target = {};
         for (const key in obj) {
-            if (!hasOwn(obj, key))
+            if (!hasOwn(obj, key)) {
                 continue;
+            }
             if (obj[key] == null) {
                 continue;
             }
@@ -23440,18 +22587,22 @@ const memoize = (provider, isExpired, requiresRefresh) => {
 };
 
 const booleanSelector = (obj, key, type) => {
-    if (!(key in obj))
+    if (!(key in obj)) {
         return undefined;
-    if (obj[key] === "true")
+    }
+    if (obj[key] === "true") {
         return true;
-    if (obj[key] === "false")
+    }
+    if (obj[key] === "false") {
         return false;
+    }
     throw new Error(`Cannot load ${type} "${key}". Expected "true" or "false", got ${obj[key]}.`);
 };
 
 const numberSelector = (obj, key, type) => {
-    if (!(key in obj))
+    if (!(key in obj)) {
         return undefined;
+    }
     const numberValue = parseInt(obj[key], 10);
     if (Number.isNaN(numberValue)) {
         throw new TypeError(`Cannot load ${type} '${key}'. Expected number, got '${obj[key]}'.`);
@@ -23474,15 +22625,19 @@ const getHomeDirCacheKey = () => {
 };
 const getHomeDir = () => {
     const { HOME, USERPROFILE, HOMEPATH, HOMEDRIVE = `C:${sep}` } = process.env;
-    if (HOME)
+    if (HOME) {
         return HOME;
-    if (USERPROFILE)
+    }
+    if (USERPROFILE) {
         return USERPROFILE;
-    if (HOMEPATH)
+    }
+    if (HOMEPATH) {
         return `${HOMEDRIVE}${HOMEPATH}`;
+    }
     const homeDirCacheKey = getHomeDirCacheKey();
-    if (!homeDirCache[homeDirCacheKey])
+    if (!homeDirCache[homeDirCacheKey]) {
         homeDirCache[homeDirCacheKey] = homedir();
+    }
     return homeDirCache[homeDirCacheKey];
 };
 
@@ -24121,11 +23276,13 @@ const getEndpointUrlConfig = (serviceId) => ({
     environmentVariableSelector: (env) => {
         const serviceSuffixParts = serviceId.split(" ").map((w) => w.toUpperCase());
         const serviceEndpointUrl = env[[ENV_ENDPOINT_URL, ...serviceSuffixParts].join("_")];
-        if (serviceEndpointUrl)
+        if (serviceEndpointUrl) {
             return serviceEndpointUrl;
+        }
         const endpointUrl = env[ENV_ENDPOINT_URL];
-        if (endpointUrl)
+        if (endpointUrl) {
             return endpointUrl;
+        }
         return undefined;
     },
     configFileSelector: (profile, config) => {
@@ -24137,12 +23294,14 @@ const getEndpointUrlConfig = (serviceId) => ({
             const servicesSection = config[servicesSectionKey];
             const servicePrefixParts = serviceId.split(" ").map((w) => w.toLowerCase());
             const endpointUrl = servicesSection[[servicePrefixParts.join("_"), CONFIG_ENDPOINT_URL].join(CONFIG_PREFIX_SEPARATOR)];
-            if (endpointUrl)
+            if (endpointUrl) {
                 return endpointUrl;
+            }
         }
         const endpointUrl = profile[CONFIG_ENDPOINT_URL];
-        if (endpointUrl)
+        if (endpointUrl) {
             return endpointUrl;
+        }
         return undefined;
     },
     default: undefined,
@@ -24465,7 +23624,8 @@ class EndpointCache {
             return false;
         }
         for (const param of parameters) {
-            const val = String(endpointParams[param] ?? "");
+            const raw = endpointParams[param];
+            const val = raw == null ? "\0" : String(raw);
             if (val.includes("|;")) {
                 return false;
             }
@@ -24940,8 +24100,9 @@ const resolveEndpoint = (ruleSetObject, options) => {
     const { parameters, rules } = ruleSetObject;
     options.logger?.debug?.(`${debugId} Initial EndpointParams: ${toDebugString(endpointParams)}`);
     for (const paramKey in parameters) {
-        if (!hasOwn(parameters, paramKey))
+        if (!hasOwn(parameters, paramKey)) {
             continue;
+        }
         const parameter = parameters[paramKey];
         const endpointParam = endpointParams[paramKey];
         if (endpointParam == null && parameter.default != null) {
@@ -25038,8 +24199,9 @@ function negate(bytes) {
     }
     for (let i = 7; i > -1; i--) {
         bytes[i]++;
-        if (bytes[i] !== 0)
+        if (bytes[i] !== 0) {
             break;
+        }
     }
 }
 
@@ -25053,9 +24215,13 @@ class HeaderMarshaller {
     format(headers) {
         const chunks = [];
         for (const headerName in headers) {
-            if (!hasOwn(headers, headerName))
+            if (!hasOwn(headers, headerName)) {
                 continue;
+            }
             const bytes = this.fromUtf8(headerName);
+            if (bytes.byteLength > 255) {
+                throw new Error(`@smithy/core/event-streams - header name exceeds 255 bytes: ${bytes.byteLength}`);
+            }
             chunks.push(Uint8Array.from([bytes.byteLength]), bytes, this.formatHeaderValue(headers[headerName]));
         }
         const out = new Uint8Array(chunks.reduce((carry, bytes) => carry + bytes.byteLength, 0));
@@ -25088,6 +24254,9 @@ class HeaderMarshaller {
                 longBytes.set(header.value.bytes, 1);
                 return longBytes;
             case "binary":
+                if (header.value.byteLength > MAX_HEADER_VALUE_BYTES) {
+                    throw new Error(`@smithy/core/event-streams - header value (binary) exceeds ${MAX_HEADER_VALUE_BYTES} bytes: ${header.value.byteLength}`);
+                }
                 const binView = new DataView(new ArrayBuffer(3 + header.value.byteLength));
                 binView.setUint8(0, 6);
                 binView.setUint16(1, header.value.byteLength, false);
@@ -25096,6 +24265,9 @@ class HeaderMarshaller {
                 return binBytes;
             case "string":
                 const utf8Bytes = this.fromUtf8(header.value);
+                if (utf8Bytes.byteLength > MAX_HEADER_VALUE_BYTES) {
+                    throw new Error(`@smithy/core/event-streams - header value (string) exceeds ${MAX_HEADER_VALUE_BYTES} bytes: ${utf8Bytes.byteLength}`);
+                }
                 const strView = new DataView(new ArrayBuffer(3 + utf8Bytes.byteLength));
                 strView.setUint8(0, 7);
                 strView.setUint16(1, utf8Bytes.byteLength, false);
@@ -25227,6 +24399,7 @@ const STRING_TAG = "string";
 const TIMESTAMP_TAG = "timestamp";
 const UUID_TAG = "uuid";
 const UUID_PATTERN = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const MAX_HEADER_VALUE_BYTES = 32767;
 
 const PRELUDE_MEMBER_LENGTH = 4;
 const PRELUDE_LENGTH = PRELUDE_MEMBER_LENGTH * 2;
@@ -25370,8 +24543,9 @@ class SmithyMessageDecoderStream {
     async *asyncIterator() {
         for await (const message of this.options.messageStream) {
             const deserialized = await this.options.deserializer(message);
-            if (deserialized === undefined)
+            if (deserialized === undefined) {
                 continue;
+            }
             yield deserialized;
         }
     }
@@ -25467,8 +24641,9 @@ function getUnmarshalledStream(source, options) {
             for await (const chunk of source) {
                 const message = options.eventStreamCodec.decode(chunk);
                 const type = await messageUnmarshaller(message);
-                if (type === undefined)
+                if (type === undefined) {
                     continue;
+                }
                 yield type;
             }
         },
@@ -25498,8 +24673,9 @@ function getMessageUnmarshaller(deserializer, toUtf8) {
                 [message.headers[":event-type"].value]: message,
             };
             const deserialized = await deserializer(event);
-            if (deserialized.$unknown)
+            if (deserialized.$unknown) {
                 return;
+            }
             return deserialized;
         }
         else {
@@ -25582,8 +24758,9 @@ const readableStreamToIterable = (readableStream) => ({
         try {
             while (true) {
                 const { done, value } = await reader.read();
-                if (done)
+                if (done) {
                     return;
+                }
                 yield value;
             }
         }
@@ -25661,8 +24838,9 @@ class EventStreamSerde {
             }
             let unionMember = "";
             for (const key in event) {
-                if (!hasOwn(event, key))
+                if (!hasOwn(event, key)) {
                     continue;
+                }
                 if (key !== "__type") {
                     unionMember = key;
                     break;
@@ -25690,8 +24868,9 @@ class EventStreamSerde {
         const asyncIterable = marshaller.deserialize(response.body, async (event) => {
             let unionMember = "";
             for (const key in event) {
-                if (!hasOwn(event, key))
+                if (!hasOwn(event, key)) {
                     continue;
+                }
                 if (key !== "__type") {
                     unionMember = key;
                     break;
@@ -25766,8 +24945,9 @@ class EventStreamSerde {
                 throw new Error("@smithy::core/protocols - initial-response event encountered in event stream but no response schema given.");
             }
             for (const key in firstEvent.value) {
-                if (!hasOwn(firstEvent.value, key))
+                if (!hasOwn(firstEvent.value, key)) {
                     continue;
+                }
                 initialResponseContainer[key] = firstEvent.value[key];
             }
         }
@@ -25924,15 +25104,15 @@ exports.universalEventStreamSerdeProvider = eventStreamSerdeProvider$1;
 /***/ 3422:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-const { Uint8ArrayBlobAdapter, sdkStreamMixin, splitEvery, splitHeader, fromBase64, _parseEpochTimestamp, _parseRfc7231DateTime, _parseRfc3339DateTimeWithOffset, LazyJsonString, NumericValue, toUtf8, fromUtf8, generateIdempotencyToken, toBase64, dateToUtcString, quoteHeader } = __nccwpck_require__(2430);
-const { HttpRequest, HttpResponse, hasOwn, isValidHostname } = __nccwpck_require__(4534);
+const { Uint8ArrayBlobAdapter, sdkStreamMixin, splitEvery, splitHeader, fromBase64, _parseEpochTimestamp, _parseRfc7231DateTime, _parseRfc3339DateTimeWithOffset, LazyJsonString, NumericValue, toUtf8, fromUtf8, generateIdempotencyToken, toBase64, dateToUtcString, quoteHeader, writeKey, parseEpochTimestamp, parseRfc7231DateTime, parseRfc3339DateTimeWithOffset } = __nccwpck_require__(2430);
+const { HttpRequest, HttpResponse, hasOwn, isValidHostname, getSmithyContext } = __nccwpck_require__(4534);
 const { parseQueryString, parseUrl } = __nccwpck_require__(4534);
 exports.HttpRequest = HttpRequest;
 exports.HttpResponse = HttpResponse;
 exports.isValidHostname = isValidHostname;
 exports.parseQueryString = parseQueryString;
 exports.parseUrl = parseUrl;
-const { TypeRegistry, NormalizedSchema, translateTraits } = __nccwpck_require__(6890);
+const { TypeRegistry, NormalizedSchema, translateTraits, deref } = __nccwpck_require__(6890);
 const { FieldPosition } = __nccwpck_require__(690);
 
 const collectBody = async (streamBody = new Uint8Array(), context) => {
@@ -26001,8 +25181,9 @@ class HttpProtocol extends SerdeContext {
             }
             if (endpoint.headers) {
                 for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
+                    if (!hasOwn(endpoint.headers, name)) {
                         continue;
+                    }
                     request.headers[name] = endpoint.headers[name].join(", ");
                 }
             }
@@ -26018,8 +25199,9 @@ class HttpProtocol extends SerdeContext {
             };
             if (endpoint.headers) {
                 for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
+                    if (!hasOwn(endpoint.headers, name)) {
                         continue;
+                    }
                     request.headers[name] = endpoint.headers[name];
                 }
             }
@@ -26240,8 +25422,9 @@ class HttpBindingProtocol extends HttpProtocol {
             }
             else if (typeof memberTraits.httpPrefixHeaders === "string") {
                 for (const key in inputMemberValue) {
-                    if (!hasOwn(inputMemberValue, key))
+                    if (!hasOwn(inputMemberValue, key)) {
                         continue;
+                    }
                     const val = inputMemberValue[key];
                     const amalgam = memberTraits.httpPrefixHeaders + key;
                     serializer.write([memberNs.getValueSchema(), { httpHeader: amalgam }], val);
@@ -26288,8 +25471,9 @@ class HttpBindingProtocol extends HttpProtocol {
         const traits = ns.getMergedTraits();
         if (traits.httpQueryParams) {
             for (const key in data) {
-                if (!hasOwn(data, key))
+                if (!hasOwn(data, key)) {
                     continue;
+                }
                 if (!(key in query)) {
                     const val = data[key];
                     const valueSchema = ns.getValueSchema();
@@ -26333,8 +25517,9 @@ class HttpBindingProtocol extends HttpProtocol {
             throw new Error("@smithy/core/protocols - HTTP Protocol error handler failed to throw.");
         }
         for (const header in response.headers) {
-            if (!hasOwn(response.headers, header))
+            if (!hasOwn(response.headers, header)) {
                 continue;
+            }
             const value = response.headers[header];
             delete response.headers[header];
             response.headers[header.toLowerCase()] = value;
@@ -26422,8 +25607,9 @@ class HttpBindingProtocol extends HttpProtocol {
             else if (memberTraits.httpPrefixHeaders !== undefined) {
                 dataObject[memberName] = {};
                 for (const header in response.headers) {
-                    if (!hasOwn(response.headers, header))
+                    if (!hasOwn(response.headers, header)) {
                         continue;
+                    }
                     if (header.startsWith(memberTraits.httpPrefixHeaders)) {
                         const value = response.headers[header];
                         const valueSchema = memberSchema.getValueSchema();
@@ -26500,7 +25686,7 @@ class RpcProtocol extends HttpProtocol {
         const deserializer = this.deserializer;
         const ns = NormalizedSchema.of(operationSchema.output);
         const dataObject = {};
-        if (response.statusCode >= 300) {
+        if (this.isErrorResponse(response.statusCode)) {
             const bytes = await collectBody(response.body, context);
             if (bytes.byteLength > 0) {
                 Object.assign(dataObject, await deserializer.read(15, bytes));
@@ -26509,8 +25695,9 @@ class RpcProtocol extends HttpProtocol {
             throw new Error("@smithy/core/protocols - RPC Protocol error handler failed to throw.");
         }
         for (const header in response.headers) {
-            if (!hasOwn(response.headers, header))
+            if (!hasOwn(response.headers, header)) {
                 continue;
+            }
             const value = response.headers[header];
             delete response.headers[header];
             response.headers[header.toLowerCase()] = value;
@@ -26531,6 +25718,42 @@ class RpcProtocol extends HttpProtocol {
         }
         dataObject.$metadata = this.deserializeMetadata(response);
         return dataObject;
+    }
+    isErrorResponse(statusCode) {
+        return statusCode >= 300;
+    }
+}
+
+class AbstractRpcV2Protocol extends RpcProtocol {
+    constructor({ defaultNamespace, errorTypeRegistries, }) {
+        super({ defaultNamespace, errorTypeRegistries });
+    }
+    async serializeRequest(operationSchema, input, context) {
+        const request = await super.serializeRequest(operationSchema, input, context);
+        Object.assign(request.headers, {
+            "content-type": this.getDefaultContentType(),
+            "smithy-protocol": this.getSmithyProtocolHeaderValue(),
+            accept: this.getDefaultContentType(),
+        });
+        if (deref(operationSchema.input) === "unit") {
+            delete request.body;
+            delete request.headers["content-type"];
+        }
+        else {
+            this.applyEmptyBody(request);
+        }
+        const { service, operation } = getSmithyContext(context);
+        const path = `/service/${service}/operation/${operation}`;
+        if (request.path.endsWith("/")) {
+            request.path += path.slice(1);
+        }
+        else {
+            request.path += path;
+        }
+        return request;
+    }
+    isErrorResponse(statusCode) {
+        return statusCode !== 200;
     }
 }
 
@@ -26911,6 +26134,9 @@ const getHttpHandlerExtensionConfiguration = (runtimeConfig) => {
     if (runtimeConfig.logger && runtimeConfig.logger.constructor?.name !== "NoOpLogger") {
         runtimeConfig.requestHandler?.updateHttpClientConfig?.(Symbol.for("logger"), runtimeConfig.logger);
     }
+    if (runtimeConfig.defaultSocketTimeout) {
+        runtimeConfig.requestHandler?.updateHttpClientConfig?.(Symbol.for("@smithy/defaultSocketTimeout"), runtimeConfig.defaultSocketTimeout);
+    }
     return {
         setHttpHandler(handler) {
             runtimeConfig.requestHandler = handler;
@@ -26999,6 +26225,1673 @@ function buildQueryString(query) {
     return parts.join("&");
 }
 
+class SerdeContextConfig {
+    serdeContext;
+    setSerdeContext(serdeContext) {
+        this.serdeContext = serdeContext;
+    }
+}
+
+class UnionSerde {
+    from;
+    to;
+    keys;
+    constructor(from, to) {
+        this.from = from;
+        this.to = to;
+        const keys = Object.keys(this.from);
+        const set = new Set(keys);
+        set.delete("__type");
+        this.keys = set;
+    }
+    mark(key) {
+        this.keys.delete(key);
+    }
+    hasUnknown() {
+        return this.keys.size === 1 && Object.keys(this.to).length === 0;
+    }
+    writeUnknown() {
+        if (this.hasUnknown()) {
+            const k = this.keys.values().next().value;
+            const v = this.from[k];
+            this.to.$unknown = [k, v];
+        }
+    }
+}
+
+let canParseBuffer;
+function detectBufferParsing() {
+    if (canParseBuffer === undefined) {
+        try {
+            if (typeof Buffer !== "function") {
+                canParseBuffer = false;
+            }
+            else {
+                const result = JSON.parse(Buffer.from([0x7b, 0x7d]));
+                canParseBuffer = result !== null && typeof result === "object";
+            }
+        }
+        catch {
+            canParseBuffer = false;
+        }
+    }
+    return canParseBuffer;
+}
+
+function jsonReviver(key, value, context) {
+    if (context?.source) {
+        const numericString = context.source;
+        if (typeof value === "number") {
+            const inSafeRange = value <= Number.MAX_SAFE_INTEGER && value >= Number.MIN_SAFE_INTEGER;
+            if (inSafeRange) {
+                if (isRepresentable(numericString, value)) {
+                    return value;
+                }
+                return new NumericValue(numericString, "bigDecimal");
+            }
+            else {
+                if (isFractionalBigNumeric(numericString)) {
+                    return new NumericValue(numericString, "bigDecimal");
+                }
+                if (/[eE]/.test(numericString)) {
+                    return expandExponentToBigInt(numericString);
+                }
+                return BigInt(numericString);
+            }
+        }
+    }
+    return value;
+}
+function isFractionalBigNumeric(s) {
+    const dotIndex = s.indexOf(".");
+    if (dotIndex === -1) {
+        return false;
+    }
+    const eIndex = s.search(/[eE]/);
+    if (eIndex === -1) {
+        return true;
+    }
+    const fracDigits = eIndex - dotIndex - 1;
+    const exp = parseInt(s.slice(eIndex + 1), 10);
+    return exp < fracDigits;
+}
+function isRepresentable(numericString, value) {
+    if (numericString === String(value)) {
+        return true;
+    }
+    if (Object.is(value, -0)) {
+        return true;
+    }
+    if (/[eE]/.test(numericString)) {
+        return expandToDecimal(numericString) === expandToDecimal(String(value));
+    }
+    const normalized = numericString.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+    const canonical = String(value);
+    if (normalized === canonical) {
+        return true;
+    }
+    if (/[eE]/.test(canonical)) {
+        return normalized === expandToDecimal(canonical);
+    }
+    return false;
+}
+function expandToDecimal(s) {
+    const negative = s.startsWith("-");
+    const abs = negative ? s.slice(1) : s;
+    const eIndex = abs.search(/[eE]/);
+    let result;
+    if (eIndex === -1) {
+        result = abs;
+    }
+    else {
+        const exp = parseInt(abs.slice(eIndex + 1), 10);
+        const mantissa = abs.slice(0, eIndex);
+        const dotIndex = mantissa.indexOf(".");
+        let digits;
+        let intLen;
+        if (dotIndex === -1) {
+            digits = mantissa;
+            intLen = mantissa.length;
+        }
+        else {
+            digits = mantissa.slice(0, dotIndex) + mantissa.slice(dotIndex + 1);
+            intLen = dotIndex;
+        }
+        digits = digits.replace(/0+$/, "") || "0";
+        const newDotPos = intLen + exp;
+        if (digits === "0") {
+            result = "0";
+        }
+        else if (newDotPos <= 0) {
+            result = "0." + "0".repeat(-newDotPos) + digits;
+        }
+        else if (newDotPos >= digits.length) {
+            result = digits + "0".repeat(newDotPos - digits.length);
+        }
+        else {
+            result = digits.slice(0, newDotPos) + "." + digits.slice(newDotPos);
+        }
+    }
+    if (result.includes(".")) {
+        result = result.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+    }
+    return (negative ? "-" : "") + result;
+}
+function expandExponentToBigInt(s) {
+    const eIndex = s.search(/[eE]/);
+    const exp = parseInt(s.slice(eIndex + 1), 10);
+    const negative = s.startsWith("-");
+    const mantissa = s.slice(negative ? 1 : 0, eIndex);
+    const dotIndex = mantissa.indexOf(".");
+    let digits;
+    let shift;
+    if (dotIndex === -1) {
+        digits = mantissa;
+        shift = exp;
+    }
+    else {
+        digits = mantissa.slice(0, dotIndex) + mantissa.slice(dotIndex + 1);
+        const fracDigits = mantissa.length - dotIndex - 1;
+        shift = exp - fracDigits;
+    }
+    digits = digits.replace(/0+$/, "") || "0";
+    const result = BigInt(digits) * 10n ** BigInt(shift + (mantissa.replace(".", "").length - digits.length));
+    return negative ? -result : result;
+}
+
+const REVIVER_SYMBOL = Symbol.for("@aws-sdk/reviver");
+function needsReviver(schema) {
+    const ns = NormalizedSchema.of(schema);
+    const raw = ns.getSchema();
+    if (Array.isArray(raw) && ns.isStructSchema()) {
+        if (REVIVER_SYMBOL in raw) {
+            return raw[REVIVER_SYMBOL];
+        }
+        const result = _check(ns, new Set());
+        raw[REVIVER_SYMBOL] = result;
+        return result;
+    }
+    return _check(ns, new Set());
+}
+function _check(ns, seen) {
+    const raw = ns.getSchema();
+    if (seen.has(raw)) {
+        return false;
+    }
+    seen.add(raw);
+    if (ns.isBigIntegerSchema() || ns.isBigDecimalSchema()) {
+        return true;
+    }
+    if (ns.isStructSchema()) {
+        for (const [, memberSchema] of ns.structIterator()) {
+            if (_check(memberSchema, seen)) {
+                return true;
+            }
+        }
+    }
+    else if (ns.isListSchema() || ns.isMapSchema()) {
+        if (_check(ns.getValueSchema(), seen)) {
+            return true;
+        }
+    }
+    else if (ns.isDocumentSchema()) {
+        return true;
+    }
+    return false;
+}
+
+const collectBodyString = (streamBody, context) => collectBody(streamBody, context).then((body) => (context?.utf8Encoder ?? toUtf8)(body));
+
+async function parseJsonBody(streamBody, context, schema) {
+    let parsingInput;
+    if (detectBufferParsing() && typeof streamBody?.[Symbol.asyncIterator] === "function") {
+        const buffer = await collectBody(streamBody, context);
+        if (typeof Buffer === "function") {
+            if (Buffer.isBuffer(buffer)) {
+                parsingInput = buffer;
+            }
+            else {
+                parsingInput = Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+            }
+        }
+    }
+    if (!parsingInput) {
+        parsingInput = await collectBodyString(streamBody, context);
+    }
+    if (parsingInput.length === 0) {
+        return {};
+    }
+    const reviver = schema && needsReviver(schema) ? jsonReviver : undefined;
+    try {
+        return JSON.parse(parsingInput, reviver);
+    }
+    catch (e) {
+        if (e?.name === "SyntaxError") {
+            Object.defineProperty(e, "$responseBodyText", {
+                value: typeof parsingInput === "string" ? parsingInput : parsingInput.toString("utf8"),
+            });
+        }
+        throw e;
+    }
+}
+const parseJsonErrorBody = async (errorBody, context) => {
+    const value = await parseJsonBody(errorBody, context);
+    value.message = value.message ?? value.Message;
+    return value;
+};
+const findKey = (object, key) => Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());
+const sanitizeErrorCode = (rawValue) => {
+    let cleanValue = rawValue;
+    if (typeof cleanValue === "number") {
+        cleanValue = cleanValue.toString();
+    }
+    if (cleanValue.indexOf(",") >= 0) {
+        cleanValue = cleanValue.split(",")[0];
+    }
+    if (cleanValue.indexOf(":") >= 0) {
+        cleanValue = cleanValue.split(":")[0];
+    }
+    if (cleanValue.indexOf("#") >= 0) {
+        cleanValue = cleanValue.split("#")[1];
+    }
+    return cleanValue;
+};
+const loadRestJsonErrorCode = (output, data) => {
+    return loadErrorCode(output, data, ["header", "code", "type"]);
+};
+const loadJsonRpcErrorCode = (output, data, queryCompat = false) => {
+    return loadErrorCode(output, data, queryCompat ? ["code", "header", "type"] : ["type", "code", "header"]);
+};
+const loadSmithyRpcV2JsonErrorCode = (output, data) => {
+    if (data?.__type !== undefined) {
+        let cleanValue = data.__type;
+        if (typeof cleanValue === "number") {
+            cleanValue = cleanValue.toString();
+        }
+        if (cleanValue.indexOf(",") >= 0) {
+            cleanValue = cleanValue.split(",")[0];
+        }
+        if (cleanValue.indexOf(":") >= 0) {
+            cleanValue = cleanValue.split(":")[0];
+        }
+        return cleanValue;
+    }
+};
+const loadErrorCode = ({ headers }, data, order) => {
+    while (order.length > 0) {
+        const location = order.shift();
+        switch (location) {
+            case "header":
+                const headerKey = findKey(headers ?? {}, "x-amzn-errortype");
+                if (headerKey !== undefined) {
+                    return sanitizeErrorCode(headers[headerKey]);
+                }
+                break;
+            case "code":
+                const codeKey = findKey(data ?? {}, "code");
+                if (codeKey && data[codeKey] !== undefined) {
+                    return sanitizeErrorCode(data[codeKey]);
+                }
+                break;
+            case "type":
+                if (data?.__type !== undefined) {
+                    return sanitizeErrorCode(data.__type);
+                }
+                break;
+        }
+    }
+};
+
+class JsonShapeDeserializer2 extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    async read(schema, data) {
+        const reviver = needsReviver(schema) ? jsonReviver : undefined;
+        let parsed;
+        if (typeof data === "string") {
+            if (data.length === 0) {
+                return {};
+            }
+            parsed = JSON.parse(data, reviver);
+        }
+        else if (data instanceof Uint8Array && detectBufferParsing()) {
+            if (data.byteLength === 0) {
+                return {};
+            }
+            const buf = Buffer.isBuffer(data) ? data : Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+            parsed = JSON.parse(buf, reviver);
+        }
+        else {
+            parsed = await parseJsonBody(data, this.serdeContext, schema);
+        }
+        return this._read(schema, parsed);
+    }
+    readObject(schema, data) {
+        return this._read(schema, data);
+    }
+    _read(schema, value) {
+        const isObject = value !== null && typeof value === "object";
+        const ns = NormalizedSchema.of(schema);
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                return this._readStruct(ns, value);
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                if (this.needsTransform(listMember)) {
+                    for (let i = 0; i < value.length; ++i) {
+                        value[i] = this._read(listMember, value[i]);
+                    }
+                }
+                return value;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const map = value;
+                if (this.needsTransform(mapMember)) {
+                    for (const k in map) {
+                        if (!hasOwn(map, k)) {
+                            continue;
+                        }
+                        if (k === "__proto__") {
+                            writeKey(map);
+                        }
+                        map[k] = this._read(mapMember, map[k]);
+                    }
+                }
+                return map;
+            }
+        }
+        if (ns.isBlobSchema() && typeof value === "string") {
+            return fromBase64(value);
+        }
+        const mediaType = ns.getMergedTraits().mediaType;
+        if (ns.isStringSchema() && typeof value === "string" && mediaType) {
+            const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+            if (isJson) {
+                return LazyJsonString.from(value);
+            }
+            return value;
+        }
+        if (ns.isTimestampSchema() && value != null) {
+            const format = determineTimestampFormat(ns, this.settings);
+            switch (format) {
+                case 5:
+                    return parseRfc3339DateTimeWithOffset(value);
+                case 6:
+                    return parseRfc7231DateTime(value);
+                case 7:
+                    return parseEpochTimestamp(value);
+                default:
+                    console.warn("Missing timestamp format, parsing value with Date constructor:", value);
+                    return new Date(value);
+            }
+        }
+        if (ns.isBigIntegerSchema() && (typeof value === "number" || typeof value === "string")) {
+            return BigInt(value);
+        }
+        if (ns.isBigDecimalSchema() && value != undefined) {
+            if (value instanceof NumericValue) {
+                return value;
+            }
+            const untyped = value;
+            if (untyped.type === "bigDecimal" && "string" in untyped) {
+                return new NumericValue(untyped.string, untyped.type);
+            }
+            return new NumericValue(String(value), "bigDecimal");
+        }
+        if (ns.isNumericSchema() && typeof value === "string") {
+            switch (value) {
+                case "Infinity":
+                    return Infinity;
+                case "-Infinity":
+                    return -Infinity;
+                case "NaN":
+                    return NaN;
+            }
+            return value;
+        }
+        if (ns.isDocumentSchema()) {
+            if (isObject) {
+                if (Array.isArray(value)) {
+                    for (let i = 0; i < value.length; ++i) {
+                        const v = value[i];
+                        if (!(v instanceof NumericValue)) {
+                            value[i] = this._read(ns, v);
+                        }
+                    }
+                }
+                else {
+                    const doc = value;
+                    for (const k in doc) {
+                        if (!hasOwn(doc, k)) {
+                            continue;
+                        }
+                        if (k === "__proto__") {
+                            writeKey(doc);
+                        }
+                        const v = doc[k];
+                        if (!(v instanceof NumericValue)) {
+                            doc[k] = this._read(ns, v);
+                        }
+                    }
+                }
+            }
+        }
+        return value;
+    }
+    _readStruct(ns, record) {
+        const union = ns.isUnionSchema();
+        const out = {};
+        let nameMap;
+        const hasType = typeof record.__type === "string";
+        const { jsonName } = this.settings;
+        if (jsonName && hasType) {
+            nameMap = {};
+        }
+        let unionSerde;
+        if (union) {
+            unionSerde = new UnionSerde(record, out);
+        }
+        for (const [memberName, memberSchema] of ns.structIterator()) {
+            let fromKey = memberName;
+            if (jsonName) {
+                fromKey = memberSchema.getMergedTraits().jsonName ?? fromKey;
+                if (hasType) {
+                    nameMap[fromKey] = memberName;
+                }
+            }
+            if (union) {
+                unionSerde.mark(fromKey);
+            }
+            if (record[fromKey] != null) {
+                out[memberName] = this._read(memberSchema, record[fromKey]);
+            }
+        }
+        if (union) {
+            unionSerde.writeUnknown();
+        }
+        else if (hasType) {
+            for (const k in record) {
+                if (!hasOwn(record, k)) {
+                    continue;
+                }
+                const v = record[k];
+                const t = jsonName ? (nameMap[k] ?? k) : k;
+                if (!(t in out)) {
+                    out[t] = v;
+                }
+            }
+        }
+        return out;
+    }
+    needsTransform(ns) {
+        if (ns.isBlobSchema() ||
+            ns.isTimestampSchema() ||
+            ns.isBigIntegerSchema() ||
+            ns.isBigDecimalSchema() ||
+            ns.isNumericSchema()) {
+            return true;
+        }
+        if (ns.isDocumentSchema() || ns.isStructSchema() || ns.isListSchema() || ns.isMapSchema()) {
+            return true;
+        }
+        if (ns.isStringSchema() && ns.getMergedTraits().mediaType) {
+            return true;
+        }
+        return false;
+    }
+}
+
+class JsonBytesStringAdapter extends Uint8Array {
+    string = null;
+    static allocUnsafe(bytes) {
+        if (typeof Buffer === "function") {
+            const buffer = Buffer.allocUnsafe(bytes);
+            return new JsonBytesStringAdapter(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+        }
+        return new JsonBytesStringAdapter(bytes);
+    }
+    toString() {
+        return this.s();
+    }
+    valueOf() {
+        return this.s();
+    }
+    includes(searchString, position) {
+        if (typeof searchString === "string") {
+            return this.s().includes(searchString, position);
+        }
+        return Uint8Array.prototype.includes.call(this, searchString, position);
+    }
+    indexOf(searchString, position) {
+        if (typeof searchString === "string") {
+            return this.s().indexOf(searchString, position);
+        }
+        return Uint8Array.prototype.indexOf.call(this, searchString, position);
+    }
+    lastIndexOf(searchString, position) {
+        if (typeof searchString === "string") {
+            return this.s().lastIndexOf(searchString, position);
+        }
+        const fn = Uint8Array.prototype.lastIndexOf;
+        if (position !== undefined) {
+            return fn.call(this, searchString, position);
+        }
+        return fn.call(this, searchString);
+    }
+    startsWith(searchString, position) {
+        return this.s().startsWith(searchString, position);
+    }
+    endsWith(searchString, endPosition) {
+        return this.s().endsWith(searchString, endPosition);
+    }
+    match(regexp) {
+        return this.s().match(regexp);
+    }
+    replace(searchValue, replaceValue) {
+        return this.s().replace(searchValue, replaceValue);
+    }
+    search(regexp) {
+        return this.s().search(regexp);
+    }
+    split(separator, limit) {
+        return this.s().split(separator, limit);
+    }
+    substring(start, end) {
+        return this.s().substring(start, end);
+    }
+    trim() {
+        return this.s().trim();
+    }
+    trimStart() {
+        return this.s().trimStart();
+    }
+    trimEnd() {
+        return this.s().trimEnd();
+    }
+    charAt(pos) {
+        return this.s().charAt(pos);
+    }
+    charCodeAt(index) {
+        return this.s().charCodeAt(index);
+    }
+    padStart(maxLength, fillString) {
+        return this.s().padStart(maxLength, fillString);
+    }
+    padEnd(maxLength, fillString) {
+        return this.s().padEnd(maxLength, fillString);
+    }
+    repeat(count) {
+        return this.s().repeat(count);
+    }
+    toUpperCase() {
+        return this.s().toUpperCase();
+    }
+    toLowerCase() {
+        return this.s().toLowerCase();
+    }
+    s() {
+        if (this.string == null) {
+            const n = Date.now();
+            if (n > warned + 60_000) {
+                console.warn("@aws-sdk/core/protocols - WARN - JsonCodec2: you have called a string method on a Uint8Array request body. " +
+                    "It has been automatically converted to string. In a future version this will throw an error.");
+                warned = n;
+            }
+            this.string = toUtf8(this);
+        }
+        return this.string;
+    }
+}
+var warned = 0;
+
+const encoder = new TextEncoder();
+const OPEN_BRACE = 0x7b;
+const CLOSE_BRACE = 0x7d;
+const OPEN_BRACKET = 0x5b;
+const CLOSE_BRACKET = 0x5d;
+const QUOTE = 0x22;
+const COLON = 0x3a;
+const COMMA = 0x2c;
+const BACKSLASH = 0x5c;
+const TRUE = new Uint8Array([0x74, 0x72, 0x75, 0x65]);
+const FALSE = new Uint8Array([0x66, 0x61, 0x6c, 0x73, 0x65]);
+const NULL = new Uint8Array([0x6e, 0x75, 0x6c, 0x6c]);
+const ESCAPE_TABLE = new Array(128).fill(null);
+ESCAPE_TABLE[0x08] = "b";
+ESCAPE_TABLE[0x09] = "t";
+ESCAPE_TABLE[0x0a] = "n";
+ESCAPE_TABLE[0x0c] = "f";
+ESCAPE_TABLE[0x0d] = "r";
+ESCAPE_TABLE[0x22] = '"';
+ESCAPE_TABLE[0x5c] = "\\";
+for (let i = 0; i < 0x20; i++) {
+    if (ESCAPE_TABLE[i] === null) {
+        ESCAPE_TABLE[i] = "u00" + i.toString(16).padStart(2, "0");
+    }
+}
+const INITIAL_BUFFER_SIZE = 2048;
+function alloc(size) {
+    return JsonBytesStringAdapter.allocUnsafe(size);
+}
+class JsonShapeSerializer2 extends SerdeContextConfig {
+    settings;
+    json;
+    i = 0;
+    rootSchema;
+    rawValue;
+    passthrough = false;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+        this.json = alloc(INITIAL_BUFFER_SIZE);
+    }
+    write(schema, value) {
+        this.i = 0;
+        this.rawValue = value;
+        this.rootSchema = NormalizedSchema.of(schema);
+        this.passthrough = this.rootSchema.isBlobSchema() || this.rootSchema.isStringSchema();
+        if (!this.passthrough) {
+            this.writeValue(this.rootSchema, value, undefined);
+        }
+    }
+    writeDiscriminatedDocument(schema, value) {
+        this.i = 0;
+        this.rootSchema = NormalizedSchema.of(schema);
+        const ns = this.rootSchema;
+        if (ns.isStructSchema() && value != null && typeof value === "object") {
+            this.writeValue(ns, value, undefined);
+            const prefix = `"__type":"${ns.getName(true) ?? "Unknown"}",`;
+            const z = prefix.length;
+            this.ensure(z);
+            this.json.copyWithin(1 + z, 1, this.i);
+            encoder.encodeInto(prefix, this.json.subarray(1));
+            this.i += z;
+        }
+        else {
+            this.writeValue(ns, value, undefined);
+        }
+    }
+    flush() {
+        this.rootSchema = undefined;
+        const finalPosition = this.i;
+        this.i = 0;
+        const raw = this.rawValue;
+        this.rawValue = undefined;
+        if (finalPosition === 0) {
+            return raw;
+        }
+        const result = this.json.subarray(0, finalPosition);
+        this.json = alloc(INITIAL_BUFFER_SIZE);
+        return result;
+    }
+    ensure(byteCount) {
+        const { i, json } = this;
+        if (i + byteCount > json.length) {
+            let newSize = json.length * 2;
+            while (newSize < i + byteCount) {
+                newSize *= 2;
+            }
+            const next = alloc(newSize);
+            next.set(this.json);
+            this.json = next;
+        }
+    }
+    writeAscii(s) {
+        const z = s.length;
+        this.ensure(z);
+        let { i, json } = this;
+        for (let j = 0; j < z; ++j) {
+            json[i] = s.charCodeAt(j);
+            i += 1;
+        }
+        this.i = i;
+    }
+    writeAsciiQuoted(s) {
+        const z = s.length;
+        this.ensure(z + 4);
+        let { json, i } = this;
+        json[i++] = QUOTE;
+        for (let j = 0; j < z; ++j) {
+            json[i++] = s.charCodeAt(j);
+        }
+        json[i++] = QUOTE;
+        this.i = i;
+    }
+    writeJsonString(s) {
+        const z = s.length;
+        this.ensure(z * 3 + 2);
+        this.json[this.i++] = QUOTE;
+        for (let j = 0; j < z; ++j) {
+            const c = s.charCodeAt(j);
+            if (c > 0x22 && c < 0x5c) {
+                this.json[this.i++] = c;
+            }
+            else if (c < 0x80) {
+                const esc = ESCAPE_TABLE[c];
+                if (esc !== null) {
+                    this.ensure(esc.length + 1 + (z - j - 1) * 3 + 1);
+                    this.json[this.i++] = BACKSLASH;
+                    for (let k = 0; k < esc.length; k++) {
+                        this.json[this.i++] = esc.charCodeAt(k);
+                    }
+                }
+                else {
+                    this.json[this.i++] = c;
+                }
+            }
+            else if (c >= 0xd800 && c <= 0xdbff) {
+                const next = j + 1 < z ? s.charCodeAt(j + 1) : 0;
+                if (next >= 0xdc00 && next <= 0xdfff) {
+                    this.ensure(4);
+                    const { written } = encoder.encodeInto(s.substring(j, j + 2), this.json.subarray(this.i));
+                    this.i += written;
+                    ++j;
+                }
+                else {
+                    this.ensure(6 + (z - j - 1) * 3 + 1);
+                    this.writeUnicodeEscape(c);
+                }
+            }
+            else if (c >= 0xdc00 && c <= 0xdfff) {
+                this.ensure(6 + (z - j - 1) * 3 + 1);
+                this.writeUnicodeEscape(c);
+            }
+            else {
+                let { i, json } = this;
+                if (c < 0x800) {
+                    json[i++] = 0xc0 | (c >> 6);
+                    json[i++] = 0x80 | (c & 0x3f);
+                }
+                else {
+                    json[i++] = 0xe0 | (c >> 12);
+                    json[i++] = 0x80 | ((c >> 6) & 0x3f);
+                    json[i++] = 0x80 | (c & 0x3f);
+                }
+                this.i = i;
+            }
+        }
+        this.json[this.i++] = QUOTE;
+    }
+    writeUnicodeEscape(code) {
+        let { json, i } = this;
+        json[i++] = BACKSLASH;
+        json[i++] = 0x75;
+        const hex = code.toString(16).padStart(4, "0");
+        for (let j = 0; j < 4; ++j) {
+            json[i++] = hex.charCodeAt(j);
+        }
+        this.i = i;
+    }
+    static B64 = (() => {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        const table = new Uint8Array(64);
+        for (let i = 0; i < 64; ++i) {
+            table[i] = chars.charCodeAt(i);
+        }
+        return table;
+    })();
+    writeBase64(data) {
+        const b64Len = Math.ceil(data.length / 3) * 4;
+        this.ensure(b64Len + 2);
+        const json = this.json;
+        const B64 = JsonShapeSerializer2.B64;
+        let i = this.i;
+        json[i++] = QUOTE;
+        const len = data.length;
+        const remainder = len % 3;
+        const mainLen = len - remainder;
+        for (let j = 0; j < mainLen; j += 3) {
+            const a = data[j];
+            const b = data[j + 1];
+            const c = data[j + 2];
+            json[i++] = B64[a >> 2];
+            json[i++] = B64[((a & 0x03) << 4) | (b >> 4)];
+            json[i++] = B64[((b & 0x0f) << 2) | (c >> 6)];
+            json[i++] = B64[c & 0x3f];
+        }
+        if (remainder === 2) {
+            const a = data[mainLen];
+            const b = data[mainLen + 1];
+            json[i++] = B64[a >> 2];
+            json[i++] = B64[((a & 0x03) << 4) | (b >> 4)];
+            json[i++] = B64[(b & 0x0f) << 2];
+            json[i++] = 0x3d;
+        }
+        else if (remainder === 1) {
+            const a = data[mainLen];
+            json[i++] = B64[a >> 2];
+            json[i++] = B64[(a & 0x03) << 4];
+            json[i++] = 0x3d;
+            json[i++] = 0x3d;
+        }
+        json[i++] = QUOTE;
+        this.i = i;
+    }
+    writeValue(schema, value, container) {
+        if (value == null) {
+            if (container?.isStructSchema()) {
+                if (value === undefined) {
+                    const ns = NormalizedSchema.of(schema);
+                    if (ns.isIdempotencyToken()) {
+                        this.writeAsciiQuoted(generateIdempotencyToken());
+                        return;
+                    }
+                }
+                return;
+            }
+            this.ensure(4);
+            this.json.set(NULL, this.i);
+            this.i += 4;
+            return;
+        }
+        const ns = NormalizedSchema.of(schema);
+        const isObject = typeof value === "object";
+        if (ns.isStringSchema()) {
+            const mediaType = ns.getMergedTraits().mediaType;
+            if (mediaType) {
+                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+                if (isJson) {
+                    this.writeJsonString(LazyJsonString.from(value).toString());
+                    return;
+                }
+            }
+        }
+        if (this.settings.bigNumberAsString && value != null && (ns.isBigIntegerSchema() || ns.isBigDecimalSchema())) {
+            const asString = value instanceof NumericValue ? value.string : String(value);
+            this.writeAsciiQuoted(asString);
+            return;
+        }
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                this.writeStruct(ns, value);
+                return;
+            }
+            if (Array.isArray(value) && (ns.isListSchema() || ns.isDocumentSchema())) {
+                this.writeList(ns, value, ns.isDocumentSchema());
+                return;
+            }
+            if (ns.isMapSchema()) {
+                this.writeMap(ns, value, false);
+                return;
+            }
+            if (value instanceof Uint8Array && (ns.isBlobSchema() || ns.isDocumentSchema())) {
+                this.writeBase64(value);
+                return;
+            }
+            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
+                this.writeTimestamp(ns, value);
+                return;
+            }
+            if (value instanceof NumericValue) {
+                this.writeAscii(value.string);
+                return;
+            }
+            if (ns.isDocumentSchema()) {
+                if (Array.isArray(value)) {
+                    this.writeList(ns, value, true);
+                }
+                else {
+                    this.writeMap(ns, value, true);
+                }
+                return;
+            }
+            const json = JSON.stringify(value);
+            this.writeAscii(json);
+            return;
+        }
+        if (typeof value === "string") {
+            if (ns.isBlobSchema()) {
+                const b64 = (this.serdeContext?.base64Encoder ?? toBase64)(value);
+                this.writeAsciiQuoted(b64);
+                return;
+            }
+            this.writeJsonString(value);
+            return;
+        }
+        if (typeof value === "number") {
+            if (Math.abs(value) === Infinity || Number.isNaN(value)) {
+                this.writeAsciiQuoted(String(value));
+                return;
+            }
+            const numStr = String(value);
+            this.writeAscii(numStr);
+            return;
+        }
+        if (typeof value === "boolean") {
+            this.ensure(5);
+            let { i, json } = this;
+            if (value) {
+                json.set(TRUE, i);
+                i += 4;
+            }
+            else {
+                json.set(FALSE, i);
+                i += 5;
+            }
+            this.i = i;
+            return;
+        }
+        if (typeof value === "bigint") {
+            this.writeAscii(value.toString());
+            return;
+        }
+        this.writeAscii(String(value));
+    }
+    writeStruct(ns, value) {
+        this.ensure(2);
+        this.json[this.i++] = OPEN_BRACE;
+        let wroteAny = false;
+        const hasType = typeof value.__type === "string";
+        let writtenKeys;
+        if (hasType) {
+            writtenKeys = new Set();
+        }
+        for (const [memberName, memberSchema] of ns.structIterator()) {
+            const item = value[memberName];
+            if (item == null && !memberSchema.isIdempotencyToken()) {
+                continue;
+            }
+            if (wroteAny) {
+                this.ensure(1);
+                this.json[this.i++] = COMMA;
+            }
+            wroteAny = true;
+            const targetKey = this.settings.jsonName ? (memberSchema.getMergedTraits().jsonName ?? memberName) : memberName;
+            if (writtenKeys) {
+                writtenKeys.add(memberName);
+                writtenKeys.add(targetKey);
+            }
+            this.writeAsciiQuoted(targetKey);
+            this.json[this.i++] = COLON;
+            this.writeValue(memberSchema, item, ns);
+        }
+        if (!wroteAny && ns.isUnionSchema()) {
+            const { $unknown } = value;
+            if (Array.isArray($unknown)) {
+                const [k, v] = $unknown;
+                this.writeAsciiQuoted(k);
+                this.ensure(1);
+                this.json[this.i++] = COLON;
+                this.writeValue(15, v, ns);
+            }
+        }
+        else if (hasType) {
+            for (const k in value) {
+                if (writtenKeys.has(k)) {
+                    continue;
+                }
+                writtenKeys.add(k);
+                const v = value[k];
+                if (wroteAny) {
+                    this.ensure(1);
+                    this.json[this.i++] = COMMA;
+                }
+                wroteAny = true;
+                this.writeAsciiQuoted(k);
+                this.ensure(1);
+                this.json[this.i++] = COLON;
+                this.writeValue(15, v, undefined);
+            }
+        }
+        this.ensure(1);
+        this.json[this.i++] = CLOSE_BRACE;
+    }
+    writeList(ns, value, isDocument) {
+        const sparse = !!ns.getMergedTraits().sparse;
+        const valueSchema = ns.getValueSchema();
+        if (!isDocument) {
+            if (valueSchema.isStringSchema() || valueSchema.isNumericSchema() || valueSchema.isBooleanSchema()) {
+                let hasSpecials = false;
+                for (let i = 0; i < value.length; ++i) {
+                    const v = value[i];
+                    if (Number.isNaN(v) || v === Infinity || v === -Infinity || (v == null && !sparse)) {
+                        hasSpecials = true;
+                        break;
+                    }
+                }
+                let json;
+                if (!hasSpecials) {
+                    json = JSON.stringify(value);
+                }
+                else {
+                    const out = [];
+                    for (let i = 0; i < value.length; ++i) {
+                        const v = value[i];
+                        if (v == null && !sparse) {
+                            continue;
+                        }
+                        if (Number.isNaN(v) || v === Infinity || v === -Infinity) {
+                            out.push(String(v));
+                        }
+                        else {
+                            out.push(v);
+                        }
+                    }
+                    json = JSON.stringify(out);
+                }
+                this.ensure(json.length * 3);
+                this.i += encoder.encodeInto(json, this.json.subarray(this.i)).written;
+                return;
+            }
+        }
+        this.ensure(2);
+        this.json[this.i++] = OPEN_BRACKET;
+        let wroteFirstItem = false;
+        for (let i = 0; i < value.length; ++i) {
+            const item = value[i];
+            if (isDocument ? item === undefined : item == null && !sparse) {
+                continue;
+            }
+            if (wroteFirstItem) {
+                this.ensure(1);
+                this.json[this.i++] = COMMA;
+            }
+            this.writeValue(valueSchema, item, undefined);
+            wroteFirstItem = true;
+        }
+        this.ensure(1);
+        this.json[this.i++] = CLOSE_BRACKET;
+    }
+    writeMap(ns, value, isDocument) {
+        const sparse = !!ns.getMergedTraits().sparse;
+        const valueSchema = ns.getValueSchema();
+        if (!isDocument) {
+            if (valueSchema.isStringSchema() || valueSchema.isNumericSchema() || valueSchema.isBooleanSchema()) {
+                let modifications;
+                for (const k in value) {
+                    if (!hasOwn(value, k)) {
+                        continue;
+                    }
+                    const v = value[k];
+                    if (Number.isNaN(v) || v === Infinity || v === -Infinity) {
+                        (modifications ??= {})[k] = v;
+                        value[k] = String(v);
+                    }
+                    else if (v === null && !sparse) {
+                        (modifications ??= {})[k] = null;
+                        value[k] = undefined;
+                    }
+                }
+                const json = JSON.stringify(value);
+                if (modifications) {
+                    Object.assign(value, modifications);
+                }
+                this.ensure(json.length * 3);
+                this.i += encoder.encodeInto(json, this.json.subarray(this.i)).written;
+                return;
+            }
+        }
+        this.ensure(2);
+        this.json[this.i++] = OPEN_BRACE;
+        let first = true;
+        for (const k in value) {
+            if (!hasOwn(value, k)) {
+                continue;
+            }
+            const v = value[k];
+            if (isDocument ? v === undefined : v == null && !sparse) {
+                continue;
+            }
+            if (!first) {
+                this.ensure(1);
+                this.json[this.i++] = COMMA;
+            }
+            first = false;
+            this.writeJsonString(k);
+            this.ensure(1);
+            this.json[this.i++] = COLON;
+            this.writeValue(valueSchema, v, undefined);
+        }
+        this.ensure(1);
+        this.json[this.i++] = CLOSE_BRACE;
+    }
+    writeTimestamp(ns, value) {
+        const format = determineTimestampFormat(ns, this.settings);
+        switch (format) {
+            case 5: {
+                const iso = value.toISOString().replace(".000Z", "Z");
+                this.writeAsciiQuoted(iso);
+                return;
+            }
+            case 6: {
+                this.writeAsciiQuoted(dateToUtcString(value));
+                return;
+            }
+            case 7: {
+                const epochSecs = String(value.getTime() / 1000);
+                this.writeAscii(epochSecs);
+                return;
+            }
+            default: {
+                const epochSecs = String(value.getTime() / 1000);
+                this.writeAscii(epochSecs);
+                return;
+            }
+        }
+    }
+}
+
+class JsonCodec2 extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    createSerializer() {
+        const serializer = new JsonShapeSerializer2(this.settings);
+        serializer.setSerdeContext(this.serdeContext);
+        return serializer;
+    }
+    createDeserializer() {
+        const deserializer = new JsonShapeDeserializer2(this.settings);
+        deserializer.setSerdeContext(this.serdeContext);
+        return deserializer;
+    }
+}
+
+class SmithyRpcV2JsonProtocol extends AbstractRpcV2Protocol {
+    codec = new JsonCodec2({
+        timestampFormat: {
+            useTrait: false,
+            default: 7,
+        },
+        jsonName: false,
+        bigNumberAsString: true,
+    });
+    serializer = this.codec.createSerializer();
+    deserializer = this.codec.createDeserializer();
+    getShapeId() {
+        return "smithy.protocols#rpcv2Json";
+    }
+    getPayloadCodec() {
+        return this.codec;
+    }
+    getSmithyProtocolHeaderValue() {
+        return "rpc-v2-json";
+    }
+    applyEmptyBody(request) {
+        if (!request.body) {
+            request.body = "{}";
+        }
+    }
+    async handleError(operationSchema, context, response, dataObject, metadata) {
+        const errorName = loadSmithyRpcV2JsonErrorCode(response, dataObject) ?? "Unknown";
+        const errorMetadata = {
+            $metadata: metadata,
+            $fault: response.statusCode <= 500 ? "client" : "server",
+        };
+        let namespace = this.options.defaultNamespace;
+        if (errorName.includes("#")) {
+            [namespace] = errorName.split("#");
+        }
+        const registry = this.compositeErrorRegistry;
+        const nsRegistry = TypeRegistry.for(namespace);
+        registry.copyFrom(nsRegistry);
+        let errorSchema;
+        try {
+            errorSchema = registry.getSchema(errorName);
+        }
+        catch (ignored) {
+            if (dataObject.Message) {
+                dataObject.message = dataObject.Message;
+            }
+            const syntheticRegistry = TypeRegistry.for("smithy.ts.sdk.synthetic." + namespace);
+            registry.copyFrom(syntheticRegistry);
+            const baseExceptionSchema = registry.getBaseException();
+            if (baseExceptionSchema) {
+                const ErrorCtor = registry.getErrorCtor(baseExceptionSchema);
+                throw Object.assign(new ErrorCtor({ name: errorName }), errorMetadata, dataObject);
+            }
+            throw Object.assign(new Error(errorName), errorMetadata, dataObject);
+        }
+        const ns = NormalizedSchema.of(errorSchema);
+        const ErrorCtor = registry.getErrorCtor(errorSchema);
+        const message = dataObject.message ?? dataObject.Message ?? "Unknown";
+        const exception = new ErrorCtor({});
+        const output = {};
+        const errorDeserializer = this.codec.createDeserializer();
+        for (const [name, member] of ns.structIterator()) {
+            if (dataObject[name] != null) {
+                output[name] = errorDeserializer.readObject(member, dataObject[name]);
+            }
+        }
+        throw Object.assign(exception, errorMetadata, {
+            $fault: ns.getMergedTraits().error,
+            message,
+        }, output);
+    }
+    getDefaultContentType() {
+        return "application/json";
+    }
+}
+
+class JsonShapeDeserializer extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    async read(schema, data) {
+        const reviver = needsReviver(schema) ? jsonReviver : undefined;
+        return this._read(schema, typeof data === "string" ? JSON.parse(data, reviver) : await parseJsonBody(data, this.serdeContext, schema));
+    }
+    readObject(schema, data) {
+        return this._read(schema, data);
+    }
+    _read(schema, value) {
+        const isObject = value !== null && typeof value === "object";
+        const ns = NormalizedSchema.of(schema);
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const record = value;
+                const union = ns.isUnionSchema();
+                const out = {};
+                let nameMap = void 0;
+                const { jsonName } = this.settings;
+                if (jsonName) {
+                    nameMap = {};
+                }
+                let unionSerde;
+                if (union) {
+                    unionSerde = new UnionSerde(record, out);
+                }
+                for (const [memberName, memberSchema] of ns.structIterator()) {
+                    let fromKey = memberName;
+                    if (jsonName) {
+                        fromKey = memberSchema.getMergedTraits().jsonName ?? fromKey;
+                        nameMap[fromKey] = memberName;
+                    }
+                    if (union) {
+                        unionSerde.mark(fromKey);
+                    }
+                    if (record[fromKey] != null) {
+                        out[memberName] = this._read(memberSchema, record[fromKey]);
+                    }
+                }
+                if (union) {
+                    unionSerde.writeUnknown();
+                }
+                else if (typeof record.__type === "string") {
+                    for (const k in record) {
+                        if (!hasOwn(record, k)) {
+                            continue;
+                        }
+                        const v = record[k];
+                        const t = jsonName ? (nameMap[k] ?? k) : k;
+                        if (!(t in out)) {
+                            out[t] = v;
+                        }
+                    }
+                }
+                return out;
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                for (const item of value) {
+                    out.push(this._read(listMember, item));
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                for (const _k in value) {
+                    if (!hasOwn(value, _k)) {
+                        continue;
+                    }
+                    if (_k === "__proto__") {
+                        writeKey(out);
+                    }
+                    out[_k] = this._read(mapMember, value[_k]);
+                }
+                return out;
+            }
+        }
+        if (ns.isBlobSchema() && typeof value === "string") {
+            return fromBase64(value);
+        }
+        const mediaType = ns.getMergedTraits().mediaType;
+        if (ns.isStringSchema() && typeof value === "string" && mediaType) {
+            const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+            if (isJson) {
+                return LazyJsonString.from(value);
+            }
+            return value;
+        }
+        if (ns.isTimestampSchema() && value != null) {
+            const format = determineTimestampFormat(ns, this.settings);
+            switch (format) {
+                case 5:
+                    return parseRfc3339DateTimeWithOffset(value);
+                case 6:
+                    return parseRfc7231DateTime(value);
+                case 7:
+                    return parseEpochTimestamp(value);
+                default:
+                    console.warn("Missing timestamp format, parsing value with Date constructor:", value);
+                    return new Date(value);
+            }
+        }
+        if (ns.isBigIntegerSchema() && (typeof value === "number" || typeof value === "string")) {
+            return BigInt(value);
+        }
+        if (ns.isBigDecimalSchema() && value != undefined) {
+            if (value instanceof NumericValue) {
+                return value;
+            }
+            const untyped = value;
+            if (untyped.type === "bigDecimal" && "string" in untyped) {
+                return new NumericValue(untyped.string, untyped.type);
+            }
+            return new NumericValue(String(value), "bigDecimal");
+        }
+        if (ns.isNumericSchema() && typeof value === "string") {
+            switch (value) {
+                case "Infinity":
+                    return Infinity;
+                case "-Infinity":
+                    return -Infinity;
+                case "NaN":
+                    return NaN;
+            }
+            return value;
+        }
+        if (ns.isDocumentSchema()) {
+            if (isObject) {
+                const out = Array.isArray(value) ? [] : {};
+                for (const k in value) {
+                    if (!hasOwn(value, k)) {
+                        continue;
+                    }
+                    if (k === "__proto__") {
+                        writeKey(out);
+                    }
+                    const v = value[k];
+                    if (v instanceof NumericValue) {
+                        out[k] = v;
+                    }
+                    else {
+                        out[k] = this._read(ns, v);
+                    }
+                }
+                return out;
+            }
+            else {
+                return structuredClone(value);
+            }
+        }
+        return value;
+    }
+}
+
+const NUMERIC_CONTROL_CHAR = String.fromCharCode(925);
+class JsonReplacer {
+    values = new Map();
+    counter = 0;
+    stage = 0;
+    createReplacer() {
+        if (this.stage === 1) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer already created.");
+        }
+        if (this.stage === 2) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
+        }
+        this.stage = 1;
+        return (key, value) => {
+            if (value instanceof NumericValue) {
+                const v = `${NUMERIC_CONTROL_CHAR + "nv" + this.counter++}_` + value.string;
+                this.values.set(`"${v}"`, value.string);
+                return v;
+            }
+            if (typeof value === "bigint") {
+                const s = value.toString();
+                const v = `${NUMERIC_CONTROL_CHAR + "b" + this.counter++}_` + s;
+                this.values.set(`"${v}"`, s);
+                return v;
+            }
+            return value;
+        };
+    }
+    replaceInJson(json) {
+        if (this.stage === 0) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer not created yet.");
+        }
+        if (this.stage === 2) {
+            throw new Error("@aws-sdk/core/protocols - JsonReplacer exhausted.");
+        }
+        this.stage = 2;
+        if (this.counter === 0) {
+            return json;
+        }
+        for (const [key, value] of this.values) {
+            json = json.replace(key, value);
+        }
+        return json;
+    }
+}
+
+class JsonShapeSerializer extends SerdeContextConfig {
+    settings;
+    buffer;
+    useReplacer = false;
+    rootSchema;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    write(schema, value) {
+        this.rootSchema = NormalizedSchema.of(schema);
+        this.buffer = this._write(this.rootSchema, value);
+    }
+    flush() {
+        const { rootSchema, useReplacer } = this;
+        this.rootSchema = undefined;
+        this.useReplacer = false;
+        if (rootSchema?.isStructSchema() || rootSchema?.isDocumentSchema()) {
+            if (!useReplacer) {
+                return JSON.stringify(this.buffer);
+            }
+            const replacer = new JsonReplacer();
+            return replacer.replaceInJson(JSON.stringify(this.buffer, replacer.createReplacer(), 0));
+        }
+        return this.buffer;
+    }
+    writeDiscriminatedDocument(schema, value) {
+        this.write(schema, value);
+        if (typeof this.buffer === "object") {
+            this.buffer.__type = NormalizedSchema.of(schema).getName(true);
+        }
+    }
+    _write(schema, value, container) {
+        const isObject = value !== null && typeof value === "object";
+        const ns = NormalizedSchema.of(schema);
+        if (isObject) {
+            if (ns.isStructSchema()) {
+                const record = value;
+                const out = {};
+                const { jsonName } = this.settings;
+                let nameMap = void 0;
+                if (jsonName) {
+                    nameMap = {};
+                }
+                let outCount = 0;
+                for (const [memberName, memberSchema] of ns.structIterator()) {
+                    const serializableValue = this._write(memberSchema, record[memberName], ns);
+                    if (serializableValue !== undefined) {
+                        let targetKey = memberName;
+                        if (jsonName) {
+                            targetKey = memberSchema.getMergedTraits().jsonName ?? memberName;
+                            nameMap[memberName] = targetKey;
+                        }
+                        out[targetKey] = serializableValue;
+                        outCount++;
+                    }
+                }
+                if (ns.isUnionSchema() && outCount === 0) {
+                    const { $unknown } = record;
+                    if (Array.isArray($unknown)) {
+                        const [k, v] = $unknown;
+                        if (k === "__proto__") {
+                            writeKey(out);
+                        }
+                        out[k] = this._write(15, v);
+                    }
+                }
+                else if (typeof record.__type === "string") {
+                    for (const k in record) {
+                        if (!hasOwn(record, k)) {
+                            continue;
+                        }
+                        const v = record[k];
+                        const targetKey = jsonName ? (nameMap[k] ?? k) : k;
+                        if (!(targetKey in out)) {
+                            out[targetKey] = this._write(15, v);
+                        }
+                    }
+                }
+                return out;
+            }
+            if (Array.isArray(value) && ns.isListSchema()) {
+                const listMember = ns.getValueSchema();
+                const out = [];
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const item of value) {
+                    if (sparse || item != null) {
+                        out.push(this._write(listMember, item));
+                    }
+                }
+                return out;
+            }
+            if (ns.isMapSchema()) {
+                const mapMember = ns.getValueSchema();
+                const out = {};
+                const sparse = !!ns.getMergedTraits().sparse;
+                for (const _k in value) {
+                    if (!hasOwn(value, _k)) {
+                        continue;
+                    }
+                    const _v = value[_k];
+                    if (sparse || _v != null) {
+                        if (_k === "__proto__") {
+                            writeKey(out);
+                        }
+                        out[_k] = this._write(mapMember, _v);
+                    }
+                }
+                return out;
+            }
+            if (value instanceof Uint8Array && ns.isBlobSchema()) {
+                if (ns === this.rootSchema) {
+                    return value;
+                }
+                return (this.serdeContext?.base64Encoder ?? toBase64)(value);
+            }
+            if (value instanceof Date && (ns.isTimestampSchema() || ns.isDocumentSchema())) {
+                const format = determineTimestampFormat(ns, this.settings);
+                switch (format) {
+                    case 5:
+                        return value.toISOString().replace(".000Z", "Z");
+                    case 6:
+                        return dateToUtcString(value);
+                    case 7:
+                        return value.getTime() / 1000;
+                    default:
+                        console.warn("Missing timestamp format, using epoch seconds", value);
+                        return value.getTime() / 1000;
+                }
+            }
+            if (value instanceof NumericValue) {
+                this.useReplacer = true;
+            }
+        }
+        if (value === null && container?.isStructSchema()) {
+            return void 0;
+        }
+        if (ns.isStringSchema()) {
+            if (typeof value === "undefined" && ns.isIdempotencyToken()) {
+                return generateIdempotencyToken();
+            }
+            const mediaType = ns.getMergedTraits().mediaType;
+            if (value != null && mediaType) {
+                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
+                if (isJson) {
+                    return LazyJsonString.from(value);
+                }
+            }
+            return value;
+        }
+        if (typeof value === "number") {
+            if (Math.abs(value) === Infinity || isNaN(value)) {
+                return String(value);
+            }
+            return value;
+        }
+        if (typeof value === "string" && ns.isBlobSchema()) {
+            if (ns === this.rootSchema) {
+                return value;
+            }
+            return (this.serdeContext?.base64Encoder ?? toBase64)(value);
+        }
+        if (typeof value === "bigint") {
+            this.useReplacer = true;
+        }
+        if (ns.isDocumentSchema()) {
+            if (isObject) {
+                if (value instanceof Uint8Array) {
+                    return (this.serdeContext?.base64Encoder ?? toBase64)(value);
+                }
+                const out = Array.isArray(value) ? [] : {};
+                for (const k in value) {
+                    if (!hasOwn(value, k)) {
+                        continue;
+                    }
+                    const v = value[k];
+                    if (k === "__proto__") {
+                        writeKey(out);
+                    }
+                    if (v instanceof NumericValue) {
+                        this.useReplacer = true;
+                        out[k] = v;
+                    }
+                    else {
+                        out[k] = this._write(ns, v);
+                    }
+                }
+                return out;
+            }
+            else {
+                return structuredClone(value);
+            }
+        }
+        return value;
+    }
+}
+
+class JsonCodec extends SerdeContextConfig {
+    settings;
+    constructor(settings) {
+        super();
+        this.settings = settings;
+    }
+    createSerializer() {
+        const serializer = new JsonShapeSerializer(this.settings);
+        serializer.setSerdeContext(this.serdeContext);
+        return serializer;
+    }
+    createDeserializer() {
+        const deserializer = new JsonShapeDeserializer(this.settings);
+        deserializer.setSerdeContext(this.serdeContext);
+        return deserializer;
+    }
+}
+
+exports.AbstractRpcV2Protocol = AbstractRpcV2Protocol;
 exports.Field = Field;
 exports.Fields = Fields;
 exports.FromStringShapeDeserializer = FromStringShapeDeserializer;
@@ -27006,9 +27899,16 @@ exports.HttpBindingProtocol = HttpBindingProtocol;
 exports.HttpInterceptingShapeDeserializer = HttpInterceptingShapeDeserializer;
 exports.HttpInterceptingShapeSerializer = HttpInterceptingShapeSerializer;
 exports.HttpProtocol = HttpProtocol;
+exports.JsonCodec = JsonCodec;
+exports.JsonCodec2 = JsonCodec2;
+exports.JsonShapeDeserializer = JsonShapeDeserializer;
+exports.JsonShapeDeserializer2 = JsonShapeDeserializer2;
+exports.JsonShapeSerializer = JsonShapeSerializer;
+exports.JsonShapeSerializer2 = JsonShapeSerializer2;
 exports.RequestBuilder = RequestBuilder;
 exports.RpcProtocol = RpcProtocol;
 exports.SerdeContext = SerdeContext;
+exports.SmithyRpcV2JsonProtocol = SmithyRpcV2JsonProtocol;
 exports.ToStringShapeSerializer = ToStringShapeSerializer;
 exports.buildQueryString = buildQueryString;
 exports.collectBody = collectBody;
@@ -27020,6 +27920,11 @@ exports.escapeUriPath = escapeUriPath;
 exports.extendedEncodeURIComponent = extendedEncodeURIComponent;
 exports.getContentLengthPlugin = getContentLengthPlugin;
 exports.getHttpHandlerExtensionConfiguration = getHttpHandlerExtensionConfiguration;
+exports.loadJsonRpcErrorCode = loadJsonRpcErrorCode;
+exports.loadRestJsonErrorCode = loadRestJsonErrorCode;
+exports.loadSmithyRpcV2JsonErrorCode = loadSmithyRpcV2JsonErrorCode;
+exports.parseJsonBody = parseJsonBody;
+exports.parseJsonErrorBody = parseJsonErrorBody;
 exports.requestBuilder = requestBuilder;
 exports.resolveHttpHandlerRuntimeConfig = resolveHttpHandlerRuntimeConfig;
 exports.resolvedPath = resolvedPath;
@@ -27129,8 +28034,9 @@ function parseRetryAfterHeader(response, logger) {
         return;
     }
     for (const header in response.headers) {
-        if (!hasOwn(response.headers, header))
+        if (!hasOwn(response.headers, header)) {
             continue;
+        }
         const h = header.toLowerCase();
         if (h === "retry-after") {
             const retryAfter = response.headers[header];
@@ -27175,12 +28081,15 @@ function getRetryAfterHint(response, logger) {
 }
 
 const asSdkError = (error) => {
-    if (error instanceof Error)
+    if (error instanceof Error) {
         return error;
-    if (error instanceof Object)
+    }
+    if (error instanceof Object) {
         return Object.assign(new Error(), error);
-    if (typeof error === "string")
+    }
+    if (typeof error === "string") {
         return new Error(error);
+    }
     return new Error(`AWS SDK error wrapper for ${error}`);
 };
 
@@ -27262,12 +28171,15 @@ const getRetryErrorInfo = (error, logger) => {
     return errorInfo;
 };
 const getRetryErrorType = (error) => {
-    if (isThrottlingError(error))
+    if (isThrottlingError(error)) {
         return "THROTTLING";
-    if (isTransientError(error))
+    }
+    if (isTransientError(error)) {
         return "TRANSIENT";
-    if (isServerError(error))
+    }
+    if (isServerError(error)) {
         return "SERVER_ERROR";
+    }
     return "CLIENT_ERROR";
 };
 const retryMiddlewareOptions = {
@@ -27719,15 +28631,18 @@ class StandardRetryStrategy {
     }
 }
 const getDelayFromRetryAfterHeader = (response) => {
-    if (!HttpResponse.isInstance(response))
+    if (!HttpResponse.isInstance(response)) {
         return;
+    }
     const retryAfterHeaderName = Object.keys(response.headers).find((key) => key.toLowerCase() === "retry-after");
-    if (!retryAfterHeaderName)
+    if (!retryAfterHeaderName) {
         return;
+    }
     const retryAfter = response.headers[retryAfterHeaderName];
     const retryAfterSeconds = Number(retryAfter);
-    if (!Number.isNaN(retryAfterSeconds))
+    if (!Number.isNaN(retryAfterSeconds)) {
         return Math.min(retryAfterSeconds * 1000, 20_000);
+    }
     const retryAfterDate = new Date(retryAfter);
     return Math.min(retryAfterDate.getTime() - Date.now(), 20_000);
 };
@@ -27757,8 +28672,9 @@ const CONFIG_MAX_ATTEMPTS = "max_attempts";
 const NODE_MAX_ATTEMPT_CONFIG_OPTIONS = {
     environmentVariableSelector: (env) => {
         const value = env[ENV_MAX_ATTEMPTS];
-        if (!value)
+        if (!value) {
             return undefined;
+        }
         const maxAttempt = parseInt(value);
         if (Number.isNaN(maxAttempt)) {
             throw new Error(`Environment variable ${ENV_MAX_ATTEMPTS} mast be a number, got "${value}"`);
@@ -27767,8 +28683,9 @@ const NODE_MAX_ATTEMPT_CONFIG_OPTIONS = {
     },
     configFileSelector: (profile) => {
         const value = profile[CONFIG_MAX_ATTEMPTS];
-        if (!value)
+        if (!value) {
             return undefined;
+        }
         const maxAttempt = parseInt(value);
         if (Number.isNaN(maxAttempt)) {
             throw new Error(`Shared config file entry ${CONFIG_MAX_ATTEMPTS} mast be a number, got "${value}"`);
@@ -28517,6 +29434,9 @@ class TypeRegistry {
         const $error = es;
         const ns = $error[1];
         const qualifiedName = ns + "#" + $error[2];
+        if (!ctor.hasOwnProperty?.("shapeId")) {
+            ctor.shapeId = qualifiedName;
+        }
         for (const r of [this, TypeRegistry.for(ns)]) {
             if (!r.schemas.has(qualifiedName) && !r.exceptions.has($error)) {
                 r.schemas.set(qualifiedName, $error);
@@ -28860,8 +29780,9 @@ const expectUnion = (value) => {
     const asObject = expectObject(value);
     const setKeys = [];
     for (const k in asObject) {
-        if (!hasOwn(asObject, k))
+        if (!hasOwn(asObject, k)) {
             continue;
+        }
         if (asObject[k] != null) {
             setKeys.push(k);
         }
@@ -30285,6 +31206,10 @@ async function splitStream(stream) {
     return [stream1, stream2];
 }
 
+function writeKey(obj) {
+    Object.defineProperty(obj, "__proto__", { value: undefined, writable: true, enumerable: true, configurable: true });
+}
+
 class Uint8ArrayBlobAdapter extends bindUint8ArrayBlobAdapter(toUtf8$1, fromUtf8$1, toBase64$1, fromBase64) {
 }
 const _getRandomValues = getRandomValues;
@@ -30363,6 +31288,7 @@ exports.toHex = toHex;
 exports.toUint8Array = toUint8Array;
 exports.toUtf8 = toUtf8$1;
 exports.v4 = v4;
+exports.writeKey = writeKey;
 
 
 /***/ }),
@@ -30455,8 +31381,9 @@ class HttpResponse {
         this.body = options.body;
     }
     static isInstance(response) {
-        if (!response)
+        if (!response) {
             return false;
+        }
         const resp = response;
         return typeof resp.statusCode === "number" && typeof resp.headers === "object";
     }
@@ -30482,8 +31409,9 @@ function isValidHostname(hostname) {
 }
 
 const normalizeProvider = (input) => {
-    if (typeof input === "function")
+    if (typeof input === "function") {
         return input;
+    }
     const promisified = Promise.resolve(input);
     return () => promisified;
 };
@@ -30537,8 +31465,9 @@ const toEndpointV1 = (endpoint) => {
             if (endpoint.headers) {
                 v1Endpoint.headers = {};
                 for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
+                    if (!hasOwn(endpoint.headers, name)) {
                         continue;
+                    }
                     v1Endpoint.headers[name.toLowerCase()] = endpoint.headers[name].join(", ");
                 }
             }
@@ -31531,7 +32460,7 @@ const { hasOwn } = __nccwpck_require__(5230);
 const { getSmithyContext, normalizeProvider } = __nccwpck_require__(5230);
 exports.getSmithyContext = getSmithyContext;
 exports.normalizeProvider = normalizeProvider;
-const { SMITHY_CONTEXT_KEY, AlgorithmId } = __nccwpck_require__(1242);
+const { SMITHY_CONTEXT_KEY, AlgorithmId } = __nccwpck_require__(690);
 exports.AlgorithmId = AlgorithmId;
 const { NormalizedSchema } = __nccwpck_require__(1893);
 
@@ -32119,20 +33048,27 @@ class Command {
         }
         const stack = clientStack.concat(this.middlewareStack);
         const { logger } = configuration;
+        const additionalSmithyContext = additionalContext[SMITHY_CONTEXT_KEY];
         const handlerExecutionContext = {
             logger,
             clientName,
             commandName,
             inputFilterSensitiveLog,
             outputFilterSensitiveLog,
+            ...additionalContext,
             [SMITHY_CONTEXT_KEY]: {
+                ...additionalSmithyContext,
                 commandInstance: this,
                 ...smithyContext,
+                ...(options?.metricsRecorder === undefined ? {} : { metricsRecorder: options.metricsRecorder }),
             },
-            ...additionalContext,
         };
         const { requestHandler } = configuration;
         let requestOptions = options ?? {};
+        if (requestOptions.metricsRecorder) {
+            requestOptions = { ...requestOptions };
+            delete requestOptions.metricsRecorder;
+        }
         if (smithyContext.eventStream) {
             requestOptions = {
                 isEventStream: true,
@@ -32315,10 +33251,25 @@ class ServiceException extends Error {
             return ServiceException.isInstance(instance);
         }
         if (ServiceException.isInstance(instance)) {
-            if (candidate.name && this.name) {
-                return this.prototype.isPrototypeOf(instance) || candidate.name === this.name;
+            if (this.prototype.isPrototypeOf(instance)) {
+                return true;
             }
-            return this.prototype.isPrototypeOf(instance);
+            const targetName = this.name;
+            if (!targetName || !candidate.name) {
+                return false;
+            }
+            if (candidate.name === targetName) {
+                return true;
+            }
+            let proto = Object.getPrototypeOf(candidate);
+            while (proto && proto !== Object.prototype) {
+                const ctorName = proto.constructor?.name;
+                if (ctorName && ctorName !== "Error" && ctorName === targetName) {
+                    return true;
+                }
+                proto = Object.getPrototypeOf(proto);
+            }
+            return false;
         }
         return false;
     }
@@ -32694,7 +33645,7 @@ const { homedir } = __nccwpck_require__(8161);
 const { sep, join } = __nccwpck_require__(6760);
 const { createHash } = __nccwpck_require__(7598);
 const { readFile: readFile$1 } = __nccwpck_require__(1455);
-const { IniSectionType } = __nccwpck_require__(1242);
+const { IniSectionType } = __nccwpck_require__(690);
 const { normalizeProvider } = __nccwpck_require__(2890);
 const { isValidHostLabel } = __nccwpck_require__(5230);
 
@@ -33481,7 +34432,7 @@ const { toEndpointV1, getSmithyContext, normalizeProvider, isValidHostLabel, has
 exports.isValidHostLabel = isValidHostLabel;
 exports.middlewareEndpointToEndpointV1 = toEndpointV1;
 exports.toEndpointV1 = toEndpointV1;
-const { EndpointURLScheme } = __nccwpck_require__(1242);
+const { EndpointURLScheme } = __nccwpck_require__(690);
 
 const ENV_ENDPOINT_URL = "AWS_ENDPOINT_URL";
 const CONFIG_ENDPOINT_URL = "endpoint_url";
@@ -35301,7 +36252,7 @@ exports.isValidHostname = isValidHostname;
 exports.parseQueryString = parseQueryString;
 exports.parseUrl = parseUrl;
 const { TypeRegistry, NormalizedSchema, translateTraits } = __nccwpck_require__(1893);
-const { FieldPosition } = __nccwpck_require__(1242);
+const { FieldPosition } = __nccwpck_require__(690);
 
 const collectBody = async (streamBody = new Uint8Array(), context) => {
     if (streamBody instanceof Uint8Array) {
@@ -35333,7 +36284,7 @@ class HttpProtocol extends SerdeContext {
     constructor(options) {
         super();
         this.options = options;
-        this.compositeErrorRegistry = TypeRegistry.for(options.defaultNamespace);
+        this.compositeErrorRegistry = new TypeRegistry(options.defaultNamespace);
         for (const etr of options.errorTypeRegistries ?? []) {
             this.compositeErrorRegistry.copyFrom(etr);
         }
@@ -35428,6 +36379,47 @@ class HttpProtocol extends SerdeContext {
             cfId: output.headers["x-amz-cf-id"],
         };
     }
+    resolveError(name, namespaces, registries) {
+        const defaultErrorSchema = [-3, "", "Error", 0, [], [], 0];
+        let schema;
+        for (const registry of registries) {
+            for (const ns of namespaces) {
+                try {
+                    if (ns === "*") {
+                        schema = registry.getSchema(name);
+                    }
+                    else {
+                        schema = registry.getSchema(ns + "#" + name);
+                    }
+                    const errorCtor = registry.getErrorCtor(schema);
+                    if (errorCtor) {
+                        return [schema, errorCtor, "modeled"];
+                    }
+                    else {
+                        const syntheticErrorSchema = registry.getBaseException();
+                        if (syntheticErrorSchema) {
+                            const syntheticErrorCtor = registry.getErrorCtor(syntheticErrorSchema);
+                            if (syntheticErrorCtor) {
+                                return [schema, syntheticErrorCtor, "synthetic"];
+                            }
+                        }
+                    }
+                }
+                catch (ignored) {
+                }
+            }
+        }
+        for (const registry of registries) {
+            const syntheticErrorSchema = registry.getBaseException();
+            if (syntheticErrorSchema) {
+                const syntheticErrorCtor = registry.getErrorCtor(syntheticErrorSchema);
+                if (syntheticErrorCtor) {
+                    return [syntheticErrorSchema, syntheticErrorCtor, "synthetic"];
+                }
+            }
+        }
+        return [defaultErrorSchema, Error, "native"];
+    }
     async serializeEventStream({ eventStream, requestSchema, initialRequest, }) {
         const eventStreamSerde = await this.loadEventStreamCapability();
         return eventStreamSerde.serializeEventStream({
@@ -35456,13 +36448,6 @@ class HttpProtocol extends SerdeContext {
             compositeErrorRegistry: this.compositeErrorRegistry,
         });
     }
-    resolveEventStreamMarshaller(importedProvider) {
-        const context = this.serdeContext;
-        if (context.eventStreamMarshaller) {
-            return context.eventStreamMarshaller;
-        }
-        return importedProvider(this.serdeContext);
-    }
     getDefaultContentType() {
         throw new Error(`@smithy/core/protocols - ${this.constructor.name} getDefaultContentType() implementation missing.`);
     }
@@ -35475,6 +36460,13 @@ class HttpProtocol extends SerdeContext {
             throw new Error("@smithy/core - HttpProtocol: eventStreamMarshaller missing in serdeContext.");
         }
         return context.eventStreamMarshaller;
+    }
+    resolveEventStreamMarshaller(importedProvider) {
+        const context = this.serdeContext;
+        if (context.eventStreamMarshaller) {
+            return context.eventStreamMarshaller;
+        }
+        return importedProvider(this.serdeContext);
     }
 }
 
@@ -36938,12 +37930,12 @@ class TypeRegistry {
         this.namespace = namespace;
         this.schemas = schemas;
         this.exceptions = exceptions;
+        if (!TypeRegistry.registries.has(namespace)) {
+            TypeRegistry.registries.set(namespace, this);
+        }
     }
     static for(namespace) {
-        if (!TypeRegistry.registries.has(namespace)) {
-            TypeRegistry.registries.set(namespace, new TypeRegistry(namespace));
-        }
-        return TypeRegistry.registries.get(namespace);
+        return TypeRegistry.registries.get(namespace) ?? new TypeRegistry(namespace);
     }
     copyFrom(other) {
         const { schemas, exceptions } = this;
@@ -36961,7 +37953,9 @@ class TypeRegistry {
     register(shapeId, schema) {
         const qualifiedName = this.normalizeShapeId(shapeId);
         for (const r of [this, TypeRegistry.for(qualifiedName.split("#")[0])]) {
-            r.schemas.set(qualifiedName, schema);
+            if (!r.schemas.has(qualifiedName)) {
+                r.schemas.set(qualifiedName, schema);
+            }
         }
     }
     getSchema(shapeId) {
@@ -36986,9 +37980,12 @@ class TypeRegistry {
     registerError(es, ctor) {
         const $error = es;
         const ns = $error[1];
+        const qualifiedName = ns + "#" + $error[2];
         for (const r of [this, TypeRegistry.for(ns)]) {
-            r.schemas.set(ns + "#" + $error[2], $error);
-            r.exceptions.set($error, ctor);
+            if (!r.schemas.has(qualifiedName) && !r.exceptions.has($error)) {
+                r.schemas.set(qualifiedName, $error);
+                r.exceptions.set($error, ctor);
+            }
         }
     }
     getErrorCtor(es) {
@@ -38419,6 +39416,8 @@ const getAwsChunkedEncodingStream$1 = (readableStream, options) => {
         checksumLocationName !== undefined &&
         streamHasher !== undefined;
     const digest = checksumRequired ? streamHasher(checksumAlgorithmFn, readableStream) : undefined;
+    Promise.resolve(digest).catch(() => {
+    });
     const reader = readableStream.getReader();
     return new ReadableStream({
         async pull(controller) {
@@ -38451,8 +39450,12 @@ function getAwsChunkedEncodingStream(stream, options) {
         checksumLocationName !== undefined &&
         streamHasher !== undefined;
     const digest = checksumRequired ? streamHasher(checksumAlgorithmFn, readable) : undefined;
+    Promise.resolve(digest).catch(() => {
+    });
     const awsChunkedEncodingStream = new Readable({
-        read: () => { },
+        read() {
+            readable.resume();
+        },
     });
     readable.on("data", (data) => {
         const length = bodyLengthChecker(data) || 0;
@@ -38461,16 +39464,27 @@ function getAwsChunkedEncodingStream(stream, options) {
         }
         awsChunkedEncodingStream.push(`${length.toString(16)}\r\n`);
         awsChunkedEncodingStream.push(data);
-        awsChunkedEncodingStream.push("\r\n");
-    });
-    readable.on("end", async () => {
-        awsChunkedEncodingStream.push(`0\r\n`);
-        if (checksumRequired) {
-            const checksum = base64Encoder(await digest);
-            awsChunkedEncodingStream.push(`${checksumLocationName}:${checksum}\r\n`);
-            awsChunkedEncodingStream.push(`\r\n`);
+        if (!awsChunkedEncodingStream.push("\r\n")) {
+            readable.pause();
         }
-        awsChunkedEncodingStream.push(null);
+    });
+    readable.on("error", (err) => {
+        awsChunkedEncodingStream.destroy(err);
+    });
+    readable.pause();
+    readable.on("end", async () => {
+        try {
+            awsChunkedEncodingStream.push(`0\r\n`);
+            if (checksumRequired) {
+                const checksum = base64Encoder(await digest);
+                awsChunkedEncodingStream.push(`${checksumLocationName}:${checksum}\r\n`);
+                awsChunkedEncodingStream.push(`\r\n`);
+            }
+            awsChunkedEncodingStream.push(null);
+        }
+        catch (err) {
+            awsChunkedEncodingStream.destroy(err);
+        }
     });
     return awsChunkedEncodingStream;
 }
@@ -38820,7 +39834,7 @@ exports.v4 = v4;
 /***/ 5230:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-const { SMITHY_CONTEXT_KEY } = __nccwpck_require__(1242);
+const { SMITHY_CONTEXT_KEY } = __nccwpck_require__(690);
 
 const getSmithyContext = (context) => context[SMITHY_CONTEXT_KEY] || (context[SMITHY_CONTEXT_KEY] = {});
 
@@ -39013,116 +40027,13 @@ exports.toEndpointV1 = toEndpointV1;
 
 /***/ }),
 
-/***/ 1242:
-/***/ ((__unused_webpack_module, exports) => {
-
-var HttpAuthLocation;
-(function (HttpAuthLocation) {
-    HttpAuthLocation["HEADER"] = "header";
-    HttpAuthLocation["QUERY"] = "query";
-})(HttpAuthLocation || (HttpAuthLocation = {}));
-
-var HttpApiKeyAuthLocation;
-(function (HttpApiKeyAuthLocation) {
-    HttpApiKeyAuthLocation["HEADER"] = "header";
-    HttpApiKeyAuthLocation["QUERY"] = "query";
-})(HttpApiKeyAuthLocation || (HttpApiKeyAuthLocation = {}));
-
-var EndpointURLScheme;
-(function (EndpointURLScheme) {
-    EndpointURLScheme["HTTP"] = "http";
-    EndpointURLScheme["HTTPS"] = "https";
-})(EndpointURLScheme || (EndpointURLScheme = {}));
-
-var AlgorithmId;
-(function (AlgorithmId) {
-    AlgorithmId["MD5"] = "md5";
-    AlgorithmId["CRC32"] = "crc32";
-    AlgorithmId["CRC32C"] = "crc32c";
-    AlgorithmId["SHA1"] = "sha1";
-    AlgorithmId["SHA256"] = "sha256";
-})(AlgorithmId || (AlgorithmId = {}));
-const getChecksumConfiguration = (runtimeConfig) => {
-    const checksumAlgorithms = [];
-    if (runtimeConfig.sha256 !== undefined) {
-        checksumAlgorithms.push({
-            algorithmId: () => AlgorithmId.SHA256,
-            checksumConstructor: () => runtimeConfig.sha256,
-        });
-    }
-    if (runtimeConfig.md5 != undefined) {
-        checksumAlgorithms.push({
-            algorithmId: () => AlgorithmId.MD5,
-            checksumConstructor: () => runtimeConfig.md5,
-        });
-    }
-    return {
-        addChecksumAlgorithm(algo) {
-            checksumAlgorithms.push(algo);
-        },
-        checksumAlgorithms() {
-            return checksumAlgorithms;
-        },
-    };
-};
-const resolveChecksumRuntimeConfig = (clientConfig) => {
-    const runtimeConfig = {};
-    clientConfig.checksumAlgorithms().forEach((checksumAlgorithm) => {
-        runtimeConfig[checksumAlgorithm.algorithmId()] = checksumAlgorithm.checksumConstructor();
-    });
-    return runtimeConfig;
-};
-
-const getDefaultClientConfiguration = (runtimeConfig) => {
-    return getChecksumConfiguration(runtimeConfig);
-};
-const resolveDefaultRuntimeConfig = (config) => {
-    return resolveChecksumRuntimeConfig(config);
-};
-
-var FieldPosition;
-(function (FieldPosition) {
-    FieldPosition[FieldPosition["HEADER"] = 0] = "HEADER";
-    FieldPosition[FieldPosition["TRAILER"] = 1] = "TRAILER";
-})(FieldPosition || (FieldPosition = {}));
-
-const SMITHY_CONTEXT_KEY = "__smithy_context";
-
-var IniSectionType;
-(function (IniSectionType) {
-    IniSectionType["PROFILE"] = "profile";
-    IniSectionType["SSO_SESSION"] = "sso-session";
-    IniSectionType["SERVICES"] = "services";
-})(IniSectionType || (IniSectionType = {}));
-
-var RequestHandlerProtocol;
-(function (RequestHandlerProtocol) {
-    RequestHandlerProtocol["HTTP_0_9"] = "http/0.9";
-    RequestHandlerProtocol["HTTP_1_0"] = "http/1.0";
-    RequestHandlerProtocol["TDS_8_0"] = "tds/8.0";
-})(RequestHandlerProtocol || (RequestHandlerProtocol = {}));
-
-exports.AlgorithmId = AlgorithmId;
-exports.EndpointURLScheme = EndpointURLScheme;
-exports.FieldPosition = FieldPosition;
-exports.HttpApiKeyAuthLocation = HttpApiKeyAuthLocation;
-exports.HttpAuthLocation = HttpAuthLocation;
-exports.IniSectionType = IniSectionType;
-exports.RequestHandlerProtocol = RequestHandlerProtocol;
-exports.SMITHY_CONTEXT_KEY = SMITHY_CONTEXT_KEY;
-exports.getDefaultClientConfiguration = getDefaultClientConfiguration;
-exports.resolveDefaultRuntimeConfig = resolveDefaultRuntimeConfig;
-
-
-/***/ }),
-
 /***/ 1279:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-const { hasOwn } = __nccwpck_require__(7665);
-const { streamCollector } = __nccwpck_require__(7665);
+const { hasOwn } = __nccwpck_require__(2430);
+const { streamCollector } = __nccwpck_require__(2430);
 exports.streamCollector = streamCollector;
-const { buildQueryString, HttpResponse } = __nccwpck_require__(913);
+const { buildQueryString, HttpResponse } = __nccwpck_require__(3422);
 const node_https = __nccwpck_require__(4708);
 const { Readable } = __nccwpck_require__(7075);
 const http2 = __nccwpck_require__(2467);
@@ -39152,8 +40063,9 @@ const NODEJS_TIMEOUT_ERROR_CODES = ["ECONNRESET", "EPIPE", "ETIMEDOUT"];
 const getTransformedHeaders = (headers) => {
     const transformedHeaders = {};
     for (const name in headers) {
-        if (!hasOwn(headers, name))
+        if (!hasOwn(headers, name)) {
             continue;
+        }
         const headerValues = headers[name];
         transformedHeaders[name] = Array.isArray(headerValues) ? headerValues.join(",") : headerValues;
     }
@@ -39244,13 +40156,26 @@ const setSocketKeepAlive = (request, { keepAlive, keepAliveMsecs }, deferTimeMs 
     return timing.setTimeout(registerListener, deferTimeMs);
 };
 
+const resolveDefaultSocketTimeout = (config) => {
+    const value = config?.defaultSocketTimeout;
+    return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
+};
+
 const DEFER_EVENT_LISTENER_TIME = 3000;
-const setSocketTimeout = (request, reject, timeoutInMs = 0) => {
+const setSocketTimeout = (request, reject, timeoutInMs = 0, destroyResponseBodyOnTimeout = false) => {
+    let response;
+    if (destroyResponseBodyOnTimeout) {
+        request.once("response", (res) => (response = res));
+    }
     const registerTimeout = (offset) => {
         const timeout = timeoutInMs - offset;
         const onTimeout = () => {
+            const error = Object.assign(new Error(`@smithy/node-http-handler - the request socket timed out after ${timeoutInMs} ms of inactivity (${destroyResponseBodyOnTimeout ? "service default socket timeout" : "configured by client requestHandler"}).`), { name: "TimeoutError" });
+            if (destroyResponseBodyOnTimeout) {
+                response?.destroy(error);
+            }
             request.destroy();
-            reject(Object.assign(new Error(`@smithy/node-http-handler - the request socket timed out after ${timeoutInMs} ms of inactivity (configured by client requestHandler).`), { name: "TimeoutError" }));
+            reject(error);
         };
         if (request.socket) {
             request.socket.setTimeout(timeout, onTimeout);
@@ -39264,7 +40189,12 @@ const setSocketTimeout = (request, reject, timeoutInMs = 0) => {
         registerTimeout(0);
         return 0;
     }
-    return timing.setTimeout(registerTimeout.bind(null, timeoutInMs === 0 ? 0 : DEFER_EVENT_LISTENER_TIME), DEFER_EVENT_LISTENER_TIME);
+    const deferralId = timing.setTimeout(registerTimeout.bind(null, timeoutInMs === 0 ? 0 : DEFER_EVENT_LISTENER_TIME), DEFER_EVENT_LISTENER_TIME);
+    if (destroyResponseBodyOnTimeout) {
+        request.once("close", () => timing.clearTimeout(deferralId));
+        return 0;
+    }
+    return deferralId;
 };
 
 const MIN_WAIT_TIME = 6_000;
@@ -39355,8 +40285,9 @@ class NodeHttpHandler {
         }
         if (sockets && requests) {
             for (const origin in sockets) {
-                if (!hasOwn(sockets, origin))
+                if (!hasOwn(sockets, origin)) {
                     continue;
+                }
                 const socketsInUse = sockets[origin]?.length ?? 0;
                 const requestsEnqueued = requests[origin]?.length ?? 0;
                 if (socketsInUse >= maxSockets && requestsEnqueued >= 2 * maxSockets) {
@@ -39504,7 +40435,13 @@ or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler conf
             const effectiveRequestTimeout = requestTimeout ?? config.requestTimeout;
             connectionTimeoutId = setConnectionTimeout(req, reject, config.connectionTimeout);
             requestTimeoutId = setRequestTimeout(req, reject, effectiveRequestTimeout, config.throwOnRequestTimeout, logger ?? console);
-            socketTimeoutId = setSocketTimeout(req, reject, config.socketTimeout);
+            const defaultSocketTimeout = config.socketTimeout === undefined ? resolveDefaultSocketTimeout(config) : undefined;
+            if (defaultSocketTimeout) {
+                socketTimeoutId = setSocketTimeout(req, reject, defaultSocketTimeout, true);
+            }
+            else {
+                socketTimeoutId = setSocketTimeout(req, reject, config.socketTimeout);
+            }
             const httpAgent = nodeHttpsOptions.agent;
             if (typeof httpAgent === "object" && "keepAlive" in httpAgent) {
                 keepAliveTimeoutId = setSocketKeepAlive(req, {
@@ -39521,11 +40458,15 @@ or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler conf
     updateHttpClientConfig(key, value) {
         this.config = undefined;
         this.configProvider = this.configProvider.then((config) => {
-            if (key === Symbol.for("logger")) {
-                return {
-                    ...config,
-                    logger: config.logger ?? value,
-                };
+            switch (key) {
+                case Symbol.for("logger"):
+                    key = "logger";
+                    value = config.logger ?? value;
+                    break;
+                case Symbol.for("@smithy/defaultSocketTimeout"):
+                    key = "defaultSocketTimeout";
+                    value = resolveDefaultSocketTimeout(config) ?? value;
+                    break;
             }
             return {
                 ...config,
@@ -39540,13 +40481,15 @@ or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler conf
         const { requestTimeout, connectionTimeout, socketTimeout, socketAcquisitionWarningTimeout, httpAgent, httpsAgent, throwOnRequestTimeout, logger, } = options || {};
         const keepAlive = true;
         const maxSockets = 50;
+        let httpAgentPromise;
         return {
             connectionTimeout,
             requestTimeout,
             socketTimeout,
+            defaultSocketTimeout: resolveDefaultSocketTimeout(options),
             socketAcquisitionWarningTimeout,
             throwOnRequestTimeout,
-            httpAgentProvider: async () => {
+            httpAgentProvider: () => (httpAgentPromise ??= (async () => {
                 const node_http = __nccwpck_require__(7067);
                 const { Agent, request } = node_http.default ?? node_http;
                 hRequest = request;
@@ -39556,7 +40499,7 @@ or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler conf
                     return httpAgent;
                 }
                 return new hAgent({ keepAlive, maxSockets, ...httpAgent });
-            },
+            })()),
             httpsAgent: (() => {
                 if (httpsAgent instanceof node_https.Agent || typeof httpsAgent?.destroy === "function") {
                     this.externalAgent = true;
@@ -39831,7 +40774,8 @@ class NodeHttp2Handler {
     }
     async handle(request, { abortSignal, requestTimeout, isEventStream } = {}) {
         if (!this.config) {
-            this.config = await this.configProvider;
+            const config = await this.configProvider;
+            this.config = { ...config, defaultSocketTimeout: resolveDefaultSocketTimeout(config) };
             const { disableConcurrentStreams, maxConcurrentStreams, nodeHttp2ConnectOptions } = this.config;
             this.connectionManager.setDisableConcurrentStreams(disableConcurrentStreams ?? false);
             if (maxConcurrentStreams) {
@@ -39841,9 +40785,12 @@ class NodeHttp2Handler {
                 this.connectionManager.setNodeHttp2ConnectOptions(nodeHttp2ConnectOptions);
             }
         }
-        const { requestTimeout: configRequestTimeout, disableConcurrentStreams } = this.config;
+        const { requestTimeout: configRequestTimeout, disableConcurrentStreams, sessionTimeout } = this.config;
         const useIsolatedSession = disableConcurrentStreams || isEventStream;
         const effectiveRequestTimeout = requestTimeout ?? configRequestTimeout;
+        const defaultSocketTimeout = effectiveRequestTimeout === undefined && sessionTimeout === undefined
+            ? this.config.defaultSocketTimeout
+            : undefined;
         return new Promise((_resolve, _reject) => {
             let fulfilled = false;
             let writeRequestBodyPromise = undefined;
@@ -39906,6 +40853,19 @@ class NodeHttp2Handler {
                     rejectWithDestroy(timeoutError);
                 });
             }
+            else if (defaultSocketTimeout) {
+                clientHttp2Stream.setTimeout(defaultSocketTimeout, () => {
+                    const timeoutError = new Error(`Stream timed out because of no activity for ${defaultSocketTimeout} ms`);
+                    timeoutError.name = "TimeoutError";
+                    fulfilled = true;
+                    reject(timeoutError);
+                    clientHttp2Stream.destroy(timeoutError);
+                    if (useIsolatedSession) {
+                        ref.destroy();
+                    }
+                });
+                clientHttp2Stream.once("response", () => clientHttp2Stream.setTimeout(defaultSocketTimeout));
+            }
             if (abortSignal) {
                 const onAbort = () => {
                     clientHttp2Stream.close();
@@ -39964,6 +40924,12 @@ class NodeHttp2Handler {
     updateHttpClientConfig(key, value) {
         this.config = undefined;
         this.configProvider = this.configProvider.then((config) => {
+            switch (key) {
+                case Symbol.for("@smithy/defaultSocketTimeout"):
+                    key = "defaultSocketTimeout";
+                    value = resolveDefaultSocketTimeout(config) ?? value;
+                    break;
+            }
             return {
                 ...config,
                 [key]: value,
@@ -39982,8186 +40948,10 @@ exports.NodeHttpHandler = NodeHttpHandler;
 
 /***/ }),
 
-/***/ 6763:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { createReadStream } = __nccwpck_require__(3024);
-const { Writable } = __nccwpck_require__(7075);
-const { toUint8Array, concatBytes } = __nccwpck_require__(7665);
-const { createHash, createHmac } = __nccwpck_require__(7598);
-const zlib = __nccwpck_require__(8522);
-
-async function blobReader(blob, onChunk, chunkSize = 1024 * 1024) {
-    const size = blob.size;
-    let totalBytesRead = 0;
-    while (totalBytesRead < size) {
-        const slice = blob.slice(totalBytesRead, Math.min(size, totalBytesRead + chunkSize));
-        onChunk(new Uint8Array(await slice.arrayBuffer()));
-        totalBytesRead += slice.size;
-    }
-}
-
-const blobHasher = async function blobHasher(hashCtor, blob) {
-    const hash = new hashCtor();
-    await blobReader(blob, (chunk) => {
-        hash.update(chunk);
-    });
-    return hash.digest();
-};
-
-class HashCalculator extends Writable {
-    hash;
-    constructor(hash, options) {
-        super(options);
-        this.hash = hash;
-    }
-    _write(chunk, encoding, callback) {
-        try {
-            this.hash.update(toUint8Array(chunk));
-        }
-        catch (err) {
-            return callback(err);
-        }
-        callback();
-    }
-}
-
-const fileStreamHasher = (hashCtor, fileStream) => new Promise((resolve, reject) => {
-    if (!isReadStream(fileStream)) {
-        reject(new Error("Unable to calculate hash for non-file streams."));
-        return;
-    }
-    const fileStreamTee = createReadStream(fileStream.path, {
-        start: fileStream.start,
-        end: fileStream.end,
-    });
-    const hash = new hashCtor();
-    const hashCalculator = new HashCalculator(hash);
-    fileStreamTee.pipe(hashCalculator);
-    fileStreamTee.on("error", (err) => {
-        hashCalculator.end();
-        reject(err);
-    });
-    hashCalculator.on("error", reject);
-    hashCalculator.on("finish", function () {
-        hash.digest().then(resolve).catch(reject);
-    });
-});
-const isReadStream = (stream) => typeof stream.path === "string";
-
-const readableStreamHasher = (hashCtor, readableStream) => {
-    if (readableStream.readableFlowing !== null) {
-        throw new Error("Unable to calculate hash for flowing readable stream");
-    }
-    const hash = new hashCtor();
-    const hashCalculator = new HashCalculator(hash);
-    readableStream.pipe(hashCalculator);
-    return new Promise((resolve, reject) => {
-        readableStream.on("error", (err) => {
-            hashCalculator.end();
-            reject(err);
-        });
-        hashCalculator.on("error", reject);
-        hashCalculator.on("finish", () => {
-            hash.digest().then(resolve).catch(reject);
-        });
-    });
-};
-
-class Md5Js {
-    digestLength = 16;
-    state = Uint32Array.from(INIT$1);
-    writeBuffer = new DataView(new ArrayBuffer(64));
-    bufferLength = 0;
-    bytesHashed = 0;
-    update(sourceData) {
-        const data = toUint8Array(sourceData);
-        let pos = 0;
-        let len = data.byteLength;
-        this.bytesHashed += len;
-        while (len > 0) {
-            this.writeBuffer.setUint8(this.bufferLength++, data[pos++]);
-            --len;
-            if (this.bufferLength === 64) {
-                compress(this.state, this.writeBuffer);
-                this.bufferLength = 0;
-            }
-        }
-    }
-    async digest() {
-        const state = Uint32Array.from(this.state);
-        const buf = new DataView(this.writeBuffer.buffer.slice(0));
-        let bufLen = this.bufferLength;
-        const bits = this.bytesHashed * 8;
-        buf.setUint8(bufLen++, 0x80);
-        if (this.bufferLength % 64 >= 56) {
-            for (let i = bufLen; i < 64; ++i) {
-                buf.setUint8(i, 0);
-            }
-            compress(state, buf);
-            bufLen = 0;
-        }
-        for (let i = bufLen; i < 56; ++i) {
-            buf.setUint8(i, 0);
-        }
-        buf.setUint32(56, bits >>> 0, true);
-        buf.setUint32(60, Math.floor(bits / 2 ** 32), true);
-        compress(state, buf);
-        const out = new Uint8Array(16);
-        const view = new DataView(out.buffer);
-        for (let i = 0; i < 4; ++i) {
-            view.setUint32(i * 4, state[i], true);
-        }
-        return out;
-    }
-    reset() {
-        this.state.set(INIT$1);
-        this.writeBuffer = new DataView(new ArrayBuffer(64));
-        this.bufferLength = 0;
-        this.bytesHashed = 0;
-    }
-}
-const INIT$1 = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476];
-const M = 0xffffffff;
-const S = Uint8Array.of(7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21);
-const T = Array.from({ length: 64 }, (_, i) => (Math.abs(Math.sin(i + 1)) * 2 ** 32) >>> 0);
-function compress(state, block) {
-    let a = state[0], b = state[1], c = state[2], d = state[3];
-    for (let i = 0; i < 64; ++i) {
-        let f, g;
-        if (i < 16) {
-            f = (b & c) | (~b & d);
-            g = i;
-        }
-        else if (i < 32) {
-            f = (d & b) | (c & ~d);
-            g = (5 * i + 1) % 16;
-        }
-        else if (i < 48) {
-            f = b ^ c ^ d;
-            g = (3 * i + 5) % 16;
-        }
-        else {
-            f = c ^ (b | ~d);
-            g = (7 * i) % 16;
-        }
-        const x = block.getUint32(g * 4, true);
-        const tmp = d;
-        d = c;
-        c = b;
-        const s = S[(i >> 4) * 4 + (i & 3)];
-        const sum = (((a + f) & M) + ((x + T[i]) & M)) & M;
-        b = (b + (((sum << s) | (sum >>> (32 - s))) >>> 0)) & M;
-        a = tmp;
-    }
-    state[0] = (state[0] + a) & M;
-    state[1] = (state[1] + b) & M;
-    state[2] = (state[2] + c) & M;
-    state[3] = (state[3] + d) & M;
-}
-
-const hasNativeCrypto$1 = (() => {
-    try {
-        createHash("md5");
-        return true;
-    }
-    catch {
-        return false;
-    }
-})();
-const Md5Node = hasNativeCrypto$1 ? buildNativeClass$2() : Md5Js;
-function buildNativeClass$2() {
-    return class Md5Node {
-        digestLength = 16;
-        hash = createHash("md5");
-        update(data) {
-            this.hash.update(toUint8Array(data));
-        }
-        async digest() {
-            const buf = this.hash.copy().digest();
-            return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        }
-        reset() {
-            this.hash = createHash("md5");
-        }
-    };
-}
-
-const CRC32_TABLE = new Uint32Array(256);
-for (let i = 0; i < 256; ++i) {
-    let c = i;
-    for (let j = 0; j < 8; ++j) {
-        c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
-    }
-    CRC32_TABLE[i] = c >>> 0;
-}
-const ONES = 0xffff_ffff;
-class Crc32Js {
-    digestLength = 4;
-    checksum = ONES;
-    update(data) {
-        for (let i = 0; i < data.length; ++i) {
-            this.checksum = (this.checksum >>> 8) ^ CRC32_TABLE[(this.checksum ^ data[i]) & 0xff];
-        }
-    }
-    digestSync() {
-        return (this.checksum ^ ONES) >>> 0;
-    }
-    async digest() {
-        const value = this.digestSync();
-        const out = new Uint8Array(4);
-        new DataView(out.buffer).setUint32(0, value, false);
-        return out;
-    }
-    reset() {
-        this.checksum = ONES;
-    }
-}
-
-const zlibCrc32 = typeof zlib.crc32 === "function" ? zlib.crc32 : undefined;
-const Crc32Node = zlibCrc32 ? buildNativeClass$1(zlibCrc32) : Crc32Js;
-function buildNativeClass$1(nativeCrc32) {
-    return class Crc32Node {
-        digestLength = 4;
-        value = 0;
-        update(data) {
-            this.value = nativeCrc32(data, this.value);
-        }
-        digestSync() {
-            return this.value >>> 0;
-        }
-        async digest() {
-            const out = new Uint8Array(4);
-            new DataView(out.buffer).setUint32(0, this.digestSync(), false);
-            return out;
-        }
-        reset() {
-            this.value = 0;
-        }
-    };
-}
-
-const BLOCK = 64;
-const DIGEST_LENGTH = 32;
-const MAX_HASHABLE_LENGTH = 2 ** 53 - 1;
-class Sha256Js {
-    digestLength = DIGEST_LENGTH;
-    state = Int32Array.from(INIT);
-    w;
-    buffer = new Uint8Array(64);
-    bufferLength = 0;
-    bytesHashed = 0;
-    finished = false;
-    inner;
-    outer;
-    constructor(secret) {
-        if (secret) {
-            const key = Sha256Js.normalizeKey(secret);
-            this.inner = new Sha256Js();
-            this.outer = new Sha256Js();
-            const { inner, outer } = this;
-            const pad = new Uint8Array(BLOCK * 2);
-            for (let i = 0; i < BLOCK; ++i) {
-                pad[i] = 0x36 ^ key[i];
-                pad[i + BLOCK] = 0x5c ^ key[i];
-            }
-            inner.update(pad.subarray(0, BLOCK));
-            outer.update(pad.subarray(BLOCK));
-        }
-    }
-    update(data) {
-        if (this.finished) {
-            throw new Error("Attempted to update an already finished HMAC.");
-        }
-        if (this.inner) {
-            this.inner.update(data);
-            return;
-        }
-        const chunk = toUint8Array(data);
-        let position = 0;
-        let { byteLength } = chunk;
-        this.bytesHashed += byteLength;
-        if (this.bytesHashed * 8 > MAX_HASHABLE_LENGTH) {
-            throw new Error("Cannot hash more than 2^53 - 1 bits");
-        }
-        while (byteLength > 0) {
-            this.buffer[this.bufferLength++] = chunk[position++];
-            byteLength--;
-            if (this.bufferLength === BLOCK) {
-                this.hashBuffer();
-                this.bufferLength = 0;
-            }
-        }
-    }
-    async digest() {
-        const { inner, outer } = this;
-        if (inner && outer) {
-            if (this.finished) {
-                throw new Error("Attempted to digest an already finished HMAC.");
-            }
-            this.finished = true;
-            const innerDigest = inner.digestSync();
-            outer.update(innerDigest);
-            return outer.digestSync();
-        }
-        return this.digestSync();
-    }
-    reset() {
-        this.state = Int32Array.from(INIT);
-        this.buffer = new Uint8Array(64);
-        this.bufferLength = 0;
-        this.bytesHashed = 0;
-    }
-    digestSync() {
-        const state = this.state.slice();
-        const buffer = this.buffer.slice();
-        let bufferLength = this.bufferLength;
-        const bitsHashed = this.bytesHashed * 8;
-        const bufferView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-        bufferView.setUint8(bufferLength++, 0x80);
-        if ((bufferLength - 1) % BLOCK >= BLOCK - 8) {
-            for (let i = bufferLength; i < BLOCK; ++i) {
-                bufferView.setUint8(i, 0);
-            }
-            this.hashBufferWith(state, buffer);
-            bufferLength = 0;
-        }
-        for (let i = bufferLength; i < BLOCK - 8; ++i) {
-            bufferView.setUint8(i, 0);
-        }
-        bufferView.setUint32(BLOCK - 8, Math.floor(bitsHashed / 0x100000000), false);
-        bufferView.setUint32(BLOCK - 4, bitsHashed, false);
-        this.hashBufferWith(state, buffer);
-        const out = new Uint8Array(DIGEST_LENGTH);
-        for (let i = 0; i < 8; ++i) {
-            out[i * 4] = (state[i] >>> 24) & 0xff;
-            out[i * 4 + 1] = (state[i] >>> 16) & 0xff;
-            out[i * 4 + 2] = (state[i] >>> 8) & 0xff;
-            out[i * 4 + 3] = (state[i] >>> 0) & 0xff;
-        }
-        return out;
-    }
-    static normalizeKey(secret) {
-        const key = toUint8Array(secret);
-        if (key.byteLength > BLOCK) {
-            const h = new Sha256Js();
-            h.update(key);
-            const out = h.digestSync();
-            const padded = new Uint8Array(BLOCK);
-            padded.set(out);
-            return padded;
-        }
-        if (key.byteLength < BLOCK) {
-            const padded = new Uint8Array(BLOCK);
-            padded.set(key);
-            return padded;
-        }
-        return key;
-    }
-    hashBuffer() {
-        this.hashBufferWith(this.state, this.buffer);
-    }
-    hashBufferWith(state, buffer) {
-        const w = (this.w ??= new Int32Array(64));
-        let s0 = state[0], s1 = state[1], s2 = state[2], s3 = state[3], s4 = state[4], s5 = state[5], s6 = state[6], s7 = state[7];
-        for (let i = 0; i < BLOCK; ++i) {
-            if (i < 16) {
-                w[i] =
-                    ((buffer[i * 4] & 0xff) << 24) |
-                        ((buffer[i * 4 + 1] & 0xff) << 16) |
-                        ((buffer[i * 4 + 2] & 0xff) << 8) |
-                        (buffer[i * 4 + 3] & 0xff);
-            }
-            else {
-                let u = w[i - 2];
-                const t1 = ((u >>> 17) | (u << 15)) ^ ((u >>> 19) | (u << 13)) ^ (u >>> 10);
-                u = w[i - 15];
-                const t2 = ((u >>> 7) | (u << 25)) ^ ((u >>> 18) | (u << 14)) ^ (u >>> 3);
-                w[i] = ((t1 + w[i - 7]) | 0) + ((t2 + w[i - 16]) | 0);
-            }
-            const t1 = ((((((s4 >>> 6) | (s4 << 26)) ^ ((s4 >>> 11) | (s4 << 21)) ^ ((s4 >>> 25) | (s4 << 7))) +
-                ((s4 & s5) ^ (~s4 & s6))) |
-                0) +
-                ((s7 + ((K[i] + w[i]) | 0)) | 0)) |
-                0;
-            const t2 = ((((s0 >>> 2) | (s0 << 30)) ^ ((s0 >>> 13) | (s0 << 19)) ^ ((s0 >>> 22) | (s0 << 10))) +
-                ((s0 & s1) ^ (s0 & s2) ^ (s1 & s2))) |
-                0;
-            s7 = s6;
-            s6 = s5;
-            s5 = s4;
-            s4 = (s3 + t1) | 0;
-            s3 = s2;
-            s2 = s1;
-            s1 = s0;
-            s0 = (t1 + t2) | 0;
-        }
-        state[0] += s0;
-        state[1] += s1;
-        state[2] += s2;
-        state[3] += s3;
-        state[4] += s4;
-        state[5] += s5;
-        state[6] += s6;
-        state[7] += s7;
-    }
-}
-const INIT = new Int32Array([
-    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
-]);
-const K = new Int32Array([
-    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
-]);
-
-const hasNativeCrypto = (() => {
-    try {
-        createHash("sha256");
-        return true;
-    }
-    catch {
-        return false;
-    }
-})();
-const Sha256Node = hasNativeCrypto ? buildNativeClass() : Sha256Js;
-function buildNativeClass() {
-    return class Sha256Node {
-        digestLength = 32;
-        secret;
-        hash;
-        isHmac;
-        finished = false;
-        constructor(secret) {
-            this.secret = secret;
-            this.isHmac = !!secret;
-            this.hash = this.createHash();
-        }
-        update(data) {
-            if (this.finished) {
-                throw new Error("Attempted to update an already finished hash.");
-            }
-            this.hash.update(data);
-        }
-        async digest() {
-            let buf;
-            if (this.isHmac) {
-                this.finished = true;
-                buf = this.hash.digest();
-            }
-            else {
-                buf = this.hash.copy().digest();
-            }
-            return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        }
-        reset() {
-            this.hash = this.createHash();
-            this.finished = false;
-        }
-        createHash() {
-            return this.secret ? createHmac("sha256", toBuffer(this.secret)) : createHash("sha256");
-        }
-    };
-}
-function toBuffer(data) {
-    if (typeof data === "string") {
-        return data;
-    }
-    if (ArrayBuffer.isView(data)) {
-        return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
-    }
-    return Buffer.from(data);
-}
-
-const { digest, sign, importKey } = globalThis?.crypto?.subtle ?? {};
-const subtle = typeof digest === "function" && typeof sign === "function" && typeof importKey === "function"
-    ? globalThis.crypto.subtle
-    : undefined;
-const MAX_PENDING_BYTES = 8 * 1024 * 1024;
-class Sha256WebCrypto {
-    digestLength = 32;
-    secret;
-    pending = [];
-    pendingBytes = 0;
-    fallback;
-    finished = false;
-    constructor(secret) {
-        if (secret) {
-            this.secret = toUint8Array(secret);
-        }
-    }
-    update(data) {
-        if (this.finished) {
-            throw new Error("Attempted to update an already finished HMAC.");
-        }
-        if (this.fallback) {
-            this.fallback.update(data);
-            return;
-        }
-        this.pending.push(data.slice());
-        this.pendingBytes += data.byteLength;
-        if (this.pendingBytes >= MAX_PENDING_BYTES) {
-            this.switchToFallback();
-        }
-    }
-    async digest() {
-        if (this.fallback) {
-            return this.fallback.digest();
-        }
-        if (this.secret && this.finished) {
-            throw new Error("Attempted to digest an already finished HMAC.");
-        }
-        const data = concatBytes(this.pending);
-        if (subtle) {
-            if (this.secret) {
-                this.finished = true;
-                const key = await subtle.importKey("raw", this.secret, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-                const sig = await subtle.sign("HMAC", key, data);
-                return new Uint8Array(sig);
-            }
-            const hash = await subtle.digest("SHA-256", data);
-            return new Uint8Array(hash);
-        }
-        const sha256 = new Sha256Js(this.secret);
-        sha256.update(data);
-        return sha256.digest();
-    }
-    reset() {
-        this.pending = [];
-        this.pendingBytes = 0;
-        this.fallback = undefined;
-        this.finished = false;
-    }
-    switchToFallback() {
-        const sha256Js = new Sha256Js(this.secret);
-        for (const chunk of this.pending) {
-            sha256Js.update(chunk);
-        }
-        this.fallback = sha256Js;
-        this.pending = [];
-        this.pendingBytes = 0;
-    }
-}
-
-exports.Crc32 = Crc32Node;
-exports.Crc32Js = Crc32Js;
-exports.Crc32Node = Crc32Node;
-exports.Md5 = Md5Node;
-exports.Md5Js = Md5Js;
-exports.Md5Node = Md5Node;
-exports.Sha256 = Sha256Node;
-exports.Sha256Js = Sha256Js;
-exports.Sha256Node = Sha256Node;
-exports.Sha256WebCrypto = Sha256WebCrypto;
-exports.blobHasher = blobHasher;
-exports.blobReader = blobReader;
-exports.fileStreamHasher = fileStreamHasher;
-exports.readableStreamHasher = readableStreamHasher;
-
-
-/***/ }),
-
-/***/ 3455:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { hasOwn } = __nccwpck_require__(5105);
-const { getSmithyContext, normalizeProvider } = __nccwpck_require__(5105);
-exports.getSmithyContext = getSmithyContext;
-exports.normalizeProvider = normalizeProvider;
-const { SMITHY_CONTEXT_KEY, AlgorithmId } = __nccwpck_require__(805);
-exports.AlgorithmId = AlgorithmId;
-const { NormalizedSchema } = __nccwpck_require__(5987);
-
-const getAllAliases = (name, aliases) => {
-    const _aliases = [];
-    if (name) {
-        _aliases.push(name);
-    }
-    if (aliases) {
-        for (const alias of aliases) {
-            _aliases.push(alias);
-        }
-    }
-    return _aliases;
-};
-const getMiddlewareNameWithAliases = (name, aliases) => {
-    return `${name || "anonymous"}${aliases && aliases.length > 0 ? ` (a.k.a. ${aliases.join(",")})` : ""}`;
-};
-const constructStack = () => {
-    let absoluteEntries = [];
-    let relativeEntries = [];
-    let identifyOnResolve = false;
-    const entriesNameSet = new Set();
-    const sort = (entries) => entries.sort((a, b) => stepWeights[b.step] - stepWeights[a.step] ||
-        priorityWeights[b.priority || "normal"] - priorityWeights[a.priority || "normal"]);
-    const removeByName = (toRemove) => {
-        let isRemoved = false;
-        const filterCb = (entry) => {
-            const aliases = getAllAliases(entry.name, entry.aliases);
-            if (aliases.includes(toRemove)) {
-                isRemoved = true;
-                for (const alias of aliases) {
-                    entriesNameSet.delete(alias);
-                }
-                return false;
-            }
-            return true;
-        };
-        absoluteEntries = absoluteEntries.filter(filterCb);
-        relativeEntries = relativeEntries.filter(filterCb);
-        return isRemoved;
-    };
-    const removeByReference = (toRemove) => {
-        let isRemoved = false;
-        const filterCb = (entry) => {
-            if (entry.middleware === toRemove) {
-                isRemoved = true;
-                for (const alias of getAllAliases(entry.name, entry.aliases)) {
-                    entriesNameSet.delete(alias);
-                }
-                return false;
-            }
-            return true;
-        };
-        absoluteEntries = absoluteEntries.filter(filterCb);
-        relativeEntries = relativeEntries.filter(filterCb);
-        return isRemoved;
-    };
-    const cloneTo = (toStack) => {
-        absoluteEntries.forEach((entry) => {
-            toStack.add(entry.middleware, { ...entry });
-        });
-        relativeEntries.forEach((entry) => {
-            toStack.addRelativeTo(entry.middleware, { ...entry });
-        });
-        toStack.identifyOnResolve?.(stack.identifyOnResolve());
-        return toStack;
-    };
-    const expandRelativeMiddlewareList = (from) => {
-        const expandedMiddlewareList = [];
-        from.before.forEach((entry) => {
-            if (entry.before.length === 0 && entry.after.length === 0) {
-                expandedMiddlewareList.push(entry);
-            }
-            else {
-                expandedMiddlewareList.push(...expandRelativeMiddlewareList(entry));
-            }
-        });
-        expandedMiddlewareList.push(from);
-        from.after.reverse().forEach((entry) => {
-            if (entry.before.length === 0 && entry.after.length === 0) {
-                expandedMiddlewareList.push(entry);
-            }
-            else {
-                expandedMiddlewareList.push(...expandRelativeMiddlewareList(entry));
-            }
-        });
-        return expandedMiddlewareList;
-    };
-    const getMiddlewareList = (debug = false) => {
-        const normalizedAbsoluteEntries = [];
-        const normalizedRelativeEntries = [];
-        const normalizedEntriesNameMap = {};
-        absoluteEntries.forEach((entry) => {
-            const normalizedEntry = {
-                ...entry,
-                before: [],
-                after: [],
-            };
-            for (const alias of getAllAliases(normalizedEntry.name, normalizedEntry.aliases)) {
-                normalizedEntriesNameMap[alias] = normalizedEntry;
-            }
-            normalizedAbsoluteEntries.push(normalizedEntry);
-        });
-        relativeEntries.forEach((entry) => {
-            const normalizedEntry = {
-                ...entry,
-                before: [],
-                after: [],
-            };
-            for (const alias of getAllAliases(normalizedEntry.name, normalizedEntry.aliases)) {
-                normalizedEntriesNameMap[alias] = normalizedEntry;
-            }
-            normalizedRelativeEntries.push(normalizedEntry);
-        });
-        normalizedRelativeEntries.forEach((entry) => {
-            if (entry.toMiddleware) {
-                const toMiddleware = normalizedEntriesNameMap[entry.toMiddleware];
-                if (toMiddleware === undefined) {
-                    if (debug) {
-                        return;
-                    }
-                    throw new Error(`${entry.toMiddleware} is not found when adding ` +
-                        `${getMiddlewareNameWithAliases(entry.name, entry.aliases)} ` +
-                        `middleware ${entry.relation} ${entry.toMiddleware}`);
-                }
-                if (entry.relation === "after") {
-                    toMiddleware.after.push(entry);
-                }
-                if (entry.relation === "before") {
-                    toMiddleware.before.push(entry);
-                }
-            }
-        });
-        const mainChain = sort(normalizedAbsoluteEntries)
-            .map(expandRelativeMiddlewareList)
-            .reduce((wholeList, expandedMiddlewareList) => {
-            wholeList.push(...expandedMiddlewareList);
-            return wholeList;
-        }, []);
-        return mainChain;
-    };
-    const stack = {
-        add: (middleware, options = {}) => {
-            const { name, override, aliases: _aliases } = options;
-            const entry = {
-                step: "initialize",
-                priority: "normal",
-                middleware,
-                ...options,
-            };
-            const aliases = getAllAliases(name, _aliases);
-            if (aliases.length > 0) {
-                if (aliases.some((alias) => entriesNameSet.has(alias))) {
-                    if (!override)
-                        throw new Error(`Duplicate middleware name '${getMiddlewareNameWithAliases(name, _aliases)}'`);
-                    for (const alias of aliases) {
-                        const toOverrideIndex = absoluteEntries.findIndex((entry) => entry.name === alias || entry.aliases?.some((a) => a === alias));
-                        if (toOverrideIndex === -1) {
-                            continue;
-                        }
-                        const toOverride = absoluteEntries[toOverrideIndex];
-                        if (toOverride.step !== entry.step || entry.priority !== toOverride.priority) {
-                            throw new Error(`"${getMiddlewareNameWithAliases(toOverride.name, toOverride.aliases)}" middleware with ` +
-                                `${toOverride.priority} priority in ${toOverride.step} step cannot ` +
-                                `be overridden by "${getMiddlewareNameWithAliases(name, _aliases)}" middleware with ` +
-                                `${entry.priority} priority in ${entry.step} step.`);
-                        }
-                        absoluteEntries.splice(toOverrideIndex, 1);
-                    }
-                }
-                for (const alias of aliases) {
-                    entriesNameSet.add(alias);
-                }
-            }
-            absoluteEntries.push(entry);
-        },
-        addRelativeTo: (middleware, options) => {
-            const { name, override, aliases: _aliases } = options;
-            const entry = {
-                middleware,
-                ...options,
-            };
-            const aliases = getAllAliases(name, _aliases);
-            if (aliases.length > 0) {
-                if (aliases.some((alias) => entriesNameSet.has(alias))) {
-                    if (!override)
-                        throw new Error(`Duplicate middleware name '${getMiddlewareNameWithAliases(name, _aliases)}'`);
-                    for (const alias of aliases) {
-                        const toOverrideIndex = relativeEntries.findIndex((entry) => entry.name === alias || entry.aliases?.some((a) => a === alias));
-                        if (toOverrideIndex === -1) {
-                            continue;
-                        }
-                        const toOverride = relativeEntries[toOverrideIndex];
-                        if (toOverride.toMiddleware !== entry.toMiddleware || toOverride.relation !== entry.relation) {
-                            throw new Error(`"${getMiddlewareNameWithAliases(toOverride.name, toOverride.aliases)}" middleware ` +
-                                `${toOverride.relation} "${toOverride.toMiddleware}" middleware cannot be overridden ` +
-                                `by "${getMiddlewareNameWithAliases(name, _aliases)}" middleware ${entry.relation} ` +
-                                `"${entry.toMiddleware}" middleware.`);
-                        }
-                        relativeEntries.splice(toOverrideIndex, 1);
-                    }
-                }
-                for (const alias of aliases) {
-                    entriesNameSet.add(alias);
-                }
-            }
-            relativeEntries.push(entry);
-        },
-        clone: () => cloneTo(constructStack()),
-        use: (plugin) => {
-            plugin.applyToStack(stack);
-        },
-        remove: (toRemove) => {
-            if (typeof toRemove === "string")
-                return removeByName(toRemove);
-            else
-                return removeByReference(toRemove);
-        },
-        removeByTag: (toRemove) => {
-            let isRemoved = false;
-            const filterCb = (entry) => {
-                const { tags, name, aliases: _aliases } = entry;
-                if (tags && tags.includes(toRemove)) {
-                    const aliases = getAllAliases(name, _aliases);
-                    for (const alias of aliases) {
-                        entriesNameSet.delete(alias);
-                    }
-                    isRemoved = true;
-                    return false;
-                }
-                return true;
-            };
-            absoluteEntries = absoluteEntries.filter(filterCb);
-            relativeEntries = relativeEntries.filter(filterCb);
-            return isRemoved;
-        },
-        concat: (from) => {
-            const cloned = cloneTo(constructStack());
-            cloned.use(from);
-            cloned.identifyOnResolve(identifyOnResolve || cloned.identifyOnResolve() || (from.identifyOnResolve?.() ?? false));
-            return cloned;
-        },
-        applyToStack: cloneTo,
-        identify: () => {
-            return getMiddlewareList(true).map((mw) => {
-                const step = mw.step ??
-                    mw.relation +
-                        " " +
-                        mw.toMiddleware;
-                return getMiddlewareNameWithAliases(mw.name, mw.aliases) + " - " + step;
-            });
-        },
-        identifyOnResolve(toggle) {
-            if (typeof toggle === "boolean")
-                identifyOnResolve = toggle;
-            return identifyOnResolve;
-        },
-        resolve: (handler, context) => {
-            for (const middleware of getMiddlewareList()
-                .map((entry) => entry.middleware)
-                .reverse()) {
-                handler = middleware(handler, context);
-            }
-            if (identifyOnResolve) {
-                console.log(stack.identify());
-            }
-            return handler;
-        },
-    };
-    return stack;
-};
-const stepWeights = {
-    initialize: 5,
-    serialize: 4,
-    build: 3,
-    finalizeRequest: 2,
-    deserialize: 1,
-};
-const priorityWeights = {
-    high: 3,
-    normal: 2,
-    low: 1,
-};
-
-const invalidFunction = (message) => () => {
-    throw new Error(message);
-};
-
-const invalidProvider = (message) => () => Promise.reject(message);
-
-const getCircularReplacer = () => {
-    const seen = new WeakSet();
-    return (key, value) => {
-        if (typeof value === "object" && value !== null) {
-            if (seen.has(value)) {
-                return "[Circular]";
-            }
-            seen.add(value);
-        }
-        return value;
-    };
-};
-
-const sleep = (seconds) => {
-    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-};
-
-const waiterServiceDefaults = {
-    minDelay: 2,
-    maxDelay: 120,
-};
-var WaiterState;
-(function (WaiterState) {
-    WaiterState["ABORTED"] = "ABORTED";
-    WaiterState["FAILURE"] = "FAILURE";
-    WaiterState["SUCCESS"] = "SUCCESS";
-    WaiterState["RETRY"] = "RETRY";
-    WaiterState["TIMEOUT"] = "TIMEOUT";
-})(WaiterState || (WaiterState = {}));
-const checkExceptions = (result) => {
-    if (result.state === WaiterState.ABORTED) {
-        const abortError = new Error(`${JSON.stringify({
-            ...result,
-            reason: "Request was aborted",
-        }, getCircularReplacer())}`);
-        abortError.name = "AbortError";
-        throw abortError;
-    }
-    else if (result.state === WaiterState.TIMEOUT) {
-        const timeoutError = new Error(`${JSON.stringify({
-            ...result,
-            reason: "Waiter has timed out",
-        }, getCircularReplacer())}`);
-        timeoutError.name = "TimeoutError";
-        throw timeoutError;
-    }
-    else if (result.state !== WaiterState.SUCCESS) {
-        throw new Error(`${JSON.stringify(result, getCircularReplacer())}`);
-    }
-    return result;
-};
-
-const runPolling = async ({ minDelay, maxDelay, maxWaitTime, abortController, client, abortSignal }, input, acceptorChecks) => {
-    const observedResponses = {};
-    const [minDelayMs, maxDelayMs] = [minDelay * 1000, maxDelay * 1000];
-    let currentAttempt = 0;
-    const waitUntil = Date.now() + maxWaitTime * 1000;
-    const warn403Time = Date.now() + 60_000;
-    let didWarn403 = false;
-    while (true) {
-        if (currentAttempt > 0) {
-            const delayMs = exponentialBackoffWithJitter(minDelayMs, maxDelayMs, currentAttempt, waitUntil);
-            if (abortController?.signal?.aborted || abortSignal?.aborted) {
-                const message = "AbortController signal aborted.";
-                observedResponses[message] |= 0;
-                observedResponses[message] += 1;
-                return { state: WaiterState.ABORTED, observedResponses };
-            }
-            if (Date.now() + delayMs > waitUntil) {
-                return { state: WaiterState.TIMEOUT, observedResponses };
-            }
-            await sleep(delayMs / 1_000);
-        }
-        const { state, reason } = await acceptorChecks(client, input);
-        if (reason) {
-            const message = createMessageFromResponse(reason);
-            observedResponses[message] |= 0;
-            observedResponses[message] += 1;
-        }
-        if (state !== WaiterState.RETRY) {
-            return { state, reason, final: reason, observedResponses };
-        }
-        currentAttempt += 1;
-        if (!didWarn403 && Date.now() >= warn403Time) {
-            checkWarn403(observedResponses, client);
-            didWarn403 = true;
-        }
-    }
-};
-const checkWarn403 = (observedResponses = {}, client) => {
-    const orderedErrors = Object.keys(observedResponses);
-    let count403 = 0;
-    for (const response of orderedErrors) {
-        const n = observedResponses[response] | 0;
-        if (response.startsWith("403:")) {
-            count403 += n;
-        }
-    }
-    const clientLogger = client?.config?.logger;
-    const warningLogger = typeof clientLogger?.warn === "function" && !clientLogger.constructor?.name?.includes?.("NoOpLogger")
-        ? clientLogger
-        : console;
-    if (count403 >= 3 || orderedErrors[orderedErrors.length - 1]?.startsWith("403:")) {
-        warningLogger.warn(`@smithy/util-waiter WARN - 403 status code encountered during waiter polling.`);
-    }
-};
-const createMessageFromResponse = (reason) => {
-    const status = reason?.$response?.statusCode ?? reason?.$metadata?.httpStatusCode;
-    if (reason?.$responseBodyText) {
-        return `${status ? status + ": " : ""}Deserialization error for body: ${reason.$responseBodyText}`;
-    }
-    if (status) {
-        if (reason?.$response || reason?.message) {
-            return `${status ?? "Unknown"}: ${reason?.message}`;
-        }
-        return `${status}: OK`;
-    }
-    return String(reason?.message ?? JSON.stringify(reason, getCircularReplacer()) ?? "Unknown");
-};
-const exponentialBackoffWithJitter = (minDelayMs, maxDelayMs, attempt, waitUntil) => {
-    const attemptCountCeiling = Math.log(maxDelayMs / minDelayMs) / Math.log(2) + 1;
-    if (attempt > attemptCountCeiling) {
-        return maxDelayMs;
-    }
-    const delay = minDelayMs * 2 ** (attempt - 1);
-    const capped = Math.min(delay, maxDelayMs);
-    const waitFor = randomInRange(minDelayMs, capped);
-    if (Date.now() + waitFor > waitUntil) {
-        const timeRemaining = waitUntil - Date.now();
-        return Math.max(0, timeRemaining - 500);
-    }
-    return waitFor;
-};
-const randomInRange = (min, max) => min + Math.random() * (max - min);
-
-const validateWaiterOptions = (options) => {
-    if (options.maxWaitTime <= 0) {
-        throw new Error(`WaiterConfiguration.maxWaitTime must be greater than 0`);
-    }
-    else if (options.minDelay <= 0) {
-        throw new Error(`WaiterConfiguration.minDelay must be greater than 0`);
-    }
-    else if (options.maxDelay <= 0) {
-        throw new Error(`WaiterConfiguration.maxDelay must be greater than 0`);
-    }
-    else if (options.maxWaitTime <= options.minDelay) {
-        throw new Error(`WaiterConfiguration.maxWaitTime [${options.maxWaitTime}] must be greater than WaiterConfiguration.minDelay [${options.minDelay}] for this waiter`);
-    }
-    else if (options.maxDelay < options.minDelay) {
-        throw new Error(`WaiterConfiguration.maxDelay [${options.maxDelay}] must be greater than WaiterConfiguration.minDelay [${options.minDelay}] for this waiter`);
-    }
-};
-
-const abortTimeout = (abortSignal) => {
-    let onAbort;
-    const promise = new Promise((resolve) => {
-        onAbort = () => resolve({ state: WaiterState.ABORTED });
-        if (typeof abortSignal.addEventListener === "function") {
-            abortSignal.addEventListener("abort", onAbort);
-        }
-        else {
-            abortSignal.onabort = onAbort;
-        }
-    });
-    return {
-        clearListener() {
-            if (typeof abortSignal.removeEventListener === "function") {
-                abortSignal.removeEventListener("abort", onAbort);
-            }
-        },
-        aborted: promise,
-    };
-};
-const createWaiter = async (options, input, acceptorChecks) => {
-    const params = {
-        ...waiterServiceDefaults,
-        ...options,
-    };
-    validateWaiterOptions(params);
-    const exitConditions = [runPolling(params, input, acceptorChecks)];
-    const finalize = [];
-    if (options.abortSignal) {
-        const { aborted, clearListener } = abortTimeout(options.abortSignal);
-        finalize.push(clearListener);
-        exitConditions.push(aborted);
-    }
-    if (options.abortController?.signal) {
-        const { aborted, clearListener } = abortTimeout(options.abortController.signal);
-        finalize.push(clearListener);
-        exitConditions.push(aborted);
-    }
-    return Promise.race(exitConditions).then((result) => {
-        for (const fn of finalize) {
-            fn();
-        }
-        return result;
-    });
-};
-
-class Client {
-    config;
-    middlewareStack = constructStack();
-    initConfig;
-    handlers;
-    constructor(config) {
-        this.config = config;
-        const { protocol, protocolSettings } = config;
-        if (protocolSettings) {
-            if (typeof protocol === "function") {
-                config.protocol = new protocol(protocolSettings);
-            }
-        }
-    }
-    send(command, optionsOrCb, cb) {
-        const options = typeof optionsOrCb !== "function" ? optionsOrCb : undefined;
-        const callback = typeof optionsOrCb === "function" ? optionsOrCb : cb;
-        const useHandlerCache = options === undefined && this.config.cacheMiddleware === true;
-        let handler;
-        if (useHandlerCache) {
-            if (!this.handlers) {
-                this.handlers = new WeakMap();
-            }
-            const handlers = this.handlers;
-            if (handlers.has(command.constructor)) {
-                handler = handlers.get(command.constructor);
-            }
-            else {
-                handler = command.resolveMiddleware(this.middlewareStack, this.config, options);
-                handlers.set(command.constructor, handler);
-            }
-        }
-        else {
-            delete this.handlers;
-            handler = command.resolveMiddleware(this.middlewareStack, this.config, options);
-        }
-        if (callback) {
-            handler(command)
-                .then((result) => callback(null, result.output), (err) => callback(err))
-                .catch(() => { });
-        }
-        else {
-            return handler(command).then((result) => result.output);
-        }
-    }
-    destroy() {
-        this.config?.requestHandler?.destroy?.();
-        delete this.handlers;
-    }
-}
-
-const SENSITIVE_STRING$1 = "***SensitiveInformation***";
-function schemaLogFilter(schema, data) {
-    if (data == null) {
-        return data;
-    }
-    const ns = NormalizedSchema.of(schema);
-    if (ns.getMergedTraits().sensitive) {
-        return SENSITIVE_STRING$1;
-    }
-    if (ns.isListSchema()) {
-        const isSensitive = !!ns.getValueSchema().getMergedTraits().sensitive;
-        if (isSensitive) {
-            return SENSITIVE_STRING$1;
-        }
-    }
-    else if (ns.isMapSchema()) {
-        const isSensitive = !!ns.getKeySchema().getMergedTraits().sensitive || !!ns.getValueSchema().getMergedTraits().sensitive;
-        if (isSensitive) {
-            return SENSITIVE_STRING$1;
-        }
-    }
-    else if (ns.isStructSchema() && typeof data === "object") {
-        const object = data;
-        const newObject = {};
-        for (const [member, memberNs] of ns.structIterator()) {
-            if (object[member] != null) {
-                newObject[member] = schemaLogFilter(memberNs, object[member]);
-            }
-        }
-        return newObject;
-    }
-    return data;
-}
-
-class Command {
-    middlewareStack = constructStack();
-    schema;
-    static classBuilder() {
-        return new ClassBuilder();
-    }
-    resolveMiddlewareWithContext(clientStack, configuration, options, { middlewareFn, clientName, commandName, inputFilterSensitiveLog, outputFilterSensitiveLog, smithyContext, additionalContext, CommandCtor, }) {
-        for (const mw of middlewareFn.bind(this)(CommandCtor, clientStack, configuration, options)) {
-            this.middlewareStack.use(mw);
-        }
-        const stack = clientStack.concat(this.middlewareStack);
-        const { logger } = configuration;
-        const handlerExecutionContext = {
-            logger,
-            clientName,
-            commandName,
-            inputFilterSensitiveLog,
-            outputFilterSensitiveLog,
-            [SMITHY_CONTEXT_KEY]: {
-                commandInstance: this,
-                ...smithyContext,
-            },
-            ...additionalContext,
-        };
-        const { requestHandler } = configuration;
-        let requestOptions = options ?? {};
-        if (smithyContext.eventStream) {
-            requestOptions = {
-                isEventStream: true,
-                ...requestOptions,
-            };
-        }
-        return stack.resolve((request) => requestHandler.handle(request.request, requestOptions), handlerExecutionContext);
-    }
-}
-class ClassBuilder {
-    _init = () => { };
-    _ep = {};
-    _middlewareFn = () => [];
-    _commandName = "";
-    _clientName = "";
-    _additionalContext = {};
-    _smithyContext = {};
-    _inputFilterSensitiveLog = undefined;
-    _outputFilterSensitiveLog = undefined;
-    _serializer = null;
-    _deserializer = null;
-    _operationSchema;
-    init(cb) {
-        this._init = cb;
-    }
-    ep(endpointParameterInstructions) {
-        this._ep = endpointParameterInstructions;
-        return this;
-    }
-    m(middlewareSupplier) {
-        this._middlewareFn = middlewareSupplier;
-        return this;
-    }
-    s(service, operation, smithyContext = {}) {
-        this._smithyContext = {
-            service,
-            operation,
-            ...smithyContext,
-        };
-        return this;
-    }
-    c(additionalContext = {}) {
-        this._additionalContext = additionalContext;
-        return this;
-    }
-    n(clientName, commandName) {
-        this._clientName = clientName;
-        this._commandName = commandName;
-        return this;
-    }
-    f(inputFilter = (_) => _, outputFilter = (_) => _) {
-        this._inputFilterSensitiveLog = inputFilter;
-        this._outputFilterSensitiveLog = outputFilter;
-        return this;
-    }
-    ser(serializer) {
-        this._serializer = serializer;
-        return this;
-    }
-    de(deserializer) {
-        this._deserializer = deserializer;
-        return this;
-    }
-    sc(operation) {
-        this._operationSchema = operation;
-        this._smithyContext.operationSchema = operation;
-        return this;
-    }
-    build() {
-        const closure = this;
-        let CommandRef;
-        return (CommandRef = class extends Command {
-            input;
-            static getEndpointParameterInstructions() {
-                return closure._ep;
-            }
-            constructor(...[input]) {
-                super();
-                this.input = input ?? {};
-                closure._init(this);
-                this.schema = closure._operationSchema;
-            }
-            resolveMiddleware(stack, configuration, options) {
-                const op = closure._operationSchema;
-                const input = op?.[4] ?? op?.input;
-                const output = op?.[5] ?? op?.output;
-                return this.resolveMiddlewareWithContext(stack, configuration, options, {
-                    CommandCtor: CommandRef,
-                    middlewareFn: closure._middlewareFn,
-                    clientName: closure._clientName,
-                    commandName: closure._commandName,
-                    inputFilterSensitiveLog: closure._inputFilterSensitiveLog ?? (op ? schemaLogFilter.bind(null, input) : (_) => _),
-                    outputFilterSensitiveLog: closure._outputFilterSensitiveLog ?? (op ? schemaLogFilter.bind(null, output) : (_) => _),
-                    smithyContext: closure._smithyContext,
-                    additionalContext: closure._additionalContext,
-                });
-            }
-            serialize = closure._serializer;
-            deserialize = closure._deserializer;
-        });
-    }
-}
-
-const SENSITIVE_STRING = "***SensitiveInformation***";
-
-const createAggregatedClient = (commands, Client, options) => {
-    for (const [command, CommandCtor] of Object.entries(commands)) {
-        const methodImpl = async function (args, optionsOrCb, cb) {
-            const command = new CommandCtor(args);
-            if (typeof optionsOrCb === "function") {
-                this.send(command, optionsOrCb);
-            }
-            else if (typeof cb === "function") {
-                if (typeof optionsOrCb !== "object")
-                    throw new Error(`Expected http options but got ${typeof optionsOrCb}`);
-                this.send(command, optionsOrCb || {}, cb);
-            }
-            else {
-                return this.send(command, optionsOrCb);
-            }
-        };
-        const methodName = (command[0].toLowerCase() + command.slice(1)).replace(/Command$/, "");
-        Client.prototype[methodName] = methodImpl;
-    }
-    const { paginators = {}, waiters = {} } = options ?? {};
-    for (const [paginatorName, paginatorFn] of Object.entries(paginators)) {
-        if (Client.prototype[paginatorName] === void 0) {
-            Client.prototype[paginatorName] = function (commandInput = {}, paginationConfiguration, ...rest) {
-                return paginatorFn({
-                    ...paginationConfiguration,
-                    client: this,
-                }, commandInput, ...rest);
-            };
-        }
-    }
-    for (const [waiterName, waiterFn] of Object.entries(waiters)) {
-        if (Client.prototype[waiterName] === void 0) {
-            Client.prototype[waiterName] = async function (commandInput = {}, waiterConfiguration, ...rest) {
-                let config = waiterConfiguration;
-                if (typeof waiterConfiguration === "number") {
-                    config = {
-                        maxWaitTime: waiterConfiguration,
-                    };
-                }
-                return waiterFn({
-                    ...config,
-                    client: this,
-                }, commandInput, ...rest);
-            };
-        }
-    }
-};
-
-class ServiceException extends Error {
-    $fault;
-    $response;
-    $retryable;
-    $metadata;
-    constructor(options) {
-        super(options.message);
-        Object.setPrototypeOf(this, Object.getPrototypeOf(this).constructor.prototype);
-        this.name = options.name;
-        this.$fault = options.$fault;
-        this.$metadata = options.$metadata;
-    }
-    static isInstance(value) {
-        if (!value)
-            return false;
-        const candidate = value;
-        return (ServiceException.prototype.isPrototypeOf(candidate) ||
-            (Boolean(candidate.$fault) &&
-                Boolean(candidate.$metadata) &&
-                (candidate.$fault === "client" || candidate.$fault === "server")));
-    }
-    static [Symbol.hasInstance](instance) {
-        if (!instance)
-            return false;
-        const candidate = instance;
-        if (this === ServiceException) {
-            return ServiceException.isInstance(instance);
-        }
-        if (ServiceException.isInstance(instance)) {
-            if (candidate.name && this.name) {
-                return this.prototype.isPrototypeOf(instance) || candidate.name === this.name;
-            }
-            return this.prototype.isPrototypeOf(instance);
-        }
-        return false;
-    }
-}
-const decorateServiceException = (exception, additions = {}) => {
-    Object.entries(additions)
-        .filter(([, v]) => v !== undefined)
-        .forEach(([k, v]) => {
-        if (exception[k] == undefined || exception[k] === "") {
-            exception[k] = v;
-        }
-    });
-    const message = exception.message || exception.Message || "UnknownError";
-    exception.message = message;
-    delete exception.Message;
-    return exception;
-};
-
-const throwDefaultError = ({ output, parsedBody, exceptionCtor, errorCode }) => {
-    const $metadata = deserializeMetadata(output);
-    const statusCode = $metadata.httpStatusCode ? $metadata.httpStatusCode + "" : undefined;
-    const response = new exceptionCtor({
-        name: parsedBody?.code || parsedBody?.Code || errorCode || statusCode || "UnknownError",
-        $fault: "client",
-        $metadata,
-    });
-    throw decorateServiceException(response, parsedBody);
-};
-const withBaseException = (ExceptionCtor) => {
-    return ({ output, parsedBody, errorCode }) => {
-        throwDefaultError({ output, parsedBody, exceptionCtor: ExceptionCtor, errorCode });
-    };
-};
-const deserializeMetadata = (output) => ({
-    httpStatusCode: output.statusCode,
-    requestId: output.headers["x-amzn-requestid"] ?? output.headers["x-amzn-request-id"] ?? output.headers["x-amz-request-id"],
-    extendedRequestId: output.headers["x-amz-id-2"],
-    cfId: output.headers["x-amz-cf-id"],
-});
-
-const loadConfigsForDefaultMode = (mode) => {
-    switch (mode) {
-        case "standard":
-            return {
-                retryMode: "standard",
-                connectionTimeout: 3100,
-            };
-        case "in-region":
-            return {
-                retryMode: "standard",
-                connectionTimeout: 1100,
-            };
-        case "cross-region":
-            return {
-                retryMode: "standard",
-                connectionTimeout: 3100,
-            };
-        case "mobile":
-            return {
-                retryMode: "standard",
-                connectionTimeout: 30000,
-            };
-        default:
-            return {};
-    }
-};
-
-let warningEmitted = false;
-const emitWarningIfUnsupportedVersion = (version) => {
-    if (version && !warningEmitted && parseInt(version.substring(1, version.indexOf("."))) < 16) {
-        warningEmitted = true;
-    }
-};
-
-const knownAlgorithms = Object.values(AlgorithmId);
-const getChecksumConfiguration = (runtimeConfig) => {
-    const checksumAlgorithms = [];
-    for (const id in AlgorithmId) {
-        if (!hasOwn(AlgorithmId, id))
-            continue;
-        const algorithmId = AlgorithmId[id];
-        if (runtimeConfig[algorithmId] === undefined) {
-            continue;
-        }
-        checksumAlgorithms.push({
-            algorithmId: () => algorithmId,
-            checksumConstructor: () => runtimeConfig[algorithmId],
-        });
-    }
-    for (const [id, ChecksumCtor] of Object.entries(runtimeConfig.checksumAlgorithms ?? {})) {
-        checksumAlgorithms.push({
-            algorithmId: () => id,
-            checksumConstructor: () => ChecksumCtor,
-        });
-    }
-    return {
-        addChecksumAlgorithm(algo) {
-            runtimeConfig.checksumAlgorithms = runtimeConfig.checksumAlgorithms ?? {};
-            const id = algo.algorithmId();
-            const ctor = algo.checksumConstructor();
-            if (knownAlgorithms.includes(id)) {
-                runtimeConfig.checksumAlgorithms[id.toUpperCase()] = ctor;
-            }
-            else {
-                runtimeConfig.checksumAlgorithms[id] = ctor;
-            }
-            checksumAlgorithms.push(algo);
-        },
-        checksumAlgorithms() {
-            return checksumAlgorithms;
-        },
-    };
-};
-const resolveChecksumRuntimeConfig = (clientConfig) => {
-    const runtimeConfig = {};
-    clientConfig.checksumAlgorithms().forEach((checksumAlgorithm) => {
-        const id = checksumAlgorithm.algorithmId();
-        if (knownAlgorithms.includes(id)) {
-            runtimeConfig[id] = checksumAlgorithm.checksumConstructor();
-        }
-    });
-    return runtimeConfig;
-};
-
-const getRetryConfiguration = (runtimeConfig) => {
-    return {
-        setRetryStrategy(retryStrategy) {
-            runtimeConfig.retryStrategy = retryStrategy;
-        },
-        retryStrategy() {
-            return runtimeConfig.retryStrategy;
-        },
-    };
-};
-const resolveRetryRuntimeConfig = (retryStrategyConfiguration) => {
-    const runtimeConfig = {};
-    runtimeConfig.retryStrategy = retryStrategyConfiguration.retryStrategy();
-    return runtimeConfig;
-};
-
-const getDefaultExtensionConfiguration = (runtimeConfig) => {
-    return Object.assign(getChecksumConfiguration(runtimeConfig), getRetryConfiguration(runtimeConfig));
-};
-const getDefaultClientConfiguration = getDefaultExtensionConfiguration;
-const resolveDefaultRuntimeConfig = (config) => {
-    return Object.assign(resolveChecksumRuntimeConfig(config), resolveRetryRuntimeConfig(config));
-};
-
-const getArrayIfSingleItem = (mayBeArray) => Array.isArray(mayBeArray) ? mayBeArray : [mayBeArray];
-
-const getValueFromTextNode = (obj) => {
-    const textNodeName = "#text";
-    for (const key in obj) {
-        if (!hasOwn(obj, key))
-            continue;
-        if (obj[key][textNodeName] !== undefined) {
-            obj[key] = obj[key][textNodeName];
-        }
-        else if (typeof obj[key] === "object" && obj[key] !== null) {
-            obj[key] = getValueFromTextNode(obj[key]);
-        }
-    }
-    return obj;
-};
-
-const isSerializableHeaderValue = (value) => {
-    return value != null;
-};
-
-class NoOpLogger {
-    trace() { }
-    debug() { }
-    info() { }
-    warn() { }
-    error() { }
-}
-
-function map(arg0, arg1, arg2) {
-    let target;
-    let filter;
-    let instructions;
-    if (typeof arg1 === "undefined" && typeof arg2 === "undefined") {
-        target = {};
-        instructions = arg0;
-    }
-    else {
-        target = arg0;
-        if (typeof arg1 === "function") {
-            filter = arg1;
-            instructions = arg2;
-            return mapWithFilter(target, filter, instructions);
-        }
-        else {
-            instructions = arg1;
-        }
-    }
-    for (const key in instructions) {
-        if (!hasOwn(instructions, key))
-            continue;
-        if (!Array.isArray(instructions[key])) {
-            target[key] = instructions[key];
-            continue;
-        }
-        applyInstruction(target, null, instructions, key);
-    }
-    return target;
-}
-const convertMap = (target) => {
-    const output = {};
-    for (const [k, v] of Object.entries(target || {})) {
-        output[k] = [, v];
-    }
-    return output;
-};
-const take = (source, instructions) => {
-    const out = {};
-    for (const key in instructions) {
-        if (!hasOwn(instructions, key))
-            continue;
-        applyInstruction(out, source, instructions, key);
-    }
-    return out;
-};
-const mapWithFilter = (target, filter, instructions) => {
-    return map(target, Object.entries(instructions).reduce((_instructions, [key, value]) => {
-        if (Array.isArray(value)) {
-            _instructions[key] = value;
-        }
-        else {
-            if (typeof value === "function") {
-                _instructions[key] = [filter, value()];
-            }
-            else {
-                _instructions[key] = [filter, value];
-            }
-        }
-        return _instructions;
-    }, {}));
-};
-const applyInstruction = (target, source, instructions, targetKey) => {
-    if (source !== null) {
-        let instruction = instructions[targetKey];
-        if (typeof instruction === "function") {
-            instruction = [, instruction];
-        }
-        const [filter = nonNullish, valueFn = pass, sourceKey = targetKey] = instruction;
-        if ((typeof filter === "function" && filter(source[sourceKey])) || (typeof filter !== "function" && !!filter)) {
-            target[targetKey] = valueFn(source[sourceKey]);
-        }
-        return;
-    }
-    let [filter, value] = instructions[targetKey];
-    if (typeof value === "function") {
-        let _value;
-        const defaultFilterPassed = filter === undefined && (_value = value()) != null;
-        const customFilterPassed = (typeof filter === "function" && !!filter(void 0)) || (typeof filter !== "function" && !!filter);
-        if (defaultFilterPassed) {
-            target[targetKey] = _value;
-        }
-        else if (customFilterPassed) {
-            target[targetKey] = value();
-        }
-    }
-    else {
-        const defaultFilterPassed = filter === undefined && value != null;
-        const customFilterPassed = (typeof filter === "function" && !!filter(value)) || (typeof filter !== "function" && !!filter);
-        if (defaultFilterPassed || customFilterPassed) {
-            target[targetKey] = value;
-        }
-    }
-};
-const nonNullish = (_) => _ != null;
-const pass = (_) => _;
-
-const serializeFloat = (value) => {
-    if (value !== value) {
-        return "NaN";
-    }
-    switch (value) {
-        case Infinity:
-            return "Infinity";
-        case -Infinity:
-            return "-Infinity";
-        default:
-            return value;
-    }
-};
-const serializeDateTime = (date) => date.toISOString().replace(".000Z", "Z");
-
-const _json = (obj) => {
-    if (obj == null) {
-        return {};
-    }
-    if (Array.isArray(obj)) {
-        return obj.filter((_) => _ != null).map(_json);
-    }
-    if (typeof obj === "object") {
-        const target = {};
-        for (const key in obj) {
-            if (!hasOwn(obj, key))
-                continue;
-            if (obj[key] == null) {
-                continue;
-            }
-            target[key] = _json(obj[key]);
-        }
-        return target;
-    }
-    return obj;
-};
-
-function makeBuilder(common, service, name, ep) {
-    return function makeCommand(added, plugins, op, $, smithyContext = {}) {
-        const epMerged = Object.assign({}, common, added);
-        return Command.classBuilder()
-            .ep(epMerged)
-            .m(function (CommandCtor, clientStack, config, options) {
-            const list = plugins.call(this, CommandCtor, clientStack, config, options);
-            list.unshift(ep(config, CommandCtor.getEndpointParameterInstructions()));
-            return list;
-        })
-            .s(service, op, smithyContext)
-            .n(name, op.charAt(0).toUpperCase() + op.slice(1) + "Command")
-            .sc($)
-            .build();
-    };
-}
-
-exports.Client = Client;
-exports.Command = Command;
-exports.NoOpLogger = NoOpLogger;
-exports.SENSITIVE_STRING = SENSITIVE_STRING;
-exports.ServiceException = ServiceException;
-exports.WaiterState = WaiterState;
-exports._json = _json;
-exports.checkExceptions = checkExceptions;
-exports.constructStack = constructStack;
-exports.convertMap = convertMap;
-exports.createAggregatedClient = createAggregatedClient;
-exports.createWaiter = createWaiter;
-exports.decorateServiceException = decorateServiceException;
-exports.emitWarningIfUnsupportedVersion = emitWarningIfUnsupportedVersion;
-exports.getArrayIfSingleItem = getArrayIfSingleItem;
-exports.getChecksumConfiguration = getChecksumConfiguration;
-exports.getDefaultClientConfiguration = getDefaultClientConfiguration;
-exports.getDefaultExtensionConfiguration = getDefaultExtensionConfiguration;
-exports.getRetryConfiguration = getRetryConfiguration;
-exports.getValueFromTextNode = getValueFromTextNode;
-exports.invalidFunction = invalidFunction;
-exports.invalidProvider = invalidProvider;
-exports.isSerializableHeaderValue = isSerializableHeaderValue;
-exports.loadConfigsForDefaultMode = loadConfigsForDefaultMode;
-exports.makeBuilder = makeBuilder;
-exports.map = map;
-exports.resolveChecksumRuntimeConfig = resolveChecksumRuntimeConfig;
-exports.resolveDefaultRuntimeConfig = resolveDefaultRuntimeConfig;
-exports.resolveRetryRuntimeConfig = resolveRetryRuntimeConfig;
-exports.schemaLogFilter = schemaLogFilter;
-exports.serializeDateTime = serializeDateTime;
-exports.serializeFloat = serializeFloat;
-exports.take = take;
-exports.throwDefaultError = throwDefaultError;
-exports.waiterServiceDefaults = waiterServiceDefaults;
-exports.withBaseException = withBaseException;
-
-
-/***/ }),
-
-/***/ 7838:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { homedir } = __nccwpck_require__(8161);
-const { sep, join } = __nccwpck_require__(6760);
-const { createHash } = __nccwpck_require__(7598);
-const { readFile: readFile$1 } = __nccwpck_require__(1455);
-const { IniSectionType } = __nccwpck_require__(805);
-const { normalizeProvider } = __nccwpck_require__(3455);
-const { isValidHostLabel } = __nccwpck_require__(5105);
-
-class ProviderError extends Error {
-    name = "ProviderError";
-    tryNextLink;
-    constructor(message, options = true) {
-        let logger;
-        let tryNextLink = true;
-        if (typeof options === "boolean") {
-            logger = undefined;
-            tryNextLink = options;
-        }
-        else if (options != null && typeof options === "object") {
-            logger = options.logger;
-            tryNextLink = options.tryNextLink ?? true;
-        }
-        super(message);
-        this.tryNextLink = tryNextLink;
-        Object.setPrototypeOf(this, ProviderError.prototype);
-        logger?.debug?.(`@smithy/property-provider ${tryNextLink ? "->" : "(!)"} ${message}`);
-    }
-    static from(error, options = true) {
-        return Object.assign(new this(error.message, options), error);
-    }
-}
-
-class CredentialsProviderError extends ProviderError {
-    name = "CredentialsProviderError";
-    constructor(message, options = true) {
-        super(message, options);
-        Object.setPrototypeOf(this, CredentialsProviderError.prototype);
-    }
-}
-
-class TokenProviderError extends ProviderError {
-    name = "TokenProviderError";
-    constructor(message, options = true) {
-        super(message, options);
-        Object.setPrototypeOf(this, TokenProviderError.prototype);
-    }
-}
-
-const chain = (...providers) => async () => {
-    if (providers.length === 0) {
-        throw new ProviderError("No providers in chain");
-    }
-    let lastProviderError;
-    for (const provider of providers) {
-        try {
-            const credentials = await provider();
-            return credentials;
-        }
-        catch (err) {
-            lastProviderError = err;
-            if (err?.tryNextLink) {
-                continue;
-            }
-            throw err;
-        }
-    }
-    throw lastProviderError;
-};
-
-const fromValue = (staticValue) => () => Promise.resolve(staticValue);
-
-const memoize = (provider, isExpired, requiresRefresh) => {
-    let resolved;
-    let pending;
-    let hasResult;
-    let isConstant = false;
-    const coalesceProvider = async () => {
-        if (!pending) {
-            pending = provider();
-        }
-        try {
-            resolved = await pending;
-            hasResult = true;
-            isConstant = false;
-        }
-        finally {
-            pending = undefined;
-        }
-        return resolved;
-    };
-    if (isExpired === undefined) {
-        return async (options) => {
-            if (!hasResult || options?.forceRefresh) {
-                resolved = await coalesceProvider();
-            }
-            return resolved;
-        };
-    }
-    return async (options) => {
-        if (!hasResult || options?.forceRefresh) {
-            resolved = await coalesceProvider();
-        }
-        if (isConstant) {
-            return resolved;
-        }
-        if (requiresRefresh && !requiresRefresh(resolved)) {
-            isConstant = true;
-            return resolved;
-        }
-        if (isExpired(resolved)) {
-            await coalesceProvider();
-            return resolved;
-        }
-        return resolved;
-    };
-};
-
-const booleanSelector = (obj, key, type) => {
-    if (!(key in obj))
-        return undefined;
-    if (obj[key] === "true")
-        return true;
-    if (obj[key] === "false")
-        return false;
-    throw new Error(`Cannot load ${type} "${key}". Expected "true" or "false", got ${obj[key]}.`);
-};
-
-const numberSelector = (obj, key, type) => {
-    if (!(key in obj))
-        return undefined;
-    const numberValue = parseInt(obj[key], 10);
-    if (Number.isNaN(numberValue)) {
-        throw new TypeError(`Cannot load ${type} '${key}'. Expected number, got '${obj[key]}'.`);
-    }
-    return numberValue;
-};
-
-var SelectorType;
-(function (SelectorType) {
-    SelectorType["ENV"] = "env";
-    SelectorType["CONFIG"] = "shared config entry";
-})(SelectorType || (SelectorType = {}));
-
-const homeDirCache = {};
-const getHomeDirCacheKey = () => {
-    if (process && process.geteuid) {
-        return `${process.geteuid()}`;
-    }
-    return "DEFAULT";
-};
-const getHomeDir = () => {
-    const { HOME, USERPROFILE, HOMEPATH, HOMEDRIVE = `C:${sep}` } = process.env;
-    if (HOME)
-        return HOME;
-    if (USERPROFILE)
-        return USERPROFILE;
-    if (HOMEPATH)
-        return `${HOMEDRIVE}${HOMEPATH}`;
-    const homeDirCacheKey = getHomeDirCacheKey();
-    if (!homeDirCache[homeDirCacheKey])
-        homeDirCache[homeDirCacheKey] = homedir();
-    return homeDirCache[homeDirCacheKey];
-};
-
-const ENV_PROFILE = "AWS_PROFILE";
-const DEFAULT_PROFILE = "default";
-const getProfileName = (init) => init.profile || process.env[ENV_PROFILE] || DEFAULT_PROFILE;
-
-const getSSOTokenFilepath = (id) => {
-    const hasher = createHash("sha1");
-    const cacheName = hasher.update(id).digest("hex");
-    return join(getHomeDir(), ".aws", "sso", "cache", `${cacheName}.json`);
-};
-
-const tokenIntercept = {};
-const getSSOTokenFromFile = async (id) => {
-    if (tokenIntercept[id]) {
-        return tokenIntercept[id];
-    }
-    const ssoTokenFilepath = getSSOTokenFilepath(id);
-    const ssoTokenText = await readFile$1(ssoTokenFilepath, "utf8");
-    return JSON.parse(ssoTokenText);
-};
-
-const CONFIG_PREFIX_SEPARATOR = ".";
-
-const getConfigData = (data) => Object.entries(data)
-    .filter(([key]) => {
-    const indexOfSeparator = key.indexOf(CONFIG_PREFIX_SEPARATOR);
-    if (indexOfSeparator === -1) {
-        return false;
-    }
-    return Object.values(IniSectionType).includes(key.substring(0, indexOfSeparator));
-})
-    .reduce((acc, [key, value]) => {
-    const indexOfSeparator = key.indexOf(CONFIG_PREFIX_SEPARATOR);
-    const updatedKey = key.substring(0, indexOfSeparator) === IniSectionType.PROFILE ? key.substring(indexOfSeparator + 1) : key;
-    acc[updatedKey] = value;
-    return acc;
-}, {
-    ...(data.default && { default: data.default }),
-});
-
-const ENV_CONFIG_PATH = "AWS_CONFIG_FILE";
-const getConfigFilepath = () => process.env[ENV_CONFIG_PATH] || join(getHomeDir(), ".aws", "config");
-
-const ENV_CREDENTIALS_PATH = "AWS_SHARED_CREDENTIALS_FILE";
-const getCredentialsFilepath = () => process.env[ENV_CREDENTIALS_PATH] || join(getHomeDir(), ".aws", "credentials");
-
-const prefixKeyRegex = /^([\w-]+)\s(["'])?([\w-@+.%:/]+)\2$/;
-const profileNameBlockList = ["__proto__", "profile __proto__"];
-const parseIni = (iniData) => {
-    const map = {};
-    let currentSection;
-    let currentSubSection;
-    for (const iniLine of iniData.split(/\r?\n/)) {
-        const trimmedLine = iniLine.split(/(^|\s)[;#]/)[0].trim();
-        const isSection = trimmedLine[0] === "[" && trimmedLine[trimmedLine.length - 1] === "]";
-        if (isSection) {
-            currentSection = undefined;
-            currentSubSection = undefined;
-            const sectionName = trimmedLine.substring(1, trimmedLine.length - 1);
-            const matches = prefixKeyRegex.exec(sectionName);
-            if (matches) {
-                const [, prefix, , name] = matches;
-                if (Object.values(IniSectionType).includes(prefix)) {
-                    currentSection = [prefix, name].join(CONFIG_PREFIX_SEPARATOR);
-                }
-            }
-            else {
-                currentSection = sectionName;
-            }
-            if (profileNameBlockList.includes(sectionName)) {
-                throw new Error(`Found invalid profile name "${sectionName}"`);
-            }
-        }
-        else if (currentSection) {
-            const indexOfEqualsSign = trimmedLine.indexOf("=");
-            if (![0, -1].includes(indexOfEqualsSign)) {
-                const [name, value] = [
-                    trimmedLine.substring(0, indexOfEqualsSign).trim(),
-                    trimmedLine.substring(indexOfEqualsSign + 1).trim(),
-                ];
-                if (value === "") {
-                    currentSubSection = name;
-                }
-                else {
-                    if (currentSubSection && iniLine.trimStart() === iniLine) {
-                        currentSubSection = undefined;
-                    }
-                    map[currentSection] = map[currentSection] || {};
-                    const key = currentSubSection ? [currentSubSection, name].join(CONFIG_PREFIX_SEPARATOR) : name;
-                    map[currentSection][key] = value;
-                }
-            }
-        }
-    }
-    return map;
-};
-
-const filePromises = {};
-const fileIntercept = {};
-const readFile = (path, options) => {
-    if (fileIntercept[path] !== undefined) {
-        return fileIntercept[path];
-    }
-    if (!filePromises[path] || options?.ignoreCache) {
-        filePromises[path] = readFile$1(path, "utf8");
-    }
-    return filePromises[path];
-};
-
-const swallowError$1 = () => ({});
-const loadSharedConfigFiles = async (init = {}) => {
-    const { filepath = getCredentialsFilepath(), configFilepath = getConfigFilepath() } = init;
-    const homeDir = getHomeDir();
-    const relativeHomeDirPrefix = "~/";
-    let resolvedFilepath = filepath;
-    if (filepath.startsWith(relativeHomeDirPrefix)) {
-        resolvedFilepath = join(homeDir, filepath.slice(2));
-    }
-    let resolvedConfigFilepath = configFilepath;
-    if (configFilepath.startsWith(relativeHomeDirPrefix)) {
-        resolvedConfigFilepath = join(homeDir, configFilepath.slice(2));
-    }
-    const parsedFiles = await Promise.all([
-        readFile(resolvedConfigFilepath, {
-            ignoreCache: init.ignoreCache,
-        })
-            .then(parseIni)
-            .then(getConfigData)
-            .catch(swallowError$1),
-        readFile(resolvedFilepath, {
-            ignoreCache: init.ignoreCache,
-        })
-            .then(parseIni)
-            .catch(swallowError$1),
-    ]);
-    return {
-        configFile: parsedFiles[0],
-        credentialsFile: parsedFiles[1],
-    };
-};
-
-const getSsoSessionData = (data) => Object.entries(data)
-    .filter(([key]) => key.startsWith(IniSectionType.SSO_SESSION + CONFIG_PREFIX_SEPARATOR))
-    .reduce((acc, [key, value]) => ({ ...acc, [key.substring(key.indexOf(CONFIG_PREFIX_SEPARATOR) + 1)]: value }), {});
-
-const swallowError = () => ({});
-const loadSsoSessionData = async (init = {}) => readFile(init.configFilepath ?? getConfigFilepath())
-    .then(parseIni)
-    .then(getSsoSessionData)
-    .catch(swallowError);
-
-const mergeConfigFiles = (...files) => {
-    const merged = {};
-    for (const file of files) {
-        for (const [key, values] of Object.entries(file)) {
-            if (merged[key] !== undefined) {
-                Object.assign(merged[key], values);
-            }
-            else {
-                merged[key] = values;
-            }
-        }
-    }
-    return merged;
-};
-
-const parseKnownFiles = async (init) => {
-    const parsedFiles = await loadSharedConfigFiles(init);
-    return mergeConfigFiles(parsedFiles.configFile, parsedFiles.credentialsFile);
-};
-
-const externalDataInterceptor = {
-    getFileRecord() {
-        return fileIntercept;
-    },
-    interceptFile(path, contents) {
-        fileIntercept[path] = Promise.resolve(contents);
-    },
-    getTokenRecord() {
-        return tokenIntercept;
-    },
-    interceptToken(id, contents) {
-        tokenIntercept[id] = contents;
-    },
-};
-
-function getSelectorName(functionString) {
-    try {
-        const constants = new Set(Array.from(functionString.match(/([A-Z_]){3,}/g) ?? []));
-        constants.delete("CONFIG");
-        constants.delete("CONFIG_PREFIX_SEPARATOR");
-        constants.delete("ENV");
-        return [...constants].join(", ");
-    }
-    catch (ignored) {
-        return functionString;
-    }
-}
-
-const fromEnv = (envVarSelector, options) => async () => {
-    try {
-        const config = envVarSelector(process.env, options);
-        if (config === undefined) {
-            throw new Error();
-        }
-        return config;
-    }
-    catch (e) {
-        throw new CredentialsProviderError(e.message || `Not found in ENV: ${getSelectorName(envVarSelector.toString())}`, { logger: options?.logger });
-    }
-};
-
-const fromSharedConfigFiles = (configSelector, { preferredFile = "config", ...init } = {}) => async () => {
-    const profile = getProfileName(init);
-    const { configFile, credentialsFile } = await loadSharedConfigFiles(init);
-    const profileFromCredentials = credentialsFile[profile] || {};
-    const profileFromConfig = configFile[profile] || {};
-    const mergedProfile = preferredFile === "config"
-        ? { ...profileFromCredentials, ...profileFromConfig }
-        : { ...profileFromConfig, ...profileFromCredentials };
-    try {
-        const cfgFile = preferredFile === "config" ? configFile : credentialsFile;
-        const configValue = configSelector(mergedProfile, cfgFile);
-        if (configValue === undefined) {
-            throw new Error();
-        }
-        return configValue;
-    }
-    catch (e) {
-        throw new CredentialsProviderError(e.message || `Not found in config files w/ profile [${profile}]: ${getSelectorName(configSelector.toString())}`, { logger: init.logger });
-    }
-};
-
-const isFunction = (func) => typeof func === "function";
-const fromStatic = (defaultValue) => isFunction(defaultValue) ? async () => await defaultValue() : fromValue(defaultValue);
-
-const loadConfig = ({ environmentVariableSelector, configFileSelector, default: defaultValue }, configuration = {}) => {
-    const { signingName, logger } = configuration;
-    const envOptions = { signingName, logger };
-    return memoize(chain(fromEnv(environmentVariableSelector, envOptions), fromSharedConfigFiles(configFileSelector, configuration), fromStatic(defaultValue)));
-};
-
-const ENV_USE_DUALSTACK_ENDPOINT = "AWS_USE_DUALSTACK_ENDPOINT";
-const CONFIG_USE_DUALSTACK_ENDPOINT = "use_dualstack_endpoint";
-const DEFAULT_USE_DUALSTACK_ENDPOINT = false;
-const NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS = {
-    environmentVariableSelector: (env) => booleanSelector(env, ENV_USE_DUALSTACK_ENDPOINT, SelectorType.ENV),
-    configFileSelector: (profile) => booleanSelector(profile, CONFIG_USE_DUALSTACK_ENDPOINT, SelectorType.CONFIG),
-    default: false,
-};
-const nodeDualstackConfigSelectors = {
-    environmentVariableSelector: (env) => booleanSelector(env, ENV_USE_DUALSTACK_ENDPOINT, SelectorType.ENV),
-    configFileSelector: (profile) => booleanSelector(profile, CONFIG_USE_DUALSTACK_ENDPOINT, SelectorType.CONFIG),
-    default: undefined,
-};
-
-const ENV_USE_FIPS_ENDPOINT = "AWS_USE_FIPS_ENDPOINT";
-const CONFIG_USE_FIPS_ENDPOINT = "use_fips_endpoint";
-const DEFAULT_USE_FIPS_ENDPOINT = false;
-const NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS = {
-    environmentVariableSelector: (env) => booleanSelector(env, ENV_USE_FIPS_ENDPOINT, SelectorType.ENV),
-    configFileSelector: (profile) => booleanSelector(profile, CONFIG_USE_FIPS_ENDPOINT, SelectorType.CONFIG),
-    default: false,
-};
-const nodeFipsConfigSelectors = {
-    environmentVariableSelector: (env) => booleanSelector(env, ENV_USE_FIPS_ENDPOINT, SelectorType.ENV),
-    configFileSelector: (profile) => booleanSelector(profile, CONFIG_USE_FIPS_ENDPOINT, SelectorType.CONFIG),
-    default: undefined,
-};
-
-const resolveCustomEndpointsConfig = (input) => {
-    const { tls, endpoint, urlParser, useDualstackEndpoint } = input;
-    return Object.assign(input, {
-        tls: tls ?? true,
-        endpoint: normalizeProvider(typeof endpoint === "string" ? urlParser(endpoint) : endpoint),
-        isCustomEndpoint: true,
-        useDualstackEndpoint: normalizeProvider(useDualstackEndpoint ?? false),
-    });
-};
-
-const getEndpointFromRegion = async (input) => {
-    const { tls = true } = input;
-    const region = await input.region();
-    const dnsHostRegex = new RegExp(/^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])$/);
-    if (!dnsHostRegex.test(region)) {
-        throw new Error("Invalid region in client config");
-    }
-    const useDualstackEndpoint = await input.useDualstackEndpoint();
-    const useFipsEndpoint = await input.useFipsEndpoint();
-    const { hostname } = (await input.regionInfoProvider(region, { useDualstackEndpoint, useFipsEndpoint })) ?? {};
-    if (!hostname) {
-        throw new Error("Cannot resolve hostname from client config");
-    }
-    return input.urlParser(`${tls ? "https:" : "http:"}//${hostname}`);
-};
-
-const resolveEndpointsConfig = (input) => {
-    const useDualstackEndpoint = normalizeProvider(input.useDualstackEndpoint ?? false);
-    const { endpoint, useFipsEndpoint, urlParser, tls } = input;
-    return Object.assign(input, {
-        tls: tls ?? true,
-        endpoint: endpoint
-            ? normalizeProvider(typeof endpoint === "string" ? urlParser(endpoint) : endpoint)
-            : () => getEndpointFromRegion({ ...input, useDualstackEndpoint, useFipsEndpoint }),
-        isCustomEndpoint: !!endpoint,
-        useDualstackEndpoint,
-    });
-};
-
-const AWS_EXECUTION_ENV = "AWS_EXECUTION_ENV";
-const AWS_REGION_ENV = "AWS_REGION";
-const AWS_DEFAULT_REGION_ENV = "AWS_DEFAULT_REGION";
-const ENV_IMDS_DISABLED = "AWS_EC2_METADATA_DISABLED";
-const DEFAULTS_MODE_OPTIONS = ["in-region", "cross-region", "mobile", "standard", "legacy"];
-const IMDS_REGION_PATH = "/latest/meta-data/placement/region";
-const IMDS_TOKEN_PATH = "/latest/api/token";
-const X_AWS_EC2_METADATA_TOKEN = "x-aws-ec2-metadata-token";
-const X_AWS_EC2_METADATA_TOKEN_TTL = "x-aws-ec2-metadata-token-ttl-seconds";
-
-const TIMEOUT_MS = 1000;
-const NEG_CACHE_TTL_MS = 60_000;
-let negativeCacheUntil = 0;
-const getInstanceMetadataRegion = async () => {
-    if (process.env[ENV_IMDS_DISABLED]) {
-        return undefined;
-    }
-    if (Date.now() < negativeCacheUntil) {
-        return undefined;
-    }
-    try {
-        const endpoint = resolveImdsEndpoint();
-        const token = (await imdsRequest({
-            ...endpoint,
-            path: IMDS_TOKEN_PATH,
-            method: "PUT",
-            headers: {
-                [X_AWS_EC2_METADATA_TOKEN_TTL]: "21600",
-            },
-        })).toString();
-        const region = (await imdsRequest({
-            ...endpoint,
-            path: IMDS_REGION_PATH,
-            method: "GET",
-            headers: {
-                [X_AWS_EC2_METADATA_TOKEN]: token,
-            },
-        }))
-            .toString()
-            .trim();
-        return region || cacheNegativeAndReturnUndefined();
-    }
-    catch {
-        return cacheNegativeAndReturnUndefined();
-    }
-};
-const cacheNegativeAndReturnUndefined = () => {
-    negativeCacheUntil = Date.now() + NEG_CACHE_TTL_MS;
-    return undefined;
-};
-const resolveImdsEndpoint = () => {
-    const envEndpoint = process.env.AWS_EC2_METADATA_SERVICE_ENDPOINT;
-    if (envEndpoint) {
-        const url = new URL(envEndpoint);
-        return {
-            hostname: url.hostname.replace(/^\[(.+)]$/, "$1"),
-            port: url.port ? Number(url.port) : undefined,
-        };
-    }
-    if (process.env.AWS_EC2_METADATA_SERVICE_ENDPOINT_MODE === "IPv6") {
-        return { hostname: "fd00:ec2::254" };
-    }
-    return { hostname: "169.254.169.254" };
-};
-const imdsRequest = async (options) => {
-    const { request } = __nccwpck_require__(7067);
-    return new Promise((resolve, reject) => {
-        const req = request({
-            hostname: options.hostname,
-            port: options.port,
-            path: options.path,
-            method: options.method,
-            headers: options.headers,
-            timeout: TIMEOUT_MS,
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        req.on("error", (err) => {
-            reject(err);
-            req.destroy();
-        });
-        req.on("timeout", () => {
-            reject(new Error("TimeoutError from instance metadata service"));
-            req.destroy();
-        });
-        req.on("response", (res) => {
-            const { statusCode = 400 } = res;
-            if (statusCode < 200 || statusCode >= 300) {
-                reject(Object.assign(new Error("Error response received from instance metadata service"), { statusCode }));
-                req.destroy();
-                return;
-            }
-            const chunks = [];
-            res.on("data", (chunk) => chunks.push(chunk));
-            res.on("end", () => {
-                resolve(Buffer.concat(chunks));
-                req.destroy();
-            });
-        });
-        req.end();
-    });
-};
-
-const REGION_ENV_NAME = "AWS_REGION";
-const REGION_INI_NAME = "region";
-const NODE_REGION_CONFIG_OPTIONS = {
-    environmentVariableSelector: (env) => env[REGION_ENV_NAME],
-    configFileSelector: (profile) => profile[REGION_INI_NAME],
-    default: async () => {
-        const region = await getInstanceMetadataRegion();
-        if (region) {
-            return region;
-        }
-        throw new Error("Region is missing");
-    },
-};
-const NODE_REGION_CONFIG_FILE_OPTIONS = {
-    preferredFile: "credentials",
-};
-
-const validRegions = new Set();
-const checkRegion = (region, check = isValidHostLabel) => {
-    if (!validRegions.has(region) && !check(region)) {
-        if (region === "*") {
-            console.warn(`@smithy/config-resolver WARN - Please use the caller region instead of "*". See "sigv4a" in https://github.com/aws/aws-sdk-js-v3/blob/main/supplemental-docs/CLIENTS.md.`);
-        }
-        else {
-            throw new Error(`Region not accepted: region="${region}" is not a valid hostname component.`);
-        }
-    }
-    else {
-        validRegions.add(region);
-    }
-};
-
-const isFipsRegion = (region) => typeof region === "string" && (region.startsWith("fips-") || region.endsWith("-fips"));
-
-const getRealRegion = (region) => isFipsRegion(region)
-    ? ["fips-aws-global", "aws-fips"].includes(region)
-        ? "us-east-1"
-        : region.replace(/fips-(dkr-|prod-)?|-fips/, "")
-    : region;
-
-const resolveRegionConfig = (input) => {
-    const { region, useFipsEndpoint } = input;
-    if (!region) {
-        throw new Error("Region is missing");
-    }
-    return Object.assign(input, {
-        region: async () => {
-            const providedRegion = typeof region === "function" ? await region() : region;
-            const realRegion = getRealRegion(providedRegion);
-            checkRegion(realRegion);
-            return realRegion;
-        },
-        useFipsEndpoint: async () => {
-            const providedRegion = typeof region === "string" ? region : await region();
-            if (isFipsRegion(providedRegion)) {
-                return true;
-            }
-            return typeof useFipsEndpoint !== "function" ? Promise.resolve(!!useFipsEndpoint) : useFipsEndpoint();
-        },
-    });
-};
-
-const getHostnameFromVariants = (variants = [], { useFipsEndpoint, useDualstackEndpoint }) => variants.find(({ tags }) => useFipsEndpoint === tags.includes("fips") && useDualstackEndpoint === tags.includes("dualstack"))?.hostname;
-
-const getResolvedHostname = (resolvedRegion, { regionHostname, partitionHostname }) => regionHostname
-    ? regionHostname
-    : partitionHostname
-        ? partitionHostname.replace("{region}", resolvedRegion)
-        : undefined;
-
-const getResolvedPartition = (region, { partitionHash }) => Object.keys(partitionHash || {}).find((key) => partitionHash[key].regions.includes(region)) ?? "aws";
-
-const getResolvedSigningRegion = (hostname, { signingRegion, regionRegex, useFipsEndpoint }) => {
-    if (signingRegion) {
-        return signingRegion;
-    }
-    else if (useFipsEndpoint) {
-        const regionRegexJs = regionRegex.replace("\\\\", "\\").replace(/^\^/g, "\\.").replace(/\$$/g, "\\.");
-        const regionRegexmatchArray = hostname.match(regionRegexJs);
-        if (regionRegexmatchArray) {
-            return regionRegexmatchArray[0].slice(1, -1);
-        }
-    }
-};
-
-const getRegionInfo = (region, { useFipsEndpoint = false, useDualstackEndpoint = false, signingService, regionHash, partitionHash, }) => {
-    const partition = getResolvedPartition(region, { partitionHash });
-    const resolvedRegion = region in regionHash ? region : (partitionHash[partition]?.endpoint ?? region);
-    const hostnameOptions = { useFipsEndpoint, useDualstackEndpoint };
-    const regionHostname = getHostnameFromVariants(regionHash[resolvedRegion]?.variants, hostnameOptions);
-    const partitionHostname = getHostnameFromVariants(partitionHash[partition]?.variants, hostnameOptions);
-    const hostname = getResolvedHostname(resolvedRegion, { regionHostname, partitionHostname });
-    if (hostname === undefined) {
-        throw new Error(`Endpoint resolution failed for: ${{ resolvedRegion, useFipsEndpoint, useDualstackEndpoint }}`);
-    }
-    const signingRegion = getResolvedSigningRegion(hostname, {
-        signingRegion: regionHash[resolvedRegion]?.signingRegion,
-        regionRegex: partitionHash[partition].regionRegex,
-        useFipsEndpoint,
-    });
-    return {
-        partition,
-        signingService,
-        hostname,
-        ...(signingRegion && { signingRegion }),
-        ...(regionHash[resolvedRegion]?.signingService && {
-            signingService: regionHash[resolvedRegion].signingService,
-        }),
-    };
-};
-
-const AWS_DEFAULTS_MODE_ENV = "AWS_DEFAULTS_MODE";
-const AWS_DEFAULTS_MODE_CONFIG = "defaults_mode";
-const NODE_DEFAULTS_MODE_CONFIG_OPTIONS = {
-    environmentVariableSelector: (env) => {
-        return env[AWS_DEFAULTS_MODE_ENV];
-    },
-    configFileSelector: (profile) => {
-        return profile[AWS_DEFAULTS_MODE_CONFIG];
-    },
-    default: "legacy",
-};
-
-const resolveDefaultsModeConfig = ({ region = loadConfig(NODE_REGION_CONFIG_OPTIONS), defaultsMode = loadConfig(NODE_DEFAULTS_MODE_CONFIG_OPTIONS), } = {}) => memoize(async () => {
-    const mode = typeof defaultsMode === "function" ? await defaultsMode() : defaultsMode;
-    switch (mode?.toLowerCase()) {
-        case "auto":
-            return resolveNodeDefaultsModeAuto(region);
-        case "in-region":
-        case "cross-region":
-        case "mobile":
-        case "standard":
-        case "legacy":
-            return Promise.resolve(mode?.toLocaleLowerCase());
-        case undefined:
-            return Promise.resolve("legacy");
-        default:
-            throw new Error(`Invalid parameter for "defaultsMode", expect ${DEFAULTS_MODE_OPTIONS.join(", ")}, got ${mode}`);
-    }
-});
-const resolveNodeDefaultsModeAuto = async (clientRegion) => {
-    if (clientRegion) {
-        const resolvedRegion = typeof clientRegion === "function" ? await clientRegion() : clientRegion;
-        const inferredRegion = await inferPhysicalRegion();
-        if (!inferredRegion) {
-            return "standard";
-        }
-        if (resolvedRegion === inferredRegion) {
-            return "in-region";
-        }
-        else {
-            return "cross-region";
-        }
-    }
-    return "standard";
-};
-const inferPhysicalRegion = async () => {
-    if (process.env[AWS_EXECUTION_ENV] && (process.env[AWS_REGION_ENV] || process.env[AWS_DEFAULT_REGION_ENV])) {
-        return process.env[AWS_REGION_ENV] ?? process.env[AWS_DEFAULT_REGION_ENV];
-    }
-    return getInstanceMetadataRegion();
-};
-
-exports.CONFIG_PREFIX_SEPARATOR = CONFIG_PREFIX_SEPARATOR;
-exports.CONFIG_USE_DUALSTACK_ENDPOINT = CONFIG_USE_DUALSTACK_ENDPOINT;
-exports.CONFIG_USE_FIPS_ENDPOINT = CONFIG_USE_FIPS_ENDPOINT;
-exports.CredentialsProviderError = CredentialsProviderError;
-exports.DEFAULT_PROFILE = DEFAULT_PROFILE;
-exports.DEFAULT_USE_DUALSTACK_ENDPOINT = DEFAULT_USE_DUALSTACK_ENDPOINT;
-exports.DEFAULT_USE_FIPS_ENDPOINT = DEFAULT_USE_FIPS_ENDPOINT;
-exports.ENV_PROFILE = ENV_PROFILE;
-exports.ENV_USE_DUALSTACK_ENDPOINT = ENV_USE_DUALSTACK_ENDPOINT;
-exports.ENV_USE_FIPS_ENDPOINT = ENV_USE_FIPS_ENDPOINT;
-exports.NODE_REGION_CONFIG_FILE_OPTIONS = NODE_REGION_CONFIG_FILE_OPTIONS;
-exports.NODE_REGION_CONFIG_OPTIONS = NODE_REGION_CONFIG_OPTIONS;
-exports.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS = NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS;
-exports.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS = NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS;
-exports.ProviderError = ProviderError;
-exports.REGION_ENV_NAME = REGION_ENV_NAME;
-exports.REGION_INI_NAME = REGION_INI_NAME;
-exports.SelectorType = SelectorType;
-exports.TokenProviderError = TokenProviderError;
-exports.booleanSelector = booleanSelector;
-exports.chain = chain;
-exports.externalDataInterceptor = externalDataInterceptor;
-exports.fromStatic = fromStatic;
-exports.fromValue = fromValue;
-exports.getHomeDir = getHomeDir;
-exports.getProfileName = getProfileName;
-exports.getRegionInfo = getRegionInfo;
-exports.getSSOTokenFilepath = getSSOTokenFilepath;
-exports.getSSOTokenFromFile = getSSOTokenFromFile;
-exports.loadConfig = loadConfig;
-exports.loadSharedConfigFiles = loadSharedConfigFiles;
-exports.loadSsoSessionData = loadSsoSessionData;
-exports.memoize = memoize;
-exports.nodeDualstackConfigSelectors = nodeDualstackConfigSelectors;
-exports.nodeFipsConfigSelectors = nodeFipsConfigSelectors;
-exports.numberSelector = numberSelector;
-exports.parseKnownFiles = parseKnownFiles;
-exports.readFile = readFile;
-exports.resolveCustomEndpointsConfig = resolveCustomEndpointsConfig;
-exports.resolveDefaultsModeConfig = resolveDefaultsModeConfig;
-exports.resolveEndpointsConfig = resolveEndpointsConfig;
-exports.resolveRegionConfig = resolveRegionConfig;
-
-
-/***/ }),
-
-/***/ 5638:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { CONFIG_PREFIX_SEPARATOR, booleanSelector, SelectorType, loadConfig } = __nccwpck_require__(7838);
-const { toEndpointV1, getSmithyContext, normalizeProvider, isValidHostLabel, hasOwn } = __nccwpck_require__(5105);
-exports.isValidHostLabel = isValidHostLabel;
-exports.middlewareEndpointToEndpointV1 = toEndpointV1;
-exports.toEndpointV1 = toEndpointV1;
-const { EndpointURLScheme } = __nccwpck_require__(805);
-
-const ENV_ENDPOINT_URL = "AWS_ENDPOINT_URL";
-const CONFIG_ENDPOINT_URL = "endpoint_url";
-const getEndpointUrlConfig = (serviceId) => ({
-    environmentVariableSelector: (env) => {
-        const serviceSuffixParts = serviceId.split(" ").map((w) => w.toUpperCase());
-        const serviceEndpointUrl = env[[ENV_ENDPOINT_URL, ...serviceSuffixParts].join("_")];
-        if (serviceEndpointUrl)
-            return serviceEndpointUrl;
-        const endpointUrl = env[ENV_ENDPOINT_URL];
-        if (endpointUrl)
-            return endpointUrl;
-        return undefined;
-    },
-    configFileSelector: (profile, config) => {
-        if (profile.services) {
-            const servicesSectionKey = ["services", profile.services].join(CONFIG_PREFIX_SEPARATOR);
-            if (!config || !config[servicesSectionKey]) {
-                throw new Error(`The services section "${profile.services}" specified in the profile is not present in the shared configuration file.`);
-            }
-            const servicesSection = config[servicesSectionKey];
-            const servicePrefixParts = serviceId.split(" ").map((w) => w.toLowerCase());
-            const endpointUrl = servicesSection[[servicePrefixParts.join("_"), CONFIG_ENDPOINT_URL].join(CONFIG_PREFIX_SEPARATOR)];
-            if (endpointUrl)
-                return endpointUrl;
-        }
-        const endpointUrl = profile[CONFIG_ENDPOINT_URL];
-        if (endpointUrl)
-            return endpointUrl;
-        return undefined;
-    },
-    default: undefined,
-});
-
-const ENV_IGNORE_CONFIGURED_ENDPOINT_URLS = "AWS_IGNORE_CONFIGURED_ENDPOINT_URLS";
-const CONFIG_IGNORE_CONFIGURED_ENDPOINT_URLS = "ignore_configured_endpoint_urls";
-const ignoreConfiguredEndpointUrlsConfigSelectors = {
-    environmentVariableSelector: (env) => booleanSelector(env, ENV_IGNORE_CONFIGURED_ENDPOINT_URLS, SelectorType.ENV),
-    configFileSelector: (profile) => booleanSelector(profile, CONFIG_IGNORE_CONFIGURED_ENDPOINT_URLS, SelectorType.CONFIG),
-    default: false,
-};
-
-const getEndpointFromConfig = async (serviceId) => {
-    const ignore = await loadConfig(ignoreConfiguredEndpointUrlsConfigSelectors)();
-    if (ignore) {
-        return undefined;
-    }
-    return loadConfig(getEndpointUrlConfig(serviceId ?? ""))();
-};
-
-const resolveParamsForS3 = async (endpointParams) => {
-    const bucket = endpointParams?.Bucket || "";
-    if (typeof endpointParams.Bucket === "string") {
-        endpointParams.Bucket = bucket.replace(/#/g, encodeURIComponent("#")).replace(/\?/g, encodeURIComponent("?"));
-    }
-    if (isArnBucketName(bucket)) {
-        if (endpointParams.ForcePathStyle === true) {
-            throw new Error("Path-style addressing cannot be used with ARN buckets");
-        }
-    }
-    else if (!isDnsCompatibleBucketName(bucket) ||
-        (bucket.indexOf(".") !== -1 && !String(endpointParams.Endpoint).startsWith("http:")) ||
-        bucket.toLowerCase() !== bucket ||
-        bucket.length < 3) {
-        endpointParams.ForcePathStyle = true;
-    }
-    if (endpointParams.DisableMultiRegionAccessPoints) {
-        endpointParams.disableMultiRegionAccessPoints = true;
-        endpointParams.DisableMRAP = true;
-    }
-    return endpointParams;
-};
-const DOMAIN_PATTERN = /^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/;
-const IP_ADDRESS_PATTERN = /(\d+\.){3}\d+/;
-const DOTS_PATTERN = /\.\./;
-const isDnsCompatibleBucketName = (bucketName) => DOMAIN_PATTERN.test(bucketName) && !IP_ADDRESS_PATTERN.test(bucketName) && !DOTS_PATTERN.test(bucketName);
-const isArnBucketName = (bucketName) => {
-    const [arn, partition, service, , , bucket] = bucketName.split(":");
-    const isArn = arn === "arn" && bucketName.split(":").length >= 6;
-    const isValidArn = Boolean(isArn && partition && service && bucket);
-    if (isArn && !isValidArn) {
-        throw new Error(`Invalid ARN: ${bucketName} was an invalid ARN.`);
-    }
-    return isValidArn;
-};
-
-const createConfigValueProvider = (configKey, canonicalEndpointParamKey, config, isClientContextParam = false) => {
-    const configProvider = async () => {
-        let configValue;
-        if (isClientContextParam) {
-            const clientContextParams = config.clientContextParams;
-            const nestedValue = clientContextParams?.[configKey];
-            configValue = nestedValue ?? config[configKey] ?? config[canonicalEndpointParamKey];
-        }
-        else {
-            configValue = config[configKey] ?? config[canonicalEndpointParamKey];
-        }
-        if (typeof configValue === "function") {
-            return configValue();
-        }
-        return configValue;
-    };
-    if (configKey === "credentialScope" || canonicalEndpointParamKey === "CredentialScope") {
-        return async () => {
-            const credentials = typeof config.credentials === "function" ? await config.credentials() : config.credentials;
-            const configValue = credentials?.credentialScope ?? credentials?.CredentialScope;
-            return configValue;
-        };
-    }
-    if (configKey === "accountId" || canonicalEndpointParamKey === "AccountId") {
-        return async () => {
-            const credentials = typeof config.credentials === "function" ? await config.credentials() : config.credentials;
-            const configValue = credentials?.accountId ?? credentials?.AccountId;
-            return configValue;
-        };
-    }
-    if (configKey === "endpoint" || canonicalEndpointParamKey === "endpoint") {
-        return async () => {
-            if (config.isCustomEndpoint === false) {
-                return undefined;
-            }
-            const endpoint = await configProvider();
-            if (endpoint && typeof endpoint === "object") {
-                if ("url" in endpoint) {
-                    return endpoint.url.href;
-                }
-                if ("hostname" in endpoint) {
-                    const { protocol, hostname, port, path } = endpoint;
-                    return `${protocol}//${hostname}${port ? ":" + port : ""}${path}`;
-                }
-            }
-            return endpoint;
-        };
-    }
-    return configProvider;
-};
-
-function bindGetEndpointFromInstructions(getEndpointFromConfig) {
-    return async (commandInput, instructionsSupplier, clientConfig, context) => {
-        if (!clientConfig.isCustomEndpoint && !clientConfig.ignoreConfiguredEndpointUrls) {
-            let endpointFromConfig;
-            if (clientConfig.serviceConfiguredEndpoint) {
-                endpointFromConfig = await clientConfig.serviceConfiguredEndpoint();
-            }
-            else {
-                endpointFromConfig = await getEndpointFromConfig(clientConfig.serviceId);
-            }
-            if (endpointFromConfig) {
-                clientConfig.endpoint = () => Promise.resolve(toEndpointV1(endpointFromConfig));
-                clientConfig.isCustomEndpoint = true;
-                context?.logger?.debug?.(`@smithy/core/endpoints - resolved endpoint from config: ${endpointFromConfig}`);
-            }
-        }
-        const endpointParams = await resolveParams(commandInput, instructionsSupplier, clientConfig);
-        if (typeof clientConfig.endpointProvider !== "function") {
-            throw new Error("config.endpointProvider is not set.");
-        }
-        const endpoint = clientConfig.endpointProvider(endpointParams, context);
-        if (clientConfig.isCustomEndpoint && clientConfig.endpoint) {
-            const customEndpoint = await clientConfig.endpoint();
-            if (customEndpoint?.headers) {
-                endpoint.headers ??= {};
-                for (const [name, value] of Object.entries(customEndpoint.headers)) {
-                    endpoint.headers[name] = Array.isArray(value) ? value : [value];
-                }
-            }
-        }
-        return endpoint;
-    };
-}
-const resolveParams = async (commandInput, instructionsSupplier, clientConfig) => {
-    const endpointParams = {};
-    const instructions = instructionsSupplier?.getEndpointParameterInstructions?.() || {};
-    for (const [name, instruction] of Object.entries(instructions)) {
-        switch (instruction.type) {
-            case "staticContextParams":
-                endpointParams[name] = instruction.value;
-                break;
-            case "contextParams":
-                endpointParams[name] = commandInput[instruction.name];
-                break;
-            case "clientContextParams":
-            case "builtInParams":
-                endpointParams[name] = await createConfigValueProvider(instruction.name, name, clientConfig, instruction.type !== "builtInParams")();
-                break;
-            case "operationContextParams":
-                endpointParams[name] = instruction.get(commandInput);
-                break;
-            default:
-                throw new Error("Unrecognized endpoint parameter instruction: " + JSON.stringify(instruction));
-        }
-    }
-    if (Object.keys(instructions).length === 0) {
-        Object.assign(endpointParams, clientConfig);
-    }
-    if (String(clientConfig.serviceId).toLowerCase() === "s3") {
-        await resolveParamsForS3(endpointParams);
-    }
-    return endpointParams;
-};
-
-function setFeature(context, feature, value) {
-    if (!context.__smithy_context) {
-        context.__smithy_context = { features: {} };
-    }
-    else if (!context.__smithy_context.features) {
-        context.__smithy_context.features = {};
-    }
-    context.__smithy_context.features[feature] = value;
-}
-function bindEndpointMiddleware(getEndpointFromConfig) {
-    const getEndpointFromInstructions = bindGetEndpointFromInstructions(getEndpointFromConfig);
-    return ({ config, instructions, }) => {
-        return (next, context) => async (args) => {
-            if (config.isCustomEndpoint) {
-                setFeature(context, "ENDPOINT_OVERRIDE", "N");
-            }
-            const endpoint = await getEndpointFromInstructions(args.input, {
-                getEndpointParameterInstructions() {
-                    return instructions;
-                },
-            }, { ...config }, context);
-            context.endpointV2 = endpoint;
-            context.authSchemes = endpoint.properties?.authSchemes;
-            const authScheme = context.authSchemes?.[0];
-            if (authScheme) {
-                context["signing_region"] = authScheme.signingRegion;
-                context["signing_service"] = authScheme.signingName;
-                const smithyContext = getSmithyContext(context);
-                const httpAuthOption = smithyContext?.selectedHttpAuthScheme?.httpAuthOption;
-                if (httpAuthOption) {
-                    httpAuthOption.signingProperties = Object.assign(httpAuthOption.signingProperties || {}, {
-                        signing_region: authScheme.signingRegion,
-                        signingRegion: authScheme.signingRegion,
-                        signing_service: authScheme.signingName,
-                        signingName: authScheme.signingName,
-                        signingRegionSet: authScheme.signingRegionSet,
-                    }, authScheme.properties);
-                }
-            }
-            return next({
-                ...args,
-            });
-        };
-    };
-}
-
-const serializerMiddlewareOption = {
-    name: "serializerMiddleware"};
-const endpointMiddlewareOptions = {
-    step: "serialize",
-    tags: ["ENDPOINT_PARAMETERS", "ENDPOINT_V2", "ENDPOINT"],
-    name: "endpointV2Middleware",
-    override: true,
-    relation: "before",
-    toMiddleware: serializerMiddlewareOption.name,
-};
-function bindGetEndpointPlugin(getEndpointFromConfig) {
-    const endpointMiddleware = bindEndpointMiddleware(getEndpointFromConfig);
-    return (config, instructions) => ({
-        applyToStack: (clientStack) => {
-            clientStack.addRelativeTo(endpointMiddleware({
-                config,
-                instructions,
-            }), endpointMiddlewareOptions);
-        },
-    });
-}
-
-function bindResolveEndpointConfig(getEndpointFromConfig) {
-    return (input) => {
-        const tls = input.tls ?? true;
-        const { endpoint, useDualstackEndpoint, useFipsEndpoint } = input;
-        const customEndpointProvider = endpoint != null ? async () => toEndpointV1(await normalizeProvider(endpoint)()) : undefined;
-        const isCustomEndpoint = !!endpoint;
-        const resolvedConfig = Object.assign(input, {
-            endpoint: customEndpointProvider,
-            tls,
-            isCustomEndpoint,
-            useDualstackEndpoint: normalizeProvider(useDualstackEndpoint ?? false),
-            useFipsEndpoint: normalizeProvider(useFipsEndpoint ?? false),
-            ignoreConfiguredEndpointUrls: !!input.ignoreConfiguredEndpointUrls,
-        });
-        let configuredEndpointPromise = undefined;
-        resolvedConfig.serviceConfiguredEndpoint = async () => {
-            if (input.serviceId && !configuredEndpointPromise) {
-                configuredEndpointPromise = getEndpointFromConfig(input.serviceId);
-            }
-            return configuredEndpointPromise;
-        };
-        return resolvedConfig;
-    };
-}
-
-class BinaryDecisionDiagram {
-    nodes;
-    root;
-    conditions;
-    results;
-    constructor(bdd, root, conditions, results) {
-        this.nodes = bdd;
-        this.root = root;
-        this.conditions = conditions;
-        this.results = results;
-    }
-    static from(bdd, root, conditions, results) {
-        return new BinaryDecisionDiagram(bdd, root, conditions, results);
-    }
-}
-
-class EndpointCache {
-    capacity;
-    data = new Map();
-    parameters = [];
-    constructor({ size, params }) {
-        this.capacity = size ?? 50;
-        if (params) {
-            this.parameters = params;
-        }
-    }
-    get(endpointParams, resolver) {
-        const key = this.hash(endpointParams);
-        if (key === false) {
-            return resolver();
-        }
-        if (!this.data.has(key)) {
-            if (this.data.size > this.capacity + 10) {
-                const keys = this.data.keys();
-                let i = 0;
-                while (true) {
-                    const { value, done } = keys.next();
-                    this.data.delete(value);
-                    if (done || ++i > 10) {
-                        break;
-                    }
-                }
-            }
-            this.data.set(key, resolver());
-        }
-        return this.data.get(key);
-    }
-    size() {
-        return this.data.size;
-    }
-    hash(endpointParams) {
-        let buffer = "";
-        const { parameters } = this;
-        if (parameters.length === 0) {
-            return false;
-        }
-        for (const param of parameters) {
-            const val = String(endpointParams[param] ?? "");
-            if (val.includes("|;")) {
-                return false;
-            }
-            buffer += val + "|;";
-        }
-        return buffer;
-    }
-}
-
-class EndpointError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "EndpointError";
-    }
-}
-
-const debugId = "endpoints";
-
-function toDebugString(input) {
-    if (typeof input !== "object" || input == null) {
-        return input;
-    }
-    if ("ref" in input) {
-        return `$${toDebugString(input.ref)}`;
-    }
-    if ("fn" in input) {
-        return `${input.fn}(${(input.argv || []).map(toDebugString).join(", ")})`;
-    }
-    return JSON.stringify(input, null, 2);
-}
-
-const customEndpointFunctions = {};
-
-const booleanEquals = (value1, value2) => value1 === value2;
-
-function coalesce(...args) {
-    for (const arg of args) {
-        if (arg != null) {
-            return arg;
-        }
-    }
-    return undefined;
-}
-
-const getAttrPathList = (path) => {
-    const parts = path.split(".");
-    const pathList = [];
-    for (const part of parts) {
-        const squareBracketIndex = part.indexOf("[");
-        if (squareBracketIndex !== -1) {
-            if (part.indexOf("]") !== part.length - 1) {
-                throw new EndpointError(`Path: '${path}' does not end with ']'`);
-            }
-            const arrayIndex = part.slice(squareBracketIndex + 1, -1);
-            if (Number.isNaN(parseInt(arrayIndex))) {
-                throw new EndpointError(`Invalid array index: '${arrayIndex}' in path: '${path}'`);
-            }
-            if (squareBracketIndex !== 0) {
-                pathList.push(part.slice(0, squareBracketIndex));
-            }
-            pathList.push(arrayIndex);
-        }
-        else {
-            pathList.push(part);
-        }
-    }
-    return pathList;
-};
-
-const getAttr = (value, path) => getAttrPathList(path).reduce((acc, index) => {
-    if (typeof acc !== "object") {
-        throw new EndpointError(`Index '${index}' in '${path}' not found in '${JSON.stringify(value)}'`);
-    }
-    else if (Array.isArray(acc)) {
-        const i = parseInt(index);
-        return acc[i < 0 ? acc.length + i : i];
-    }
-    return acc[index];
-}, value);
-
-const isSet = (value) => value != null;
-
-function ite(condition, trueValue, falseValue) {
-    return condition ? trueValue : falseValue;
-}
-
-const not = (value) => !value;
-
-const IP_V4_REGEX = new RegExp(`^(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}$`);
-const isIpAddress = (value) => IP_V4_REGEX.test(value) || (value.startsWith("[") && value.endsWith("]"));
-
-const DEFAULT_PORTS = {
-    [EndpointURLScheme.HTTP]: 80,
-    [EndpointURLScheme.HTTPS]: 443,
-};
-const parseURL = (value) => {
-    const whatwgURL = (() => {
-        try {
-            if (value instanceof URL) {
-                return value;
-            }
-            if (typeof value === "object" && "hostname" in value) {
-                const { hostname, port, protocol = "", path = "", query = {} } = value;
-                const url = new URL(`${protocol}//${hostname}${port ? `:${port}` : ""}${path}`);
-                url.search = Object.entries(query)
-                    .map(([k, v]) => `${k}=${v}`)
-                    .join("&");
-                return url;
-            }
-            return new URL(value);
-        }
-        catch (ignored) {
-            return null;
-        }
-    })();
-    if (!whatwgURL) {
-        console.error(`Unable to parse ${JSON.stringify(value)} as a whatwg URL.`);
-        return null;
-    }
-    const urlString = whatwgURL.href;
-    const { host, hostname, pathname, protocol, search } = whatwgURL;
-    if (search) {
-        return null;
-    }
-    const scheme = protocol.slice(0, -1);
-    if (!Object.values(EndpointURLScheme).includes(scheme)) {
-        return null;
-    }
-    const isIp = isIpAddress(hostname);
-    const inputContainsDefaultPort = urlString.includes(`${host}:${DEFAULT_PORTS[scheme]}`) ||
-        (typeof value === "string" && value.includes(`${host}:${DEFAULT_PORTS[scheme]}`));
-    const authority = `${host}${inputContainsDefaultPort ? `:${DEFAULT_PORTS[scheme]}` : ``}`;
-    return {
-        scheme,
-        authority,
-        path: pathname,
-        normalizedPath: pathname.endsWith("/") ? pathname : `${pathname}/`,
-        isIp,
-    };
-};
-
-function split(value, delimiter, limit) {
-    if (limit === 1) {
-        return [value];
-    }
-    if (value === "") {
-        return [""];
-    }
-    const parts = value.split(delimiter);
-    if (limit === 0) {
-        return parts;
-    }
-    return parts.slice(0, limit - 1).concat(parts.slice(1).join(delimiter));
-}
-
-const stringEquals = (value1, value2) => value1 === value2;
-
-const substring = (input, start, stop, reverse) => {
-    if (input == null || start >= stop || input.length < stop || /[^\u0000-\u007f]/.test(input)) {
-        return null;
-    }
-    if (!reverse) {
-        return input.substring(start, stop);
-    }
-    return input.substring(input.length - stop, input.length - start);
-};
-
-const uriEncode = (value) => encodeURIComponent(value).replace(/[!*'()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
-
-const endpointFunctions = {
-    booleanEquals,
-    coalesce,
-    getAttr,
-    isSet,
-    isValidHostLabel,
-    ite,
-    not,
-    parseURL,
-    split,
-    stringEquals,
-    substring,
-    uriEncode,
-};
-
-const evaluateTemplate = (template, options) => {
-    const evaluatedTemplateArr = [];
-    const { referenceRecord, endpointParams } = options;
-    let currentIndex = 0;
-    while (currentIndex < template.length) {
-        const openingBraceIndex = template.indexOf("{", currentIndex);
-        if (openingBraceIndex === -1) {
-            evaluatedTemplateArr.push(template.slice(currentIndex));
-            break;
-        }
-        evaluatedTemplateArr.push(template.slice(currentIndex, openingBraceIndex));
-        const closingBraceIndex = template.indexOf("}", openingBraceIndex);
-        if (closingBraceIndex === -1) {
-            evaluatedTemplateArr.push(template.slice(openingBraceIndex));
-            break;
-        }
-        if (template[openingBraceIndex + 1] === "{" && template[closingBraceIndex + 1] === "}") {
-            evaluatedTemplateArr.push(template.slice(openingBraceIndex + 1, closingBraceIndex));
-            currentIndex = closingBraceIndex + 2;
-        }
-        const parameterName = template.substring(openingBraceIndex + 1, closingBraceIndex);
-        if (parameterName.includes("#")) {
-            const [refName, attrName] = parameterName.split("#");
-            evaluatedTemplateArr.push(getAttr((referenceRecord[refName] ?? endpointParams[refName]), attrName));
-        }
-        else {
-            evaluatedTemplateArr.push((referenceRecord[parameterName] ?? endpointParams[parameterName]));
-        }
-        currentIndex = closingBraceIndex + 1;
-    }
-    return evaluatedTemplateArr.join("");
-};
-
-const getReferenceValue = ({ ref }, options) => {
-    return options.referenceRecord[ref] ?? options.endpointParams[ref];
-};
-
-const evaluateExpression = (obj, keyName, options) => {
-    if (typeof obj === "string") {
-        return evaluateTemplate(obj, options);
-    }
-    else if (obj["fn"]) {
-        return group$2.callFunction(obj, options);
-    }
-    else if (obj["ref"]) {
-        return getReferenceValue(obj, options);
-    }
-    throw new EndpointError(`'${keyName}': ${String(obj)} is not a string, function or reference.`);
-};
-const callFunction = ({ fn, argv }, options) => {
-    const evaluatedArgs = Array(argv.length);
-    for (let i = 0; i < evaluatedArgs.length; ++i) {
-        const arg = argv[i];
-        if (typeof arg === "boolean" || typeof arg === "number") {
-            evaluatedArgs[i] = arg;
-        }
-        else {
-            evaluatedArgs[i] = group$2.evaluateExpression(arg, "arg", options);
-        }
-    }
-    const namespaceSeparatorIndex = fn.indexOf(".");
-    if (namespaceSeparatorIndex !== -1) {
-        const namespaceFunctions = customEndpointFunctions[fn.slice(0, namespaceSeparatorIndex)];
-        const customFunction = namespaceFunctions?.[fn.slice(namespaceSeparatorIndex + 1)];
-        if (typeof customFunction === "function") {
-            return customFunction(...evaluatedArgs);
-        }
-    }
-    const callable = endpointFunctions[fn];
-    if (typeof callable === "function") {
-        return callable(...evaluatedArgs);
-    }
-    throw new Error(`function ${fn} not loaded in endpointFunctions.`);
-};
-const group$2 = {
-    evaluateExpression,
-    callFunction,
-};
-
-const evaluateCondition = (condition, options) => {
-    const { assign } = condition;
-    if (assign && assign in options.referenceRecord) {
-        throw new EndpointError(`'${assign}' is already defined in Reference Record.`);
-    }
-    const value = callFunction(condition, options);
-    options.logger?.debug?.(`${debugId} evaluateCondition: ${toDebugString(condition)} = ${toDebugString(value)}`);
-    const result = value === "" ? true : !!value;
-    if (assign != null) {
-        return { result, toAssign: { name: assign, value } };
-    }
-    return { result };
-};
-
-const getEndpointHeaders = (headers, options) => Object.entries(headers ?? {}).reduce((acc, [headerKey, headerVal]) => {
-    acc[headerKey] = headerVal.map((headerValEntry) => {
-        const processedExpr = evaluateExpression(headerValEntry, "Header value entry", options);
-        if (typeof processedExpr !== "string") {
-            throw new EndpointError(`Header '${headerKey}' value '${processedExpr}' is not a string`);
-        }
-        return processedExpr;
-    });
-    return acc;
-}, {});
-
-const getEndpointProperties = (properties, options) => Object.entries(properties).reduce((acc, [propertyKey, propertyVal]) => {
-    acc[propertyKey] = group$1.getEndpointProperty(propertyVal, options);
-    return acc;
-}, {});
-const getEndpointProperty = (property, options) => {
-    if (Array.isArray(property)) {
-        return property.map((propertyEntry) => getEndpointProperty(propertyEntry, options));
-    }
-    switch (typeof property) {
-        case "string":
-            return evaluateTemplate(property, options);
-        case "object":
-            if (property === null) {
-                throw new EndpointError(`Unexpected endpoint property: ${property}`);
-            }
-            return group$1.getEndpointProperties(property, options);
-        case "boolean":
-            return property;
-        default:
-            throw new EndpointError(`Unexpected endpoint property type: ${typeof property}`);
-    }
-};
-const group$1 = {
-    getEndpointProperty,
-    getEndpointProperties,
-};
-
-const getEndpointUrl = (endpointUrl, options) => {
-    const expression = evaluateExpression(endpointUrl, "Endpoint URL", options);
-    if (typeof expression === "string") {
-        try {
-            return new URL(expression);
-        }
-        catch (error) {
-            console.error(`Failed to construct URL with ${expression}`, error);
-            throw error;
-        }
-    }
-    throw new EndpointError(`Endpoint URL must be a string, got ${typeof expression}`);
-};
-
-const RESULT = 100_000_000;
-const decideEndpoint = (bdd, options) => {
-    const { nodes, root, results, conditions } = bdd;
-    let ref = root;
-    const referenceRecord = {};
-    const closure = {
-        referenceRecord,
-        endpointParams: options.endpointParams,
-        logger: options.logger,
-    };
-    while (ref !== 1 && ref !== -1 && ref < RESULT) {
-        const node_i = 3 * (Math.abs(ref) - 1);
-        const [condition_i, highRef, lowRef] = [nodes[node_i], nodes[node_i + 1], nodes[node_i + 2]];
-        const [fn, argv, assign] = conditions[condition_i];
-        const evaluation = evaluateCondition({ fn, assign, argv }, closure);
-        if (evaluation.toAssign) {
-            const { name, value } = evaluation.toAssign;
-            referenceRecord[name] = value;
-        }
-        ref = ref >= 0 === evaluation.result ? highRef : lowRef;
-    }
-    if (ref >= RESULT) {
-        const result = results[ref - RESULT];
-        if (result[0] === -1) {
-            const [, errorExpression] = result;
-            throw new EndpointError(evaluateExpression(errorExpression, "Error", closure));
-        }
-        const [url, properties, headers] = result;
-        return {
-            url: getEndpointUrl(url, closure),
-            properties: getEndpointProperties(properties, closure),
-            headers: getEndpointHeaders(headers ?? {}, closure),
-        };
-    }
-    throw new EndpointError(`No matching endpoint.`);
-};
-
-const evaluateConditions = (conditions = [], options) => {
-    const conditionsReferenceRecord = {};
-    const conditionOptions = {
-        ...options,
-        referenceRecord: { ...options.referenceRecord },
-    };
-    let didAssign = false;
-    for (const condition of conditions) {
-        const { result, toAssign } = evaluateCondition(condition, conditionOptions);
-        if (!result) {
-            return { result };
-        }
-        if (toAssign) {
-            didAssign = true;
-            conditionsReferenceRecord[toAssign.name] = toAssign.value;
-            conditionOptions.referenceRecord[toAssign.name] = toAssign.value;
-            options.logger?.debug?.(`${debugId} assign: ${toAssign.name} := ${toDebugString(toAssign.value)}`);
-        }
-    }
-    if (didAssign) {
-        return { result: true, referenceRecord: conditionsReferenceRecord };
-    }
-    return { result: true };
-};
-
-const evaluateEndpointRule = (endpointRule, options) => {
-    const { conditions, endpoint } = endpointRule;
-    const { result, referenceRecord } = evaluateConditions(conditions, options);
-    if (!result) {
-        return;
-    }
-    const endpointRuleOptions = referenceRecord
-        ? {
-            ...options,
-            referenceRecord: { ...options.referenceRecord, ...referenceRecord },
-        }
-        : options;
-    const { url, properties, headers } = endpoint;
-    options.logger?.debug?.(`${debugId} Resolving endpoint from template: ${toDebugString(endpoint)}`);
-    const endpointToReturn = { url: getEndpointUrl(url, endpointRuleOptions) };
-    if (headers != null) {
-        endpointToReturn.headers = getEndpointHeaders(headers, endpointRuleOptions);
-    }
-    if (properties != null) {
-        endpointToReturn.properties = getEndpointProperties(properties, endpointRuleOptions);
-    }
-    return endpointToReturn;
-};
-
-const evaluateErrorRule = (errorRule, options) => {
-    const { conditions, error } = errorRule;
-    const { result, referenceRecord } = evaluateConditions(conditions, options);
-    if (!result) {
-        return;
-    }
-    const errorRuleOptions = referenceRecord
-        ? {
-            ...options,
-            referenceRecord: { ...options.referenceRecord, ...referenceRecord },
-        }
-        : options;
-    throw new EndpointError(evaluateExpression(error, "Error", errorRuleOptions));
-};
-
-const evaluateRules = (rules, options) => {
-    for (const rule of rules) {
-        if (rule.type === "endpoint") {
-            const endpointOrUndefined = evaluateEndpointRule(rule, options);
-            if (endpointOrUndefined) {
-                return endpointOrUndefined;
-            }
-        }
-        else if (rule.type === "error") {
-            evaluateErrorRule(rule, options);
-        }
-        else if (rule.type === "tree") {
-            const endpointOrUndefined = group.evaluateTreeRule(rule, options);
-            if (endpointOrUndefined) {
-                return endpointOrUndefined;
-            }
-        }
-        else {
-            throw new EndpointError(`Unknown endpoint rule: ${rule}`);
-        }
-    }
-    throw new EndpointError(`Rules evaluation failed`);
-};
-const evaluateTreeRule = (treeRule, options) => {
-    const { conditions, rules } = treeRule;
-    const { result, referenceRecord } = evaluateConditions(conditions, options);
-    if (!result) {
-        return;
-    }
-    const treeRuleOptions = referenceRecord
-        ? { ...options, referenceRecord: { ...options.referenceRecord, ...referenceRecord } }
-        : options;
-    return group.evaluateRules(rules, treeRuleOptions);
-};
-const group = {
-    evaluateRules,
-    evaluateTreeRule,
-};
-
-const resolveEndpoint = (ruleSetObject, options) => {
-    const { endpointParams, logger } = options;
-    const { parameters, rules } = ruleSetObject;
-    options.logger?.debug?.(`${debugId} Initial EndpointParams: ${toDebugString(endpointParams)}`);
-    for (const paramKey in parameters) {
-        if (!hasOwn(parameters, paramKey))
-            continue;
-        const parameter = parameters[paramKey];
-        const endpointParam = endpointParams[paramKey];
-        if (endpointParam == null && parameter.default != null) {
-            endpointParams[paramKey] = parameter.default;
-            continue;
-        }
-        if (parameter.required && endpointParam == null) {
-            throw new EndpointError(`Missing required parameter: '${paramKey}'`);
-        }
-    }
-    const endpoint = evaluateRules(rules, { endpointParams, logger, referenceRecord: {} });
-    options.logger?.debug?.(`${debugId} Resolved endpoint: ${toDebugString(endpoint)}`);
-    return endpoint;
-};
-
-const resolveEndpointRequiredConfig = (input) => {
-    const { endpoint } = input;
-    if (endpoint === undefined) {
-        input.endpoint = async () => {
-            throw new Error("@smithy/middleware-endpoint: (default endpointRuleSet) endpoint is not set - you must configure an endpoint.");
-        };
-    }
-    return input;
-};
-
-const getEndpointFromInstructions = bindGetEndpointFromInstructions(getEndpointFromConfig);
-const resolveEndpointConfig = bindResolveEndpointConfig(getEndpointFromConfig);
-const endpointMiddleware = bindEndpointMiddleware(getEndpointFromConfig);
-const getEndpointPlugin = bindGetEndpointPlugin(getEndpointFromConfig);
-
-exports.BinaryDecisionDiagram = BinaryDecisionDiagram;
-exports.EndpointCache = EndpointCache;
-exports.EndpointError = EndpointError;
-exports.customEndpointFunctions = customEndpointFunctions;
-exports.decideEndpoint = decideEndpoint;
-exports.endpointMiddleware = endpointMiddleware;
-exports.endpointMiddlewareOptions = endpointMiddlewareOptions;
-exports.getEndpointFromInstructions = getEndpointFromInstructions;
-exports.getEndpointPlugin = getEndpointPlugin;
-exports.isIpAddress = isIpAddress;
-exports.resolveEndpoint = resolveEndpoint;
-exports.resolveEndpointConfig = resolveEndpointConfig;
-exports.resolveEndpointRequiredConfig = resolveEndpointRequiredConfig;
-exports.resolveParams = resolveParams;
-
-
-/***/ }),
-
-/***/ 336:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { Crc32 } = __nccwpck_require__(6763);
-const { hasOwn } = __nccwpck_require__(5105);
-const { toHex, fromHex, toUtf8, fromUtf8 } = __nccwpck_require__(7665);
-const { Readable } = __nccwpck_require__(7075);
-const { TypeRegistry } = __nccwpck_require__(5987);
-
-class Int64 {
-    bytes;
-    constructor(bytes) {
-        this.bytes = bytes;
-        if (bytes.byteLength !== 8) {
-            throw new Error("Int64 buffers must be exactly 8 bytes");
-        }
-    }
-    static fromNumber(number) {
-        if (number > 9_223_372_036_854_775_807 || number < -9223372036854776e3) {
-            throw new Error(`${number} is too large (or, if negative, too small) to represent as an Int64`);
-        }
-        const bytes = new Uint8Array(8);
-        for (let i = 7, remaining = Math.abs(Math.round(number)); i > -1 && remaining > 0; i--, remaining /= 256) {
-            bytes[i] = remaining;
-        }
-        if (number < 0) {
-            negate(bytes);
-        }
-        return new Int64(bytes);
-    }
-    valueOf() {
-        const bytes = this.bytes.slice(0);
-        const negative = bytes[0] & 0b10000000;
-        if (negative) {
-            negate(bytes);
-        }
-        return parseInt(toHex(bytes), 16) * (negative ? -1 : 1);
-    }
-    toString() {
-        return String(this.valueOf());
-    }
-}
-function negate(bytes) {
-    for (let i = 0; i < 8; i++) {
-        bytes[i] ^= 0xff;
-    }
-    for (let i = 7; i > -1; i--) {
-        bytes[i]++;
-        if (bytes[i] !== 0)
-            break;
-    }
-}
-
-class HeaderMarshaller {
-    toUtf8;
-    fromUtf8;
-    constructor(toUtf8, fromUtf8) {
-        this.toUtf8 = toUtf8;
-        this.fromUtf8 = fromUtf8;
-    }
-    format(headers) {
-        const chunks = [];
-        for (const headerName in headers) {
-            if (!hasOwn(headers, headerName))
-                continue;
-            const bytes = this.fromUtf8(headerName);
-            chunks.push(Uint8Array.from([bytes.byteLength]), bytes, this.formatHeaderValue(headers[headerName]));
-        }
-        const out = new Uint8Array(chunks.reduce((carry, bytes) => carry + bytes.byteLength, 0));
-        let position = 0;
-        for (const chunk of chunks) {
-            out.set(chunk, position);
-            position += chunk.byteLength;
-        }
-        return out;
-    }
-    formatHeaderValue(header) {
-        switch (header.type) {
-            case "boolean":
-                return Uint8Array.from([header.value ? 0 : 1]);
-            case "byte":
-                return Uint8Array.from([2, header.value]);
-            case "short":
-                const shortView = new DataView(new ArrayBuffer(3));
-                shortView.setUint8(0, 3);
-                shortView.setInt16(1, header.value, false);
-                return new Uint8Array(shortView.buffer);
-            case "integer":
-                const intView = new DataView(new ArrayBuffer(5));
-                intView.setUint8(0, 4);
-                intView.setInt32(1, header.value, false);
-                return new Uint8Array(intView.buffer);
-            case "long":
-                const longBytes = new Uint8Array(9);
-                longBytes[0] = 5;
-                longBytes.set(header.value.bytes, 1);
-                return longBytes;
-            case "binary":
-                const binView = new DataView(new ArrayBuffer(3 + header.value.byteLength));
-                binView.setUint8(0, 6);
-                binView.setUint16(1, header.value.byteLength, false);
-                const binBytes = new Uint8Array(binView.buffer);
-                binBytes.set(header.value, 3);
-                return binBytes;
-            case "string":
-                const utf8Bytes = this.fromUtf8(header.value);
-                const strView = new DataView(new ArrayBuffer(3 + utf8Bytes.byteLength));
-                strView.setUint8(0, 7);
-                strView.setUint16(1, utf8Bytes.byteLength, false);
-                const strBytes = new Uint8Array(strView.buffer);
-                strBytes.set(utf8Bytes, 3);
-                return strBytes;
-            case "timestamp":
-                const tsBytes = new Uint8Array(9);
-                tsBytes[0] = 8;
-                tsBytes.set(Int64.fromNumber(header.value.valueOf()).bytes, 1);
-                return tsBytes;
-            case "uuid":
-                if (!UUID_PATTERN.test(header.value)) {
-                    throw new Error(`Invalid UUID received: ${header.value}`);
-                }
-                const uuidBytes = new Uint8Array(17);
-                uuidBytes[0] = 9;
-                uuidBytes.set(fromHex(header.value.replace(/-/g, "")), 1);
-                return uuidBytes;
-        }
-    }
-    parse(headers) {
-        const out = {};
-        let position = 0;
-        while (position < headers.byteLength) {
-            const nameLength = headers.getUint8(position++);
-            const name = this.toUtf8(new Uint8Array(headers.buffer, headers.byteOffset + position, nameLength));
-            position += nameLength;
-            switch (headers.getUint8(position++)) {
-                case 0:
-                    out[name] = {
-                        type: BOOLEAN_TAG,
-                        value: true,
-                    };
-                    break;
-                case 1:
-                    out[name] = {
-                        type: BOOLEAN_TAG,
-                        value: false,
-                    };
-                    break;
-                case 2:
-                    out[name] = {
-                        type: BYTE_TAG,
-                        value: headers.getInt8(position++),
-                    };
-                    break;
-                case 3:
-                    out[name] = {
-                        type: SHORT_TAG,
-                        value: headers.getInt16(position, false),
-                    };
-                    position += 2;
-                    break;
-                case 4:
-                    out[name] = {
-                        type: INT_TAG,
-                        value: headers.getInt32(position, false),
-                    };
-                    position += 4;
-                    break;
-                case 5:
-                    out[name] = {
-                        type: LONG_TAG,
-                        value: new Int64(new Uint8Array(headers.buffer, headers.byteOffset + position, 8)),
-                    };
-                    position += 8;
-                    break;
-                case 6:
-                    const binaryLength = headers.getUint16(position, false);
-                    position += 2;
-                    out[name] = {
-                        type: BINARY_TAG,
-                        value: new Uint8Array(headers.buffer, headers.byteOffset + position, binaryLength),
-                    };
-                    position += binaryLength;
-                    break;
-                case 7:
-                    const stringLength = headers.getUint16(position, false);
-                    position += 2;
-                    out[name] = {
-                        type: STRING_TAG,
-                        value: this.toUtf8(new Uint8Array(headers.buffer, headers.byteOffset + position, stringLength)),
-                    };
-                    position += stringLength;
-                    break;
-                case 8:
-                    out[name] = {
-                        type: TIMESTAMP_TAG,
-                        value: new Date(new Int64(new Uint8Array(headers.buffer, headers.byteOffset + position, 8)).valueOf()),
-                    };
-                    position += 8;
-                    break;
-                case 9:
-                    const uuidBytes = new Uint8Array(headers.buffer, headers.byteOffset + position, 16);
-                    position += 16;
-                    out[name] = {
-                        type: UUID_TAG,
-                        value: `${toHex(uuidBytes.subarray(0, 4))}-${toHex(uuidBytes.subarray(4, 6))}-${toHex(uuidBytes.subarray(6, 8))}-${toHex(uuidBytes.subarray(8, 10))}-${toHex(uuidBytes.subarray(10))}`,
-                    };
-                    break;
-                default:
-                    throw new Error(`Unrecognized header type tag`);
-            }
-        }
-        return out;
-    }
-}
-var HEADER_VALUE_TYPE;
-(function (HEADER_VALUE_TYPE) {
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["boolTrue"] = 0] = "boolTrue";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["boolFalse"] = 1] = "boolFalse";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["byte"] = 2] = "byte";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["short"] = 3] = "short";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["integer"] = 4] = "integer";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["long"] = 5] = "long";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["byteArray"] = 6] = "byteArray";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["string"] = 7] = "string";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["timestamp"] = 8] = "timestamp";
-    HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["uuid"] = 9] = "uuid";
-})(HEADER_VALUE_TYPE || (HEADER_VALUE_TYPE = {}));
-const BOOLEAN_TAG = "boolean";
-const BYTE_TAG = "byte";
-const SHORT_TAG = "short";
-const INT_TAG = "integer";
-const LONG_TAG = "long";
-const BINARY_TAG = "binary";
-const STRING_TAG = "string";
-const TIMESTAMP_TAG = "timestamp";
-const UUID_TAG = "uuid";
-const UUID_PATTERN = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-
-const PRELUDE_MEMBER_LENGTH = 4;
-const PRELUDE_LENGTH = PRELUDE_MEMBER_LENGTH * 2;
-const CHECKSUM_LENGTH = 4;
-const MINIMUM_MESSAGE_LENGTH = PRELUDE_LENGTH + CHECKSUM_LENGTH * 2;
-function splitMessage({ byteLength, byteOffset, buffer }) {
-    if (byteLength < MINIMUM_MESSAGE_LENGTH) {
-        throw new Error("Provided message too short to accommodate event stream message overhead");
-    }
-    const view = new DataView(buffer, byteOffset, byteLength);
-    const messageLength = view.getUint32(0, false);
-    if (byteLength !== messageLength) {
-        throw new Error("Reported message length does not match received message length");
-    }
-    const headerLength = view.getUint32(PRELUDE_MEMBER_LENGTH, false);
-    const expectedPreludeChecksum = view.getUint32(PRELUDE_LENGTH, false);
-    const expectedMessageChecksum = view.getUint32(byteLength - CHECKSUM_LENGTH, false);
-    const checksummer = new Crc32();
-    checksummer.update(new Uint8Array(buffer, byteOffset, PRELUDE_LENGTH));
-    if (expectedPreludeChecksum !== checksummer.digestSync()) {
-        throw new Error(`The prelude checksum specified in the message (${expectedPreludeChecksum}) does not match the calculated CRC32 checksum (${checksummer.digestSync()})`);
-    }
-    checksummer.update(new Uint8Array(buffer, byteOffset + PRELUDE_LENGTH, byteLength - (PRELUDE_LENGTH + CHECKSUM_LENGTH)));
-    if (expectedMessageChecksum !== checksummer.digestSync()) {
-        throw new Error(`The message checksum (${checksummer.digestSync()}) did not match the expected value of ${expectedMessageChecksum}`);
-    }
-    return {
-        headers: new DataView(buffer, byteOffset + PRELUDE_LENGTH + CHECKSUM_LENGTH, headerLength),
-        body: new Uint8Array(buffer, byteOffset + PRELUDE_LENGTH + CHECKSUM_LENGTH + headerLength, messageLength - headerLength - (PRELUDE_LENGTH + CHECKSUM_LENGTH + CHECKSUM_LENGTH)),
-    };
-}
-
-class EventStreamCodec {
-    headerMarshaller;
-    messageBuffer;
-    isEndOfStream;
-    constructor(toUtf8, fromUtf8) {
-        this.headerMarshaller = new HeaderMarshaller(toUtf8, fromUtf8);
-        this.messageBuffer = [];
-        this.isEndOfStream = false;
-    }
-    feed(message) {
-        this.messageBuffer.push(this.decode(message));
-    }
-    endOfStream() {
-        this.isEndOfStream = true;
-    }
-    getMessage() {
-        const message = this.messageBuffer.pop();
-        const isEndOfStream = this.isEndOfStream;
-        return {
-            getMessage() {
-                return message;
-            },
-            isEndOfStream() {
-                return isEndOfStream;
-            },
-        };
-    }
-    getAvailableMessages() {
-        const messages = this.messageBuffer;
-        this.messageBuffer = [];
-        const isEndOfStream = this.isEndOfStream;
-        return {
-            getMessages() {
-                return messages;
-            },
-            isEndOfStream() {
-                return isEndOfStream;
-            },
-        };
-    }
-    encode({ headers: rawHeaders, body }) {
-        const headers = this.headerMarshaller.format(rawHeaders);
-        const length = headers.byteLength + body.byteLength + 16;
-        const out = new Uint8Array(length);
-        const view = new DataView(out.buffer, out.byteOffset, out.byteLength);
-        const checksum = new Crc32();
-        view.setUint32(0, length, false);
-        view.setUint32(4, headers.byteLength, false);
-        checksum.update(out.subarray(0, 8));
-        view.setUint32(8, checksum.digestSync(), false);
-        out.set(headers, 12);
-        out.set(body, headers.byteLength + 12);
-        checksum.update(out.subarray(8, length - 4));
-        view.setUint32(length - 4, checksum.digestSync(), false);
-        return out;
-    }
-    decode(message) {
-        const { headers, body } = splitMessage(message);
-        return { headers: this.headerMarshaller.parse(headers), body };
-    }
-    formatHeaders(rawHeaders) {
-        return this.headerMarshaller.format(rawHeaders);
-    }
-}
-
-class MessageDecoderStream {
-    options;
-    constructor(options) {
-        this.options = options;
-    }
-    [Symbol.asyncIterator]() {
-        return this.asyncIterator();
-    }
-    async *asyncIterator() {
-        for await (const bytes of this.options.inputStream) {
-            const decoded = this.options.decoder.decode(bytes);
-            yield decoded;
-        }
-    }
-}
-
-class MessageEncoderStream {
-    options;
-    constructor(options) {
-        this.options = options;
-    }
-    [Symbol.asyncIterator]() {
-        return this.asyncIterator();
-    }
-    async *asyncIterator() {
-        for await (const msg of this.options.messageStream) {
-            const encoded = this.options.encoder.encode(msg);
-            yield encoded;
-        }
-        if (this.options.includeEndFrame) {
-            yield new Uint8Array(0);
-        }
-    }
-}
-
-class SmithyMessageDecoderStream {
-    options;
-    constructor(options) {
-        this.options = options;
-    }
-    [Symbol.asyncIterator]() {
-        return this.asyncIterator();
-    }
-    async *asyncIterator() {
-        for await (const message of this.options.messageStream) {
-            const deserialized = await this.options.deserializer(message);
-            if (deserialized === undefined)
-                continue;
-            yield deserialized;
-        }
-    }
-}
-
-class SmithyMessageEncoderStream {
-    options;
-    constructor(options) {
-        this.options = options;
-    }
-    [Symbol.asyncIterator]() {
-        return this.asyncIterator();
-    }
-    async *asyncIterator() {
-        for await (const chunk of this.options.inputStream) {
-            const payloadBuf = this.options.serializer(chunk);
-            yield payloadBuf;
-        }
-    }
-}
-
-function getChunkedStream(source) {
-    let currentMessageTotalLength = 0;
-    let currentMessagePendingLength = 0;
-    let currentMessage = null;
-    let messageLengthBuffer = null;
-    const allocateMessage = (size) => {
-        if (typeof size !== "number") {
-            throw new Error("Attempted to allocate an event message where size was not a number: " + size);
-        }
-        currentMessageTotalLength = size;
-        currentMessagePendingLength = 4;
-        currentMessage = new Uint8Array(size);
-        const currentMessageView = new DataView(currentMessage.buffer);
-        currentMessageView.setUint32(0, size, false);
-    };
-    const iterator = async function* () {
-        const sourceIterator = source[Symbol.asyncIterator]();
-        while (true) {
-            const { value, done } = await sourceIterator.next();
-            if (done) {
-                if (!currentMessageTotalLength) {
-                    return;
-                }
-                else if (currentMessageTotalLength === currentMessagePendingLength) {
-                    yield currentMessage;
-                }
-                else {
-                    throw new Error("Truncated event message received.");
-                }
-                return;
-            }
-            const chunkLength = value.length;
-            let currentOffset = 0;
-            while (currentOffset < chunkLength) {
-                if (!currentMessage) {
-                    const bytesRemaining = chunkLength - currentOffset;
-                    if (!messageLengthBuffer) {
-                        messageLengthBuffer = new Uint8Array(4);
-                    }
-                    const numBytesForTotal = Math.min(4 - currentMessagePendingLength, bytesRemaining);
-                    messageLengthBuffer.set(value.slice(currentOffset, currentOffset + numBytesForTotal), currentMessagePendingLength);
-                    currentMessagePendingLength += numBytesForTotal;
-                    currentOffset += numBytesForTotal;
-                    if (currentMessagePendingLength < 4) {
-                        break;
-                    }
-                    allocateMessage(new DataView(messageLengthBuffer.buffer).getUint32(0, false));
-                    messageLengthBuffer = null;
-                }
-                const numBytesToWrite = Math.min(currentMessageTotalLength - currentMessagePendingLength, chunkLength - currentOffset);
-                currentMessage.set(value.slice(currentOffset, currentOffset + numBytesToWrite), currentMessagePendingLength);
-                currentMessagePendingLength += numBytesToWrite;
-                currentOffset += numBytesToWrite;
-                if (currentMessageTotalLength && currentMessageTotalLength === currentMessagePendingLength) {
-                    yield currentMessage;
-                    currentMessage = null;
-                    currentMessageTotalLength = 0;
-                    currentMessagePendingLength = 0;
-                }
-            }
-        }
-    };
-    return {
-        [Symbol.asyncIterator]: iterator,
-    };
-}
-
-function getUnmarshalledStream(source, options) {
-    const messageUnmarshaller = getMessageUnmarshaller(options.deserializer, options.toUtf8);
-    return {
-        [Symbol.asyncIterator]: async function* () {
-            for await (const chunk of source) {
-                const message = options.eventStreamCodec.decode(chunk);
-                const type = await messageUnmarshaller(message);
-                if (type === undefined)
-                    continue;
-                yield type;
-            }
-        },
-    };
-}
-function getMessageUnmarshaller(deserializer, toUtf8) {
-    return async function (message) {
-        const { value: messageType } = message.headers[":message-type"];
-        if (messageType === "error") {
-            const unmodeledError = new Error(message.headers[":error-message"].value || "UnknownError");
-            unmodeledError.name = message.headers[":error-code"].value;
-            throw unmodeledError;
-        }
-        else if (messageType === "exception") {
-            const code = message.headers[":exception-type"].value;
-            const exception = { [code]: message };
-            const deserializedException = await deserializer(exception);
-            if (deserializedException.$unknown) {
-                const error = new Error(toUtf8(message.body));
-                error.name = code;
-                throw error;
-            }
-            throw deserializedException[code];
-        }
-        else if (messageType === "event") {
-            const event = {
-                [message.headers[":event-type"].value]: message,
-            };
-            const deserialized = await deserializer(event);
-            if (deserialized.$unknown)
-                return;
-            return deserialized;
-        }
-        else {
-            throw Error(`Unrecognizable event type: ${message.headers[":event-type"].value}`);
-        }
-    };
-}
-
-let EventStreamMarshaller$1 = class EventStreamMarshaller {
-    eventStreamCodec;
-    utfEncoder;
-    constructor({ utf8Encoder, utf8Decoder }) {
-        this.eventStreamCodec = new EventStreamCodec(utf8Encoder, utf8Decoder);
-        this.utfEncoder = utf8Encoder;
-    }
-    deserialize(body, deserializer) {
-        const inputStream = getChunkedStream(body);
-        return new SmithyMessageDecoderStream({
-            messageStream: new MessageDecoderStream({ inputStream, decoder: this.eventStreamCodec }),
-            deserializer: getMessageUnmarshaller(deserializer, this.utfEncoder),
-        });
-    }
-    serialize(inputStream, serializer) {
-        return new MessageEncoderStream({
-            messageStream: new SmithyMessageEncoderStream({ inputStream, serializer }),
-            encoder: this.eventStreamCodec,
-            includeEndFrame: true,
-        });
-    }
-};
-const eventStreamSerdeProvider$1 = (options) => new EventStreamMarshaller$1(options);
-
-class EventStreamMarshaller {
-    universalMarshaller;
-    constructor({ utf8Encoder, utf8Decoder }) {
-        this.universalMarshaller = new EventStreamMarshaller$1({
-            utf8Decoder,
-            utf8Encoder,
-        });
-    }
-    deserialize(body, deserializer) {
-        const bodyIterable = typeof body[Symbol.asyncIterator] === "function" ? body : readableToIterable(body);
-        return this.universalMarshaller.deserialize(bodyIterable, deserializer);
-    }
-    serialize(input, serializer) {
-        return Readable.from(this.universalMarshaller.serialize(input, serializer));
-    }
-}
-const eventStreamSerdeProvider = (options) => new EventStreamMarshaller(options);
-async function* readableToIterable(readStream) {
-    let streamEnded = false;
-    let generationEnded = false;
-    const records = new Array();
-    readStream.on("error", (err) => {
-        if (!streamEnded) {
-            streamEnded = true;
-        }
-        if (err) {
-            throw err;
-        }
-    });
-    readStream.on("data", (data) => {
-        records.push(data);
-    });
-    readStream.on("end", () => {
-        streamEnded = true;
-    });
-    while (!generationEnded) {
-        const value = await new Promise((resolve) => setTimeout(() => resolve(records.shift()), 0));
-        if (value) {
-            yield value;
-        }
-        generationEnded = streamEnded && records.length === 0;
-    }
-}
-
-const readableStreamToIterable = (readableStream) => ({
-    [Symbol.asyncIterator]: async function* () {
-        const reader = readableStream.getReader();
-        try {
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done)
-                    return;
-                yield value;
-            }
-        }
-        finally {
-            reader.releaseLock();
-        }
-    },
-});
-const iterableToReadableStream = (asyncIterable) => {
-    const iterator = asyncIterable[Symbol.asyncIterator]();
-    return new ReadableStream({
-        async pull(controller) {
-            const { done, value } = await iterator.next();
-            if (done) {
-                return controller.close();
-            }
-            controller.enqueue(value);
-        },
-    });
-};
-
-const resolveEventStreamSerdeConfig = (input) => Object.assign(input, {
-    eventStreamMarshaller: input.eventStreamSerdeProvider(input),
-});
-
-class EventStreamSerde {
-    marshaller;
-    serializer;
-    deserializer;
-    serdeContext;
-    defaultContentType;
-    compositeErrorRegistry;
-    constructor({ marshaller, serializer, deserializer, serdeContext, defaultContentType, compositeErrorRegistry, }) {
-        this.marshaller = marshaller;
-        this.serializer = serializer;
-        this.deserializer = deserializer;
-        this.serdeContext = serdeContext;
-        this.defaultContentType = defaultContentType;
-        this.compositeErrorRegistry = compositeErrorRegistry;
-    }
-    async serializeEventStream({ eventStream, requestSchema, initialRequest, initialMessageType, }) {
-        const marshaller = this.marshaller;
-        const eventStreamMember = requestSchema.getEventStreamMember();
-        const unionSchema = requestSchema.getMemberSchema(eventStreamMember);
-        const serializer = this.serializer;
-        const defaultContentType = this.defaultContentType;
-        const initialRequestMarker = Symbol("initialRequestMarker");
-        const eventStreamIterable = {
-            async *[Symbol.asyncIterator]() {
-                if (initialRequest) {
-                    const headers = {
-                        ":event-type": { type: "string", value: initialMessageType ?? "initial-request" },
-                        ":message-type": { type: "string", value: "event" },
-                        ":content-type": { type: "string", value: defaultContentType },
-                    };
-                    serializer.write(requestSchema, initialRequest);
-                    const body = serializer.flush();
-                    yield {
-                        [initialRequestMarker]: true,
-                        headers,
-                        body,
-                    };
-                }
-                for await (const page of eventStream) {
-                    yield page;
-                }
-            },
-        };
-        return marshaller.serialize(eventStreamIterable, (event) => {
-            if (event[initialRequestMarker]) {
-                return {
-                    headers: event.headers,
-                    body: event.body,
-                };
-            }
-            let unionMember = "";
-            for (const key in event) {
-                if (!hasOwn(event, key))
-                    continue;
-                if (key !== "__type") {
-                    unionMember = key;
-                    break;
-                }
-            }
-            const { additionalHeaders, body, eventType, explicitPayloadContentType } = this.writeEventBody(unionMember, unionSchema, event);
-            const headers = {
-                ":event-type": { type: "string", value: eventType },
-                ":message-type": { type: "string", value: "event" },
-                ":content-type": { type: "string", value: explicitPayloadContentType ?? defaultContentType },
-                ...additionalHeaders,
-            };
-            return {
-                headers,
-                body,
-            };
-        });
-    }
-    async deserializeEventStream({ response, responseSchema, initialResponseContainer, initialMessageType, }) {
-        const marshaller = this.marshaller;
-        const eventStreamMember = responseSchema.getEventStreamMember();
-        const unionSchema = responseSchema.getMemberSchema(eventStreamMember);
-        const memberSchemas = unionSchema.getMemberSchemas();
-        const initialResponseMarker = Symbol("initialResponseMarker");
-        const asyncIterable = marshaller.deserialize(response.body, async (event) => {
-            let unionMember = "";
-            for (const key in event) {
-                if (!hasOwn(event, key))
-                    continue;
-                if (key !== "__type") {
-                    unionMember = key;
-                    break;
-                }
-            }
-            const body = event[unionMember].body;
-            if (unionMember === (initialMessageType ?? "initial-response")) {
-                const dataObject = await this.deserializer.read(responseSchema, body);
-                delete dataObject[eventStreamMember];
-                return {
-                    [initialResponseMarker]: true,
-                    ...dataObject,
-                };
-            }
-            else if (unionMember in memberSchemas) {
-                const eventStreamSchema = memberSchemas[unionMember];
-                if (eventStreamSchema.isStructSchema()) {
-                    const out = {};
-                    let hasBindings = false;
-                    for (const [name, member] of eventStreamSchema.structIterator()) {
-                        const { eventHeader, eventPayload } = member.getMergedTraits();
-                        hasBindings = hasBindings || Boolean(eventHeader || eventPayload);
-                        if (eventPayload) {
-                            if (member.isBlobSchema()) {
-                                out[name] = body;
-                            }
-                            else if (member.isStringSchema()) {
-                                out[name] = (this.serdeContext?.utf8Encoder ?? toUtf8)(body);
-                            }
-                            else if (member.isStructSchema()) {
-                                out[name] = await this.deserializer.read(member, body);
-                            }
-                        }
-                        else if (eventHeader) {
-                            const value = event[unionMember].headers[name]?.value;
-                            if (value != null) {
-                                if (member.isNumericSchema()) {
-                                    if (value && typeof value === "object" && "bytes" in value) {
-                                        out[name] = BigInt(value.toString());
-                                    }
-                                    else {
-                                        out[name] = Number(value);
-                                    }
-                                }
-                                else {
-                                    out[name] = value;
-                                }
-                            }
-                        }
-                    }
-                    return {
-                        [unionMember]: await this.readEventMember(eventStreamSchema, body, hasBindings, out),
-                    };
-                }
-                return {
-                    [unionMember]: await this.deserializer.read(eventStreamSchema, body),
-                };
-            }
-            else {
-                return {
-                    $unknown: event,
-                };
-            }
-        });
-        const asyncIterator = asyncIterable[Symbol.asyncIterator]();
-        const firstEvent = await asyncIterator.next();
-        if (firstEvent.done) {
-            return asyncIterable;
-        }
-        if (firstEvent.value?.[initialResponseMarker]) {
-            if (!responseSchema) {
-                throw new Error("@smithy::core/protocols - initial-response event encountered in event stream but no response schema given.");
-            }
-            for (const key in firstEvent.value) {
-                if (!hasOwn(firstEvent.value, key))
-                    continue;
-                initialResponseContainer[key] = firstEvent.value[key];
-            }
-        }
-        return {
-            async *[Symbol.asyncIterator]() {
-                if (!firstEvent?.value?.[initialResponseMarker]) {
-                    yield firstEvent.value;
-                }
-                while (true) {
-                    const { done, value } = await asyncIterator.next();
-                    if (done) {
-                        break;
-                    }
-                    yield value;
-                }
-            },
-        };
-    }
-    async readEventMember(eventStreamSchema, body, hasBindings, out) {
-        let ErrCtor;
-        const staticStructuralSchema = eventStreamSchema.getSchema();
-        if (Array.isArray(staticStructuralSchema) && staticStructuralSchema[0] === -3) {
-            const namespace = staticStructuralSchema[1];
-            const nsRegistry = TypeRegistry.for(namespace);
-            this.compositeErrorRegistry?.copyFrom(nsRegistry);
-            ErrCtor = (this.compositeErrorRegistry ?? nsRegistry)?.getErrorCtor(staticStructuralSchema);
-        }
-        const dataObject = hasBindings
-            ? out
-            : body.byteLength === 0
-                ? {}
-                : await this.deserializer.read(eventStreamSchema, body);
-        if (ErrCtor) {
-            const message = dataObject.message ?? dataObject.Message ?? "Unknown";
-            const metadata = {};
-            const $fault = eventStreamSchema.getMergedTraits().error;
-            if ($fault) {
-                metadata.$fault = $fault;
-            }
-            return Object.assign(new ErrCtor({}), metadata, {
-                message,
-            }, dataObject);
-        }
-        return dataObject;
-    }
-    writeEventBody(unionMember, unionSchema, event) {
-        const serializer = this.serializer;
-        let eventType = unionMember;
-        let explicitPayloadMember = null;
-        let explicitPayloadContentType;
-        const isKnownSchema = (() => {
-            const struct = unionSchema.getSchema();
-            return struct[4].includes(unionMember);
-        })();
-        const additionalHeaders = {};
-        if (!isKnownSchema) {
-            const [type, value] = event[unionMember];
-            eventType = type;
-            serializer.write(15, value);
-        }
-        else {
-            const eventSchema = unionSchema.getMemberSchema(unionMember);
-            if (eventSchema.isStructSchema()) {
-                for (const [memberName, memberSchema] of eventSchema.structIterator()) {
-                    const { eventHeader, eventPayload } = memberSchema.getMergedTraits();
-                    if (eventPayload) {
-                        explicitPayloadMember = memberName;
-                    }
-                    else if (eventHeader) {
-                        const value = event[unionMember][memberName];
-                        let type = "binary";
-                        if (memberSchema.isNumericSchema()) {
-                            if ((-2) ** 31 <= value && value <= 2 ** 31 - 1) {
-                                type = "integer";
-                            }
-                            else {
-                                type = "long";
-                            }
-                        }
-                        else if (memberSchema.isTimestampSchema()) {
-                            type = "timestamp";
-                        }
-                        else if (memberSchema.isStringSchema()) {
-                            type = "string";
-                        }
-                        else if (memberSchema.isBooleanSchema()) {
-                            type = "boolean";
-                        }
-                        if (value != null) {
-                            additionalHeaders[memberName] = {
-                                type,
-                                value,
-                            };
-                            delete event[unionMember][memberName];
-                        }
-                    }
-                }
-                if (explicitPayloadMember !== null) {
-                    const payloadSchema = eventSchema.getMemberSchema(explicitPayloadMember);
-                    if (payloadSchema.isBlobSchema()) {
-                        explicitPayloadContentType = "application/octet-stream";
-                    }
-                    else if (payloadSchema.isStringSchema()) {
-                        explicitPayloadContentType = "text/plain";
-                    }
-                    serializer.write(payloadSchema, event[unionMember][explicitPayloadMember]);
-                }
-                else {
-                    serializer.write(eventSchema, event[unionMember]);
-                }
-            }
-            else if (eventSchema.isUnitSchema()) {
-                serializer.write(eventSchema, {});
-            }
-            else {
-                throw new Error("@smithy/core/event-streams - non-struct member not supported in event stream union.");
-            }
-        }
-        const messageSerialization = serializer.flush() ?? new Uint8Array();
-        const body = typeof messageSerialization === "string"
-            ? (this.serdeContext?.utf8Decoder ?? fromUtf8)(messageSerialization)
-            : messageSerialization;
-        return {
-            body,
-            eventType,
-            explicitPayloadContentType,
-            additionalHeaders,
-        };
-    }
-}
-
-exports.EventStreamCodec = EventStreamCodec;
-exports.EventStreamMarshaller = EventStreamMarshaller;
-exports.EventStreamSerde = EventStreamSerde;
-exports.HeaderMarshaller = HeaderMarshaller;
-exports.Int64 = Int64;
-exports.MessageDecoderStream = MessageDecoderStream;
-exports.MessageEncoderStream = MessageEncoderStream;
-exports.SmithyMessageDecoderStream = SmithyMessageDecoderStream;
-exports.SmithyMessageEncoderStream = SmithyMessageEncoderStream;
-exports.UniversalEventStreamMarshaller = EventStreamMarshaller$1;
-exports.eventStreamSerdeProvider = eventStreamSerdeProvider;
-exports.getChunkedStream = getChunkedStream;
-exports.getMessageUnmarshaller = getMessageUnmarshaller;
-exports.getUnmarshalledStream = getUnmarshalledStream;
-exports.iterableToReadableStream = iterableToReadableStream;
-exports.readableStreamToIterable = readableStreamToIterable;
-exports.resolveEventStreamSerdeConfig = resolveEventStreamSerdeConfig;
-exports.universalEventStreamSerdeProvider = eventStreamSerdeProvider$1;
-
-
-/***/ }),
-
-/***/ 913:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { Uint8ArrayBlobAdapter, sdkStreamMixin, splitEvery, splitHeader, fromBase64, _parseEpochTimestamp, _parseRfc7231DateTime, _parseRfc3339DateTimeWithOffset, LazyJsonString, NumericValue, toUtf8, fromUtf8, generateIdempotencyToken, toBase64, dateToUtcString, quoteHeader } = __nccwpck_require__(7665);
-const { HttpRequest, HttpResponse, hasOwn, isValidHostname } = __nccwpck_require__(5105);
-const { parseQueryString, parseUrl } = __nccwpck_require__(5105);
-exports.HttpRequest = HttpRequest;
-exports.HttpResponse = HttpResponse;
-exports.isValidHostname = isValidHostname;
-exports.parseQueryString = parseQueryString;
-exports.parseUrl = parseUrl;
-const { TypeRegistry, NormalizedSchema, translateTraits } = __nccwpck_require__(5987);
-const { FieldPosition } = __nccwpck_require__(805);
-
-const collectBody = async (streamBody = new Uint8Array(), context) => {
-    if (streamBody instanceof Uint8Array) {
-        return Uint8ArrayBlobAdapter.mutate(streamBody);
-    }
-    if (!streamBody) {
-        return Uint8ArrayBlobAdapter.mutate(new Uint8Array());
-    }
-    const fromContext = context.streamCollector(streamBody);
-    return Uint8ArrayBlobAdapter.mutate(await fromContext);
-};
-
-function extendedEncodeURIComponent(str) {
-    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-        return "%" + c.charCodeAt(0).toString(16).toUpperCase();
-    });
-}
-
-class SerdeContext {
-    serdeContext;
-    setSerdeContext(serdeContext) {
-        this.serdeContext = serdeContext;
-    }
-}
-
-class HttpProtocol extends SerdeContext {
-    options;
-    compositeErrorRegistry;
-    constructor(options) {
-        super();
-        this.options = options;
-        this.compositeErrorRegistry = TypeRegistry.for(options.defaultNamespace);
-        for (const etr of options.errorTypeRegistries ?? []) {
-            this.compositeErrorRegistry.copyFrom(etr);
-        }
-    }
-    getRequestType() {
-        return HttpRequest;
-    }
-    getResponseType() {
-        return HttpResponse;
-    }
-    setSerdeContext(serdeContext) {
-        this.serdeContext = serdeContext;
-        this.serializer.setSerdeContext(serdeContext);
-        this.deserializer.setSerdeContext(serdeContext);
-        if (this.getPayloadCodec()) {
-            this.getPayloadCodec().setSerdeContext(serdeContext);
-        }
-    }
-    updateServiceEndpoint(request, endpoint) {
-        if ("url" in endpoint) {
-            request.protocol = endpoint.url.protocol;
-            request.hostname = endpoint.url.hostname;
-            request.port = endpoint.url.port ? Number(endpoint.url.port) : undefined;
-            request.path = endpoint.url.pathname;
-            request.fragment = endpoint.url.hash || void 0;
-            request.username = endpoint.url.username || void 0;
-            request.password = endpoint.url.password || void 0;
-            if (!request.query) {
-                request.query = {};
-            }
-            for (const [k, v] of endpoint.url.searchParams.entries()) {
-                request.query[k] = v;
-            }
-            if (endpoint.headers) {
-                for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
-                        continue;
-                    request.headers[name] = endpoint.headers[name].join(", ");
-                }
-            }
-            return request;
-        }
-        else {
-            request.protocol = endpoint.protocol;
-            request.hostname = endpoint.hostname;
-            request.port = endpoint.port ? Number(endpoint.port) : undefined;
-            request.path = endpoint.path;
-            request.query = {
-                ...endpoint.query,
-            };
-            if (endpoint.headers) {
-                for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
-                        continue;
-                    request.headers[name] = endpoint.headers[name];
-                }
-            }
-            return request;
-        }
-    }
-    setHostPrefix(request, operationSchema, input) {
-        if (this.serdeContext?.disableHostPrefix) {
-            return;
-        }
-        const inputNs = NormalizedSchema.of(operationSchema.input);
-        const opTraits = translateTraits(operationSchema.traits ?? {});
-        if (opTraits.endpoint) {
-            let hostPrefix = opTraits.endpoint?.[0];
-            if (typeof hostPrefix === "string") {
-                for (const [name, member] of inputNs.structIterator()) {
-                    if (!member.getMergedTraits().hostLabel) {
-                        continue;
-                    }
-                    const replacement = input[name];
-                    if (typeof replacement !== "string") {
-                        throw new Error(`@smithy/core/schema - ${name} in input must be a string as hostLabel.`);
-                    }
-                    hostPrefix = hostPrefix.replace(`{${name}}`, replacement);
-                }
-                request.hostname = hostPrefix + request.hostname;
-                if (!isValidHostname(request.hostname)) {
-                    throw new Error(`[${request.hostname}] is not a valid hostname.`);
-                }
-            }
-        }
-    }
-    deserializeMetadata(output) {
-        return {
-            httpStatusCode: output.statusCode,
-            requestId: output.headers["x-amzn-requestid"] ?? output.headers["x-amzn-request-id"] ?? output.headers["x-amz-request-id"],
-            extendedRequestId: output.headers["x-amz-id-2"],
-            cfId: output.headers["x-amz-cf-id"],
-        };
-    }
-    async serializeEventStream({ eventStream, requestSchema, initialRequest, }) {
-        const eventStreamSerde = await this.loadEventStreamCapability();
-        return eventStreamSerde.serializeEventStream({
-            eventStream,
-            requestSchema,
-            initialRequest,
-        });
-    }
-    async deserializeEventStream({ response, responseSchema, initialResponseContainer, }) {
-        const eventStreamSerde = await this.loadEventStreamCapability();
-        return eventStreamSerde.deserializeEventStream({
-            response,
-            responseSchema,
-            initialResponseContainer,
-        });
-    }
-    async loadEventStreamCapability() {
-        const { EventStreamSerde, eventStreamSerdeProvider } = __nccwpck_require__(336);
-        const marshaller = this.resolveEventStreamMarshaller(eventStreamSerdeProvider);
-        return new EventStreamSerde({
-            marshaller,
-            serializer: this.serializer,
-            deserializer: this.deserializer,
-            serdeContext: this.serdeContext,
-            defaultContentType: this.getDefaultContentType(),
-            compositeErrorRegistry: this.compositeErrorRegistry,
-        });
-    }
-    resolveEventStreamMarshaller(importedProvider) {
-        const context = this.serdeContext;
-        if (context.eventStreamMarshaller) {
-            return context.eventStreamMarshaller;
-        }
-        return importedProvider(this.serdeContext);
-    }
-    getDefaultContentType() {
-        throw new Error(`@smithy/core/protocols - ${this.constructor.name} getDefaultContentType() implementation missing.`);
-    }
-    async deserializeHttpMessage(schema, context, response, arg4, arg5) {
-        return [];
-    }
-    getEventStreamMarshaller() {
-        const context = this.serdeContext;
-        if (!context.eventStreamMarshaller) {
-            throw new Error("@smithy/core - HttpProtocol: eventStreamMarshaller missing in serdeContext.");
-        }
-        return context.eventStreamMarshaller;
-    }
-}
-
-class HttpBindingProtocol extends HttpProtocol {
-    async serializeRequest(operationSchema, _input, context) {
-        const input = _input && typeof _input === "object" ? _input : {};
-        const serializer = this.serializer;
-        const query = {};
-        const headers = {};
-        const endpoint = await context.endpoint();
-        const ns = NormalizedSchema.of(operationSchema?.input);
-        const payloadMemberNames = [];
-        const payloadMemberSchemas = [];
-        let hasNonHttpBindingMember = false;
-        let payload;
-        const request = new HttpRequest({
-            protocol: "",
-            hostname: "",
-            port: undefined,
-            path: "",
-            fragment: undefined,
-            query: query,
-            headers: headers,
-            body: undefined,
-        });
-        if (endpoint) {
-            this.updateServiceEndpoint(request, endpoint);
-            this.setHostPrefix(request, operationSchema, input);
-            const opTraits = translateTraits(operationSchema.traits);
-            if (opTraits.http) {
-                request.method = opTraits.http[0];
-                const [path, search] = opTraits.http[1].split("?");
-                if (request.path == "/") {
-                    request.path = path;
-                }
-                else {
-                    request.path += path;
-                }
-                const traitSearchParams = new URLSearchParams(search ?? "");
-                for (const [key, value] of traitSearchParams) {
-                    query[key] = value;
-                }
-            }
-        }
-        for (const [memberName, memberNs] of ns.structIterator()) {
-            const memberTraits = memberNs.getMergedTraits() ?? {};
-            const inputMemberValue = input[memberName];
-            if (inputMemberValue == null && !memberNs.isIdempotencyToken()) {
-                if (memberTraits.httpLabel) {
-                    if (request.path.includes(`{${memberName}+}`) || request.path.includes(`{${memberName}}`)) {
-                        throw new Error(`No value provided for input HTTP label: ${memberName}.`);
-                    }
-                }
-                continue;
-            }
-            if (memberTraits.httpPayload) {
-                const isStreaming = memberNs.isStreaming();
-                if (isStreaming) {
-                    const isEventStream = memberNs.isStructSchema();
-                    if (isEventStream) {
-                        if (input[memberName]) {
-                            payload = await this.serializeEventStream({
-                                eventStream: input[memberName],
-                                requestSchema: ns,
-                            });
-                        }
-                    }
-                    else {
-                        payload = inputMemberValue;
-                    }
-                }
-                else {
-                    serializer.write(memberNs, inputMemberValue);
-                    payload = serializer.flush();
-                }
-            }
-            else if (memberTraits.httpLabel) {
-                serializer.write(memberNs, inputMemberValue);
-                const replacement = serializer.flush();
-                if (request.path.includes(`{${memberName}+}`)) {
-                    request.path = request.path.replace(`{${memberName}+}`, replacement.split("/").map(extendedEncodeURIComponent).join("/"));
-                }
-                else if (request.path.includes(`{${memberName}}`)) {
-                    request.path = request.path.replace(`{${memberName}}`, extendedEncodeURIComponent(replacement));
-                }
-            }
-            else if (memberTraits.httpHeader) {
-                serializer.write(memberNs, inputMemberValue);
-                headers[memberTraits.httpHeader.toLowerCase()] = String(serializer.flush());
-            }
-            else if (typeof memberTraits.httpPrefixHeaders === "string") {
-                for (const key in inputMemberValue) {
-                    if (!hasOwn(inputMemberValue, key))
-                        continue;
-                    const val = inputMemberValue[key];
-                    const amalgam = memberTraits.httpPrefixHeaders + key;
-                    serializer.write([memberNs.getValueSchema(), { httpHeader: amalgam }], val);
-                    headers[amalgam.toLowerCase()] = serializer.flush();
-                }
-            }
-            else if (memberTraits.httpQuery || memberTraits.httpQueryParams) {
-                this.serializeQuery(memberNs, inputMemberValue, query);
-            }
-            else {
-                hasNonHttpBindingMember = true;
-                payloadMemberNames.push(memberName);
-                payloadMemberSchemas.push(memberNs);
-            }
-        }
-        if (hasNonHttpBindingMember && input) {
-            const [namespace, name] = (ns.getName(true) ?? "#Unknown").split("#");
-            const requiredMembers = ns.getSchema()[6];
-            const payloadSchema = [
-                3,
-                namespace,
-                name,
-                ns.getMergedTraits(),
-                payloadMemberNames,
-                payloadMemberSchemas,
-                undefined,
-            ];
-            if (requiredMembers) {
-                payloadSchema[6] = requiredMembers;
-            }
-            else {
-                payloadSchema.pop();
-            }
-            serializer.write(payloadSchema, input);
-            payload = serializer.flush();
-        }
-        request.headers = headers;
-        request.query = query;
-        request.body = payload;
-        return request;
-    }
-    serializeQuery(ns, data, query) {
-        const serializer = this.serializer;
-        const traits = ns.getMergedTraits();
-        if (traits.httpQueryParams) {
-            for (const key in data) {
-                if (!hasOwn(data, key))
-                    continue;
-                if (!(key in query)) {
-                    const val = data[key];
-                    const valueSchema = ns.getValueSchema();
-                    Object.assign(valueSchema.getMergedTraits(), {
-                        ...traits,
-                        httpQuery: key,
-                        httpQueryParams: undefined,
-                    });
-                    this.serializeQuery(valueSchema, val, query);
-                }
-            }
-            return;
-        }
-        if (ns.isListSchema()) {
-            const sparse = !!ns.getMergedTraits().sparse;
-            const buffer = [];
-            for (const item of data) {
-                serializer.write([ns.getValueSchema(), traits], item);
-                const serializable = serializer.flush();
-                if (sparse || serializable !== undefined) {
-                    buffer.push(serializable);
-                }
-            }
-            query[traits.httpQuery] = buffer;
-        }
-        else {
-            serializer.write([ns, traits], data);
-            query[traits.httpQuery] = serializer.flush();
-        }
-    }
-    async deserializeResponse(operationSchema, context, response) {
-        const deserializer = this.deserializer;
-        const ns = NormalizedSchema.of(operationSchema.output);
-        const dataObject = {};
-        if (response.statusCode >= 300) {
-            const bytes = await collectBody(response.body, context);
-            if (bytes.byteLength > 0) {
-                Object.assign(dataObject, await deserializer.read(15, bytes));
-            }
-            await this.handleError(operationSchema, context, response, dataObject, this.deserializeMetadata(response));
-            throw new Error("@smithy/core/protocols - HTTP Protocol error handler failed to throw.");
-        }
-        for (const header in response.headers) {
-            if (!hasOwn(response.headers, header))
-                continue;
-            const value = response.headers[header];
-            delete response.headers[header];
-            response.headers[header.toLowerCase()] = value;
-        }
-        const nonHttpBindingMembers = await this.deserializeHttpMessage(ns, context, response, dataObject);
-        if (nonHttpBindingMembers.length) {
-            const bytes = await collectBody(response.body, context);
-            if (bytes.byteLength > 0) {
-                const dataFromBody = await deserializer.read(ns, bytes);
-                for (const member of nonHttpBindingMembers) {
-                    if (dataFromBody[member] != null) {
-                        dataObject[member] = dataFromBody[member];
-                    }
-                }
-            }
-        }
-        else if (nonHttpBindingMembers.discardResponseBody) {
-            await collectBody(response.body, context);
-        }
-        dataObject.$metadata = this.deserializeMetadata(response);
-        return dataObject;
-    }
-    async deserializeHttpMessage(schema, context, response, arg4, arg5) {
-        let dataObject;
-        if (arg4 instanceof Set) {
-            dataObject = arg5;
-        }
-        else {
-            dataObject = arg4;
-        }
-        let discardResponseBody = true;
-        const deserializer = this.deserializer;
-        const ns = NormalizedSchema.of(schema);
-        const nonHttpBindingMembers = [];
-        for (const [memberName, memberSchema] of ns.structIterator()) {
-            const memberTraits = memberSchema.getMemberTraits();
-            if (memberTraits.httpPayload) {
-                discardResponseBody = false;
-                const isStreaming = memberSchema.isStreaming();
-                if (isStreaming) {
-                    const isEventStream = memberSchema.isStructSchema();
-                    if (isEventStream) {
-                        dataObject[memberName] = await this.deserializeEventStream({
-                            response,
-                            responseSchema: ns,
-                        });
-                    }
-                    else {
-                        dataObject[memberName] = sdkStreamMixin(response.body);
-                    }
-                }
-                else if (response.body) {
-                    const bytes = await collectBody(response.body, context);
-                    if (bytes.byteLength > 0) {
-                        dataObject[memberName] = await deserializer.read(memberSchema, bytes);
-                    }
-                }
-            }
-            else if (memberTraits.httpHeader) {
-                const key = String(memberTraits.httpHeader).toLowerCase();
-                const value = response.headers[key];
-                if (null != value) {
-                    if (memberSchema.isListSchema()) {
-                        const headerListValueSchema = memberSchema.getValueSchema();
-                        headerListValueSchema.getMergedTraits().httpHeader = key;
-                        let sections;
-                        if (headerListValueSchema.isTimestampSchema() &&
-                            headerListValueSchema.getSchema() === 4) {
-                            sections = splitEvery(value, ",", 2);
-                        }
-                        else {
-                            sections = splitHeader(value);
-                        }
-                        const list = [];
-                        for (const section of sections) {
-                            list.push(await deserializer.read(headerListValueSchema, section.trim()));
-                        }
-                        dataObject[memberName] = list;
-                    }
-                    else {
-                        dataObject[memberName] = await deserializer.read(memberSchema, value);
-                    }
-                }
-            }
-            else if (memberTraits.httpPrefixHeaders !== undefined) {
-                dataObject[memberName] = {};
-                for (const header in response.headers) {
-                    if (!hasOwn(response.headers, header))
-                        continue;
-                    if (header.startsWith(memberTraits.httpPrefixHeaders)) {
-                        const value = response.headers[header];
-                        const valueSchema = memberSchema.getValueSchema();
-                        valueSchema.getMergedTraits().httpHeader = header;
-                        dataObject[memberName][header.slice(memberTraits.httpPrefixHeaders.length)] = await deserializer.read(valueSchema, value);
-                    }
-                }
-            }
-            else if (memberTraits.httpResponseCode) {
-                dataObject[memberName] = response.statusCode;
-            }
-            else {
-                nonHttpBindingMembers.push(memberName);
-            }
-        }
-        nonHttpBindingMembers.discardResponseBody = discardResponseBody;
-        return nonHttpBindingMembers;
-    }
-}
-
-class RpcProtocol extends HttpProtocol {
-    async serializeRequest(operationSchema, _input, context) {
-        const serializer = this.serializer;
-        const query = {};
-        const headers = {};
-        const endpoint = await context.endpoint();
-        const ns = NormalizedSchema.of(operationSchema?.input);
-        const schema = ns.getSchema();
-        let payload;
-        const input = _input && typeof _input === "object" ? _input : {};
-        const request = new HttpRequest({
-            protocol: "",
-            hostname: "",
-            port: undefined,
-            path: "/",
-            fragment: undefined,
-            query: query,
-            headers: headers,
-            body: undefined,
-        });
-        if (endpoint) {
-            this.updateServiceEndpoint(request, endpoint);
-            this.setHostPrefix(request, operationSchema, input);
-        }
-        if (input) {
-            const eventStreamMember = ns.getEventStreamMember();
-            if (eventStreamMember) {
-                if (input[eventStreamMember]) {
-                    const initialRequest = {};
-                    for (const [memberName] of ns.structIterator()) {
-                        if (memberName !== eventStreamMember && input[memberName] != null) {
-                            initialRequest[memberName] = input[memberName];
-                        }
-                    }
-                    payload = await this.serializeEventStream({
-                        eventStream: input[eventStreamMember],
-                        requestSchema: ns,
-                        initialRequest,
-                    });
-                }
-            }
-            else {
-                serializer.write(schema, input);
-                payload = serializer.flush();
-            }
-        }
-        request.headers = Object.assign(request.headers, headers);
-        request.query = query;
-        request.body = payload;
-        request.method = "POST";
-        return request;
-    }
-    async deserializeResponse(operationSchema, context, response) {
-        const deserializer = this.deserializer;
-        const ns = NormalizedSchema.of(operationSchema.output);
-        const dataObject = {};
-        if (response.statusCode >= 300) {
-            const bytes = await collectBody(response.body, context);
-            if (bytes.byteLength > 0) {
-                Object.assign(dataObject, await deserializer.read(15, bytes));
-            }
-            await this.handleError(operationSchema, context, response, dataObject, this.deserializeMetadata(response));
-            throw new Error("@smithy/core/protocols - RPC Protocol error handler failed to throw.");
-        }
-        for (const header in response.headers) {
-            if (!hasOwn(response.headers, header))
-                continue;
-            const value = response.headers[header];
-            delete response.headers[header];
-            response.headers[header.toLowerCase()] = value;
-        }
-        const eventStreamMember = ns.getEventStreamMember();
-        if (eventStreamMember) {
-            dataObject[eventStreamMember] = await this.deserializeEventStream({
-                response,
-                responseSchema: ns,
-                initialResponseContainer: dataObject,
-            });
-        }
-        else {
-            const bytes = await collectBody(response.body, context);
-            if (bytes.byteLength > 0) {
-                Object.assign(dataObject, await deserializer.read(ns, bytes));
-            }
-        }
-        dataObject.$metadata = this.deserializeMetadata(response);
-        return dataObject;
-    }
-}
-
-const resolvedPath = (resolvedPath, input, memberName, labelValueProvider, uriLabel, isGreedyLabel) => {
-    if (input != null && input[memberName] !== undefined) {
-        const labelValue = labelValueProvider();
-        if (labelValue == null || labelValue.length <= 0) {
-            throw new Error("Empty value provided for input HTTP label: " + memberName + ".");
-        }
-        resolvedPath = resolvedPath.replace(uriLabel, isGreedyLabel
-            ? labelValue
-                .split("/")
-                .map((segment) => extendedEncodeURIComponent(segment))
-                .join("/")
-            : extendedEncodeURIComponent(labelValue));
-    }
-    else {
-        throw new Error("No value provided for input HTTP label: " + memberName + ".");
-    }
-    return resolvedPath;
-};
-
-function requestBuilder(input, context) {
-    return new RequestBuilder(input, context);
-}
-class RequestBuilder {
-    input;
-    context;
-    query = {};
-    method = "";
-    headers = {};
-    path = "";
-    body = null;
-    hostname = "";
-    resolvePathStack = [];
-    constructor(input, context) {
-        this.input = input;
-        this.context = context;
-    }
-    async build() {
-        const { hostname, protocol = "https", port, path: basePath } = await this.context.endpoint();
-        this.path = basePath;
-        for (const resolvePath of this.resolvePathStack) {
-            resolvePath(this.path);
-        }
-        return new HttpRequest({
-            protocol,
-            hostname: this.hostname || hostname,
-            port,
-            method: this.method,
-            path: this.path,
-            query: this.query,
-            body: this.body,
-            headers: this.headers,
-        });
-    }
-    hn(hostname) {
-        this.hostname = hostname;
-        return this;
-    }
-    bp(uriLabel) {
-        this.resolvePathStack.push((basePath) => {
-            this.path = `${basePath?.endsWith("/") ? basePath.slice(0, -1) : basePath || ""}` + uriLabel;
-        });
-        return this;
-    }
-    p(memberName, labelValueProvider, uriLabel, isGreedyLabel) {
-        this.resolvePathStack.push((path) => {
-            this.path = resolvedPath(path, this.input, memberName, labelValueProvider, uriLabel, isGreedyLabel);
-        });
-        return this;
-    }
-    h(headers) {
-        this.headers = headers;
-        return this;
-    }
-    q(query) {
-        this.query = query;
-        return this;
-    }
-    b(body) {
-        this.body = body;
-        return this;
-    }
-    m(method) {
-        this.method = method;
-        return this;
-    }
-}
-
-function determineTimestampFormat(ns, settings) {
-    if (settings.timestampFormat.useTrait) {
-        if (ns.isTimestampSchema() &&
-            (ns.getSchema() === 5 ||
-                ns.getSchema() === 6 ||
-                ns.getSchema() === 7)) {
-            return ns.getSchema();
-        }
-    }
-    const { httpLabel, httpPrefixHeaders, httpHeader, httpQuery } = ns.getMergedTraits();
-    const bindingFormat = settings.httpBindings
-        ? typeof httpPrefixHeaders === "string" || Boolean(httpHeader)
-            ? 6
-            : Boolean(httpQuery) || Boolean(httpLabel)
-                ? 5
-                : undefined
-        : undefined;
-    return bindingFormat ?? settings.timestampFormat.default;
-}
-
-class FromStringShapeDeserializer extends SerdeContext {
-    settings;
-    constructor(settings) {
-        super();
-        this.settings = settings;
-    }
-    read(_schema, data) {
-        const ns = NormalizedSchema.of(_schema);
-        if (ns.isListSchema()) {
-            return splitHeader(data).map((item) => this.read(ns.getValueSchema(), item));
-        }
-        if (ns.isBlobSchema()) {
-            return (this.serdeContext?.base64Decoder ?? fromBase64)(data);
-        }
-        if (ns.isTimestampSchema()) {
-            const format = determineTimestampFormat(ns, this.settings);
-            switch (format) {
-                case 5:
-                    return _parseRfc3339DateTimeWithOffset(data);
-                case 6:
-                    return _parseRfc7231DateTime(data);
-                case 7:
-                    return _parseEpochTimestamp(data);
-                default:
-                    console.warn("Missing timestamp format, parsing value with Date constructor:", data);
-                    return new Date(data);
-            }
-        }
-        if (ns.isStringSchema()) {
-            const mediaType = ns.getMergedTraits().mediaType;
-            let intermediateValue = data;
-            if (mediaType) {
-                if (ns.getMergedTraits().httpHeader) {
-                    intermediateValue = this.base64ToUtf8(intermediateValue);
-                }
-                const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-                if (isJson) {
-                    intermediateValue = LazyJsonString.from(intermediateValue);
-                }
-                return intermediateValue;
-            }
-        }
-        if (ns.isNumericSchema()) {
-            return Number(data);
-        }
-        if (ns.isBigIntegerSchema()) {
-            return BigInt(data);
-        }
-        if (ns.isBigDecimalSchema()) {
-            return new NumericValue(data, "bigDecimal");
-        }
-        if (ns.isBooleanSchema()) {
-            return String(data).toLowerCase() === "true";
-        }
-        return data;
-    }
-    base64ToUtf8(base64String) {
-        return (this.serdeContext?.utf8Encoder ?? toUtf8)((this.serdeContext?.base64Decoder ?? fromBase64)(base64String));
-    }
-}
-
-class HttpInterceptingShapeDeserializer extends SerdeContext {
-    codecDeserializer;
-    stringDeserializer;
-    constructor(codecDeserializer, codecSettings) {
-        super();
-        this.codecDeserializer = codecDeserializer;
-        this.stringDeserializer = new FromStringShapeDeserializer(codecSettings);
-    }
-    setSerdeContext(serdeContext) {
-        this.stringDeserializer.setSerdeContext(serdeContext);
-        this.codecDeserializer.setSerdeContext(serdeContext);
-        this.serdeContext = serdeContext;
-    }
-    read(schema, data) {
-        const ns = NormalizedSchema.of(schema);
-        const traits = ns.getMergedTraits();
-        const toString = this.serdeContext?.utf8Encoder ?? toUtf8;
-        if (traits.httpHeader || traits.httpResponseCode) {
-            return this.stringDeserializer.read(ns, toString(data));
-        }
-        if (traits.httpPayload) {
-            if (ns.isBlobSchema()) {
-                const toBytes = this.serdeContext?.utf8Decoder ?? fromUtf8;
-                if (typeof data === "string") {
-                    return toBytes(data);
-                }
-                return data;
-            }
-            else if (ns.isStringSchema()) {
-                if ("byteLength" in data) {
-                    return toString(data);
-                }
-                return data;
-            }
-        }
-        return this.codecDeserializer.read(ns, data);
-    }
-}
-
-class ToStringShapeSerializer extends SerdeContext {
-    settings;
-    stringBuffer = "";
-    constructor(settings) {
-        super();
-        this.settings = settings;
-    }
-    write(schema, value) {
-        const ns = NormalizedSchema.of(schema);
-        switch (typeof value) {
-            case "object":
-                if (value === null) {
-                    this.stringBuffer = "null";
-                    return;
-                }
-                if (ns.isTimestampSchema()) {
-                    if (!(value instanceof Date)) {
-                        throw new Error(`@smithy/core/protocols - received non-Date value ${value} when schema expected Date in ${ns.getName(true)}`);
-                    }
-                    const format = determineTimestampFormat(ns, this.settings);
-                    switch (format) {
-                        case 5:
-                            this.stringBuffer = value.toISOString().replace(".000Z", "Z");
-                            break;
-                        case 6:
-                            this.stringBuffer = dateToUtcString(value);
-                            break;
-                        case 7:
-                            this.stringBuffer = String(value.getTime() / 1000);
-                            break;
-                        default:
-                            console.warn("Missing timestamp format, using epoch seconds", value);
-                            this.stringBuffer = String(value.getTime() / 1000);
-                    }
-                    return;
-                }
-                if (ns.isBlobSchema() && "byteLength" in value) {
-                    this.stringBuffer = (this.serdeContext?.base64Encoder ?? toBase64)(value);
-                    return;
-                }
-                if (ns.isListSchema() && Array.isArray(value)) {
-                    let buffer = "";
-                    for (const item of value) {
-                        this.write([ns.getValueSchema(), ns.getMergedTraits()], item);
-                        const headerItem = this.flush();
-                        const serialized = ns.getValueSchema().isTimestampSchema() ? headerItem : quoteHeader(headerItem);
-                        if (buffer !== "") {
-                            buffer += ", ";
-                        }
-                        buffer += serialized;
-                    }
-                    this.stringBuffer = buffer;
-                    return;
-                }
-                this.stringBuffer = JSON.stringify(value, null, 2);
-                break;
-            case "string":
-                const mediaType = ns.getMergedTraits().mediaType;
-                let intermediateValue = value;
-                if (mediaType) {
-                    const isJson = mediaType === "application/json" || mediaType.endsWith("+json");
-                    if (isJson) {
-                        intermediateValue = LazyJsonString.from(intermediateValue);
-                    }
-                    if (ns.getMergedTraits().httpHeader) {
-                        this.stringBuffer = (this.serdeContext?.base64Encoder ?? toBase64)(intermediateValue.toString());
-                        return;
-                    }
-                }
-                this.stringBuffer = value;
-                break;
-            default:
-                if (ns.isIdempotencyToken()) {
-                    this.stringBuffer = generateIdempotencyToken();
-                }
-                else {
-                    this.stringBuffer = String(value);
-                }
-        }
-    }
-    flush() {
-        const buffer = this.stringBuffer;
-        this.stringBuffer = "";
-        return buffer;
-    }
-}
-
-class HttpInterceptingShapeSerializer {
-    codecSerializer;
-    stringSerializer;
-    buffer;
-    constructor(codecSerializer, codecSettings, stringSerializer = new ToStringShapeSerializer(codecSettings)) {
-        this.codecSerializer = codecSerializer;
-        this.stringSerializer = stringSerializer;
-    }
-    setSerdeContext(serdeContext) {
-        this.codecSerializer.setSerdeContext(serdeContext);
-        this.stringSerializer.setSerdeContext(serdeContext);
-    }
-    write(schema, value) {
-        const ns = NormalizedSchema.of(schema);
-        const traits = ns.getMergedTraits();
-        if (traits.httpHeader || traits.httpLabel || traits.httpQuery) {
-            this.stringSerializer.write(ns, value);
-            this.buffer = this.stringSerializer.flush();
-            return;
-        }
-        return this.codecSerializer.write(ns, value);
-    }
-    flush() {
-        if (this.buffer !== undefined) {
-            const buffer = this.buffer;
-            this.buffer = undefined;
-            return buffer;
-        }
-        return this.codecSerializer.flush();
-    }
-}
-
-class Field {
-    name;
-    kind;
-    values;
-    constructor({ name, kind = FieldPosition.HEADER, values = [] }) {
-        this.name = name;
-        this.kind = kind;
-        this.values = values;
-    }
-    add(value) {
-        this.values.push(value);
-    }
-    set(values) {
-        this.values = values;
-    }
-    remove(value) {
-        this.values = this.values.filter((v) => v !== value);
-    }
-    toString() {
-        return this.values.map((v) => (v.includes(",") || v.includes(" ") ? `"${v}"` : v)).join(", ");
-    }
-    get() {
-        return this.values;
-    }
-}
-
-class Fields {
-    entries = {};
-    encoding;
-    constructor({ fields = [], encoding = "utf-8" }) {
-        fields.forEach(this.setField.bind(this));
-        this.encoding = encoding;
-    }
-    setField(field) {
-        this.entries[field.name.toLowerCase()] = field;
-    }
-    getField(name) {
-        return this.entries[name.toLowerCase()];
-    }
-    removeField(name) {
-        delete this.entries[name.toLowerCase()];
-    }
-    getByType(kind) {
-        return Object.values(this.entries).filter((field) => field.kind === kind);
-    }
-}
-
-const getHttpHandlerExtensionConfiguration = (runtimeConfig) => {
-    if (runtimeConfig.logger && runtimeConfig.logger.constructor?.name !== "NoOpLogger") {
-        runtimeConfig.requestHandler?.updateHttpClientConfig?.(Symbol.for("logger"), runtimeConfig.logger);
-    }
-    return {
-        setHttpHandler(handler) {
-            runtimeConfig.requestHandler = handler;
-        },
-        httpHandler() {
-            return runtimeConfig.requestHandler;
-        },
-        updateHttpClientConfig(key, value) {
-            runtimeConfig.requestHandler?.updateHttpClientConfig(key, value);
-        },
-        httpHandlerConfigs() {
-            return runtimeConfig.requestHandler.httpHandlerConfigs();
-        },
-    };
-};
-const resolveHttpHandlerRuntimeConfig = (httpHandlerExtensionConfiguration) => {
-    return {
-        requestHandler: httpHandlerExtensionConfiguration.httpHandler(),
-    };
-};
-
-const CONTENT_LENGTH_HEADER = "content-length";
-function contentLengthMiddleware(bodyLengthChecker) {
-    return (next) => async (args) => {
-        const request = args.request;
-        if (HttpRequest.isInstance(request)) {
-            const { body, headers } = request;
-            if (body &&
-                Object.keys(headers)
-                    .map((str) => str.toLowerCase())
-                    .indexOf(CONTENT_LENGTH_HEADER) === -1) {
-                try {
-                    const length = bodyLengthChecker(body);
-                    if (length != null) {
-                        request.headers = {
-                            ...request.headers,
-                            [CONTENT_LENGTH_HEADER]: String(length),
-                        };
-                    }
-                }
-                catch (ignored) {
-                }
-            }
-        }
-        return next({
-            ...args,
-            request,
-        });
-    };
-}
-const contentLengthMiddlewareOptions = {
-    step: "build",
-    tags: ["SET_CONTENT_LENGTH", "CONTENT_LENGTH"],
-    name: "contentLengthMiddleware",
-    override: true,
-};
-const getContentLengthPlugin = (options) => ({
-    applyToStack: (clientStack) => {
-        clientStack.add(contentLengthMiddleware(options.bodyLengthChecker), contentLengthMiddlewareOptions);
-    },
-});
-
-const escapeUri = (uri) => encodeURIComponent(uri).replace(/[!'()*]/g, hexEncode);
-const hexEncode = (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`;
-
-const escapeUriPath = (uri) => uri.split("/").map(escapeUri).join("/");
-
-function buildQueryString(query) {
-    const parts = [];
-    for (let key of Object.keys(query).sort()) {
-        const value = query[key];
-        key = escapeUri(key);
-        if (Array.isArray(value)) {
-            for (let i = 0, iLen = value.length; i < iLen; i++) {
-                parts.push(`${key}=${escapeUri(value[i])}`);
-            }
-        }
-        else {
-            let qsEntry = key;
-            if (value || typeof value === "string") {
-                qsEntry += `=${escapeUri(value)}`;
-            }
-            parts.push(qsEntry);
-        }
-    }
-    return parts.join("&");
-}
-
-exports.Field = Field;
-exports.Fields = Fields;
-exports.FromStringShapeDeserializer = FromStringShapeDeserializer;
-exports.HttpBindingProtocol = HttpBindingProtocol;
-exports.HttpInterceptingShapeDeserializer = HttpInterceptingShapeDeserializer;
-exports.HttpInterceptingShapeSerializer = HttpInterceptingShapeSerializer;
-exports.HttpProtocol = HttpProtocol;
-exports.RequestBuilder = RequestBuilder;
-exports.RpcProtocol = RpcProtocol;
-exports.SerdeContext = SerdeContext;
-exports.ToStringShapeSerializer = ToStringShapeSerializer;
-exports.buildQueryString = buildQueryString;
-exports.collectBody = collectBody;
-exports.contentLengthMiddleware = contentLengthMiddleware;
-exports.contentLengthMiddlewareOptions = contentLengthMiddlewareOptions;
-exports.determineTimestampFormat = determineTimestampFormat;
-exports.escapeUri = escapeUri;
-exports.escapeUriPath = escapeUriPath;
-exports.extendedEncodeURIComponent = extendedEncodeURIComponent;
-exports.getContentLengthPlugin = getContentLengthPlugin;
-exports.getHttpHandlerExtensionConfiguration = getHttpHandlerExtensionConfiguration;
-exports.requestBuilder = requestBuilder;
-exports.resolveHttpHandlerRuntimeConfig = resolveHttpHandlerRuntimeConfig;
-exports.resolvedPath = resolvedPath;
-
-
-/***/ }),
-
-/***/ 5987:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { getSmithyContext, HttpResponse, toEndpointV1 } = __nccwpck_require__(5105);
-
-const deref = (schemaRef) => {
-    if (typeof schemaRef === "function") {
-        return schemaRef();
-    }
-    return schemaRef;
-};
-
-const operation = (namespace, name, traits, input, output) => ({
-    name,
-    namespace,
-    traits,
-    input,
-    output,
-});
-
-const schemaDeserializationMiddleware = (config) => (next, context) => async (args) => {
-    const { response } = await next(args);
-    const { operationSchema } = getSmithyContext(context);
-    const [, ns, n, t, i, o] = operationSchema ?? [];
-    try {
-        const parsed = await config.protocol.deserializeResponse(operation(ns, n, t, i, o), {
-            ...config,
-            ...context,
-        }, response);
-        return {
-            response,
-            output: parsed,
-        };
-    }
-    catch (error) {
-        Object.defineProperty(error, "$response", {
-            value: response,
-            enumerable: false,
-            writable: false,
-            configurable: false,
-        });
-        if (!("$metadata" in error)) {
-            const hint = `Deserialization error: to see the raw response, inspect the hidden field {error}.$response on this object.`;
-            try {
-                error.message += "\n  " + hint;
-            }
-            catch (ignored) {
-                if (!context.logger || context.logger?.constructor?.name === "NoOpLogger") {
-                    console.warn(hint);
-                }
-                else {
-                    context.logger?.warn?.(hint);
-                }
-            }
-            if (typeof error.$responseBodyText !== "undefined") {
-                if (error.$response) {
-                    error.$response.body = error.$responseBodyText;
-                }
-            }
-            try {
-                if (HttpResponse.isInstance(response)) {
-                    const { headers = {}, statusCode } = response;
-                    const headerEntries = Object.entries(headers);
-                    error.$metadata = {
-                        httpStatusCode: statusCode,
-                        requestId: findHeader(/^x-[\w-]+-request-?id$/, headerEntries),
-                        extendedRequestId: findHeader(/^x-[\w-]+-id-2$/, headerEntries),
-                        cfId: findHeader(/^x-[\w-]+-cf-id$/, headerEntries),
-                    };
-                }
-            }
-            catch (ignored) {
-            }
-        }
-        throw error;
-    }
-};
-const findHeader = (pattern, headers) => {
-    return (headers.find(([k]) => {
-        return k.match(pattern);
-    }) || [void 0, void 0])[1];
-};
-
-const schemaSerializationMiddleware = (config) => (next, context) => async (args) => {
-    const { operationSchema } = getSmithyContext(context);
-    const [, ns, n, t, i, o] = operationSchema ?? [];
-    const endpoint = context.endpointV2
-        ? async () => toEndpointV1(context.endpointV2)
-        : config.endpoint;
-    const request = await config.protocol.serializeRequest(operation(ns, n, t, i, o), args.input, {
-        ...config,
-        ...context,
-        endpoint,
-    });
-    return next({
-        ...args,
-        request,
-    });
-};
-
-const deserializerMiddlewareOption = {
-    name: "deserializerMiddleware",
-    step: "deserialize",
-    tags: ["DESERIALIZER"],
-    override: true,
-};
-const serializerMiddlewareOption = {
-    name: "serializerMiddleware",
-    step: "serialize",
-    tags: ["SERIALIZER"],
-    override: true,
-};
-function getSchemaSerdePlugin(config) {
-    return {
-        applyToStack: (commandStack) => {
-            commandStack.add(schemaSerializationMiddleware(config), serializerMiddlewareOption);
-            commandStack.add(schemaDeserializationMiddleware(config), deserializerMiddlewareOption);
-            config.protocol.setSerdeContext(config);
-        },
-    };
-}
-
-class Schema {
-    name;
-    namespace;
-    traits;
-    static assign(instance, values) {
-        const schema = Object.assign(instance, values);
-        return schema;
-    }
-    static [Symbol.hasInstance](lhs) {
-        const isPrototype = this.prototype.isPrototypeOf(lhs);
-        if (!isPrototype && typeof lhs === "object" && lhs !== null) {
-            const list = lhs;
-            return list.symbol === this.symbol;
-        }
-        return isPrototype;
-    }
-    getName() {
-        return this.namespace + "#" + this.name;
-    }
-}
-
-class ListSchema extends Schema {
-    static symbol = Symbol.for("@smithy/lis");
-    valueSchema;
-    symbol = ListSchema.symbol;
-}
-const list = (namespace, name, traits, valueSchema) => Schema.assign(new ListSchema(), {
-    name,
-    namespace,
-    traits,
-    valueSchema,
-});
-
-class MapSchema extends Schema {
-    static symbol = Symbol.for("@smithy/map");
-    keySchema;
-    valueSchema;
-    symbol = MapSchema.symbol;
-}
-const map = (namespace, name, traits, keySchema, valueSchema) => Schema.assign(new MapSchema(), {
-    name,
-    namespace,
-    traits,
-    keySchema,
-    valueSchema,
-});
-
-class OperationSchema extends Schema {
-    static symbol = Symbol.for("@smithy/ope");
-    input;
-    output;
-    symbol = OperationSchema.symbol;
-}
-const op = (namespace, name, traits, input, output) => Schema.assign(new OperationSchema(), {
-    name,
-    namespace,
-    traits,
-    input,
-    output,
-});
-
-class StructureSchema extends Schema {
-    static symbol = Symbol.for("@smithy/str");
-    memberNames;
-    memberList;
-    symbol = StructureSchema.symbol;
-}
-const struct = (namespace, name, traits, memberNames, memberList) => Schema.assign(new StructureSchema(), {
-    name,
-    namespace,
-    traits,
-    memberNames,
-    memberList,
-});
-
-class ErrorSchema extends StructureSchema {
-    static symbol = Symbol.for("@smithy/err");
-    ctor;
-    symbol = ErrorSchema.symbol;
-}
-const error = (namespace, name, traits, memberNames, memberList, _ctor) => Schema.assign(new ErrorSchema(), {
-    name,
-    namespace,
-    traits,
-    memberNames,
-    memberList,
-    ctor: null,
-});
-
-const traitsCache = [];
-function translateTraits(indicator) {
-    if (typeof indicator === "object") {
-        return indicator;
-    }
-    indicator = indicator | 0;
-    if (traitsCache[indicator]) {
-        return traitsCache[indicator];
-    }
-    const traits = {};
-    let i = 0;
-    for (const trait of [
-        "httpLabel",
-        "idempotent",
-        "idempotencyToken",
-        "sensitive",
-        "httpPayload",
-        "httpResponseCode",
-        "httpQueryParams",
-    ]) {
-        if (((indicator >> i++) & 1) === 1) {
-            traits[trait] = 1;
-        }
-    }
-    return (traitsCache[indicator] = traits);
-}
-
-const anno = {
-    it: Symbol.for("@smithy/nor-struct-it"),
-    ns: Symbol.for("@smithy/ns"),
-};
-const simpleSchemaCacheN = [];
-const simpleSchemaCacheS = {};
-class NormalizedSchema {
-    ref;
-    memberName;
-    static symbol = Symbol.for("@smithy/nor");
-    symbol = NormalizedSchema.symbol;
-    name;
-    schema;
-    _isMemberSchema;
-    traits;
-    memberTraits;
-    normalizedTraits;
-    constructor(ref, memberName) {
-        this.ref = ref;
-        this.memberName = memberName;
-        const traitStack = [];
-        let _ref = ref;
-        let schema = ref;
-        this._isMemberSchema = false;
-        while (isMemberSchema(_ref)) {
-            traitStack.push(_ref[1]);
-            _ref = _ref[0];
-            schema = deref(_ref);
-            this._isMemberSchema = true;
-        }
-        if (traitStack.length > 0) {
-            this.memberTraits = {};
-            for (let i = traitStack.length - 1; i >= 0; --i) {
-                const traitSet = traitStack[i];
-                Object.assign(this.memberTraits, translateTraits(traitSet));
-            }
-        }
-        else {
-            this.memberTraits = 0;
-        }
-        if (schema instanceof NormalizedSchema) {
-            const computedMemberTraits = this.memberTraits;
-            Object.assign(this, schema);
-            this.memberTraits = Object.assign({}, computedMemberTraits, schema.getMemberTraits(), this.getMemberTraits());
-            this.normalizedTraits = void 0;
-            this.memberName = memberName ?? schema.memberName;
-            return;
-        }
-        this.schema = deref(schema);
-        if (isStaticSchema(this.schema)) {
-            this.name = `${this.schema[1]}#${this.schema[2]}`;
-            this.traits = this.schema[3];
-        }
-        else {
-            this.name = this.memberName ?? String(schema);
-            this.traits = 0;
-        }
-        if (this._isMemberSchema && !memberName) {
-            throw new Error(`@smithy/core/schema - NormalizedSchema member init ${this.getName(true)} missing member name.`);
-        }
-    }
-    static [Symbol.hasInstance](lhs) {
-        const isPrototype = this.prototype.isPrototypeOf(lhs);
-        if (!isPrototype && typeof lhs === "object" && lhs !== null) {
-            const ns = lhs;
-            return ns.symbol === this.symbol;
-        }
-        return isPrototype;
-    }
-    static of(ref) {
-        const keyAble = typeof ref === "function" || (typeof ref === "object" && ref !== null);
-        if (typeof ref === "number") {
-            if (simpleSchemaCacheN[ref]) {
-                return simpleSchemaCacheN[ref];
-            }
-        }
-        else if (typeof ref === "string") {
-            if (simpleSchemaCacheS[ref]) {
-                return simpleSchemaCacheS[ref];
-            }
-        }
-        else if (keyAble) {
-            if (ref[anno.ns]) {
-                return ref[anno.ns];
-            }
-        }
-        const sc = deref(ref);
-        if (sc instanceof NormalizedSchema) {
-            return sc;
-        }
-        if (isMemberSchema(sc)) {
-            const [ns, traits] = sc;
-            if (ns instanceof NormalizedSchema) {
-                Object.assign(ns.getMergedTraits(), translateTraits(traits));
-                return ns;
-            }
-            throw new Error(`@smithy/core/schema - may not init unwrapped member schema=${JSON.stringify(ref, null, 2)}.`);
-        }
-        const ns = new NormalizedSchema(sc);
-        if (keyAble) {
-            return (ref[anno.ns] = ns);
-        }
-        if (typeof sc === "string") {
-            return (simpleSchemaCacheS[sc] = ns);
-        }
-        if (typeof sc === "number") {
-            return (simpleSchemaCacheN[sc] = ns);
-        }
-        return ns;
-    }
-    getSchema() {
-        const sc = this.schema;
-        if (Array.isArray(sc) && sc[0] === 0) {
-            return sc[4];
-        }
-        return sc;
-    }
-    getName(withNamespace = false) {
-        const { name } = this;
-        const short = !withNamespace && name && name.includes("#");
-        return short ? name.split("#")[1] : name || undefined;
-    }
-    getMemberName() {
-        return this.memberName;
-    }
-    isMemberSchema() {
-        return this._isMemberSchema;
-    }
-    isListSchema() {
-        const sc = this.getSchema();
-        return typeof sc === "number"
-            ? sc >= 64 && sc < 128
-            : sc[0] === 1;
-    }
-    isMapSchema() {
-        const sc = this.getSchema();
-        return typeof sc === "number"
-            ? sc >= 128 && sc <= 0b1111_1111
-            : sc[0] === 2;
-    }
-    isStructSchema() {
-        const sc = this.getSchema();
-        if (typeof sc !== "object") {
-            return false;
-        }
-        const id = sc[0];
-        return (id === 3 ||
-            id === -3 ||
-            id === 4);
-    }
-    isUnionSchema() {
-        const sc = this.getSchema();
-        if (typeof sc !== "object") {
-            return false;
-        }
-        return sc[0] === 4;
-    }
-    isBlobSchema() {
-        const sc = this.getSchema();
-        return sc === 21 || sc === 42;
-    }
-    isTimestampSchema() {
-        const sc = this.getSchema();
-        return (typeof sc === "number" &&
-            sc >= 4 &&
-            sc <= 7);
-    }
-    isUnitSchema() {
-        return this.getSchema() === "unit";
-    }
-    isDocumentSchema() {
-        return this.getSchema() === 15;
-    }
-    isStringSchema() {
-        return this.getSchema() === 0;
-    }
-    isBooleanSchema() {
-        return this.getSchema() === 2;
-    }
-    isNumericSchema() {
-        return this.getSchema() === 1;
-    }
-    isBigIntegerSchema() {
-        return this.getSchema() === 17;
-    }
-    isBigDecimalSchema() {
-        return this.getSchema() === 19;
-    }
-    isStreaming() {
-        const { streaming } = this.getMergedTraits();
-        return !!streaming || this.getSchema() === 42;
-    }
-    isIdempotencyToken() {
-        return !!this.getMergedTraits().idempotencyToken;
-    }
-    getMergedTraits() {
-        return (this.normalizedTraits ??
-            (this.normalizedTraits = {
-                ...this.getOwnTraits(),
-                ...this.getMemberTraits(),
-            }));
-    }
-    getMemberTraits() {
-        return translateTraits(this.memberTraits);
-    }
-    getOwnTraits() {
-        return translateTraits(this.traits);
-    }
-    getKeySchema() {
-        const [isDoc, isMap] = [this.isDocumentSchema(), this.isMapSchema()];
-        if (!isDoc && !isMap) {
-            throw new Error(`@smithy/core/schema - cannot get key for non-map: ${this.getName(true)}`);
-        }
-        const schema = this.getSchema();
-        const memberSchema = isDoc
-            ? 15
-            : (schema[4] ?? 0);
-        return member([memberSchema, 0], "key");
-    }
-    getValueSchema() {
-        const sc = this.getSchema();
-        const [isDoc, isMap, isList] = [this.isDocumentSchema(), this.isMapSchema(), this.isListSchema()];
-        const memberSchema = typeof sc === "number"
-            ? 0b0011_1111 & sc
-            : sc && typeof sc === "object" && (isMap || isList)
-                ? sc[3 + sc[0]]
-                : isDoc
-                    ? 15
-                    : void 0;
-        if (memberSchema != null) {
-            return member([memberSchema, 0], isMap ? "value" : "member");
-        }
-        throw new Error(`@smithy/core/schema - ${this.getName(true)} has no value member.`);
-    }
-    getMemberSchema(memberName) {
-        const struct = this.getSchema();
-        if (this.isStructSchema() && struct[4].includes(memberName)) {
-            const i = struct[4].indexOf(memberName);
-            const memberSchema = struct[5][i];
-            return member(isMemberSchema(memberSchema) ? memberSchema : [memberSchema, 0], memberName);
-        }
-        if (this.isDocumentSchema()) {
-            return member([15, 0], memberName);
-        }
-        throw new Error(`@smithy/core/schema - ${this.getName(true)} has no member=${memberName}.`);
-    }
-    getMemberSchemas() {
-        const buffer = {};
-        try {
-            for (const [k, v] of this.structIterator()) {
-                buffer[k] = v;
-            }
-        }
-        catch (ignored) { }
-        return buffer;
-    }
-    getEventStreamMember() {
-        if (this.isStructSchema()) {
-            for (const [memberName, memberSchema] of this.structIterator()) {
-                if (memberSchema.isStreaming() && memberSchema.isStructSchema()) {
-                    return memberName;
-                }
-            }
-        }
-        return "";
-    }
-    *structIterator() {
-        if (this.isUnitSchema()) {
-            return;
-        }
-        if (!this.isStructSchema()) {
-            throw new Error("@smithy/core/schema - cannot iterate non-struct schema.");
-        }
-        const struct = this.getSchema();
-        const z = struct[4].length;
-        let it = struct[anno.it];
-        if (it && z === it.length) {
-            yield* it;
-            return;
-        }
-        it = Array(z);
-        for (let i = 0; i < z; ++i) {
-            const k = struct[4][i];
-            const v = member([struct[5][i], 0], k);
-            yield (it[i] = [k, v]);
-        }
-        struct[anno.it] = it;
-    }
-}
-function member(memberSchema, memberName) {
-    if (memberSchema instanceof NormalizedSchema) {
-        return Object.assign(memberSchema, {
-            memberName,
-            _isMemberSchema: true,
-        });
-    }
-    const internalCtorAccess = NormalizedSchema;
-    return new internalCtorAccess(memberSchema, memberName);
-}
-const isMemberSchema = (sc) => Array.isArray(sc) && sc.length === 2;
-const isStaticSchema = (sc) => Array.isArray(sc) && sc.length >= 5;
-
-class SimpleSchema extends Schema {
-    static symbol = Symbol.for("@smithy/sim");
-    schemaRef;
-    symbol = SimpleSchema.symbol;
-}
-const sim = (namespace, name, schemaRef, traits) => Schema.assign(new SimpleSchema(), {
-    name,
-    namespace,
-    traits,
-    schemaRef,
-});
-const simAdapter = (namespace, name, traits, schemaRef) => Schema.assign(new SimpleSchema(), {
-    name,
-    namespace,
-    traits,
-    schemaRef,
-});
-
-const SCHEMA = {
-    BLOB: 0b0001_0101,
-    STREAMING_BLOB: 0b0010_1010,
-    BOOLEAN: 0b0000_0010,
-    STRING: 0b0000_0000,
-    NUMERIC: 0b0000_0001,
-    BIG_INTEGER: 0b0001_0001,
-    BIG_DECIMAL: 0b0001_0011,
-    DOCUMENT: 0b0000_1111,
-    TIMESTAMP_DEFAULT: 0b0000_0100,
-    TIMESTAMP_DATE_TIME: 0b0000_0101,
-    TIMESTAMP_HTTP_DATE: 0b0000_0110,
-    TIMESTAMP_EPOCH_SECONDS: 0b0000_0111,
-    LIST_MODIFIER: 0b0100_0000,
-    MAP_MODIFIER: 0b1000_0000,
-};
-
-class TypeRegistry {
-    namespace;
-    schemas;
-    exceptions;
-    static registries = new Map();
-    constructor(namespace, schemas = new Map(), exceptions = new Map()) {
-        this.namespace = namespace;
-        this.schemas = schemas;
-        this.exceptions = exceptions;
-    }
-    static for(namespace) {
-        if (!TypeRegistry.registries.has(namespace)) {
-            TypeRegistry.registries.set(namespace, new TypeRegistry(namespace));
-        }
-        return TypeRegistry.registries.get(namespace);
-    }
-    copyFrom(other) {
-        const { schemas, exceptions } = this;
-        for (const [k, v] of other.schemas) {
-            if (!schemas.has(k)) {
-                schemas.set(k, v);
-            }
-        }
-        for (const [k, v] of other.exceptions) {
-            if (!exceptions.has(k)) {
-                exceptions.set(k, v);
-            }
-        }
-    }
-    register(shapeId, schema) {
-        const qualifiedName = this.normalizeShapeId(shapeId);
-        for (const r of [this, TypeRegistry.for(qualifiedName.split("#")[0])]) {
-            r.schemas.set(qualifiedName, schema);
-        }
-    }
-    getSchema(shapeId) {
-        const id = this.normalizeShapeId(shapeId);
-        if (!this.schemas.has(id)) {
-            if (!shapeId.includes("#")) {
-                const suffix = "#" + shapeId;
-                const candidates = [];
-                for (const [shapeId, schema] of this.schemas.entries()) {
-                    if (shapeId.endsWith(suffix)) {
-                        candidates.push(schema);
-                    }
-                }
-                if (candidates.length === 1) {
-                    return candidates[0];
-                }
-            }
-            throw new Error(`@smithy/core/schema - schema not found for ${id}`);
-        }
-        return this.schemas.get(id);
-    }
-    registerError(es, ctor) {
-        const $error = es;
-        const ns = $error[1];
-        for (const r of [this, TypeRegistry.for(ns)]) {
-            r.schemas.set(ns + "#" + $error[2], $error);
-            r.exceptions.set($error, ctor);
-        }
-    }
-    getErrorCtor(es) {
-        const $error = es;
-        if (this.exceptions.has($error)) {
-            return this.exceptions.get($error);
-        }
-        const registry = TypeRegistry.for($error[1]);
-        return registry.exceptions.get($error);
-    }
-    getBaseException() {
-        for (const exceptionKey of this.exceptions.keys()) {
-            if (Array.isArray(exceptionKey)) {
-                const [, ns, name] = exceptionKey;
-                const id = ns + "#" + name;
-                if (id.startsWith("smithy.ts.sdk.synthetic.") && id.endsWith("ServiceException")) {
-                    return exceptionKey;
-                }
-            }
-        }
-        return undefined;
-    }
-    find(predicate) {
-        for (const schema of this.schemas.values()) {
-            if (predicate(schema)) {
-                return schema;
-            }
-        }
-        return undefined;
-    }
-    clear() {
-        this.schemas.clear();
-        this.exceptions.clear();
-    }
-    normalizeShapeId(shapeId) {
-        if (shapeId.includes("#")) {
-            return shapeId;
-        }
-        return this.namespace + "#" + shapeId;
-    }
-}
-
-exports.ErrorSchema = ErrorSchema;
-exports.ListSchema = ListSchema;
-exports.MapSchema = MapSchema;
-exports.NormalizedSchema = NormalizedSchema;
-exports.OperationSchema = OperationSchema;
-exports.SCHEMA = SCHEMA;
-exports.Schema = Schema;
-exports.SimpleSchema = SimpleSchema;
-exports.StructureSchema = StructureSchema;
-exports.TypeRegistry = TypeRegistry;
-exports.deref = deref;
-exports.deserializerMiddlewareOption = deserializerMiddlewareOption;
-exports.error = error;
-exports.getSchemaSerdePlugin = getSchemaSerdePlugin;
-exports.isStaticSchema = isStaticSchema;
-exports.list = list;
-exports.map = map;
-exports.op = op;
-exports.operation = operation;
-exports.serializerMiddlewareOption = serializerMiddlewareOption;
-exports.sim = sim;
-exports.simAdapter = simAdapter;
-exports.simpleSchemaCacheN = simpleSchemaCacheN;
-exports.simpleSchemaCacheS = simpleSchemaCacheS;
-exports.struct = struct;
-exports.traitsCache = traitsCache;
-exports.translateTraits = translateTraits;
-
-
-/***/ }),
-
-/***/ 7665:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { createHmac, createHash, getRandomValues } = __nccwpck_require__(7598);
-const { hasOwn, HttpResponse } = __nccwpck_require__(5105);
-exports.hasOwn = hasOwn;
-const { ReadStream, lstatSync, fstatSync } = __nccwpck_require__(3024);
-const { toEndpointV1 } = __nccwpck_require__(5638);
-const { Readable, Writable, PassThrough } = __nccwpck_require__(7075);
-
-const isArrayBuffer = (arg) => (typeof ArrayBuffer === "function" && arg instanceof ArrayBuffer) ||
-    Object.prototype.toString.call(arg) === "[object ArrayBuffer]";
-
-const fromArrayBuffer = (input, offset = 0, length = input.byteLength - offset) => {
-    if (!isArrayBuffer(input)) {
-        throw new TypeError(`The "input" argument must be ArrayBuffer. Received type ${typeof input} (${input})`);
-    }
-    return Buffer.from(input, offset, length);
-};
-const fromString = (input, encoding) => {
-    if (typeof input !== "string") {
-        throw new TypeError(`The "input" argument must be of type string. Received type ${typeof input} (${input})`);
-    }
-    return encoding ? Buffer.from(input, encoding) : Buffer.from(input);
-};
-
-const BASE64_REGEX = /^[A-Za-z0-9+/]*={0,2}$/;
-const fromBase64 = (input) => {
-    if ((input.length * 3) % 4 !== 0) {
-        throw new TypeError(`Incorrect padding on base64 string.`);
-    }
-    if (!BASE64_REGEX.exec(input)) {
-        throw new TypeError(`Invalid base64 string.`);
-    }
-    const buffer = fromString(input, "base64");
-    return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-};
-
-const fromUtf8$1 = (input) => {
-    const buf = fromString(input, "utf8");
-    return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);
-};
-
-const toBase64$1 = (_input) => {
-    let input;
-    if (typeof _input === "string") {
-        input = fromUtf8$1(_input);
-    }
-    else {
-        input = _input;
-    }
-    if (typeof input !== "object" || typeof input.byteOffset !== "number" || typeof input.byteLength !== "number") {
-        throw new Error("@smithy/util-base64: toBase64 encoder function only accepts string | Uint8Array.");
-    }
-    return fromArrayBuffer(input.buffer, input.byteOffset, input.byteLength).toString("base64");
-};
-
-function bindUint8ArrayBlobAdapter(toUtf8, fromUtf8, toBase64, fromBase64) {
-    return class Uint8ArrayBlobAdapter extends Uint8Array {
-        static fromString(source, encoding = "utf-8") {
-            if (typeof source === "string") {
-                if (encoding === "base64") {
-                    return Uint8ArrayBlobAdapter.mutate(fromBase64(source));
-                }
-                return Uint8ArrayBlobAdapter.mutate(fromUtf8(source));
-            }
-            throw new Error(`Unsupported conversion from ${typeof source} to Uint8ArrayBlobAdapter.`);
-        }
-        static mutate(source) {
-            Object.setPrototypeOf(source, Uint8ArrayBlobAdapter.prototype);
-            return source;
-        }
-        transformToString(encoding = "utf-8") {
-            if (encoding === "base64") {
-                return toBase64(this);
-            }
-            return toUtf8(this);
-        }
-    };
-}
-
-const toUtf8$1 = (input) => {
-    if (typeof input === "string") {
-        return input;
-    }
-    if (typeof input !== "object" || typeof input.byteOffset !== "number" || typeof input.byteLength !== "number") {
-        throw new Error("@smithy/util-utf8: toUtf8 encoder function only accepts string | Uint8Array.");
-    }
-    return fromArrayBuffer(input.buffer, input.byteOffset, input.byteLength).toString("utf8");
-};
-
-const decimalToHex = Array.from({ length: 256 }, (_, i) => i.toString(16).padStart(2, "0"));
-function bindV4(getRandomValues) {
-    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-        return () => crypto.randomUUID();
-    }
-    return () => {
-        const rnds = new Uint8Array(16);
-        getRandomValues(rnds);
-        rnds[6] = (rnds[6] & 0x0f) | 0x40;
-        rnds[8] = (rnds[8] & 0x3f) | 0x80;
-        return (decimalToHex[rnds[0]] +
-            decimalToHex[rnds[1]] +
-            decimalToHex[rnds[2]] +
-            decimalToHex[rnds[3]] +
-            "-" +
-            decimalToHex[rnds[4]] +
-            decimalToHex[rnds[5]] +
-            "-" +
-            decimalToHex[rnds[6]] +
-            decimalToHex[rnds[7]] +
-            "-" +
-            decimalToHex[rnds[8]] +
-            decimalToHex[rnds[9]] +
-            "-" +
-            decimalToHex[rnds[10]] +
-            decimalToHex[rnds[11]] +
-            decimalToHex[rnds[12]] +
-            decimalToHex[rnds[13]] +
-            decimalToHex[rnds[14]] +
-            decimalToHex[rnds[15]]);
-    };
-}
-
-const copyDocumentWithTransform = (source, _schemaRef, _transform = (_) => _) => source;
-
-const parseBoolean = (value) => {
-    switch (value) {
-        case "true":
-            return true;
-        case "false":
-            return false;
-        default:
-            throw new Error(`Unable to parse boolean value "${value}"`);
-    }
-};
-const expectBoolean = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value === "number") {
-        if (value === 0 || value === 1) {
-            logger.warn(stackTraceWarning(`Expected boolean, got ${typeof value}: ${value}`));
-        }
-        if (value === 0) {
-            return false;
-        }
-        if (value === 1) {
-            return true;
-        }
-    }
-    if (typeof value === "string") {
-        const lower = value.toLowerCase();
-        if (lower === "false" || lower === "true") {
-            logger.warn(stackTraceWarning(`Expected boolean, got ${typeof value}: ${value}`));
-        }
-        if (lower === "false") {
-            return false;
-        }
-        if (lower === "true") {
-            return true;
-        }
-    }
-    if (typeof value === "boolean") {
-        return value;
-    }
-    throw new TypeError(`Expected boolean, got ${typeof value}: ${value}`);
-};
-const expectNumber = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value === "string") {
-        const parsed = parseFloat(value);
-        if (!Number.isNaN(parsed)) {
-            if (String(parsed) !== String(value)) {
-                logger.warn(stackTraceWarning(`Expected number but observed string: ${value}`));
-            }
-            return parsed;
-        }
-    }
-    if (typeof value === "number") {
-        return value;
-    }
-    throw new TypeError(`Expected number, got ${typeof value}: ${value}`);
-};
-const MAX_FLOAT = Math.ceil(2 ** 127 * (2 - 2 ** -23));
-const expectFloat32 = (value) => {
-    const expected = expectNumber(value);
-    if (expected !== undefined && !Number.isNaN(expected) && expected !== Infinity && expected !== -Infinity) {
-        if (Math.abs(expected) > MAX_FLOAT) {
-            throw new TypeError(`Expected 32-bit float, got ${value}`);
-        }
-    }
-    return expected;
-};
-const expectLong = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (Number.isInteger(value) && !Number.isNaN(value)) {
-        return value;
-    }
-    throw new TypeError(`Expected integer, got ${typeof value}: ${value}`);
-};
-const expectInt = expectLong;
-const expectInt32 = (value) => expectSizedInt(value, 32);
-const expectShort = (value) => expectSizedInt(value, 16);
-const expectByte = (value) => expectSizedInt(value, 8);
-const expectSizedInt = (value, size) => {
-    const expected = expectLong(value);
-    if (expected !== undefined && castInt(expected, size) !== expected) {
-        throw new TypeError(`Expected ${size}-bit integer, got ${value}`);
-    }
-    return expected;
-};
-const castInt = (value, size) => {
-    switch (size) {
-        case 32:
-            return Int32Array.of(value)[0];
-        case 16:
-            return Int16Array.of(value)[0];
-        case 8:
-            return Int8Array.of(value)[0];
-    }
-};
-const expectNonNull = (value, location) => {
-    if (value === null || value === undefined) {
-        if (location) {
-            throw new TypeError(`Expected a non-null value for ${location}`);
-        }
-        throw new TypeError("Expected a non-null value");
-    }
-    return value;
-};
-const expectObject = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value === "object" && !Array.isArray(value)) {
-        return value;
-    }
-    const receivedType = Array.isArray(value) ? "array" : typeof value;
-    throw new TypeError(`Expected object, got ${receivedType}: ${value}`);
-};
-const expectString = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value === "string") {
-        return value;
-    }
-    if (["boolean", "number", "bigint"].includes(typeof value)) {
-        logger.warn(stackTraceWarning(`Expected string, got ${typeof value}: ${value}`));
-        return String(value);
-    }
-    throw new TypeError(`Expected string, got ${typeof value}: ${value}`);
-};
-const expectUnion = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    const asObject = expectObject(value);
-    const setKeys = [];
-    for (const k in asObject) {
-        if (!hasOwn(asObject, k))
-            continue;
-        if (asObject[k] != null) {
-            setKeys.push(k);
-        }
-    }
-    if (setKeys.length === 0) {
-        throw new TypeError(`Unions must have exactly one non-null member. None were found.`);
-    }
-    if (setKeys.length > 1) {
-        throw new TypeError(`Unions must have exactly one non-null member. Keys ${setKeys} were not null.`);
-    }
-    return asObject;
-};
-const strictParseDouble = (value) => {
-    if (typeof value == "string") {
-        return expectNumber(parseNumber(value));
-    }
-    return expectNumber(value);
-};
-const strictParseFloat = strictParseDouble;
-const strictParseFloat32 = (value) => {
-    if (typeof value == "string") {
-        return expectFloat32(parseNumber(value));
-    }
-    return expectFloat32(value);
-};
-const NUMBER_REGEX = /(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)|(-?Infinity)|(NaN)/g;
-const parseNumber = (value) => {
-    const matches = value.match(NUMBER_REGEX);
-    if (matches === null || matches[0].length !== value.length) {
-        throw new TypeError(`Expected real number, got implicit NaN`);
-    }
-    return parseFloat(value);
-};
-const limitedParseDouble = (value) => {
-    if (typeof value == "string") {
-        return parseFloatString(value);
-    }
-    return expectNumber(value);
-};
-const handleFloat = limitedParseDouble;
-const limitedParseFloat = limitedParseDouble;
-const limitedParseFloat32 = (value) => {
-    if (typeof value == "string") {
-        return parseFloatString(value);
-    }
-    return expectFloat32(value);
-};
-const parseFloatString = (value) => {
-    switch (value) {
-        case "NaN":
-            return NaN;
-        case "Infinity":
-            return Infinity;
-        case "-Infinity":
-            return -Infinity;
-        default:
-            throw new Error(`Unable to parse float value: ${value}`);
-    }
-};
-const strictParseLong = (value) => {
-    if (typeof value === "string") {
-        return expectLong(parseNumber(value));
-    }
-    return expectLong(value);
-};
-const strictParseInt = strictParseLong;
-const strictParseInt32 = (value) => {
-    if (typeof value === "string") {
-        return expectInt32(parseNumber(value));
-    }
-    return expectInt32(value);
-};
-const strictParseShort = (value) => {
-    if (typeof value === "string") {
-        return expectShort(parseNumber(value));
-    }
-    return expectShort(value);
-};
-const strictParseByte = (value) => {
-    if (typeof value === "string") {
-        return expectByte(parseNumber(value));
-    }
-    return expectByte(value);
-};
-const stackTraceWarning = (message) => {
-    return String(new TypeError(message).stack || message)
-        .split("\n")
-        .slice(0, 5)
-        .filter((s) => !s.includes("stackTraceWarning"))
-        .join("\n");
-};
-const logger = {
-    warn: console.warn,
-};
-
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-function dateToUtcString(date) {
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const dayOfWeek = date.getUTCDay();
-    const dayOfMonthInt = date.getUTCDate();
-    const hoursInt = date.getUTCHours();
-    const minutesInt = date.getUTCMinutes();
-    const secondsInt = date.getUTCSeconds();
-    const dayOfMonthString = dayOfMonthInt < 10 ? `0${dayOfMonthInt}` : `${dayOfMonthInt}`;
-    const hoursString = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
-    const minutesString = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
-    const secondsString = secondsInt < 10 ? `0${secondsInt}` : `${secondsInt}`;
-    return `${DAYS[dayOfWeek]}, ${dayOfMonthString} ${MONTHS[month]} ${year} ${hoursString}:${minutesString}:${secondsString} GMT`;
-}
-const RFC3339 = new RegExp(/^(\d{4})-(\d{2})-(\d{2})[tT](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?[zZ]$/);
-const parseRfc3339DateTime = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value !== "string") {
-        throw new TypeError("RFC-3339 date-times must be expressed as strings");
-    }
-    const match = RFC3339.exec(value);
-    if (!match) {
-        throw new TypeError("Invalid RFC-3339 date-time value");
-    }
-    const [_, yearStr, monthStr, dayStr, hours, minutes, seconds, fractionalMilliseconds] = match;
-    const year = strictParseShort(stripLeadingZeroes(yearStr));
-    const month = parseDateValue(monthStr, "month", 1, 12);
-    const day = parseDateValue(dayStr, "day", 1, 31);
-    return buildDate(year, month, day, { hours, minutes, seconds, fractionalMilliseconds });
-};
-const RFC3339_WITH_OFFSET$1 = new RegExp(/^(\d{4})-(\d{2})-(\d{2})[tT](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(([-+]\d{2}:\d{2})|[zZ])$/);
-const parseRfc3339DateTimeWithOffset = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value !== "string") {
-        throw new TypeError("RFC-3339 date-times must be expressed as strings");
-    }
-    const match = RFC3339_WITH_OFFSET$1.exec(value);
-    if (!match) {
-        throw new TypeError("Invalid RFC-3339 date-time value");
-    }
-    const [_, yearStr, monthStr, dayStr, hours, minutes, seconds, fractionalMilliseconds, offsetStr] = match;
-    const year = strictParseShort(stripLeadingZeroes(yearStr));
-    const month = parseDateValue(monthStr, "month", 1, 12);
-    const day = parseDateValue(dayStr, "day", 1, 31);
-    const date = buildDate(year, month, day, { hours, minutes, seconds, fractionalMilliseconds });
-    if (offsetStr.toUpperCase() != "Z") {
-        date.setTime(date.getTime() - parseOffsetToMilliseconds(offsetStr));
-    }
-    return date;
-};
-const IMF_FIXDATE$1 = new RegExp(/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), (\d{2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{4}) (\d{1,2}):(\d{2}):(\d{2})(?:\.(\d+))? GMT$/);
-const RFC_850_DATE$1 = new RegExp(/^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (\d{2})-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(\d{2}) (\d{1,2}):(\d{2}):(\d{2})(?:\.(\d+))? GMT$/);
-const ASC_TIME$1 = new RegExp(/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ( [1-9]|\d{2}) (\d{1,2}):(\d{2}):(\d{2})(?:\.(\d+))? (\d{4})$/);
-const parseRfc7231DateTime = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    if (typeof value !== "string") {
-        throw new TypeError("RFC-7231 date-times must be expressed as strings");
-    }
-    let match = IMF_FIXDATE$1.exec(value);
-    if (match) {
-        const [_, dayStr, monthStr, yearStr, hours, minutes, seconds, fractionalMilliseconds] = match;
-        return buildDate(strictParseShort(stripLeadingZeroes(yearStr)), parseMonthByShortName(monthStr), parseDateValue(dayStr, "day", 1, 31), { hours, minutes, seconds, fractionalMilliseconds });
-    }
-    match = RFC_850_DATE$1.exec(value);
-    if (match) {
-        const [_, dayStr, monthStr, yearStr, hours, minutes, seconds, fractionalMilliseconds] = match;
-        return adjustRfc850Year(buildDate(parseTwoDigitYear(yearStr), parseMonthByShortName(monthStr), parseDateValue(dayStr, "day", 1, 31), {
-            hours,
-            minutes,
-            seconds,
-            fractionalMilliseconds,
-        }));
-    }
-    match = ASC_TIME$1.exec(value);
-    if (match) {
-        const [_, monthStr, dayStr, hours, minutes, seconds, fractionalMilliseconds, yearStr] = match;
-        return buildDate(strictParseShort(stripLeadingZeroes(yearStr)), parseMonthByShortName(monthStr), parseDateValue(dayStr.trimLeft(), "day", 1, 31), { hours, minutes, seconds, fractionalMilliseconds });
-    }
-    throw new TypeError("Invalid RFC-7231 date-time value");
-};
-const parseEpochTimestamp = (value) => {
-    if (value === null || value === undefined) {
-        return undefined;
-    }
-    let valueAsDouble;
-    if (typeof value === "number") {
-        valueAsDouble = value;
-    }
-    else if (typeof value === "string") {
-        valueAsDouble = strictParseDouble(value);
-    }
-    else if (typeof value === "object" && value.tag === 1) {
-        valueAsDouble = value.value;
-    }
-    else {
-        throw new TypeError("Epoch timestamps must be expressed as floating point numbers or their string representation");
-    }
-    if (Number.isNaN(valueAsDouble) || valueAsDouble === Infinity || valueAsDouble === -Infinity) {
-        throw new TypeError("Epoch timestamps must be valid, non-Infinite, non-NaN numerics");
-    }
-    return new Date(Math.round(valueAsDouble * 1000));
-};
-const buildDate = (year, month, day, time) => {
-    const adjustedMonth = month - 1;
-    validateDayOfMonth(year, adjustedMonth, day);
-    return new Date(Date.UTC(year, adjustedMonth, day, parseDateValue(time.hours, "hour", 0, 23), parseDateValue(time.minutes, "minute", 0, 59), parseDateValue(time.seconds, "seconds", 0, 60), parseMilliseconds(time.fractionalMilliseconds)));
-};
-const parseTwoDigitYear = (value) => {
-    const thisYear = new Date().getUTCFullYear();
-    const valueInThisCentury = Math.floor(thisYear / 100) * 100 + strictParseShort(stripLeadingZeroes(value));
-    if (valueInThisCentury < thisYear) {
-        return valueInThisCentury + 100;
-    }
-    return valueInThisCentury;
-};
-const FIFTY_YEARS_IN_MILLIS = 50 * 365 * 24 * 60 * 60 * 1000;
-const adjustRfc850Year = (input) => {
-    if (input.getTime() - new Date().getTime() > FIFTY_YEARS_IN_MILLIS) {
-        return new Date(Date.UTC(input.getUTCFullYear() - 100, input.getUTCMonth(), input.getUTCDate(), input.getUTCHours(), input.getUTCMinutes(), input.getUTCSeconds(), input.getUTCMilliseconds()));
-    }
-    return input;
-};
-const parseMonthByShortName = (value) => {
-    const monthIdx = MONTHS.indexOf(value);
-    if (monthIdx < 0) {
-        throw new TypeError(`Invalid month: ${value}`);
-    }
-    return monthIdx + 1;
-};
-const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const validateDayOfMonth = (year, month, day) => {
-    let maxDays = DAYS_IN_MONTH[month];
-    if (month === 1 && isLeapYear(year)) {
-        maxDays = 29;
-    }
-    if (day > maxDays) {
-        throw new TypeError(`Invalid day for ${MONTHS[month]} in ${year}: ${day}`);
-    }
-};
-const isLeapYear = (year) => {
-    return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-};
-const parseDateValue = (value, type, lower, upper) => {
-    const dateVal = strictParseByte(stripLeadingZeroes(value));
-    if (dateVal < lower || dateVal > upper) {
-        throw new TypeError(`${type} must be between ${lower} and ${upper}, inclusive`);
-    }
-    return dateVal;
-};
-const parseMilliseconds = (value) => {
-    if (value === null || value === undefined) {
-        return 0;
-    }
-    return strictParseFloat32("0." + value) * 1000;
-};
-const parseOffsetToMilliseconds = (value) => {
-    const directionStr = value[0];
-    let direction = 1;
-    if (directionStr == "+") {
-        direction = 1;
-    }
-    else if (directionStr == "-") {
-        direction = -1;
-    }
-    else {
-        throw new TypeError(`Offset direction, ${directionStr}, must be "+" or "-"`);
-    }
-    const hour = Number(value.substring(1, 3));
-    const minute = Number(value.substring(4, 6));
-    return direction * (hour * 60 + minute) * 60 * 1000;
-};
-const stripLeadingZeroes = (value) => {
-    let idx = 0;
-    while (idx < value.length - 1 && value.charAt(idx) === "0") {
-        idx++;
-    }
-    if (idx === 0) {
-        return value;
-    }
-    return value.slice(idx);
-};
-
-const LazyJsonString = function LazyJsonString(val) {
-    const str = Object.assign(new String(val), {
-        deserializeJSON() {
-            return JSON.parse(String(val));
-        },
-        toString() {
-            return String(val);
-        },
-        toJSON() {
-            return String(val);
-        },
-    });
-    return str;
-};
-LazyJsonString.from = (object) => {
-    if (object && typeof object === "object" && (object instanceof LazyJsonString || "deserializeJSON" in object)) {
-        return object;
-    }
-    else if (typeof object === "string" || Object.getPrototypeOf(object) === String.prototype) {
-        return LazyJsonString(String(object));
-    }
-    return LazyJsonString(JSON.stringify(object));
-};
-LazyJsonString.fromObject = LazyJsonString.from;
-
-function quoteHeader(part) {
-    if (part.includes(",") || part.includes('"')) {
-        part = `"${part.replace(/"/g, '\\"')}"`;
-    }
-    return part;
-}
-
-const ddd = `(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)(?:[ne|u?r]?s?day)?`;
-const mmm = `(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)`;
-const time = `(\\d?\\d):(\\d{2}):(\\d{2})(?:\\.(\\d+))?`;
-const date = `(\\d?\\d)`;
-const year = `(\\d{4})`;
-const RFC3339_WITH_OFFSET = new RegExp(/^(\d{4})-(\d\d)-(\d\d)[tT](\d\d):(\d\d):(\d\d)(\.(\d+))?(([-+]\d\d:\d\d)|[zZ])$/);
-const IMF_FIXDATE = new RegExp(`^${ddd}, ${date} ${mmm} ${year} ${time} GMT$`);
-const RFC_850_DATE = new RegExp(`^${ddd}, ${date}-${mmm}-(\\d\\d) ${time} GMT$`);
-const ASC_TIME = new RegExp(`^${ddd} ${mmm} ( [1-9]|\\d\\d) ${time} ${year}$`);
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const _parseEpochTimestamp = (value) => {
-    if (value == null) {
-        return void 0;
-    }
-    let num = NaN;
-    if (typeof value === "number") {
-        num = value;
-    }
-    else if (typeof value === "string") {
-        if (!/^-?\d*\.?\d+$/.test(value)) {
-            throw new TypeError(`parseEpochTimestamp - numeric string invalid.`);
-        }
-        num = Number.parseFloat(value);
-    }
-    else if (typeof value === "object" && value.tag === 1) {
-        num = value.value;
-    }
-    if (isNaN(num) || Math.abs(num) === Infinity) {
-        throw new TypeError("Epoch timestamps must be valid finite numbers.");
-    }
-    return new Date(Math.round(num * 1000));
-};
-const _parseRfc3339DateTimeWithOffset = (value) => {
-    if (value == null) {
-        return void 0;
-    }
-    if (typeof value !== "string") {
-        throw new TypeError("RFC3339 timestamps must be strings");
-    }
-    const matches = RFC3339_WITH_OFFSET.exec(value);
-    if (!matches) {
-        throw new TypeError(`Invalid RFC3339 timestamp format ${value}`);
-    }
-    const [, yearStr, monthStr, dayStr, hours, minutes, seconds, , ms, offsetStr] = matches;
-    range(monthStr, 1, 12);
-    range(dayStr, 1, 31);
-    range(hours, 0, 23);
-    range(minutes, 0, 59);
-    range(seconds, 0, 60);
-    const date = new Date(Date.UTC(Number(yearStr), Number(monthStr) - 1, Number(dayStr), Number(hours), Number(minutes), Number(seconds), Number(ms) ? Math.round(parseFloat(`0.${ms}`) * 1000) : 0));
-    date.setUTCFullYear(Number(yearStr));
-    if (offsetStr.toUpperCase() != "Z") {
-        const [, sign, offsetH, offsetM] = /([+-])(\d\d):(\d\d)/.exec(offsetStr) || [void 0, "+", 0, 0];
-        const scalar = sign === "-" ? 1 : -1;
-        date.setTime(date.getTime() + scalar * (Number(offsetH) * 60 * 60 * 1000 + Number(offsetM) * 60 * 1000));
-    }
-    return date;
-};
-const _parseRfc7231DateTime = (value) => {
-    if (value == null) {
-        return void 0;
-    }
-    if (typeof value !== "string") {
-        throw new TypeError("RFC7231 timestamps must be strings.");
-    }
-    let day;
-    let month;
-    let year;
-    let hour;
-    let minute;
-    let second;
-    let fraction;
-    let matches;
-    if ((matches = IMF_FIXDATE.exec(value))) {
-        [, day, month, year, hour, minute, second, fraction] = matches;
-    }
-    else if ((matches = RFC_850_DATE.exec(value))) {
-        [, day, month, year, hour, minute, second, fraction] = matches;
-        year = (Number(year) + 1900).toString();
-    }
-    else if ((matches = ASC_TIME.exec(value))) {
-        [, month, day, hour, minute, second, fraction, year] = matches;
-    }
-    if (year && second) {
-        const timestamp = Date.UTC(Number(year), months.indexOf(month), Number(day), Number(hour), Number(minute), Number(second), fraction ? Math.round(parseFloat(`0.${fraction}`) * 1000) : 0);
-        range(day, 1, 31);
-        range(hour, 0, 23);
-        range(minute, 0, 59);
-        range(second, 0, 60);
-        const date = new Date(timestamp);
-        date.setUTCFullYear(Number(year));
-        return date;
-    }
-    throw new TypeError(`Invalid RFC7231 date-time value ${value}.`);
-};
-function range(v, min, max) {
-    const _v = Number(v);
-    if (_v < min || _v > max) {
-        throw new Error(`Value ${_v} out of range [${min}, ${max}]`);
-    }
-}
-
-function splitEvery(value, delimiter, numDelimiters) {
-    if (numDelimiters <= 0 || !Number.isInteger(numDelimiters)) {
-        throw new Error("Invalid number of delimiters (" + numDelimiters + ") for splitEvery.");
-    }
-    const segments = value.split(delimiter);
-    if (numDelimiters === 1) {
-        return segments;
-    }
-    const compoundSegments = [];
-    let currentSegment = "";
-    for (let i = 0; i < segments.length; i++) {
-        if (currentSegment === "") {
-            currentSegment = segments[i];
-        }
-        else {
-            currentSegment += delimiter + segments[i];
-        }
-        if ((i + 1) % numDelimiters === 0) {
-            compoundSegments.push(currentSegment);
-            currentSegment = "";
-        }
-    }
-    if (currentSegment !== "") {
-        compoundSegments.push(currentSegment);
-    }
-    return compoundSegments;
-}
-
-const splitHeader = (value) => {
-    const z = value.length;
-    const values = [];
-    let withinQuotes = false;
-    let prevChar = undefined;
-    let anchor = 0;
-    for (let i = 0; i < z; ++i) {
-        const char = value[i];
-        switch (char) {
-            case `"`:
-                if (prevChar !== "\\") {
-                    withinQuotes = !withinQuotes;
-                }
-                break;
-            case ",":
-                if (!withinQuotes) {
-                    values.push(value.slice(anchor, i));
-                    anchor = i + 1;
-                }
-                break;
-        }
-        prevChar = char;
-    }
-    values.push(value.slice(anchor));
-    return values.map((v) => {
-        v = v.trim();
-        const z = v.length;
-        if (z < 2) {
-            return v;
-        }
-        if (v[0] === `"` && v[z - 1] === `"`) {
-            v = v.slice(1, z - 1);
-        }
-        return v.replace(/\\"/g, '"');
-    });
-};
-
-const format = /^-?((0|[1-9]\d*)(\.\d+)?|\.\d+)([eE][+-]?\d+)?$/;
-class NumericValue {
-    string;
-    type;
-    constructor(string, type) {
-        this.string = string;
-        this.type = type;
-        if (!format.test(string)) {
-            throw new Error(`@smithy/core/serde - NumericValue string must conform to the Smithy bigDecimal format. Received: "${string}"`);
-        }
-    }
-    toString() {
-        return this.string;
-    }
-    static [Symbol.hasInstance](object) {
-        if (!object || typeof object !== "object") {
-            return false;
-        }
-        const _nv = object;
-        return NumericValue.prototype.isPrototypeOf(object) || (_nv.type === "bigDecimal" && format.test(_nv.string));
-    }
-}
-function nv(input) {
-    return new NumericValue(String(input), "bigDecimal");
-}
-
-const SHORT_TO_HEX = {};
-const HEX_TO_SHORT = {};
-for (let i = 0; i < 256; i++) {
-    let encodedByte = i.toString(16).toLowerCase();
-    if (encodedByte.length === 1) {
-        encodedByte = `0${encodedByte}`;
-    }
-    SHORT_TO_HEX[i] = encodedByte;
-    HEX_TO_SHORT[encodedByte] = i;
-}
-function fromHex(encoded) {
-    if (encoded.length % 2 !== 0) {
-        throw new Error("Hex encoded strings must have an even number length");
-    }
-    const out = new Uint8Array(encoded.length / 2);
-    for (let i = 0; i < encoded.length; i += 2) {
-        const encodedByte = encoded.slice(i, i + 2).toLowerCase();
-        if (encodedByte in HEX_TO_SHORT) {
-            out[i / 2] = HEX_TO_SHORT[encodedByte];
-        }
-        else {
-            throw new Error(`Cannot decode unrecognized sequence ${encodedByte} as hexadecimal`);
-        }
-    }
-    return out;
-}
-function toHex(bytes) {
-    let out = "";
-    for (let i = 0; i < bytes.byteLength; i++) {
-        out += SHORT_TO_HEX[bytes[i]];
-    }
-    return out;
-}
-
-const calculateBodyLength = (body) => {
-    if (!body) {
-        return 0;
-    }
-    if (typeof body === "string") {
-        return Buffer.byteLength(body);
-    }
-    else if (typeof body.byteLength === "number") {
-        return body.byteLength;
-    }
-    else if (typeof body.size === "number") {
-        return body.size;
-    }
-    else if (typeof body.start === "number" && typeof body.end === "number") {
-        return body.end + 1 - body.start;
-    }
-    else if (body instanceof ReadStream) {
-        if (body.path != null) {
-            return lstatSync(body.path).size;
-        }
-        else if (typeof body.fd === "number") {
-            return fstatSync(body.fd).size;
-        }
-    }
-    throw new Error(`Body Length computation failed for ${body}`);
-};
-
-const toUint8Array = (data) => {
-    if (data instanceof Uint8Array) {
-        return data;
-    }
-    if (typeof data === "string") {
-        return fromUtf8$1(data);
-    }
-    if (ArrayBuffer.isView(data)) {
-        return new Uint8Array(data.buffer, data.byteOffset, data.byteLength / Uint8Array.BYTES_PER_ELEMENT);
-    }
-    return new Uint8Array(data);
-};
-
-function concatBytes(arrays, length) {
-    if (length === undefined) {
-        length = 0;
-        for (const bytes of arrays) {
-            length += bytes.byteLength;
-        }
-    }
-    const result = new Uint8Array(length);
-    let offset = 0;
-    for (const buf of arrays) {
-        result.set(buf, offset);
-        offset += buf.byteLength;
-    }
-    return result;
-}
-
-const deserializerMiddleware = (options, deserializer) => (next, context) => async (args) => {
-    const { response } = await next(args);
-    try {
-        const parsed = await deserializer(response, options);
-        return {
-            response,
-            output: parsed,
-        };
-    }
-    catch (error) {
-        Object.defineProperty(error, "$response", {
-            value: response,
-            enumerable: false,
-            writable: false,
-            configurable: false,
-        });
-        if (!("$metadata" in error)) {
-            const hint = `Deserialization error: to see the raw response, inspect the hidden field {error}.$response on this object.`;
-            try {
-                error.message += "\n  " + hint;
-            }
-            catch (ignored) {
-                if (!context.logger || context.logger?.constructor?.name === "NoOpLogger") {
-                    console.warn(hint);
-                }
-                else {
-                    context.logger?.warn?.(hint);
-                }
-            }
-            if (typeof error.$responseBodyText !== "undefined") {
-                if (error.$response) {
-                    error.$response.body = error.$responseBodyText;
-                }
-            }
-            try {
-                if (HttpResponse.isInstance(response)) {
-                    const { headers = {} } = response;
-                    const headerEntries = Object.entries(headers);
-                    error.$metadata = {
-                        httpStatusCode: response.statusCode,
-                        requestId: findHeader(/^x-[\w-]+-request-?id$/, headerEntries),
-                        extendedRequestId: findHeader(/^x-[\w-]+-id-2$/, headerEntries),
-                        cfId: findHeader(/^x-[\w-]+-cf-id$/, headerEntries),
-                    };
-                }
-            }
-            catch (ignored) {
-            }
-        }
-        throw error;
-    }
-};
-const findHeader = (pattern, headers) => {
-    return (headers.find(([k]) => {
-        return k.match(pattern);
-    }) || [void 0, void 0])[1];
-};
-
-const serializerMiddleware = (options, serializer) => (next, context) => async (args) => {
-    const endpointConfig = options;
-    const endpoint = context.endpointV2
-        ? async () => toEndpointV1(context.endpointV2)
-        : endpointConfig.endpoint;
-    if (!endpoint) {
-        throw new Error("No valid endpoint provider available.");
-    }
-    const request = await serializer(args.input, { ...options, endpoint });
-    return next({
-        ...args,
-        request,
-    });
-};
-
-const deserializerMiddlewareOption = {
-    name: "deserializerMiddleware",
-    step: "deserialize",
-    tags: ["DESERIALIZER"],
-    override: true,
-};
-const serializerMiddlewareOption = {
-    name: "serializerMiddleware",
-    step: "serialize",
-    tags: ["SERIALIZER"],
-    override: true,
-};
-function getSerdePlugin(config, serializer, deserializer) {
-    return {
-        applyToStack: (commandStack) => {
-            commandStack.add(deserializerMiddleware(config, deserializer), deserializerMiddlewareOption);
-            commandStack.add(serializerMiddleware(config, serializer), serializerMiddlewareOption);
-        },
-    };
-}
-
-class Hash {
-    algorithmIdentifier;
-    secret;
-    hash;
-    constructor(algorithmIdentifier, secret) {
-        this.algorithmIdentifier = algorithmIdentifier;
-        this.secret = secret;
-        this.reset();
-    }
-    update(toHash, encoding) {
-        this.hash.update(toUint8Array(castSourceData(toHash, encoding)));
-    }
-    digest() {
-        return Promise.resolve(this.hash.digest());
-    }
-    reset() {
-        this.hash = this.secret
-            ? createHmac(this.algorithmIdentifier, castSourceData(this.secret))
-            : createHash(this.algorithmIdentifier);
-    }
-}
-function castSourceData(toCast, encoding) {
-    if (Buffer.isBuffer(toCast)) {
-        return toCast;
-    }
-    if (typeof toCast === "string") {
-        return fromString(toCast, encoding);
-    }
-    if (ArrayBuffer.isView(toCast)) {
-        return fromArrayBuffer(toCast.buffer, toCast.byteOffset, toCast.byteLength);
-    }
-    return fromArrayBuffer(toCast);
-}
-
-let ChecksumStream$1 = class ChecksumStream extends Readable {
-    expectedChecksum;
-    checksumSourceLocation;
-    checksum;
-    source;
-    base64Encoder;
-    constructor({ expectedChecksum, checksum, source, checksumSourceLocation, base64Encoder, }) {
-        super();
-        if (typeof source.pipe !== "function") {
-            throw new Error(`@smithy/util-stream: unsupported source type ${source?.constructor?.name ?? source} in ChecksumStream.`);
-        }
-        this.source = source;
-        this.base64Encoder = base64Encoder ?? toBase64$1;
-        this.expectedChecksum = expectedChecksum;
-        this.checksum = checksum;
-        this.checksumSourceLocation = checksumSourceLocation;
-        this.source.on("data", this.onSourceData);
-        this.source.on("end", this.onSourceEnd);
-        this.source.on("error", this.onSourceError);
-        this.source.on("close", this.onSourceClose);
-        this.source.pause();
-    }
-    onSourceData = (chunk) => {
-        if (this.destroyed) {
-            return;
-        }
-        try {
-            this.checksum.update(chunk);
-        }
-        catch (e) {
-            this.destroy(e);
-            return;
-        }
-        if (!this.push(chunk)) {
-            this.source.pause();
-        }
-    };
-    onSourceEnd = async () => {
-        if (this.destroyed) {
-            return;
-        }
-        try {
-            const digest = await this.checksum.digest();
-            const received = this.base64Encoder(digest);
-            if (this.expectedChecksum !== received) {
-                this.destroy(new Error(`Checksum mismatch: expected "${this.expectedChecksum}" but received "${received}"` +
-                    ` in response header "${this.checksumSourceLocation}".`));
-                return;
-            }
-        }
-        catch (e) {
-            this.destroy(e);
-            return;
-        }
-        this.push(null);
-    };
-    onSourceError = (error) => {
-        this.destroy(error);
-    };
-    onSourceClose = () => {
-        if (!this.destroyed && !this.source.readableEnded) {
-            this.destroy(new Error("Connection lost or stream closed before all data was received."));
-        }
-    };
-    _read(_size) {
-        this.source.resume();
-    }
-    _destroy(error, callback) {
-        this.source?.removeListener("data", this.onSourceData);
-        this.source?.removeListener("end", this.onSourceEnd);
-        this.source?.removeListener("error", this.onSourceError);
-        this.source?.removeListener("close", this.onSourceClose);
-        this.source?.destroy();
-        callback(error);
-    }
-};
-
-const isReadableStream = (stream) => typeof ReadableStream === "function" &&
-    (stream?.constructor?.name === ReadableStream.name || stream instanceof ReadableStream);
-const isBlob = (blob) => {
-    return typeof Blob === "function" && (blob?.constructor?.name === Blob.name || blob instanceof Blob);
-};
-
-const fromUtf8 = (input) => new TextEncoder().encode(input);
-
-const chars = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/`;
-Object.entries(chars).reduce((acc, [i, c]) => {
-    acc[c] = Number(i);
-    return acc;
-}, {});
-const alphabetByValue = chars.split("");
-const bitsPerLetter = 6;
-const bitsPerByte = 8;
-const maxLetterValue = 0b111111;
-
-function toBase64(_input) {
-    let input;
-    if (typeof _input === "string") {
-        input = fromUtf8(_input);
-    }
-    else {
-        input = _input;
-    }
-    const isArrayLike = typeof input === "object" && typeof input.length === "number";
-    const isUint8Array = typeof input === "object" &&
-        typeof input.byteOffset === "number" &&
-        typeof input.byteLength === "number";
-    if (!isArrayLike && !isUint8Array) {
-        throw new Error("@smithy/util-base64: toBase64 encoder function only accepts string | Uint8Array.");
-    }
-    let str = "";
-    for (let i = 0; i < input.length; i += 3) {
-        let bits = 0;
-        let bitLength = 0;
-        for (let j = i, limit = Math.min(i + 3, input.length); j < limit; j++) {
-            bits |= input[j] << ((limit - j - 1) * bitsPerByte);
-            bitLength += bitsPerByte;
-        }
-        const bitClusterCount = Math.ceil(bitLength / bitsPerLetter);
-        bits <<= bitClusterCount * bitsPerLetter - bitLength;
-        for (let k = 1; k <= bitClusterCount; k++) {
-            const offset = (bitClusterCount - k) * bitsPerLetter;
-            str += alphabetByValue[(bits & (maxLetterValue << offset)) >> offset];
-        }
-        str += "==".slice(0, 4 - bitClusterCount);
-    }
-    return str;
-}
-
-const ReadableStreamRef = typeof ReadableStream === "function" ? ReadableStream : function () { };
-class ChecksumStream extends ReadableStreamRef {
-}
-
-const createChecksumStream$1 = ({ expectedChecksum, checksum, source, checksumSourceLocation, base64Encoder, }) => {
-    if (!isReadableStream(source)) {
-        throw new Error(`@smithy/util-stream: unsupported source type ${source?.constructor?.name ?? source} in ChecksumStream.`);
-    }
-    const encoder = base64Encoder ?? toBase64;
-    if (typeof TransformStream !== "function") {
-        throw new Error("@smithy/util-stream: unable to instantiate ChecksumStream because API unavailable: ReadableStream/TransformStream.");
-    }
-    const transform = new TransformStream({
-        start() { },
-        async transform(chunk, controller) {
-            checksum.update(chunk);
-            controller.enqueue(chunk);
-        },
-        async flush(controller) {
-            const digest = await checksum.digest();
-            const received = encoder(digest);
-            if (expectedChecksum !== received) {
-                const error = new Error(`Checksum mismatch: expected "${expectedChecksum}" but received "${received}"` +
-                    ` in response header "${checksumSourceLocation}".`);
-                controller.error(error);
-            }
-            else {
-                controller.terminate();
-            }
-        },
-    });
-    source.pipeThrough(transform);
-    const readable = transform.readable;
-    Object.setPrototypeOf(readable, ChecksumStream.prototype);
-    return readable;
-};
-
-function createChecksumStream(init) {
-    if (typeof ReadableStream === "function" && isReadableStream(init.source)) {
-        return createChecksumStream$1(init);
-    }
-    return new ChecksumStream$1(init);
-}
-
-class ByteArrayCollector {
-    allocByteArray;
-    byteLength = 0;
-    byteArrays = [];
-    constructor(allocByteArray) {
-        this.allocByteArray = allocByteArray;
-    }
-    push(byteArray) {
-        this.byteArrays.push(byteArray);
-        this.byteLength += byteArray.byteLength;
-    }
-    flush() {
-        if (this.byteArrays.length === 1) {
-            const bytes = this.byteArrays[0];
-            this.reset();
-            return bytes;
-        }
-        const aggregation = this.allocByteArray(this.byteLength);
-        let cursor = 0;
-        for (let i = 0; i < this.byteArrays.length; ++i) {
-            const bytes = this.byteArrays[i];
-            aggregation.set(bytes, cursor);
-            cursor += bytes.byteLength;
-        }
-        this.reset();
-        return aggregation;
-    }
-    reset() {
-        this.byteArrays = [];
-        this.byteLength = 0;
-    }
-}
-
-function createBufferedReadableStream(upstream, size, logger) {
-    const reader = upstream.getReader();
-    let streamBufferingLoggedWarning = false;
-    let bytesSeen = 0;
-    const buffers = ["", new ByteArrayCollector((size) => new Uint8Array(size))];
-    let mode = -1;
-    const pull = async (controller) => {
-        const { value, done } = await reader.read();
-        const chunk = value;
-        if (done) {
-            if (mode !== -1) {
-                const remainder = flush(buffers, mode);
-                if (sizeOf(remainder) > 0) {
-                    controller.enqueue(remainder);
-                }
-            }
-            controller.close();
-        }
-        else {
-            const chunkMode = modeOf(chunk, false);
-            if (mode !== chunkMode) {
-                if (mode >= 0) {
-                    controller.enqueue(flush(buffers, mode));
-                }
-                mode = chunkMode;
-            }
-            if (mode === -1) {
-                controller.enqueue(chunk);
-                return;
-            }
-            const chunkSize = sizeOf(chunk);
-            bytesSeen += chunkSize;
-            const bufferSize = sizeOf(buffers[mode]);
-            if (chunkSize >= size && bufferSize === 0) {
-                controller.enqueue(chunk);
-            }
-            else {
-                const newSize = merge(buffers, mode, chunk);
-                if (!streamBufferingLoggedWarning && bytesSeen > size * 2) {
-                    streamBufferingLoggedWarning = true;
-                    logger?.warn(`@smithy/util-stream - stream chunk size ${chunkSize} is below threshold of ${size}, automatically buffering.`);
-                }
-                if (newSize >= size) {
-                    controller.enqueue(flush(buffers, mode));
-                }
-                else {
-                    await pull(controller);
-                }
-            }
-        }
-    };
-    return new ReadableStream({
-        pull,
-    });
-}
-function merge(buffers, mode, chunk) {
-    switch (mode) {
-        case 0:
-            buffers[0] += chunk;
-            return sizeOf(buffers[0]);
-        case 1:
-        case 2:
-            buffers[mode].push(chunk);
-            return sizeOf(buffers[mode]);
-    }
-}
-function flush(buffers, mode) {
-    switch (mode) {
-        case 0:
-            const s = buffers[0];
-            buffers[0] = "";
-            return s;
-        case 1:
-        case 2:
-            return buffers[mode].flush();
-    }
-    throw new Error(`@smithy/util-stream - invalid index ${mode} given to flush()`);
-}
-function sizeOf(chunk) {
-    return chunk?.byteLength ?? chunk?.length ?? 0;
-}
-function modeOf(chunk, allowBuffer = true) {
-    if (allowBuffer && typeof Buffer !== "undefined" && chunk instanceof Buffer) {
-        return 2;
-    }
-    if (chunk instanceof Uint8Array) {
-        return 1;
-    }
-    if (typeof chunk === "string") {
-        return 0;
-    }
-    return -1;
-}
-
-function createBufferedReadable(upstream, size, logger) {
-    if (isReadableStream(upstream)) {
-        return createBufferedReadableStream(upstream, size, logger);
-    }
-    const downstream = new Readable({ read() { } });
-    let streamBufferingLoggedWarning = false;
-    let bytesSeen = 0;
-    const buffers = [
-        "",
-        new ByteArrayCollector((size) => new Uint8Array(size)),
-        new ByteArrayCollector((size) => Buffer.from(new Uint8Array(size))),
-    ];
-    let mode = -1;
-    upstream.on("data", (chunk) => {
-        const chunkMode = modeOf(chunk, true);
-        if (mode !== chunkMode) {
-            if (mode >= 0) {
-                downstream.push(flush(buffers, mode));
-            }
-            mode = chunkMode;
-        }
-        if (mode === -1) {
-            downstream.push(chunk);
-            return;
-        }
-        const chunkSize = sizeOf(chunk);
-        bytesSeen += chunkSize;
-        const bufferSize = sizeOf(buffers[mode]);
-        if (chunkSize >= size && bufferSize === 0) {
-            downstream.push(chunk);
-        }
-        else {
-            const newSize = merge(buffers, mode, chunk);
-            if (!streamBufferingLoggedWarning && bytesSeen > size * 2) {
-                streamBufferingLoggedWarning = true;
-                logger?.warn(`@smithy/util-stream - stream chunk size ${chunkSize} is below threshold of ${size}, automatically buffering.`);
-            }
-            if (newSize >= size) {
-                downstream.push(flush(buffers, mode));
-            }
-        }
-    });
-    upstream.on("end", () => {
-        if (mode !== -1) {
-            const remainder = flush(buffers, mode);
-            if (sizeOf(remainder) > 0) {
-                downstream.push(remainder);
-            }
-        }
-        downstream.push(null);
-    });
-    return downstream;
-}
-
-const getAwsChunkedEncodingStream$1 = (readableStream, options) => {
-    const { base64Encoder, bodyLengthChecker, checksumAlgorithmFn, checksumLocationName, streamHasher } = options;
-    const checksumRequired = base64Encoder !== undefined &&
-        bodyLengthChecker !== undefined &&
-        checksumAlgorithmFn !== undefined &&
-        checksumLocationName !== undefined &&
-        streamHasher !== undefined;
-    const digest = checksumRequired ? streamHasher(checksumAlgorithmFn, readableStream) : undefined;
-    const reader = readableStream.getReader();
-    return new ReadableStream({
-        async pull(controller) {
-            const { value, done } = await reader.read();
-            if (done) {
-                controller.enqueue(`0\r\n`);
-                if (checksumRequired) {
-                    const checksum = base64Encoder(await digest);
-                    controller.enqueue(`${checksumLocationName}:${checksum}\r\n`);
-                    controller.enqueue(`\r\n`);
-                }
-                controller.close();
-            }
-            else {
-                controller.enqueue(`${(bodyLengthChecker(value) || 0).toString(16)}\r\n${value}\r\n`);
-            }
-        },
-    });
-};
-
-function getAwsChunkedEncodingStream(stream, options) {
-    const readable = stream;
-    const readableStream = stream;
-    if (isReadableStream(readableStream)) {
-        return getAwsChunkedEncodingStream$1(readableStream, options);
-    }
-    const { base64Encoder, bodyLengthChecker, checksumAlgorithmFn, checksumLocationName, streamHasher } = options;
-    const checksumRequired = base64Encoder !== undefined &&
-        checksumAlgorithmFn !== undefined &&
-        checksumLocationName !== undefined &&
-        streamHasher !== undefined;
-    const digest = checksumRequired ? streamHasher(checksumAlgorithmFn, readable) : undefined;
-    const awsChunkedEncodingStream = new Readable({
-        read: () => { },
-    });
-    readable.on("data", (data) => {
-        const length = bodyLengthChecker(data) || 0;
-        if (length === 0) {
-            return;
-        }
-        awsChunkedEncodingStream.push(`${length.toString(16)}\r\n`);
-        awsChunkedEncodingStream.push(data);
-        awsChunkedEncodingStream.push("\r\n");
-    });
-    readable.on("end", async () => {
-        awsChunkedEncodingStream.push(`0\r\n`);
-        if (checksumRequired) {
-            const checksum = base64Encoder(await digest);
-            awsChunkedEncodingStream.push(`${checksumLocationName}:${checksum}\r\n`);
-            awsChunkedEncodingStream.push(`\r\n`);
-        }
-        awsChunkedEncodingStream.push(null);
-    });
-    return awsChunkedEncodingStream;
-}
-
-async function headStream$1(stream, bytes) {
-    let byteLengthCounter = 0;
-    const chunks = [];
-    const reader = stream.getReader();
-    let isDone = false;
-    while (!isDone) {
-        const { done, value } = await reader.read();
-        if (value) {
-            chunks.push(value);
-            byteLengthCounter += value?.byteLength ?? 0;
-        }
-        if (byteLengthCounter >= bytes) {
-            break;
-        }
-        isDone = done;
-    }
-    reader.releaseLock();
-    const collected = new Uint8Array(Math.min(bytes, byteLengthCounter));
-    let offset = 0;
-    for (const chunk of chunks) {
-        if (chunk.byteLength > collected.byteLength - offset) {
-            collected.set(chunk.subarray(0, collected.byteLength - offset), offset);
-            break;
-        }
-        else {
-            collected.set(chunk, offset);
-        }
-        offset += chunk.length;
-    }
-    return collected;
-}
-
-const headStream = (stream, bytes) => {
-    if (isReadableStream(stream)) {
-        return headStream$1(stream, bytes);
-    }
-    return new Promise((resolve, reject) => {
-        const collector = new Collector$1();
-        collector.limit = bytes;
-        stream.pipe(collector);
-        stream.on("error", (err) => {
-            collector.end();
-            reject(err);
-        });
-        collector.on("error", reject);
-        collector.on("finish", function () {
-            const bytes = concatBytes(this.buffers);
-            resolve(bytes);
-        });
-    });
-};
-let Collector$1 = class Collector extends Writable {
-    buffers = [];
-    limit = Infinity;
-    bytesBuffered = 0;
-    _write(chunk, encoding, callback) {
-        this.buffers.push(chunk);
-        this.bytesBuffered += chunk.byteLength ?? 0;
-        if (this.bytesBuffered >= this.limit) {
-            const excess = this.bytesBuffered - this.limit;
-            const tailBuffer = this.buffers[this.buffers.length - 1];
-            this.buffers[this.buffers.length - 1] = tailBuffer.subarray(0, tailBuffer.byteLength - excess);
-            this.emit("finish");
-        }
-        callback();
-    }
-};
-
-const toUtf8 = (input) => {
-    if (typeof input === "string") {
-        return input;
-    }
-    if (typeof input !== "object" || typeof input.byteOffset !== "number" || typeof input.byteLength !== "number") {
-        throw new Error("@smithy/util-utf8: toUtf8 encoder function only accepts string | Uint8Array.");
-    }
-    return new TextDecoder("utf-8").decode(input);
-};
-
-const streamCollector$1 = async (stream) => {
-    if (isBlob(stream)) {
-        return collectBlob(stream);
-    }
-    return collectReadableStream(stream);
-};
-async function collectBlob(blob) {
-    return blob.arrayBuffer().then((ab) => new Uint8Array(ab));
-}
-async function collectReadableStream(stream) {
-    const chunks = [];
-    const reader = stream.getReader();
-    let length = 0;
-    while (true) {
-        const { done, value } = await reader.read();
-        if (value) {
-            chunks.push(value);
-            length += value.length;
-        }
-        if (done) {
-            break;
-        }
-    }
-    return concatBytes(chunks, length);
-}
-
-const ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED$1 = "The stream has already been transformed.";
-const sdkStreamMixin$1 = (stream) => {
-    if (!isBlobInstance(stream) && !isReadableStream(stream)) {
-        const name = stream?.__proto__?.constructor?.name || stream;
-        throw new Error(`Unexpected stream implementation, expect Blob or ReadableStream, got ${name}`);
-    }
-    let transformed = false;
-    const transformToByteArray = async () => {
-        if (transformed) {
-            throw new Error(ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED$1);
-        }
-        transformed = true;
-        return await streamCollector$1(stream);
-    };
-    const blobToWebStream = (blob) => {
-        if (typeof blob.stream !== "function") {
-            throw new Error("Cannot transform payload Blob to web stream. Please make sure the Blob.stream() is polyfilled.\n" +
-                "If you are using React Native, this API is not yet supported, see: https://react-native.canny.io/feature-requests/p/fetch-streaming-body");
-        }
-        return blob.stream();
-    };
-    return Object.assign(stream, {
-        transformToByteArray: transformToByteArray,
-        transformToString: async (encoding) => {
-            const buf = await transformToByteArray();
-            if (encoding === "base64") {
-                return toBase64(buf);
-            }
-            else if (encoding === "hex") {
-                return toHex(buf);
-            }
-            else if (encoding === undefined || encoding === "utf8" || encoding === "utf-8") {
-                return toUtf8(buf);
-            }
-            else if (typeof TextDecoder === "function") {
-                return new TextDecoder(encoding).decode(buf);
-            }
-            else {
-                throw new Error("TextDecoder is not available, please make sure polyfill is provided.");
-            }
-        },
-        transformToWebStream: () => {
-            if (transformed) {
-                throw new Error(ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED$1);
-            }
-            transformed = true;
-            if (isBlobInstance(stream)) {
-                return blobToWebStream(stream);
-            }
-            else if (isReadableStream(stream)) {
-                return stream;
-            }
-            else {
-                throw new Error(`Cannot transform payload to web stream, got ${stream}`);
-            }
-        },
-    });
-};
-const isBlobInstance = (stream) => typeof Blob === "function" && stream instanceof Blob;
-
-const streamCollector = (stream) => {
-    if (isBlob(stream)) {
-        return collectBlob(stream);
-    }
-    if (isReadableStream(stream)) {
-        return collectReadableStream(stream);
-    }
-    return new Promise((resolve, reject) => {
-        const collector = new Collector();
-        const nodeStream = stream;
-        nodeStream.pipe(collector);
-        nodeStream.on("error", (err) => {
-            collector.end();
-            reject(err);
-        });
-        collector.on("error", reject);
-        collector.on("finish", function () {
-            const bytes = concatBytes(this.bufferedBytes);
-            resolve(bytes);
-        });
-    });
-};
-class Collector extends Writable {
-    bufferedBytes = [];
-    _write(chunk, encoding, callback) {
-        this.bufferedBytes.push(chunk);
-        callback();
-    }
-}
-
-const ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED = "The stream has already been transformed.";
-const sdkStreamMixin = (stream) => {
-    if (!(stream instanceof Readable)) {
-        try {
-            return sdkStreamMixin$1(stream);
-        }
-        catch (ignored) {
-            const name = stream?.__proto__?.constructor?.name || stream;
-            throw new Error(`Unexpected stream implementation, expect Stream.Readable instance, got ${name}`);
-        }
-    }
-    let transformed = false;
-    const transformToByteArray = async () => {
-        if (transformed) {
-            throw new Error(ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED);
-        }
-        transformed = true;
-        return await streamCollector(stream);
-    };
-    return Object.assign(stream, {
-        transformToByteArray,
-        transformToString: async (encoding) => {
-            const buf = await transformToByteArray();
-            if (encoding === undefined || Buffer.isEncoding(encoding)) {
-                return fromArrayBuffer(buf.buffer, buf.byteOffset, buf.byteLength).toString(encoding);
-            }
-            else {
-                const decoder = new TextDecoder(encoding);
-                return decoder.decode(buf);
-            }
-        },
-        transformToWebStream: () => {
-            if (transformed) {
-                throw new Error(ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED);
-            }
-            if (stream.readableFlowing !== null) {
-                throw new Error("The stream has been consumed by other callbacks.");
-            }
-            if (typeof Readable.toWeb !== "function") {
-                throw new Error("Readable.toWeb() is not supported. Please ensure a polyfill is available.");
-            }
-            transformed = true;
-            return Readable.toWeb(stream);
-        },
-    });
-};
-
-async function splitStream$1(stream) {
-    if (typeof stream.stream === "function") {
-        stream = stream.stream();
-    }
-    const readableStream = stream;
-    return readableStream.tee();
-}
-
-async function splitStream(stream) {
-    if (isReadableStream(stream) || isBlob(stream)) {
-        return splitStream$1(stream);
-    }
-    const stream1 = new PassThrough();
-    const stream2 = new PassThrough();
-    stream.pipe(stream1);
-    stream.pipe(stream2);
-    return [stream1, stream2];
-}
-
-class Uint8ArrayBlobAdapter extends bindUint8ArrayBlobAdapter(toUtf8$1, fromUtf8$1, toBase64$1, fromBase64) {
-}
-const _getRandomValues = getRandomValues;
-const v4 = bindV4(_getRandomValues);
-const generateIdempotencyToken = v4;
-
-exports.ChecksumStream = ChecksumStream$1;
-exports.Hash = Hash;
-exports.LazyJsonString = LazyJsonString;
-exports.NumericValue = NumericValue;
-exports.Uint8ArrayBlobAdapter = Uint8ArrayBlobAdapter;
-exports._parseEpochTimestamp = _parseEpochTimestamp;
-exports._parseRfc3339DateTimeWithOffset = _parseRfc3339DateTimeWithOffset;
-exports._parseRfc7231DateTime = _parseRfc7231DateTime;
-exports.calculateBodyLength = calculateBodyLength;
-exports.concatBytes = concatBytes;
-exports.copyDocumentWithTransform = copyDocumentWithTransform;
-exports.createBufferedReadable = createBufferedReadable;
-exports.createChecksumStream = createChecksumStream;
-exports.dateToUtcString = dateToUtcString;
-exports.deserializerMiddleware = deserializerMiddleware;
-exports.deserializerMiddlewareOption = deserializerMiddlewareOption;
-exports.expectBoolean = expectBoolean;
-exports.expectByte = expectByte;
-exports.expectFloat32 = expectFloat32;
-exports.expectInt = expectInt;
-exports.expectInt32 = expectInt32;
-exports.expectLong = expectLong;
-exports.expectNonNull = expectNonNull;
-exports.expectNumber = expectNumber;
-exports.expectObject = expectObject;
-exports.expectShort = expectShort;
-exports.expectString = expectString;
-exports.expectUnion = expectUnion;
-exports.fromArrayBuffer = fromArrayBuffer;
-exports.fromBase64 = fromBase64;
-exports.fromHex = fromHex;
-exports.fromString = fromString;
-exports.fromUtf8 = fromUtf8$1;
-exports.generateIdempotencyToken = generateIdempotencyToken;
-exports.getAwsChunkedEncodingStream = getAwsChunkedEncodingStream;
-exports.getSerdePlugin = getSerdePlugin;
-exports.handleFloat = handleFloat;
-exports.headStream = headStream;
-exports.isArrayBuffer = isArrayBuffer;
-exports.isBlob = isBlob;
-exports.isReadableStream = isReadableStream;
-exports.limitedParseDouble = limitedParseDouble;
-exports.limitedParseFloat = limitedParseFloat;
-exports.limitedParseFloat32 = limitedParseFloat32;
-exports.logger = logger;
-exports.nv = nv;
-exports.parseBoolean = parseBoolean;
-exports.parseEpochTimestamp = parseEpochTimestamp;
-exports.parseRfc3339DateTime = parseRfc3339DateTime;
-exports.parseRfc3339DateTimeWithOffset = parseRfc3339DateTimeWithOffset;
-exports.parseRfc7231DateTime = parseRfc7231DateTime;
-exports.quoteHeader = quoteHeader;
-exports.sdkStreamMixin = sdkStreamMixin;
-exports.serializerMiddleware = serializerMiddleware;
-exports.serializerMiddlewareOption = serializerMiddlewareOption;
-exports.splitEvery = splitEvery;
-exports.splitHeader = splitHeader;
-exports.splitStream = splitStream;
-exports.streamCollector = streamCollector;
-exports.strictParseByte = strictParseByte;
-exports.strictParseDouble = strictParseDouble;
-exports.strictParseFloat = strictParseFloat;
-exports.strictParseFloat32 = strictParseFloat32;
-exports.strictParseInt = strictParseInt;
-exports.strictParseInt32 = strictParseInt32;
-exports.strictParseLong = strictParseLong;
-exports.strictParseShort = strictParseShort;
-exports.toBase64 = toBase64$1;
-exports.toHex = toHex;
-exports.toUint8Array = toUint8Array;
-exports.toUtf8 = toUtf8$1;
-exports.v4 = v4;
-
-
-/***/ }),
-
-/***/ 5105:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-const { SMITHY_CONTEXT_KEY } = __nccwpck_require__(805);
-
-const getSmithyContext = (context) => context[SMITHY_CONTEXT_KEY] || (context[SMITHY_CONTEXT_KEY] = {});
-
-function hasOwn(o, k) {
-    return Object.prototype.hasOwnProperty.call(o, k);
-}
-
-class HttpRequest {
-    method;
-    protocol;
-    hostname;
-    port;
-    path;
-    query;
-    headers;
-    username;
-    password;
-    fragment;
-    body;
-    constructor(options) {
-        this.method = options.method || "GET";
-        this.hostname = options.hostname || "localhost";
-        this.port = options.port;
-        this.query = options.query || {};
-        this.headers = options.headers || {};
-        this.body = options.body;
-        this.protocol = options.protocol
-            ? options.protocol.slice(-1) !== ":"
-                ? `${options.protocol}:`
-                : options.protocol
-            : "https:";
-        this.path = options.path ? (options.path.charAt(0) !== "/" ? `/${options.path}` : options.path) : "/";
-        this.username = options.username;
-        this.password = options.password;
-        this.fragment = options.fragment;
-    }
-    static clone(request) {
-        const cloned = new HttpRequest({
-            ...request,
-            headers: { ...request.headers },
-        });
-        if (cloned.query) {
-            cloned.query = cloneQuery(cloned.query);
-        }
-        return cloned;
-    }
-    static isInstance(request) {
-        if (!request) {
-            return false;
-        }
-        const req = request;
-        return ("method" in req &&
-            "protocol" in req &&
-            "hostname" in req &&
-            "path" in req &&
-            typeof req["query"] === "object" &&
-            typeof req["headers"] === "object");
-    }
-    clone() {
-        return HttpRequest.clone(this);
-    }
-}
-function cloneQuery(query) {
-    return Object.keys(query).reduce((carry, paramName) => {
-        const param = query[paramName];
-        return {
-            ...carry,
-            [paramName]: Array.isArray(param) ? [...param] : param,
-        };
-    }, {});
-}
-
-class HttpResponse {
-    statusCode;
-    reason;
-    headers;
-    body;
-    constructor(options) {
-        this.statusCode = options.statusCode;
-        this.reason = options.reason;
-        this.headers = options.headers || {};
-        this.body = options.body;
-    }
-    static isInstance(response) {
-        if (!response)
-            return false;
-        const resp = response;
-        return typeof resp.statusCode === "number" && typeof resp.headers === "object";
-    }
-}
-
-const VALID_HOST_LABEL_REGEX = new RegExp(`^(?!.*-$)(?!-)[a-zA-Z0-9-]{1,63}$`);
-const isValidHostLabel = (value, allowSubDomains = false) => {
-    if (!allowSubDomains) {
-        return VALID_HOST_LABEL_REGEX.test(value);
-    }
-    const labels = value.split(".");
-    for (const label of labels) {
-        if (!isValidHostLabel(label)) {
-            return false;
-        }
-    }
-    return true;
-};
-
-function isValidHostname(hostname) {
-    const hostPattern = /^[a-z0-9][a-z0-9.-]*[a-z0-9]$/;
-    return hostPattern.test(hostname);
-}
-
-const normalizeProvider = (input) => {
-    if (typeof input === "function")
-        return input;
-    const promisified = Promise.resolve(input);
-    return () => promisified;
-};
-
-function parseQueryString(querystring) {
-    const query = {};
-    querystring = querystring.replace(/^\?/, "");
-    if (querystring) {
-        for (const pair of querystring.split("&")) {
-            let [key, value = null] = pair.split("=");
-            key = decodeURIComponent(key);
-            if (value) {
-                value = decodeURIComponent(value);
-            }
-            if (!(key in query)) {
-                query[key] = value;
-            }
-            else if (Array.isArray(query[key])) {
-                query[key].push(value);
-            }
-            else {
-                query[key] = [query[key], value];
-            }
-        }
-    }
-    return query;
-}
-
-const parseUrl = (url) => {
-    if (typeof url === "string") {
-        return parseUrl(new URL(url));
-    }
-    const { hostname, pathname, port, protocol, search } = url;
-    let query;
-    if (search) {
-        query = parseQueryString(search);
-    }
-    return {
-        hostname,
-        port: port ? parseInt(port) : undefined,
-        protocol,
-        path: pathname,
-        query,
-    };
-};
-
-const toEndpointV1 = (endpoint) => {
-    if (typeof endpoint === "object") {
-        if ("url" in endpoint) {
-            const v1Endpoint = parseUrl(endpoint.url);
-            if (endpoint.headers) {
-                v1Endpoint.headers = {};
-                for (const name in endpoint.headers) {
-                    if (!hasOwn(endpoint.headers, name))
-                        continue;
-                    v1Endpoint.headers[name.toLowerCase()] = endpoint.headers[name].join(", ");
-                }
-            }
-            return v1Endpoint;
-        }
-        return endpoint;
-    }
-    return parseUrl(endpoint);
-};
-
-exports.HttpRequest = HttpRequest;
-exports.HttpResponse = HttpResponse;
-exports.getSmithyContext = getSmithyContext;
-exports.hasOwn = hasOwn;
-exports.isValidHostLabel = isValidHostLabel;
-exports.isValidHostname = isValidHostname;
-exports.normalizeProvider = normalizeProvider;
-exports.parseQueryString = parseQueryString;
-exports.parseUrl = parseUrl;
-exports.toEndpointV1 = toEndpointV1;
-
-
-/***/ }),
-
-/***/ 805:
-/***/ ((__unused_webpack_module, exports) => {
-
-var HttpAuthLocation;
-(function (HttpAuthLocation) {
-    HttpAuthLocation["HEADER"] = "header";
-    HttpAuthLocation["QUERY"] = "query";
-})(HttpAuthLocation || (HttpAuthLocation = {}));
-
-var HttpApiKeyAuthLocation;
-(function (HttpApiKeyAuthLocation) {
-    HttpApiKeyAuthLocation["HEADER"] = "header";
-    HttpApiKeyAuthLocation["QUERY"] = "query";
-})(HttpApiKeyAuthLocation || (HttpApiKeyAuthLocation = {}));
-
-var EndpointURLScheme;
-(function (EndpointURLScheme) {
-    EndpointURLScheme["HTTP"] = "http";
-    EndpointURLScheme["HTTPS"] = "https";
-})(EndpointURLScheme || (EndpointURLScheme = {}));
-
-var AlgorithmId;
-(function (AlgorithmId) {
-    AlgorithmId["MD5"] = "md5";
-    AlgorithmId["CRC32"] = "crc32";
-    AlgorithmId["CRC32C"] = "crc32c";
-    AlgorithmId["SHA1"] = "sha1";
-    AlgorithmId["SHA256"] = "sha256";
-})(AlgorithmId || (AlgorithmId = {}));
-const getChecksumConfiguration = (runtimeConfig) => {
-    const checksumAlgorithms = [];
-    if (runtimeConfig.sha256 !== undefined) {
-        checksumAlgorithms.push({
-            algorithmId: () => AlgorithmId.SHA256,
-            checksumConstructor: () => runtimeConfig.sha256,
-        });
-    }
-    if (runtimeConfig.md5 != undefined) {
-        checksumAlgorithms.push({
-            algorithmId: () => AlgorithmId.MD5,
-            checksumConstructor: () => runtimeConfig.md5,
-        });
-    }
-    return {
-        addChecksumAlgorithm(algo) {
-            checksumAlgorithms.push(algo);
-        },
-        checksumAlgorithms() {
-            return checksumAlgorithms;
-        },
-    };
-};
-const resolveChecksumRuntimeConfig = (clientConfig) => {
-    const runtimeConfig = {};
-    clientConfig.checksumAlgorithms().forEach((checksumAlgorithm) => {
-        runtimeConfig[checksumAlgorithm.algorithmId()] = checksumAlgorithm.checksumConstructor();
-    });
-    return runtimeConfig;
-};
-
-const getDefaultClientConfiguration = (runtimeConfig) => {
-    return getChecksumConfiguration(runtimeConfig);
-};
-const resolveDefaultRuntimeConfig = (config) => {
-    return resolveChecksumRuntimeConfig(config);
-};
-
-var FieldPosition;
-(function (FieldPosition) {
-    FieldPosition[FieldPosition["HEADER"] = 0] = "HEADER";
-    FieldPosition[FieldPosition["TRAILER"] = 1] = "TRAILER";
-})(FieldPosition || (FieldPosition = {}));
-
-const SMITHY_CONTEXT_KEY = "__smithy_context";
-
-var IniSectionType;
-(function (IniSectionType) {
-    IniSectionType["PROFILE"] = "profile";
-    IniSectionType["SSO_SESSION"] = "sso-session";
-    IniSectionType["SERVICES"] = "services";
-})(IniSectionType || (IniSectionType = {}));
-
-var RequestHandlerProtocol;
-(function (RequestHandlerProtocol) {
-    RequestHandlerProtocol["HTTP_0_9"] = "http/0.9";
-    RequestHandlerProtocol["HTTP_1_0"] = "http/1.0";
-    RequestHandlerProtocol["TDS_8_0"] = "tds/8.0";
-})(RequestHandlerProtocol || (RequestHandlerProtocol = {}));
-
-exports.AlgorithmId = AlgorithmId;
-exports.EndpointURLScheme = EndpointURLScheme;
-exports.FieldPosition = FieldPosition;
-exports.HttpApiKeyAuthLocation = HttpApiKeyAuthLocation;
-exports.HttpAuthLocation = HttpAuthLocation;
-exports.IniSectionType = IniSectionType;
-exports.RequestHandlerProtocol = RequestHandlerProtocol;
-exports.SMITHY_CONTEXT_KEY = SMITHY_CONTEXT_KEY;
-exports.getDefaultClientConfiguration = getDefaultClientConfiguration;
-exports.resolveDefaultRuntimeConfig = resolveDefaultRuntimeConfig;
-
-
-/***/ }),
-
 /***/ 5118:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-const { hasOwn, fromUtf8, fromHex, toHex, toUint8Array, isArrayBuffer } = __nccwpck_require__(2430);
+const { hasOwn, fromUtf8, fromHex, toHex, toUint8Array, writeKey, isArrayBuffer } = __nccwpck_require__(2430);
 const { normalizeProvider } = __nccwpck_require__(2658);
 const { escapeUri, HttpRequest } = __nccwpck_require__(3422);
 
@@ -48169,8 +40959,9 @@ class HeaderFormatter {
     format(headers) {
         const chunks = [];
         for (const headerName in headers) {
-            if (!hasOwn(headers, headerName))
+            if (!hasOwn(headers, headerName)) {
                 continue;
+            }
             const bytes = fromUtf8(headerName);
             chunks.push(Uint8Array.from([bytes.byteLength]), bytes, this.formatHeaderValue(headers[headerName]));
         }
@@ -48287,8 +41078,9 @@ function negate(bytes) {
     }
     for (let i = 7; i > -1; i--) {
         bytes[i]++;
-        if (bytes[i] !== 0)
+        if (bytes[i] !== 0) {
             break;
+        }
     }
 }
 
@@ -48340,8 +41132,9 @@ const getCanonicalQuery = ({ query = {} }) => {
     const keys = [];
     const serialized = {};
     for (const key in query) {
-        if (!hasOwn(query, key))
+        if (!hasOwn(query, key)) {
             continue;
+        }
         if (key.toLowerCase() === SIGNATURE_HEADER) {
             continue;
         }
@@ -48420,10 +41213,12 @@ ${toHex(hashedRequest)}`;
         if (this.uriEscapePath) {
             const normalizedPathSegments = [];
             for (const pathSegment of path.split("/")) {
-                if (pathSegment?.length === 0)
+                if (pathSegment?.length === 0) {
                     continue;
-                if (pathSegment === ".")
+                }
+                if (pathSegment === ".") {
                     continue;
+                }
                 if (pathSegment === "..") {
                     normalizedPathSegments.pop();
                 }
@@ -48494,13 +41289,16 @@ const getCanonicalHeaders = ({ headers }, unsignableHeaders, signableHeaders) =>
             continue;
         }
         const canonicalHeaderName = headerName.toLowerCase();
-        if (canonicalHeaderName in ALWAYS_UNSIGNABLE_HEADERS ||
+        if (hasOwn(ALWAYS_UNSIGNABLE_HEADERS, canonicalHeaderName) ||
             unsignableHeaders?.has(canonicalHeaderName) ||
             PROXY_HEADER_PATTERN.test(canonicalHeaderName) ||
             SEC_HEADER_PATTERN.test(canonicalHeaderName)) {
             if (!signableHeaders || (signableHeaders && !signableHeaders.has(canonicalHeaderName))) {
                 continue;
             }
+        }
+        if (canonicalHeaderName === "__proto__") {
+            writeKey(canonical);
         }
         canonical[canonicalHeaderName] = headers[headerName]
             .replace(/[\r\n]/g, " ")
@@ -48512,8 +41310,9 @@ const getCanonicalHeaders = ({ headers }, unsignableHeaders, signableHeaders) =>
 
 const getPayloadHash = async ({ headers, body }, hashConstructor) => {
     for (const headerName in headers) {
-        if (!hasOwn(headers, headerName))
+        if (!hasOwn(headers, headerName)) {
             continue;
+        }
         if (headerName.toLowerCase() === SHA256_HEADER) {
             return headers[headerName];
         }
@@ -48532,8 +41331,9 @@ const getPayloadHash = async ({ headers, body }, hashConstructor) => {
 const hasHeader = (soughtHeader, headers) => {
     soughtHeader = soughtHeader.toLowerCase();
     for (const headerName in headers) {
-        if (!hasOwn(headers, headerName))
+        if (!hasOwn(headers, headerName)) {
             continue;
+        }
         if (soughtHeader === headerName.toLowerCase()) {
             return true;
         }
@@ -48544,8 +41344,9 @@ const hasHeader = (soughtHeader, headers) => {
 const moveHeadersToQuery = (request, options = {}) => {
     const { headers, query = {} } = HttpRequest.clone(request);
     for (const name in headers) {
-        if (!hasOwn(headers, name))
+        if (!hasOwn(headers, name)) {
             continue;
+        }
         const lname = name.toLowerCase();
         if ((lname.slice(0, 6) === "x-amz-" && !options.unhoistableHeaders?.has(lname)) ||
             options.hoistableHeaders?.has(lname)) {
@@ -48563,8 +41364,9 @@ const moveHeadersToQuery = (request, options = {}) => {
 const prepareRequest = (request) => {
     request = HttpRequest.clone(request);
     for (const headerName in request.headers) {
-        if (!hasOwn(request.headers, headerName))
+        if (!hasOwn(request.headers, headerName)) {
             continue;
+        }
         if (GENERATED_HEADERS.indexOf(headerName.toLowerCase()) > -1) {
             delete request.headers[headerName];
         }
@@ -52403,11 +45205,77 @@ class Request {
     }
   }
 
-  onUpgrade (statusCode, headers, socket) {
+  /**
+   * @param {number|null} statusCode
+   * @param {Buffer[]|null} headers
+   * @param {import('node:stream').Duplex} socket
+   * @param {string} [statusText]
+   */
+  onUpgrade (statusCode, headers, socket, statusText = '') {
+    this.onFinally()
+
     assert(!this.aborted)
     assert(!this.completed)
 
-    return this[kHandler].onUpgrade(statusCode, headers, socket)
+    if (statusCode !== null) {
+      this.#publishUpgradeHeaders(statusCode, headers, statusText)
+    }
+
+    const result = this[kHandler].onUpgrade(statusCode, headers, socket)
+
+    if (!this.aborted) {
+      this.completed = true
+      if (statusCode !== null) {
+        this.#publishUpgradeTrailers()
+      }
+    }
+
+    return result
+  }
+
+  /**
+   * @param {number} statusCode
+   * @param {import('node:http2').IncomingHttpHeaders} headers
+   * @param {(headers: import('node:http2').IncomingHttpHeaders) => Buffer[]} parseHeaders
+   * @param {string} [statusText]
+   */
+  onUpgradeResponse (statusCode, headers, parseHeaders, statusText = '') {
+    assert(!this.aborted)
+    assert(this.completed)
+
+    if (channels.headers.hasSubscribers) {
+      this.#publishUpgradeHeaders(statusCode, parseHeaders(headers), statusText)
+    }
+    this.#publishUpgradeTrailers()
+  }
+
+  /**
+   * @param {Error} error
+   */
+  onUpgradeError (error) {
+    assert(!this.aborted)
+    assert(this.completed)
+
+    if (channels.error.hasSubscribers) {
+      channels.error.publish({ request: this, error })
+    }
+  }
+
+  /**
+   * @param {number} statusCode
+   * @param {Buffer[]} headers
+   * @param {string} statusText
+   */
+  #publishUpgradeHeaders (statusCode, headers, statusText) {
+    if (channels.headers.hasSubscribers) {
+      channels.headers.publish({ request: this, response: { statusCode, headers, statusText } })
+    }
+  }
+
+  #publishUpgradeTrailers () {
+    if (channels.trailers.hasSubscribers) {
+      channels.trailers.publish({ request: this, trailers: [] })
+    }
   }
 
   onComplete (trailers) {
@@ -54306,7 +47174,7 @@ class Parser {
   }
 
   onUpgrade (head) {
-    const { upgrade, client, socket, headers, statusCode } = this
+    const { upgrade, client, socket, headers, statusCode, statusText } = this
 
     assert(upgrade)
     assert(client[kSocket] === socket)
@@ -54341,9 +47209,10 @@ class Parser {
     client.emit('disconnect', client[kUrl], [client], new InformationalError('upgrade'))
 
     try {
-      request.onUpgrade(statusCode, headers, socket)
-    } catch (err) {
-      util.destroy(socket, err)
+      request.onUpgrade(statusCode, headers, socket, statusText)
+    } catch (error) {
+      util.errorRequest(client, request, error)
+      util.destroy(socket, error)
     }
 
     client[kResume]()
@@ -54750,7 +47619,7 @@ async function connectH1 (client, socket) {
 
 function clearIdleSocketValidation (socket) {
   if (socket[kIdleSocketValidationTimeout]) {
-    clearTimeout(socket[kIdleSocketValidationTimeout])
+    clearImmediate(socket[kIdleSocketValidationTimeout])
     socket[kIdleSocketValidationTimeout] = null
   }
 
@@ -54759,15 +47628,23 @@ function clearIdleSocketValidation (socket) {
 
 function scheduleIdleSocketValidation (client, socket) {
   socket[kIdleSocketValidation] = 1
-  socket[kIdleSocketValidationTimeout] = setTimeout(() => {
+  // Yield to the check phase (after poll) so unsolicited bytes / FIN / RST
+  // already pending on this idle keep-alive socket are processed before the
+  // next request is written (GHSA-35p6-xmwp-9g52).
+  //
+  // setTimeout(0) pays Node's ~1ms timer floor on every sequential reuse
+  // (#5493). setImmediate avoids that, but an *unref'd* Immediate lets poll
+  // block for ~500ms when the event loop is otherwise idle (#5600 / #5606).
+  // A ref'd Immediate both keeps the pending request alive and makes poll
+  // return immediately — the hybrid those issues asked for.
+  socket[kIdleSocketValidationTimeout] = setImmediate(() => {
     socket[kIdleSocketValidationTimeout] = null
     socket[kIdleSocketValidation] = 2
 
     if (client[kSocket] === socket && !socket.destroyed) {
       client[kResume]()
     }
-  }, 0)
-  socket[kIdleSocketValidationTimeout].unref?.()
+  })
 }
 
 /**
@@ -54916,12 +47793,22 @@ function writeH1 (client, request) {
   const socket = client[kSocket]
   clearIdleSocketValidation(socket)
 
-  const abort = (err) => {
-    if (request.aborted || request.completed) {
+  /**
+   * @param {Error} [error]
+   */
+  const abort = (error) => {
+    if (request.aborted) {
       return
     }
 
-    util.errorRequest(client, request, err || new RequestAbortedError())
+    if (request.completed) {
+      if (request.upgrade || request.method === 'CONNECT') {
+        util.destroy(socket, new InformationalError('aborted'))
+      }
+      return
+    }
+
+    util.errorRequest(client, request, error || new RequestAbortedError())
 
     util.destroy(body)
     util.destroy(socket, new InformationalError('aborted'))
@@ -55378,6 +48265,7 @@ module.exports = connectH1
 
 
 const assert = __nccwpck_require__(4589)
+const { errorMonitor } = __nccwpck_require__(8474)
 const { pipeline } = __nccwpck_require__(7075)
 const util = __nccwpck_require__(3440)
 const {
@@ -55452,6 +48340,15 @@ function parseH2Headers (headers) {
   }
 
   return result
+}
+
+/**
+ * @param {import('node:http2').IncomingHttpHeaders} headers
+ * @returns {Buffer[]}
+ */
+function parseH2ResponseHeaders (headers) {
+  const { [HTTP2_HEADER_STATUS]: _statusCode, ...realHeaders } = headers
+  return parseH2Headers(realHeaders)
 }
 
 async function connectH2 (client, socket) {
@@ -55674,22 +48571,32 @@ function writeH2 (client, request) {
   headers[HTTP2_HEADER_AUTHORITY] = host || `${hostname}${port ? `:${port}` : ''}`
   headers[HTTP2_HEADER_METHOD] = method
 
-  const abort = (err) => {
-    if (request.aborted || request.completed) {
+  /**
+   * @param {Error} [error]
+   */
+  const abort = (error) => {
+    if (request.aborted) {
       return
     }
 
-    err = err || new RequestAbortedError()
+    if (request.completed) {
+      if (method === 'CONNECT' && stream != null) {
+        util.destroy(stream, error || new RequestAbortedError())
+      }
+      return
+    }
 
-    util.errorRequest(client, request, err)
+    error = error || new RequestAbortedError()
+
+    util.errorRequest(client, request, error)
 
     if (stream != null) {
-      util.destroy(stream, err)
+      util.destroy(stream, error)
     }
 
     // We do not destroy the socket as we can continue using the session
     // the stream get's destroyed and the session remains to create new streams
-    util.destroy(body, err)
+    util.destroy(body, error)
     client[kQueue][client[kRunningIdx]++] = null
     client[kResume]()
   }
@@ -55708,25 +48615,57 @@ function writeH2 (client, request) {
 
   if (method === 'CONNECT') {
     session.ref()
-    // We are already connected, streams are pending, first request
-    // will create a new stream. We trigger a request to create the stream and wait until
-    // `ready` event is triggered
     // We disabled endStream to allow the user to write to the stream
     stream = session.request(headers, { endStream: false, signal })
+    let upgradeResponseFinished = false
 
-    if (stream.id && !stream.pending) {
-      request.onUpgrade(null, null, stream)
-      ++session[kOpenStreams]
-      client[kQueue][client[kRunningIdx]++] = null
-    } else {
-      stream.once('ready', () => {
-        request.onUpgrade(null, null, stream)
-        ++session[kOpenStreams]
-        client[kQueue][client[kRunningIdx]++] = null
-      })
+    /**
+     * @param {import('node:http2').IncomingHttpHeaders} headers
+     */
+    const onResponse = (headers) => {
+      upgradeResponseFinished = true
+      stream.off(errorMonitor, onUpgradeError)
+      request.onUpgradeResponse(Number(headers[HTTP2_HEADER_STATUS]), headers, parseH2ResponseHeaders)
     }
 
+    /**
+     * @param {Error} error
+     */
+    const onUpgradeError = (error) => {
+      upgradeResponseFinished = true
+      stream.off('response', onResponse)
+      request.onUpgradeError(error)
+    }
+
+    const onReady = () => {
+      try {
+        request.onUpgrade(null, null, stream)
+      } catch (error) {
+        stream.off('response', onResponse)
+        abort(error)
+        return
+      }
+
+      if (request.aborted) {
+        return
+      }
+
+      stream.off('error', abort)
+      stream.once(errorMonitor, onUpgradeError)
+      client[kQueue][client[kRunningIdx]++] = null
+    }
+
+    stream.once('response', onResponse)
+    stream.once('error', abort)
+    ++session[kOpenStreams]
+    onReady()
+
     stream.once('close', () => {
+      if (!upgradeResponseFinished && request.completed) {
+        stream.off('response', onResponse)
+        stream.off(errorMonitor, onUpgradeError)
+        request.onUpgradeError(new InformationalError(`HTTP/2: "stream error" received - code ${stream.rstCode}`))
+      }
       session[kOpenStreams] -= 1
       if (session[kOpenStreams] === 0) session.unref()
     })
@@ -58425,6 +51364,7 @@ class RetryHandler {
     this.end = null
     this.etag = null
     this.resume = null
+    this.headersSent = false
 
     // Handle possible onConnect duplication
     this.handler.onConnect(reason => {
@@ -58435,6 +51375,20 @@ class RetryHandler {
         this.reason = reason
       }
     })
+  }
+
+  checkpointResponseEnd (headers, resume) {
+    if (this.end == null && this.opts.method !== 'HEAD') {
+      const contentLength = headers['content-length']
+      this.end = contentLength != null ? Number(contentLength) - 1 : null
+
+      assert(
+        this.end == null || Number.isFinite(this.end),
+        'invalid content-length'
+      )
+    }
+
+    this.resume = this.end != null ? resume : null
   }
 
   onRequestSent () {
@@ -58525,7 +51479,12 @@ class RetryHandler {
     this.retryCount += 1
 
     if (statusCode >= 300) {
-      if (this.retryOpts.statusCodes.includes(statusCode) === false) {
+      // Only expose a response if no earlier attempt has reached the caller.
+      // Otherwise abort this attempt so the error settles the existing body
+      // instead of replacing it with a new response.
+      if (!this.headersSent && this.retryOpts.statusCodes.includes(statusCode) === false) {
+        this.headersSent = true
+        this.checkpointResponseEnd(headers, resume)
         return this.handler.onHeaders(
           statusCode,
           rawHeaders,
@@ -58594,8 +51553,15 @@ class RetryHandler {
 
       const { start, size, end = size - 1 } = contentRange
 
-      assert(this.start === start, 'content-range mismatch')
-      assert(this.end == null || this.end === end, 'content-range mismatch')
+      if (this.start !== start || (this.end != null && this.end !== end)) {
+        this.abort(
+          new RequestRetryError('Content-Range mismatch', statusCode, {
+            headers,
+            data: { count: this.retryCount }
+          })
+        )
+        return false
+      }
 
       this.resume = resume
       return true
@@ -58607,6 +51573,7 @@ class RetryHandler {
         const range = parseRangeHeader(headers['content-range'])
 
         if (range == null) {
+          this.headersSent = true
           return this.handler.onHeaders(
             statusCode,
             rawHeaders,
@@ -58645,6 +51612,7 @@ class RetryHandler {
       )
 
       this.resume = resume
+      this.headersSent = true
       this.etag = headers.etag != null ? headers.etag : null
 
       // Weak etags are not useful for comparison nor cache
@@ -58684,7 +51652,7 @@ class RetryHandler {
   }
 
   onError (err) {
-    if (this.aborted || isDisturbed(this.opts.body)) {
+    if (this.aborted || isDisturbed(this.opts.body) || (this.headersSent && this.resume == null)) {
       return this.handler.onError(err)
     }
 
@@ -63142,6 +56110,49 @@ const COLON = 0x3A
  */
 const SPACE = 0x20
 
+const DATA = Buffer.from('data')
+const EVENT = Buffer.from('event')
+const ID = Buffer.from('id')
+const RETRY = Buffer.from('retry')
+
+function isASCIINumberBytes (buffer, start) {
+  if (start >= buffer.length) {
+    return false
+  }
+
+  for (let i = start; i < buffer.length; i++) {
+    if (buffer[i] < 0x30 || buffer[i] > 0x39) {
+      return false
+    }
+  }
+
+  return true
+}
+
+function isValidLastEventIdBytes (buffer, start) {
+  for (let i = start; i < buffer.length; i++) {
+    if (buffer[i] === 0x00) {
+      return false
+    }
+  }
+
+  return true
+}
+
+function isFieldName (line, length, field) {
+  if (length !== field.length) {
+    return false
+  }
+
+  for (let i = 0; i < length; i++) {
+    if (line[i] !== field[i]) {
+      return false
+    }
+  }
+
+  return true
+}
+
 /**
  * @typedef {object} EventSourceStreamEvent
  * @type {object}
@@ -63182,11 +56193,14 @@ class EventSourceStream extends Transform {
   eventEndCheck = false
 
   /**
-   * @type {Buffer}
+   * @type {Buffer[]}
    */
-  buffer = null
+  chunks = []
 
+  chunkIndex = 0
   pos = 0
+  lineChunkIndex = 0
+  linePos = 0
 
   event = {
     data: undefined,
@@ -63225,92 +56239,20 @@ class EventSourceStream extends Transform {
       return
     }
 
-    // Cache the chunk in the buffer, as the data might not be complete while
-    // processing it
-    // TODO: Investigate if there is a more performant way to handle
-    // incoming chunks
-    // see: https://github.com/nodejs/undici/issues/2630
-    if (this.buffer) {
-      this.buffer = Buffer.concat([this.buffer, chunk])
-    } else {
-      this.buffer = chunk
-    }
+    this.chunks.push(chunk)
 
     // Strip leading byte-order-mark if we opened the stream and started
     // the processing of the incoming data
     if (this.checkBOM) {
-      switch (this.buffer.length) {
-        case 1:
-          // Check if the first byte is the same as the first byte of the BOM
-          if (this.buffer[0] === BOM[0]) {
-            // If it is, we need to wait for more data
-            callback()
-            return
-          }
-          // Set the checkBOM flag to false as we don't need to check for the
-          // BOM anymore
-          this.checkBOM = false
-
-          // The buffer only contains one byte so we need to wait for more data
-          callback()
-          return
-        case 2:
-          // Check if the first two bytes are the same as the first two bytes
-          // of the BOM
-          if (
-            this.buffer[0] === BOM[0] &&
-            this.buffer[1] === BOM[1]
-          ) {
-            // If it is, we need to wait for more data, because the third byte
-            // is needed to determine if it is the BOM or not
-            callback()
-            return
-          }
-
-          // Set the checkBOM flag to false as we don't need to check for the
-          // BOM anymore
-          this.checkBOM = false
-          break
-        case 3:
-          // Check if the first three bytes are the same as the first three
-          // bytes of the BOM
-          if (
-            this.buffer[0] === BOM[0] &&
-            this.buffer[1] === BOM[1] &&
-            this.buffer[2] === BOM[2]
-          ) {
-            // If it is, we can drop the buffered data, as it is only the BOM
-            this.buffer = Buffer.alloc(0)
-            // Set the checkBOM flag to false as we don't need to check for the
-            // BOM anymore
-            this.checkBOM = false
-
-            // Await more data
-            callback()
-            return
-          }
-          // If it is not the BOM, we can start processing the data
-          this.checkBOM = false
-          break
-        default:
-          // The buffer is longer than 3 bytes, so we can drop the BOM if it is
-          // present
-          if (
-            this.buffer[0] === BOM[0] &&
-            this.buffer[1] === BOM[1] &&
-            this.buffer[2] === BOM[2]
-          ) {
-            // Remove the BOM from the buffer
-            this.buffer = this.buffer.subarray(3)
-          }
-
-          // Set the checkBOM flag to false as we don't need to check for the
-          this.checkBOM = false
-          break
+      if (this.handleBOM()) {
+        callback()
+        return
       }
     }
 
-    while (this.pos < this.buffer.length) {
+    while (this.hasCurrentByte()) {
+      const byte = this.currentByte()
+
       // If the previous line ended with an end-of-line, we need to check
       // if the next character is also an end-of-line.
       if (this.eventEndCheck) {
@@ -63323,10 +56265,9 @@ class EventSourceStream extends Transform {
         if (this.crlfCheck) {
           // If the current character is a line feed, we can remove it
           // from the buffer and reset the crlfCheck flag
-          if (this.buffer[this.pos] === LF) {
-            this.buffer = this.buffer.subarray(this.pos + 1)
-            this.pos = 0
+          if (byte === LF) {
             this.crlfCheck = false
+            this.consumeCurrentByte()
 
             // It is possible that the line feed is not the end of the
             // event. We need to check if the next character is an
@@ -63342,19 +56283,17 @@ class EventSourceStream extends Transform {
           this.crlfCheck = false
         }
 
-        if (this.buffer[this.pos] === LF || this.buffer[this.pos] === CR) {
+        if (byte === LF || byte === CR) {
           // If the current character is a carriage return, we need to
           // set the crlfCheck flag to true, as we need to check if the
           // next character is a line feed so we can remove it from the
           // buffer
-          if (this.buffer[this.pos] === CR) {
+          if (byte === CR) {
             this.crlfCheck = true
           }
 
-          this.buffer = this.buffer.subarray(this.pos + 1)
-          this.pos = 0
-          if (
-            this.event.data !== undefined || this.event.event || this.event.id || this.event.retry) {
+          this.consumeCurrentByte()
+          if (this.hasPendingEvent()) {
             this.processEvent(this.event)
           }
           this.clearEvent()
@@ -63368,22 +56307,18 @@ class EventSourceStream extends Transform {
 
       // If the current character is an end-of-line, we can process the
       // line
-      if (this.buffer[this.pos] === LF || this.buffer[this.pos] === CR) {
+      if (byte === LF || byte === CR) {
         // If the current character is a carriage return, we need to
         // set the crlfCheck flag to true, as we need to check if the
         // next character is a line feed
-        if (this.buffer[this.pos] === CR) {
+        if (byte === CR) {
           this.crlfCheck = true
         }
 
         // In any case, we can process the line as we reached an
         // end-of-line character
-        this.parseLine(this.buffer.subarray(0, this.pos), this.event)
-
-        // Remove the processed line from the buffer
-        this.buffer = this.buffer.subarray(this.pos + 1)
-        // Reset the position as we removed the processed line from the buffer
-        this.pos = 0
+        this.parseLine(this.readLine(), this.event)
+        this.consumeCurrentByte()
         // A line was processed and this could be the end of the event. We need
         // to check if the next line is empty to determine if the event is
         // finished.
@@ -63391,7 +56326,7 @@ class EventSourceStream extends Transform {
         continue
       }
 
-      this.pos++
+      this.advanceCursor()
     }
 
     callback()
@@ -63416,64 +56351,53 @@ class EventSourceStream extends Transform {
       return
     }
 
-    let field = ''
-    let value = ''
+    let fieldLength = line.length
+    let valueStart = line.length
 
     // If the line contains a U+003A COLON character (:)
     if (colonPosition !== -1) {
-      // Collect the characters on the line before the first U+003A COLON
-      // character (:), and let field be that string.
-      // TODO: Investigate if there is a more performant way to extract the
-      // field
-      // see: https://github.com/nodejs/undici/issues/2630
-      field = line.subarray(0, colonPosition).toString('utf8')
+      fieldLength = colonPosition
 
       // Collect the characters on the line after the first U+003A COLON
       // character (:), and let value be that string.
       // If value starts with a U+0020 SPACE character, remove it from value.
-      let valueStart = colonPosition + 1
+      valueStart = colonPosition + 1
       if (line[valueStart] === SPACE) {
         ++valueStart
       }
-      // TODO: Investigate if there is a more performant way to extract the
-      // value
-      // see: https://github.com/nodejs/undici/issues/2630
-      value = line.subarray(valueStart).toString('utf8')
-
-      // Otherwise, the string is not empty but does not contain a U+003A COLON
-      // character (:)
-    } else {
-      // Process the field using the steps described below, using the whole
-      // line as the field name, and the empty string as the field value.
-      field = line.toString('utf8')
-      value = ''
     }
 
-    // Modify the event with the field name and value. The value is also
-    // decoded as UTF-8
-    switch (field) {
-      case 'data':
-        if (event[field] === undefined) {
-          event[field] = value
-        } else {
-          event[field] += `\n${value}`
-        }
-        break
-      case 'retry':
-        if (isASCIINumber(value)) {
-          event[field] = value
-        }
-        break
-      case 'id':
-        if (isValidLastEventId(value)) {
-          event[field] = value
-        }
-        break
-      case 'event':
-        if (value.length > 0) {
-          event[field] = value
-        }
-        break
+    if (isFieldName(line, fieldLength, DATA)) {
+      const value = line.toString('utf8', valueStart)
+
+      if (event.data === undefined) {
+        event.data = value
+      } else {
+        event.data += `\n${value}`
+      }
+      return
+    }
+
+    if (isFieldName(line, fieldLength, RETRY)) {
+      if (isASCIINumberBytes(line, valueStart)) {
+        event.retry = line.toString('utf8', valueStart)
+      }
+      return
+    }
+
+    if (isFieldName(line, fieldLength, ID)) {
+      if (isValidLastEventIdBytes(line, valueStart)) {
+        event.id = line.toString('utf8', valueStart)
+      }
+      return
+    }
+
+    if (isFieldName(line, fieldLength, EVENT)) {
+      const value = line.toString('utf8', valueStart)
+
+      if (value.length > 0) {
+        event.event = value
+      }
     }
   }
 
@@ -63503,12 +56427,151 @@ class EventSourceStream extends Transform {
   }
 
   clearEvent () {
-    this.event = {
-      data: undefined,
-      event: undefined,
-      id: undefined,
-      retry: undefined
+    this.event.data = undefined
+    this.event.event = undefined
+    this.event.id = undefined
+    this.event.retry = undefined
+  }
+
+  hasPendingEvent () {
+    return this.event.data !== undefined ||
+      this.event.event !== undefined ||
+      this.event.id !== undefined ||
+      this.event.retry !== undefined
+  }
+
+  hasCurrentByte () {
+    return this.chunkIndex < this.chunks.length &&
+      this.pos < this.chunks[this.chunkIndex].length
+  }
+
+  currentByte () {
+    return this.chunks[this.chunkIndex][this.pos]
+  }
+
+  consumeCurrentByte () {
+    this.advanceCursor()
+    this.syncLineStartToCursor()
+  }
+
+  advanceCursor () {
+    this.pos++
+
+    while (this.chunkIndex < this.chunks.length && this.pos >= this.chunks[this.chunkIndex].length) {
+      this.chunkIndex++
+      this.pos = 0
     }
+  }
+
+  syncLineStartToCursor () {
+    this.lineChunkIndex = this.chunkIndex
+    this.linePos = this.pos
+    this.dropConsumedChunks()
+  }
+
+  dropConsumedChunks () {
+    while (this.lineChunkIndex > 0) {
+      this.chunks.shift()
+      this.lineChunkIndex--
+      this.chunkIndex--
+    }
+
+    if (this.chunkIndex === this.chunks.length) {
+      this.chunks.length = 0
+      this.chunkIndex = 0
+      this.pos = 0
+      this.lineChunkIndex = 0
+      this.linePos = 0
+    }
+  }
+
+  readLine () {
+    if (this.lineChunkIndex === this.chunkIndex) {
+      return this.chunks[this.chunkIndex].subarray(this.linePos, this.pos)
+    }
+
+    const chunks = []
+    let length = 0
+
+    for (let i = this.lineChunkIndex; i <= this.chunkIndex; i++) {
+      const chunk = this.chunks[i]
+      const start = i === this.lineChunkIndex ? this.linePos : 0
+      const end = i === this.chunkIndex ? this.pos : chunk.length
+      const slice = chunk.subarray(start, end)
+      length += slice.length
+      chunks.push(slice)
+    }
+
+    return Buffer.concat(chunks, length)
+  }
+
+  peekBufferedByte (offset) {
+    let chunkIndex = this.lineChunkIndex
+    let pos = this.linePos
+
+    while (chunkIndex < this.chunks.length) {
+      const chunk = this.chunks[chunkIndex]
+      const remaining = chunk.length - pos
+
+      if (offset < remaining) {
+        return chunk[pos + offset]
+      }
+
+      offset -= remaining
+      chunkIndex++
+      pos = 0
+    }
+  }
+
+  discardLeadingBytes (count) {
+    while (count > 0 && this.lineChunkIndex < this.chunks.length) {
+      const chunk = this.chunks[this.lineChunkIndex]
+      const remaining = chunk.length - this.linePos
+
+      if (count < remaining) {
+        this.linePos += count
+        count = 0
+      } else {
+        count -= remaining
+        this.lineChunkIndex++
+        this.linePos = 0
+      }
+    }
+
+    this.chunkIndex = this.lineChunkIndex
+    this.pos = this.linePos
+    this.dropConsumedChunks()
+  }
+
+  handleBOM () {
+    const first = this.peekBufferedByte(0)
+    const second = this.peekBufferedByte(1)
+    const third = this.peekBufferedByte(2)
+
+    if (second === undefined) {
+      if (first === BOM[0]) {
+        return true
+      }
+
+      this.checkBOM = false
+      return true
+    }
+
+    if (third === undefined) {
+      if (first === BOM[0] && second === BOM[1]) {
+        return true
+      }
+
+      this.checkBOM = false
+      return false
+    }
+
+    if (first === BOM[0] && second === BOM[1] && third === BOM[2]) {
+      this.discardLeadingBytes(3)
+    }
+
+    this.checkBOM = false
+    return !this.hasCurrentByte()
   }
 }
 
@@ -74777,7 +67840,7 @@ function establishWebSocketConnection (url, protocols, client, ws, onEstablish, 
         // is specified, the server needs to include the same field and one of
         // the selected subprotocol values in its response for the connection to
         // be established.
-        if (!requestProtocols.includes(secProtocol)) {
+        if (requestProtocols === null || !requestProtocols.includes(secProtocol)) {
           failWebsocketConnection(ws, 'Protocol was not set in the opening handshake.')
           return
         }
@@ -75538,7 +68601,12 @@ class PerMessageDeflate {
 
         if (this.#maxPayloadSize > 0 && this.#inflate[kLength] > this.#maxPayloadSize) {
           callback(new MessageSizeExceededError())
+          // The inflater may still hold buffered input that can emit a late
+          // zlib error. Remove the data listener, then deterministically stop
+          // the stream so a subsequent 'error' cannot fire without a listener
+          // (which would terminate the process as an unhandled error event).
           this.#inflate.removeAllListeners()
+          this.#inflate.destroy()
           this.#inflate = null
           return
         }
@@ -81079,20 +74147,44 @@ var endpoint = withDefaults(null, DEFAULTS);
  * Copyright(c) 2015 Douglas Christopher Wilson
  * MIT Licensed
  */
-const TEXT_REGEXP = /^[\u0009\u0020-\u007e\u0080-\u00ff]*$/;
-const TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
+const SP = 32; // " "
+const HTAB = 9; // "\t"
+const SEMI = 59; // ";"
+const EQ = 61; // "="
+const DQUOTE = 34; // '"'
+const BSLASH = 92; // "\\"
+const COMMA = 44; // ","
+const LOWER_CASE = 1;
+const OWS = 2;
+const SEMI_FLAG = 4;
+const COMMA_FLAG = 8;
+const TOKEN_FLAG = 16;
+const NON_ASCII = 0xff00;
+const CASE_FLAGS = LOWER_CASE | NON_ASCII;
 /**
- * RegExp to match chars that must be quoted-pair in RFC 9110 sec 5.6.4
+ * Character flags used to normalize HTTP field values while scanning.
+ * Out-of-range reads intentionally coerce to zero in bitwise expressions.
  */
-const QUOTE_REGEXP = /[\\"]/g;
-/**
- * RegExp to match type in RFC 9110 sec 8.3.1
- *
- * media-type = type "/" subtype
- * type       = token
- * subtype    = token
- */
-const TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
+const CHAR_MAP = new Uint8Array(0x100);
+CHAR_MAP[HTAB] |= OWS;
+CHAR_MAP[SP] |= OWS;
+CHAR_MAP[SEMI] |= SEMI_FLAG;
+CHAR_MAP[COMMA] |= COMMA_FLAG;
+for (let code = 0x80 /* non-ASCII */; code <= 0xff; code++) {
+    CHAR_MAP[code] |= LOWER_CASE;
+}
+for (const char of "!#$%&'*+-.^_`|~") {
+    CHAR_MAP[char.charCodeAt(0)] |= TOKEN_FLAG;
+}
+for (let code = 0x30 /* 0 */; code <= 0x39 /* 9 */; code++) {
+    CHAR_MAP[code] |= TOKEN_FLAG;
+}
+for (let code = 0x41 /* A */; code <= 0x5a /* Z */; code++) {
+    CHAR_MAP[code] |= LOWER_CASE | TOKEN_FLAG;
+}
+for (let code = 0x61 /* a */; code <= 0x7a /* z */; code++) {
+    CHAR_MAP[code] |= TOKEN_FLAG;
+}
 /**
  * Null object perf optimization. Faster than `Object.create(null)` and `{ __proto__: null }`.
  */
@@ -81102,20 +74194,83 @@ const NullObject = /* @__PURE__ */ (() => {
     return C;
 })();
 /**
+ * Validate a type string against RFC 9110.
+ */
+function isTypeValid(type, start = 0, end = type.length) {
+    let hasSlash = false;
+    for (let index = start; index < end; index++) {
+        const code = type.charCodeAt(index);
+        if (code === 47 /* / */) {
+            if (hasSlash || index === start || index >= end - 1)
+                return false;
+            hasSlash = true;
+        }
+        else if (!isTokenCode(code)) {
+            return false;
+        }
+    }
+    return hasSlash;
+}
+/**
+ * Validate a token against RFC 9110.
+ */
+function isTokenValid(token, start = 0, end = token.length) {
+    if (start >= end)
+        return false;
+    for (let index = start; index < end; index++) {
+        if (!isTokenCode(token.charCodeAt(index)))
+            return false;
+    }
+    return true;
+}
+/**
+ * Check whether a character code belongs to the token production in RFC 9110.
+ */
+function isTokenCode(code) {
+    return (CHAR_MAP[code] & TOKEN_FLAG) !== 0;
+}
+/**
+ * Serialize a parameter value.
+ */
+function parameterValue(str) {
+    const len = str.length;
+    if (len === 0)
+        return '""';
+    let index = 0;
+    while (index < len && isTokenCode(str.charCodeAt(index)))
+        index++;
+    if (index === len)
+        return str;
+    let result = '"';
+    let start = 0;
+    while (index < len) {
+        const code = str.charCodeAt(index);
+        if (code !== HTAB && (code < SP || code === 127 || code > 255)) {
+            throw new TypeError(`Invalid parameter value: ${str}`);
+        }
+        if (code === 34 /* " */ || code === 92 /* \\ */) {
+            result += `${str.slice(start, index)}\\`;
+            start = index;
+        }
+        index++;
+    }
+    return `${result}${str.slice(start)}"`;
+}
+/**
  * Format an object into a `Content-Type` header.
  */
 function format(obj) {
     const { type, parameters } = obj;
-    if (!type || !TYPE_REGEXP.test(type)) {
+    if (!type || !isTypeValid(type)) {
         throw new TypeError(`Invalid type: ${type}`);
     }
     let result = type;
     if (parameters) {
         for (const param of Object.keys(parameters)) {
-            if (!TOKEN_REGEXP.test(param)) {
+            if (!isTokenValid(param)) {
                 throw new TypeError(`Invalid parameter name: ${param}`);
             }
-            result += `; ${param}=${qstring(parameters[param])}`;
+            result += `; ${param}=${parameterValue(parameters[param])}`;
         }
     }
     return result;
@@ -81124,126 +74279,158 @@ function format(obj) {
  * Parse a `Content-Type` header.
  */
 function dist_parse(header, options) {
-    const stopChar = options?.comma === true ? COMMA : 65_536; // Sentinel for "no stop char".
+    const stopFlags = SEMI_FLAG | (options?.comma === true ? COMMA_FLAG : 0);
     const len = header.length;
-    let index = skipOWS(header, options?.start ?? 0, len);
-    const valueStart = index;
-    index = skipValue(header, index, len, stopChar);
-    const valueEnd = trailingOWS(header, valueStart, index);
-    const type = header.slice(valueStart, valueEnd).toLowerCase();
-    if (options?.parameters === false) {
+    let valueStart = options?.start ?? 0;
+    while ((CHAR_MAP[header.charCodeAt(valueStart)] & OWS) !== 0) {
+        valueStart++;
+    }
+    let index = valueStart;
+    let typeFlags = 0;
+    let whitespace = -1;
+    let stop = options?.parameters === false ? COMMA_FLAG : 0;
+    while (index < len) {
+        const code = header.charCodeAt(index);
+        const flags = CHAR_MAP[code];
+        if ((flags & stopFlags) !== 0) {
+            stop |= flags & COMMA_FLAG;
+            break;
+        }
+        if ((flags & OWS) !== 0) {
+            if (whitespace === -1)
+                whitespace = index;
+        }
+        else {
+            whitespace = -1;
+        }
+        typeFlags |= (code & NON_ASCII) | flags;
+        index++;
+    }
+    const valueEnd = whitespace === -1 ? index : whitespace;
+    const value = header.slice(valueStart, valueEnd);
+    const type = (typeFlags & CASE_FLAGS) === 0 ? value : value.toLowerCase();
+    if (index === len || stop !== 0) {
         return { type, index, parameters: new NullObject() };
     }
-    return parseParameters(header, type, index, len, stopChar);
+    return parseParameters(header, type, index, len, stopFlags);
 }
-const SP = 32; // " "
-const HTAB = 9; // "\t"
-const SEMI = 59; // ";"
-const EQ = 61; // "="
-const DQUOTE = 34; // '"'
-const BSLASH = 92; // "\\"
-const COMMA = 44; // ","
 /**
  * Parses the parameters of a `Content-Type` header starting at the given index.
  */
-function parseParameters(header, type, index, len, stopChar) {
+function parseParameters(header, type, index, len, stopFlags) {
     const parameters = new NullObject();
     parameter: while (index < len) {
-        if (header.charCodeAt(index) === stopChar)
-            break;
-        index = skipOWS(header, index + 1 /* Skip over ; */, len);
+        index++; // Skip over ;
+        while ((CHAR_MAP[header.charCodeAt(index)] & OWS) !== 0) {
+            index++;
+        }
         const keyStart = index;
+        let keyFlags = 0;
+        let keyWhitespace = -1;
         while (index < len) {
             const code = header.charCodeAt(index);
-            if (code === stopChar)
-                break parameter;
-            if (code === SEMI)
+            const flags = CHAR_MAP[code];
+            if ((flags & stopFlags) !== 0) {
+                if ((flags & COMMA_FLAG) !== 0)
+                    break parameter;
                 continue parameter;
+            }
             if (code === EQ) {
-                const keyEnd = trailingOWS(header, keyStart, index);
-                const key = header.slice(keyStart, keyEnd).toLowerCase();
-                index = skipOWS(header, index + 1, len);
-                if (index < len && header.charCodeAt(index) === DQUOTE) {
+                const keyEnd = keyWhitespace === -1 ? index : keyWhitespace;
+                const value = header.slice(keyStart, keyEnd);
+                const key = (keyFlags & CASE_FLAGS) === 0 ? value : value.toLowerCase();
+                index++;
+                while ((CHAR_MAP[header.charCodeAt(index)] & OWS) !== 0) {
                     index++;
-                    let value = "";
+                }
+                if (index < len && header.charCodeAt(index) === DQUOTE) {
+                    const quotedStart = ++index;
+                    let escaped = false;
                     while (index < len) {
-                        const code = header.charCodeAt(index++);
+                        const code = header.charCodeAt(index);
                         if (code === DQUOTE) {
-                            index = skipValue(header, index, len, stopChar);
-                            if (parameters[key] === undefined)
-                                parameters[key] = value;
-                            break;
+                            if (parameters[key] === undefined) {
+                                parameters[key] = escaped
+                                    ? unescapeQuotedPairs(header, quotedStart, index)
+                                    : header.slice(quotedStart, index);
+                            }
+                            index++;
+                            let stop = 0;
+                            // Discard characters between quote and delimiter.
+                            while (index < len) {
+                                const code = header.charCodeAt(index);
+                                const flags = CHAR_MAP[code];
+                                if ((flags & stopFlags) !== 0) {
+                                    stop = flags & COMMA_FLAG;
+                                    break;
+                                }
+                                index++;
+                            }
+                            if (stop !== 0)
+                                break parameter;
+                            continue parameter;
                         }
-                        if (code === BSLASH && index < len) {
-                            value += header[index++];
+                        if (code === BSLASH && index + 1 < len) {
+                            escaped = true;
+                            index += 2;
                             continue;
                         }
-                        value += String.fromCharCode(code);
+                        index++;
                     }
                     continue parameter;
                 }
                 const valueStart = index;
-                index = skipValue(header, index, len, stopChar);
+                let stop = 0;
+                let valueWhitespace = -1;
+                while (index < len) {
+                    const code = header.charCodeAt(index);
+                    const flags = CHAR_MAP[code];
+                    if ((flags & stopFlags) !== 0) {
+                        stop = flags & COMMA_FLAG;
+                        break;
+                    }
+                    if ((flags & OWS) !== 0) {
+                        if (valueWhitespace === -1)
+                            valueWhitespace = index;
+                    }
+                    else {
+                        valueWhitespace = -1;
+                    }
+                    index++;
+                }
                 if (parameters[key] === undefined) {
-                    const valueEnd = trailingOWS(header, valueStart, index);
+                    const valueEnd = valueWhitespace === -1 ? index : valueWhitespace;
                     parameters[key] = header.slice(valueStart, valueEnd);
                 }
+                if (stop !== 0)
+                    break parameter;
                 continue parameter;
             }
+            if ((flags & OWS) !== 0) {
+                if (keyWhitespace === -1)
+                    keyWhitespace = index;
+            }
+            else {
+                keyWhitespace = -1;
+            }
+            keyFlags |= (code & NON_ASCII) | flags;
             index++;
         }
     }
     return { type, index, parameters };
 }
 /**
- * Skip over characters until a semicolon or other exit character.
+ * Remove backslashes from quoted pairs in a known-terminated quoted string body.
  */
-function skipValue(str, index, len, stopChar) {
-    while (index < len) {
-        const code = str.charCodeAt(index);
-        if (code === SEMI || code === stopChar)
-            break;
-        index++;
+function unescapeQuotedPairs(str, start, end) {
+    let result = "";
+    for (let index = start; index < end; index++) {
+        if (str.charCodeAt(index) === BSLASH) {
+            result += str.slice(start, index);
+            start = ++index;
+        }
     }
-    return index;
-}
-/**
- * Skip optional whitespace (OWS) in an HTTP header value.
- *
- * OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
- */
-function skipOWS(header, index, len) {
-    while (index < len) {
-        const char = header.charCodeAt(index);
-        if (char !== SP && char !== HTAB)
-            break;
-        index++;
-    }
-    return index;
-}
-/**
- * Trim optional whitespace (OWS) from the end of a substring.
- *
- * OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
- */
-function trailingOWS(header, start, end) {
-    while (end > start) {
-        const char = header.charCodeAt(end - 1);
-        if (char !== SP && char !== HTAB)
-            break;
-        end--;
-    }
-    return end;
-}
-/**
- * Serialize a parameter value.
- */
-function qstring(str) {
-    if (TOKEN_REGEXP.test(str))
-        return str;
-    if (TEXT_REGEXP.test(str))
-        return `"${str.replace(QUOTE_REGEXP, "\\$&")}"`;
-    throw new TypeError(`Invalid parameter value: ${str}`);
+    return result + str.slice(start, end);
 }
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./node_modules/json-with-bigint/json-with-bigint.js
@@ -81896,7 +75083,7 @@ class RequestError extends Error {
 
 
 // pkg/dist-src/version.js
-var dist_bundle_VERSION = "10.0.15";
+var dist_bundle_VERSION = "10.0.16";
 
 // pkg/dist-src/defaults.js
 var defaults_default = {
@@ -82282,7 +75469,7 @@ var createTokenAuth = function createTokenAuth2(token) {
 
 
 ;// CONCATENATED MODULE: ./node_modules/@octokit/core/dist-src/version.js
-const version_VERSION = "7.0.7";
+const version_VERSION = "7.0.8";
 
 
 ;// CONCATENATED MODULE: ./node_modules/@octokit/core/dist-src/index.js
